@@ -1,0 +1,18 @@
+Uncovered tools
+tools/icon-editor/Assert-DevModeState.ps1
+tools/icon-editor/Inspect-MissingProjectItems.ps1
+tools/icon-editor/Invoke-OneShotTask.ps1
+tools/icon-editor/Invoke-VIComparisonFromCommit.ps1
+tools/icon-editor/Invoke-VipmDependencies.ps1
+tools/icon-editor/Measure-VIAnalyzerDeadTime.ps1
+tools/icon-editor/Prepare-OverlayFromRepo.ps1
+tools/icon-editor/Prepare-UnitTestState.ps1
+tools/icon-editor/Prepare-VipViDiffRequests.ps1
+tools/icon-editor/Publish-LocalArtifacts.ps1
+tools/icon-editor/Replay-ApplyVipcJob.ps1
+tools/icon-editor/Replay-BuildVipJob.ps1
+tools/icon-editor/Run-MipLunit-2021x64.ps1
+tools/icon-editor/Run-MipLunit-2023x64.ps1
+tools/icon-editor/Run-OneShotBuildAndTests.ps1
+tools/icon-editor/Stage-BuildArtifacts.ps1
+tools/icon-editor/Sync-IconEditorFork.ps1
