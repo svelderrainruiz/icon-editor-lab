@@ -1,7 +1,0 @@
-CaseID,Title,CoverageItem,Precond,Steps,Expected,Postcond,Priority,Owner,"Links(RTM,Script)"
-TC-001,Dev mode toggles,DEV-01,dev=off,enable; verify; disable,state toggled,dev=off,H,QA,RTM:F-006; tests/Enable-Disable-DevMode.Tests.ps1
-TC-002,Reject script in SVG,SEC-01,—,load malicious SVG,ValueError thrown,log entry,H,Sec,RTM:F-010; tests/Parser-Policy.Tests.ps1
-TC-003,Safe export denies traversal,IO-01,tmp dir,export ../etc/passwd,PermissionError,no file outside base,H,Core,RTM:F-015; tests/Safe-Export.Tests.ps1
-TC-004,VIPM package builds,PKG-01,deps locked,run build,*.vip artifact exists,checksums match,M,Build,RTM:N-003; tests/VIPM-Package.Tests.ps1
-TC-005,VI Comparison Report generated,REP-01,previous tag present,run diff tool,vi_diff_report.json exists,summary counts match,M,QA,RTM:R-002; tests/VI-Diff.Tests.ps1
-TC-006,VI History Report generated,REP-02,range defined,run history tool,vi_history.json exists,entries ≥ 1,M,QA,RTM:R-003; tests/VI-History.Tests.ps1

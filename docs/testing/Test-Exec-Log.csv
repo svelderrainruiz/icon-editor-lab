@@ -1,2 +1,0 @@
-RunID,When,Env,Build,CaseID,Result,Duration_s,Tester,Notes,Artifacts
-RUN-INIT,2025-11-10T12:00:00Z,CI-Ubuntu,commit:<fill>,TC-001,Pass,4.2,CI,Seed run,artifacts/seed/

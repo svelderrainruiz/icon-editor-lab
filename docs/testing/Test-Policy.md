@@ -1,20 +1,21 @@
----
-Doc-ID: IELA-TST-POL-001
-Issuer: QA
-Status: Draft
-Issue-Date: 2025-11-10
-Approvals: QA Lead; Eng Manager
-Change-History:
-  - { date: 2025-11-10, version: 0.1, author: QA Lead, change: "Initial draft" }
-Scope: Icon-Editor-Lab — Testing
-References: IELA-SRS; IELA-RTM; ISO/IEC/IEEE 29119-1; ISO/IEC/IEEE 29119-3; ISO 10007
----
+# Organizational Test Policy
+**Document ID:** IELA-TEST-POL-001 • **Status:** Draft rc1
+**Approvals:** Eng Mgr / QA Lead • **Change history:** 0.1.0-rc1 seed
 
-# Test Policy
+## Scope & Purpose
+Executive policy stating **why** we test and expected outcomes. (29119-3 §6.2). :contentReference[oaicite:7]{index=7}
 
-**Objectives:** quality risk reduction, compliance, traceability, fitness-for-use.  
-**Principles:** risk-based testing; independence where feasible; automation-first; evidence retention.  
-**Standards/Tools:** 29119-1/-3; ISO 10007; Pester/LUnit/Playwright; CI gates.  
-**Competence & Training:** onboarding for tools/standards; reviewer quals.  
-**CM Hooks:** test work products are CIs; baseline per release; audits per CM plan.  
-**Improvement:** retrospectives; defect leakage reviews.
+## Objectives
+- Protect release quality; mitigate **product/project risks**; enable evidence for compliance. (29119-1 §4.2). :contentReference[oaicite:8]{index=8}
+
+## Test Process & Organization
+- Processes per 29119‑2 reflected via docs of 29119‑3; QA Lead is approval authority.
+
+## Ethics/Training/Standards
+- Commit to independent evidence; Pester for automation; follow 29119‑1/‑3. :contentReference[oaicite:9]{index=9} :contentReference[oaicite:10]{index=10}
+
+## Measuring Value
+- KPIs: coverage (line/func), escaped defects, MTTR; coverage gate ≥75% on **tools**.
+
+## Asset Archiving & Improvement
+- Persist reports/artifacts per CM Plan; retro learnings feed policy revisions.

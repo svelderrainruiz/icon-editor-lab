@@ -1,47 +1,30 @@
----
-Doc-ID: IELA-TST-PLN-001
-Issuer: QA
-Status: Draft
-Issue-Date: 2025-11-10
-Approvals: QA Lead; Eng Manager
-Change-History:
-  - { date: 2025-11-10, version: 0.1, author: QA Lead, change: "Initial draft" }
-Scope: Icon-Editor-Lab — Testing
-References: IELA-SRS; IELA-RTM; ISO/IEC/IEEE 29119-1; ISO/IEC/IEEE 29119-3; ISO 10007
----
+# Test Plan — tools scope
+**Document ID:** IELA-TEST-PLAN-TOOL-001 • **Status:** Draft rc1 • **Owner:** QA Lead
+**Approvals:** Eng Mgr / QA Lead • **Change history:** 0.1.0-rc1 seed
 
-# Project Test Plan
+## Context (7.2.2)  :contentReference[oaicite:16]{index=16}
+- Subject: PowerShell scripts/modules in `tools/`
+- Basis: SRS/RTM (if present) + function contracts; repo conventions.
 
-## Context & Objectives
-Scope: icon-editor-lab; in-scope features per SRS; out-of-scope listed here.
+## Assumptions & Constraints (7.2.3)  :contentReference[oaicite:17]{index=17}
+- PowerShell 7+; Windows runner in CI; Pester ≥5.4.
 
-## Assumptions & Constraints
-LabVIEW/VIPM available in CI; air-gapped agents supported; prod/dev mode toggles.
+## Stakeholders & Comms (7.2.4–7.2.5)  :contentReference[oaicite:18]{index=18}
+- QA Lead (owner); Eng Mgr (approver); Devs (contributors). Weekly status note.
 
-## Stakeholders & Communication
-QA Lead (owner), Sec Lead, Core Lead, Build Lead; weekly standup; release reviews.
+## Risk Register (7.2.6)  :contentReference[oaicite:19]{index=19}
+| ID | Risk | Prob | Impact | Mitigation |
+|----|------|------|--------|------------|
+| R1 | Missing `SupportsShouldProcess` | M | H | Add Pester checks; enforce in PR |
+| R2 | No Synopsis/help | M | M | Help tests; PR checklist |
+| R3 | Parse/load errors | L | H | AST parse gate; self-check script |
 
-## Strategy (Risk-Based)
-Prioritize high-exposure risks; map to cases; enforce CI gates.
+## Test Strategy (7.2.7)  :contentReference[oaicite:20]{index=20}
+- Techniques: requirements-based; structural coverage; negative/error paths (29119‑1 §4.4). :contentReference[oaicite:21]{index=21}
+- Completion criteria: **coverage ≥75%** on `tools/**` (+ 0 failed tests).
 
-## Risk Register
-| ID | Description | Prob | Impact | Exposure | Mitigation | Owner |
-|---|---|---|---|---|---|---|
-| R-001 | Dev mode shipped in prod | M | H | H | Mode gate + E2E prod checks | QA Lead |
-| R-002 | Unsafe SVG accepted | L | H | M | Sanitizer + fuzz + unit policy tests | Sec Lead |
-| R-003 | Path traversal on export | L | H | M | safe_export + integration tests | Core Lead |
-| R-004 | VIPM dep drift | M | M | M | lockfile + SBOM scan | Build Lead |
-| R-005 | History not idempotent | M | M | M | unit/integration undo/redo tests | Core Lead |
-
-
-## Test Items & Features
-Parser/Serializer; History; IO export; VIPM packaging; VI diff/history reporting.
-
-## Entry/Exit Criteria
-Entry: env/data ready; dev branch green. Exit: pass-rate ≥95%, zero high-sev incidents, gates green.
-
-## Schedule & Resources
-Milestones per sprint; CI agents listed in Env Ready; staff per roles above.
+## Activities/Estimates, Staffing, Schedule (7.2.8–7.2.10)  :contentReference[oaicite:22]{index=22}
+- One sprint to green gates; QA Lead + Dev pair.
 
 ## Deliverables
-Status reports, completion report, execution logs, incidents, evidence artifacts.
+- Status/Completion reports; Pester results + coverage xml; incident log.
