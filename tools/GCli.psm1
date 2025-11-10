@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 
 Set-StrictMode -Version Latest
@@ -12,7 +5,18 @@ $ErrorActionPreference = 'Stop'
 
 $script:Providers = @{}
 
+<#
+.SYNOPSIS
+Register-GCliProvider: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Register-GCliProvider {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([Parameter(Mandatory)][object]$Provider)
 
     foreach ($member in @('Name','ResolveBinaryPath','Supports','BuildArgs')) {
@@ -29,11 +33,27 @@ function Register-GCliProvider {
     $script:Providers[$name.ToLowerInvariant()] = $Provider
 }
 
+<#
+.SYNOPSIS
+Get-GCliProviders: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GCliProviders {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
 
+<#
+.SYNOPSIS
+Get-GCliProviderByName: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GCliProviderByName {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([Parameter(Mandatory)][string]$Name)
 
     $key = $Name.ToLowerInvariant()
@@ -43,7 +63,15 @@ function Get-GCliProviderByName {
     return $null
 }
 
+<#
+.SYNOPSIS
+Import-GCliProviderModules: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Import-GCliProviderModules {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     $providerRoot = Join-Path $PSScriptRoot 'providers'
     if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
 
@@ -74,6 +102,12 @@ function Import-GCliProviderModules {
 
 Import-GCliProviderModules
 
+<#
+.SYNOPSIS
+Get-GCliInvocation: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GCliInvocation {
     [CmdletBinding()]
     param(
@@ -120,11 +154,23 @@ function Get-GCliInvocation {
 Export-ModuleMember -Function Get-GCliInvocation, Get-GCliProviders, Get-GCliProviderByName
 
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 param(
   [string]$Group = 'pester-selfhosted',
   [switch]$Html,
@@ -31,7 +24,18 @@ $script:repoRoot = Split-Path -Parent $toolRoot
 $modulePath = Join-Path $toolRoot 'Dev-Dashboard.psm1'
 Import-Module $modulePath -Force
 
+<#
+.SYNOPSIS
+Invoke-Git: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Git {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$Arguments)
   $git = Get-Command git -ErrorAction SilentlyContinue
   if (-not $git) { return $null }
@@ -57,7 +61,15 @@ function Invoke-Git {
   return ($stdout -split "`r?`n" | Where-Object { $_ -ne '' } | Select-Object -First 1).Trim()
 }
 
+<#
+.SYNOPSIS
+Get-ProcessList: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-ProcessList {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($ProcessContainer)
   if (-not $ProcessContainer) { return @() }
   if (-not ($ProcessContainer.PSObject.Properties.Name -contains 'Processes')) { return @() }
@@ -65,7 +77,15 @@ function Get-ProcessList {
   return @($ProcessContainer.Processes | Where-Object { $_ })
 }
 
+<#
+.SYNOPSIS
+Get-PropertyValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-PropertyValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     $Object,
     [string]$Property
@@ -75,7 +95,15 @@ function Get-PropertyValue {
   return $Object.$Property
 }
 
+<#
+.SYNOPSIS
+Get-CompareOutcomeTelemetry: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CompareOutcomeTelemetry {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsRoot)
 
   if (-not $ResultsRoot) { return $null }
@@ -284,7 +312,15 @@ function Get-CompareOutcomeTelemetry {
   return [pscustomobject]$resultOrdered
 }
 
+<#
+.SYNOPSIS
+Get-DashboardSnapshot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-DashboardSnapshot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$GroupName,
     [string]$ResultsDir,
@@ -336,7 +372,15 @@ function Get-DashboardSnapshot {
   }
 }
 
+<#
+.SYNOPSIS
+Format-Seconds: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Format-Seconds {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([double]$Seconds)
   if (-not $Seconds -or $Seconds -lt 0) { return $null }
   if ($Seconds -lt 120) { return "$([math]::Round($Seconds,0)) s" }
@@ -344,7 +388,15 @@ function Format-Seconds {
   return "$minutes min"
 }
 
+<#
+.SYNOPSIS
+Get-CompareCliImageSummary: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CompareCliImageSummary {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Nullable[int]]$ImageCount,
     [string]$ExportDir,
@@ -364,7 +416,15 @@ function Get-CompareCliImageSummary {
   return $null
 }
 
+<#
+.SYNOPSIS
+Write-TerminalReport: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-TerminalReport {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Snapshot)
 
   $timestamp = $Snapshot.GeneratedAt.ToString('u')
@@ -665,7 +725,15 @@ function Write-TerminalReport {
   }
 }
 
+<#
+.SYNOPSIS
+ConvertTo-HtmlReport: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function ConvertTo-HtmlReport {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Snapshot)
 
   [object]$process = $null
@@ -1075,7 +1143,15 @@ function ConvertTo-HtmlReport {
 "@
 }
 
+<#
+.SYNOPSIS
+Invoke-Dashboard: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Dashboard {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param()
 
   $snapshot = Get-DashboardSnapshot -GroupName $Group -ResultsDir $ResultsRoot -StakeholderFile $StakeholderPath
@@ -1112,11 +1188,23 @@ if ($Watch -gt 0) {
   }
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

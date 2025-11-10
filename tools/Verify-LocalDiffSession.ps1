@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
@@ -32,22 +25,57 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Resolve-RepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-RepoRoot {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   try { return (git -C (Get-Location).Path rev-parse --show-toplevel 2>$null).Trim() } catch { return (Get-Location).Path }
 }
 
+<#
+.SYNOPSIS
+Get-TempSentinelRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-TempSentinelRoot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   try { return Join-Path ([System.IO.Path]::GetTempPath()) 'comparevi-cli-sentinel' } catch { return Join-Path $env:TEMP 'comparevi-cli-sentinel' }
 }
 
+<#
+.SYNOPSIS
+Ensure-Directory: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Ensure-Directory {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory = $true)][string]$Path)
   if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
     New-Item -ItemType Directory -Path $Path -Force | Out-Null
   }
 }
 
+<#
+.SYNOPSIS
+Remove-LocalConfig: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Remove-LocalConfig {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory = $true)][string]$RepoRoot)
 
   $localConfig = Join-Path $RepoRoot 'configs' 'labview-paths.local.json'
@@ -56,7 +84,15 @@ function Remove-LocalConfig {
   }
 }
 
+<#
+.SYNOPSIS
+Get-CompareCliSentinelPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CompareCliSentinelPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$Vi1,
     [Parameter(Mandatory = $true)][string]$Vi2,
@@ -73,7 +109,15 @@ function Get-CompareCliSentinelPath {
   return Join-Path $root ($hash + '.sentinel')
 }
 
+<#
+.SYNOPSIS
+Touch-CompareCliSentinel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Touch-CompareCliSentinel {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$Vi1,
     [Parameter(Mandatory = $true)][string]$Vi2,
@@ -92,7 +136,15 @@ function Touch-CompareCliSentinel {
   }
 }
 
+<#
+.SYNOPSIS
+Get-SentinelSkipStatus: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-SentinelSkipStatus {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$Vi1,
     [Parameter(Mandatory = $true)][string]$Vi2,
@@ -116,7 +168,15 @@ function Get-SentinelSkipStatus {
   return [pscustomobject]@{ skipped = $false; reason = $null; path = $path }
 }
 
+<#
+.SYNOPSIS
+Get-LocalDiffProcessSnapshot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LocalDiffProcessSnapshot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $names = @('LabVIEW','LVCompare','LabVIEWCLI','g-cli')
   $snapshot = New-Object System.Collections.Generic.List[object]
   foreach ($name in $names) {
@@ -132,7 +192,15 @@ function Get-LocalDiffProcessSnapshot {
   return $snapshot.ToArray()
 }
 
+<#
+.SYNOPSIS
+Read-FileSnippet: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Read-FileSnippet {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Path,
     [int]$MaxLength = 200
@@ -161,7 +229,15 @@ if (-not (Test-Path -LiteralPath $driverPath -PathType Leaf)) {
   throw "Invoke-LVCompare.ps1 not found at $driverPath"
 }
 
+<#
+.SYNOPSIS
+Resolve-ViPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ViPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory = $true)][string]$Path)
 
   $candidates = New-Object System.Collections.Generic.List[string]
@@ -195,7 +271,15 @@ $setupStatus = [ordered]@{
   message = 'ready'
 }
 
+<#
+.SYNOPSIS
+Invoke-SetupProbe: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-SetupProbe {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([switch]$SuppressWarning)
 
   $status = [ordered]@{
@@ -242,7 +326,15 @@ $resultsRootResolved = if ($ResultsRoot) {
 if (Test-Path -LiteralPath $resultsRootResolved) { Remove-Item -LiteralPath $resultsRootResolved -Recurse -Force -ErrorAction SilentlyContinue }
 New-Item -ItemType Directory -Path $resultsRootResolved -Force | Out-Null
 
+<#
+.SYNOPSIS
+Invoke-CompareRun: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-CompareRun {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$RunDir,
     [Parameter(Mandatory = $true)][string]$Mode,
@@ -483,11 +575,23 @@ return [pscustomobject]@{
   setupStatus= [pscustomobject]$setupStatus
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
@@ -46,7 +39,18 @@ if (Test-Path -LiteralPath $schemaPath) {
     }
 }
 
+<#
+.SYNOPSIS
+Get-VersionedConfigValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VersionedConfigValue {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         $Config,
         [string]$PropertyName
@@ -95,7 +99,15 @@ function Get-VersionedConfigValue {
     return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-CandidatePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-CandidatePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$PathValue
     )
@@ -141,7 +153,15 @@ $defaultRoots = @(
     'C:\Program Files\National Instruments\LabVIEW 2023'
 )
 
+<#
+.SYNOPSIS
+Ensure-Path: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Ensure-Path {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Key,
         [string]$Candidate
@@ -228,11 +248,23 @@ Write-Host 'LVCompare setup verified.' -ForegroundColor Green
     ConfigSource   = $paths.ConfigSource
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

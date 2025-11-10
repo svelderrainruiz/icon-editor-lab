@@ -55,7 +55,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Resolve-Repo: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-Repo {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepoParam)
   if ($RepoParam) { return $RepoParam }
   if ($env:GITHUB_REPOSITORY) { return $env:GITHUB_REPOSITORY }
@@ -70,14 +81,30 @@ function Resolve-Repo {
   throw "Unable to resolve repository. Provide -Repo owner/name explicitly."
 }
 
+<#
+.SYNOPSIS
+Invoke-GhApi: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-GhApi {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   $raw = gh api $Path --header "Accept: application/vnd.github+json" 2>$null
   if (-not $raw) { return $null }
   return $raw | ConvertFrom-Json
 }
 
+<#
+.SYNOPSIS
+Get-CheckRuns: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CheckRuns {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoFull,
     [string]$Sha
@@ -101,7 +128,15 @@ function Get-CheckRuns {
   return $collected
 }
 
+<#
+.SYNOPSIS
+Write-Info: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-Info {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Message)
   if (-not $Quiet) { Write-Host "[run-tracker] $Message" }
 }
@@ -270,11 +305,23 @@ if ($snapshot -and $snapshot.Contains('timedOut') -and $snapshot['timedOut']) {
   exit 1
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

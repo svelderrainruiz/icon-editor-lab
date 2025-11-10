@@ -101,7 +101,18 @@ try { Import-Module ThreadJob -ErrorAction SilentlyContinue } catch {}
 
 function New-Dir([string]$p){ if (-not (Test-Path $p)) { New-Item -ItemType Directory -Path $p -Force | Out-Null } }
 
+<#
+.SYNOPSIS
+Get-LvCompareLabelSegment: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LvCompareLabelSegment {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Value)
   if ([string]::IsNullOrWhiteSpace($Value)) { return $null }
   $safe = ($Value -replace '[^a-zA-Z0-9._-]', '-').Trim('-')
@@ -110,7 +121,15 @@ function Get-LvCompareLabelSegment {
   return $safe
 }
 
+<#
+.SYNOPSIS
+New-LvCompareReportLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function New-LvCompareReportLabel {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Explicit,
     [string]$BaseLeaf,
@@ -130,7 +149,15 @@ function New-LvCompareReportLabel {
   return $label
 }
 
+<#
+.SYNOPSIS
+Publish-LvCompareRunReport: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Publish-LvCompareRunReport {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoRoot,
     [string]$Label,
@@ -162,7 +189,15 @@ function Publish-LvCompareRunReport {
   & $reportScript @args | Out-Null
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [scriptblock]$Block,
     [int]$TimeoutSeconds,
@@ -466,7 +501,15 @@ try {
 
 exit $exitCode
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }

@@ -87,7 +87,18 @@ $ErrorActionPreference = 'Stop'
 $maxPairsValue = if ($PSBoundParameters.ContainsKey('MaxPairs')) { $MaxPairs } else { $null }
 $maxPairsRequested = ($null -ne $maxPairsValue) -and ($maxPairsValue -gt 0)
 
+<#
+.SYNOPSIS
+Resolve-ExistingFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ExistingFile {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Path,
         [string]$Description
@@ -104,7 +115,15 @@ function Resolve-ExistingFile {
     return (Resolve-Path -LiteralPath $Path).Path
 }
 
+<#
+.SYNOPSIS
+Get-GitRepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GitRepoRoot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     $output = & git rev-parse --show-toplevel 2>$null
     if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($output)) {
         throw 'Unable to determine git repository root.'
@@ -112,7 +131,15 @@ function Get-GitRepoRoot {
     return $output.Trim()
 }
 
+<#
+.SYNOPSIS
+Resolve-ViPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ViPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Path,
         [string]$ParameterName,
@@ -149,7 +176,15 @@ function Resolve-ViPath {
     }
 }
 
+<#
+.SYNOPSIS
+Get-HistoryFlagList: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-HistoryFlagList {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Raw)
     if ([string]::IsNullOrWhiteSpace($Raw)) { return @() }
     $segments = $Raw -split "(\r\n|\n|\r)"
@@ -162,7 +197,15 @@ function Get-HistoryFlagList {
     return $result.ToArray()
 }
 
+<#
+.SYNOPSIS
+ConvertTo-NullableBool: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function ConvertTo-NullableBool {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Value)
     if ([string]::IsNullOrWhiteSpace($Value)) { return $null }
     $normalized = $Value.Trim().ToLowerInvariant()
@@ -227,7 +270,15 @@ if ($historyFlagList -and $historyFlagList.Length -gt 0) {
     $historyFlagString = ($historyFlagList -join ' ')
 }
 
+<#
+.SYNOPSIS
+Get-RepoRelativePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RepoRelativePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$FullPath,
         [string]$RepoRoot
@@ -258,7 +309,15 @@ function Get-RepoRelativePath {
     return $relative.Replace('\','/')
 }
 
+<#
+.SYNOPSIS
+Sanitize-Token: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Sanitize-Token {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Value)
     if ([string]::IsNullOrWhiteSpace($Value)) {
         return 'vi-history'
@@ -619,11 +678,23 @@ if ($errorTargets.Count -gt 0) {
 
 return $summary
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

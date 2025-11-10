@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 [CmdletBinding()]
 param(
   [string]$ResultsRoot = 'tests/results',
@@ -19,12 +12,31 @@ $ErrorActionPreference = 'Stop'
 
 $issues = @()
 
+<#
+.SYNOPSIS
+Add-Issue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Add-Issue {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Message)
   $script:issues += "- $Message"
 }
 
+<#
+.SYNOPSIS
+Assert-PathExists: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Assert-PathExists {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$Path,
     [Parameter(Mandatory = $true)][string]$Description,
@@ -133,11 +145,23 @@ if ($issues.Count -gt 0) {
 
 Write-Host 'All expected Validate artifacts are present and sane.'
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

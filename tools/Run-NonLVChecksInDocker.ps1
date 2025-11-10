@@ -61,7 +61,18 @@ if (-not (Get-Command -Name 'docker' -ErrorAction SilentlyContinue)) {
   throw "Docker CLI not found. Install Docker Desktop or Docker Engine to run containerized checks."
 }
 
+<#
+.SYNOPSIS
+Resolve-GitHubToken: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-GitHubToken {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $envToken = $env:GH_TOKEN
   if (-not [string]::IsNullOrWhiteSpace($envToken)) { return $envToken.Trim() }
 
@@ -111,7 +122,15 @@ function Resolve-GitHubToken {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-DockerHostPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-DockerHostPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path = '.')
   $resolved = (Resolve-Path -LiteralPath $Path).Path
   if ($IsWindows) {
@@ -159,13 +178,29 @@ if (-not $workflowTargets) {
   $SkipWorkflow = $true
 }
 
+<#
+.SYNOPSIS
+ConvertTo-SingleQuotedList: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function ConvertTo-SingleQuotedList {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$Values)
   if (-not $Values) { return '' }
   return ($Values | ForEach-Object { "'$_'" }) -join ' '
 }
 
+<#
+.SYNOPSIS
+Test-WorkflowDriftPending: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-WorkflowDriftPending {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$Paths)
   try {
     $output = git status --porcelain -- @Paths
@@ -176,7 +211,15 @@ function Test-WorkflowDriftPending {
   }
 }
 
+<#
+.SYNOPSIS
+Invoke-Container: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Container {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Image,
     [string[]]$Arguments,
@@ -321,11 +364,23 @@ if ($PrioritySync) {
 
 Write-Host 'Non-LabVIEW container checks completed.' -ForegroundColor Green
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

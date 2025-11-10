@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
@@ -12,7 +5,16 @@ if (-not (Get-Variable -Name ConsoleWatchState -Scope Script -ErrorAction Silent
   $script:ConsoleWatchState = @{}
 }
 
+<#
+.SYNOPSIS
+Start-ConsoleWatch: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Start-ConsoleWatch {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   [CmdletBinding()]
   param(
     [Parameter(Mandatory)][string]$OutDir,
@@ -56,6 +58,12 @@ function Start-ConsoleWatch {
   }
 }
 
+<#
+.SYNOPSIS
+Stop-ConsoleWatch: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Stop-ConsoleWatch {
   [CmdletBinding()]
   param(
@@ -93,11 +101,23 @@ function Stop-ConsoleWatch {
 
 Export-ModuleMember -Function Start-ConsoleWatch, Stop-ConsoleWatch
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

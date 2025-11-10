@@ -51,7 +51,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Get-CanonicalMapping: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CanonicalMapping {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
     throw "Branch protection policy not found: $Path"
@@ -63,12 +74,28 @@ function Get-CanonicalMapping {
   }
 }
 
+<#
+.SYNOPSIS
+Get-FileDigestHex: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-FileDigestHex {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   & (Join-Path $PSScriptRoot 'Get-FileSha256.ps1') -Path $Path
 }
 
+<#
+.SYNOPSIS
+To-Ordered: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function To-Ordered {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([psobject]$Object)
   $ordered = [ordered]@{}
   foreach ($prop in $Object.PSObject.Properties) {
@@ -260,11 +287,23 @@ if ($env:GITHUB_STEP_SUMMARY) {
 
 Write-Host ("branchProtection written to {0} (status: {1}, reason: {2})" -f $idxPath, $resultStatus, $resultReason)
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

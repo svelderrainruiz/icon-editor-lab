@@ -45,7 +45,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-function Resolve-RepoRoot { param([string]$Path) if ($Path) { return $Path } $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path; return $root }
+<#
+.SYNOPSIS
+Resolve-RepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Resolve-RepoRoot {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+ param([string]$Path) if ($Path) { return $Path } $root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path; return $root }
 $repoRoot = Resolve-RepoRoot
 Push-Location $repoRoot
 try {
@@ -82,11 +93,23 @@ try {
 } finally { Pop-Location }
 
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

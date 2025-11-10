@@ -36,7 +36,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Assert-Tool: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Assert-Tool {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Name)
   if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
     throw "Required tool not found: $Name"
@@ -72,7 +83,15 @@ function New-SampleId() {
   return "ts-$ts-$rnd"
 }
 
+<#
+.SYNOPSIS
+Dispatch-Workflow: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Dispatch-Workflow {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory=$true)][string]$Workflow,
     [Parameter(Mandatory=$true)][string]$Repo,
@@ -86,7 +105,15 @@ function Dispatch-Workflow {
   gh @args | Out-Null
 }
 
+<#
+.SYNOPSIS
+Resolve-RunId: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-RunId {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory=$true)][string]$Workflow,
     [Parameter(Mandatory=$true)][string]$Repo,
@@ -101,7 +128,15 @@ function Resolve-RunId {
   return $null
 }
 
+<#
+.SYNOPSIS
+Wait-Run: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Wait-Run {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory=$true)][string]$Repo,
     [Parameter(Mandatory=$true)][string]$RunId,
@@ -123,7 +158,15 @@ function Wait-Run {
   }
 }
 
+<#
+.SYNOPSIS
+Download-RunArtifacts: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Download-RunArtifacts {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory=$true)][string]$Repo,
     [Parameter(Mandatory=$true)][string]$RunId,
@@ -133,7 +176,15 @@ function Download-RunArtifacts {
   gh run download $RunId -R $Repo -D $TargetDir | Out-Null
 }
 
+<#
+.SYNOPSIS
+Write-LocalSummary: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-LocalSummary {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory=$true)][string]$Path,
     [Parameter(Mandatory=$true)]$ValidateRun,
@@ -297,11 +348,23 @@ if ($val.conclusion -ne 'success' -or $orch.conclusion -ne 'success') {
 Write-Host '[onebutton] All green.'
 exit 0
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

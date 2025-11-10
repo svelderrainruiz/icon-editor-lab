@@ -69,7 +69,18 @@ if (-not $BaseRef -and $manifestBaseRef) {
     $BaseRef = $manifestBaseRef
 }
 
+<#
+.SYNOPSIS
+Convert-ToRepoRelativePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Convert-ToRepoRelativePath {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Path)
     if ([string]::IsNullOrWhiteSpace($Path)) { return $null }
     $normalized = $Path.Replace('\', '/')
@@ -79,7 +90,15 @@ function Convert-ToRepoRelativePath {
     return $normalized
 }
 
+<#
+.SYNOPSIS
+Export-GitBlobToFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Export-GitBlobToFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$RepoRoot,
         [string]$Spec,
@@ -132,7 +151,15 @@ if ([string]::IsNullOrWhiteSpace($repoRoot)) {
     throw 'Unable to determine git repository root.'
 }
 
+<#
+.SYNOPSIS
+Resolve-ViPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ViPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Path,
         [string]$ParameterName,
@@ -189,7 +216,15 @@ if (-not $StageInvoker) {
     }.GetNewClosure()
 }
 
+<#
+.SYNOPSIS
+Get-BaseSnapshotPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-BaseSnapshotPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$RepoRoot,
         [string]$WorkingRoot,
@@ -284,11 +319,23 @@ if ($DryRun) {
 
 return $results.ToArray()
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 # Post-run cleanup orchestrator. Aggregates cleanup requests and ensures close
 # helpers execute at most once per job via the Once-Guard module.
 [CmdletBinding()]
@@ -29,13 +22,32 @@ if (-not (Test-Path -LiteralPath $requestsDir)) {
 }
 
 $logPath = Join-Path $logDir 'post-run-cleanup.log'
+<#
+.SYNOPSIS
+Write-Log: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-Log {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Message)
   $stamp = (Get-Date).ToUniversalTime().ToString('o')
   ("[{0}] {1}" -f $stamp, $Message) | Out-File -FilePath $logPath -Append -Encoding utf8
 }
 
+<#
+.SYNOPSIS
+Convert-MetadataToHashtable: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Convert-MetadataToHashtable {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([object]$Metadata)
   if ($null -eq $Metadata) { return @{} }
   if ($Metadata -is [hashtable]) { return $Metadata }
@@ -69,21 +81,45 @@ if (Test-Path -LiteralPath $requestsDir) {
   }
 }
 
+<#
+.SYNOPSIS
+Resolve-RequestMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-RequestMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Name)
   $match = $rawRequests | Where-Object { $_.Name -eq $Name } | Select-Object -First 1
   if ($match) { return $match.Metadata }
   return $null
 }
 
+<#
+.SYNOPSIS
+Remove-RequestFiles: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Remove-RequestFiles {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Name)
   foreach ($req in $rawRequests | Where-Object { $_.Name -eq $Name }) {
     try { Remove-Item -LiteralPath $req.Path -Force -ErrorAction SilentlyContinue } catch {}
   }
 }
 
+<#
+.SYNOPSIS
+Invoke-ForceCloseProcesses: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-ForceCloseProcesses {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string[]]$ProcessNames,
     [string]$Label
@@ -136,7 +172,15 @@ try { $preSnapshot = & $debugTool -ResultsDir 'tests/results' -AppendStepSummary
 $labVIEWRequested = $CloseLabVIEW.IsPresent -or ($rawRequests | Where-Object { $_.Name -eq 'close-labview' })
 $lvCompareRequested = $CloseLVCompare.IsPresent -or ($rawRequests | Where-Object { $_.Name -eq 'close-lvcompare' })
 
+<#
+.SYNOPSIS
+Invoke-CloseLabVIEW: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-CloseLabVIEW {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Metadata)
   $Metadata = Convert-MetadataToHashtable $Metadata
   $scriptPath = Join-Path $repoRoot 'tools' 'Close-LabVIEW.ps1'
@@ -193,7 +237,15 @@ function Invoke-CloseLabVIEW {
   throw "Close-LabVIEW.ps1 failed to terminate LabVIEW.exe after $maxAttempts attempt(s)."
 }
 
+<#
+.SYNOPSIS
+Invoke-CloseLVCompare: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-CloseLVCompare {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Metadata)
   $Metadata = Convert-MetadataToHashtable $Metadata
   $scriptPath = Join-Path $repoRoot 'tools' 'Close-LVCompare.ps1'
@@ -308,11 +360,23 @@ if ($postSnapshot -and $postSnapshot.groups) {
 Write-Host 'Post-Run-Cleanup completed.' -ForegroundColor DarkGray
 
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -112,7 +112,18 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+<#
+.SYNOPSIS
+Resolve-ReportFormatInfo: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ReportFormatInfo {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Format)
 
   $normalized = if ([string]::IsNullOrWhiteSpace($Format)) { 'html' } else { $Format.Trim().ToLowerInvariant() }
@@ -190,7 +201,15 @@ if (Test-Path -LiteralPath $labviewPidTrackerModule -PathType Leaf) {
   }
 }
 
+<#
+.SYNOPSIS
+Initialize-LabVIEWPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Initialize-LabVIEWPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $script:labviewPidTrackerLoaded -or $script:labviewPidTrackerState) { return }
   $script:labviewPidTrackerPath = Join-Path $OutputDir '_agent' 'labview-pid.json'
   try {
@@ -207,7 +226,15 @@ function Initialize-LabVIEWPidTracker {
   }
 }
 
+<#
+.SYNOPSIS
+Finalize-LabVIEWPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Finalize-LabVIEWPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Status,
     [Nullable[int]]$ExitCode,
@@ -256,7 +283,15 @@ function Finalize-LabVIEWPidTracker {
   }
 }
 
+<#
+.SYNOPSIS
+Set-DefaultLabVIEWCliPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Set-DefaultLabVIEWCliPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([switch]$ThrowOnMissing)
 
   $resolver = Get-Command -Name 'Resolve-LabVIEWCliPath' -ErrorAction SilentlyContinue
@@ -299,7 +334,15 @@ function Set-DefaultLabVIEWCliPath {
   return $cliPath
 }
 
+<#
+.SYNOPSIS
+Write-JsonEvent: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-JsonEvent {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Type,[hashtable]$Data)
   if (-not $JsonLogPath) { return }
   try {
@@ -325,11 +368,27 @@ function Get-FileProductVersion([string]$Path) {
   } catch { return $null }
 }
 
+<#
+.SYNOPSIS
+Get-SourceControlBootstrapHint: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-SourceControlBootstrapHint {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   return 'Likely cause: LabVIEW Source Control bootstrap dialog (Error 1025/0x401 in NI_SCC_ConnSrv.lvlib:SCC_ConnSrv RunSCCConnSrv.vi -> SCC_Provider_Startup.vi.ProxyCaller). When LabVIEW starts headless it still loads the configured source control provider; if that provider cannot connect, LabVIEW shows a modal "Source Control" window and blocks LVCompare. Dismiss the dialog or disable Source Control via Tools > Source Control on the runner.'
 }
 
+<#
+.SYNOPSIS
+Get-CliReportFileExtension: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CliReportFileExtension {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$MimeType)
   if (-not $MimeType) { return 'bin' }
   switch -Regex ($MimeType) {
@@ -341,7 +400,15 @@ function Get-CliReportFileExtension {
   }
 }
 
+<#
+.SYNOPSIS
+Get-CliReportArtifacts: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CliReportArtifacts {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$ReportPath,
     [Parameter(Mandatory)][string]$OutputDir
@@ -439,7 +506,15 @@ function Get-CliReportArtifacts {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWCliOutputMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWCliOutputMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$StdOut,
     [string]$StdErr
@@ -479,7 +554,15 @@ function Get-LabVIEWCliOutputMetadata {
   return $null
 }
 
+<#
+.SYNOPSIS
+Invoke-LabVIEWCLICompare: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LabVIEWCLICompare {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Base,
     [Parameter(Mandatory)][string]$Head,
@@ -923,7 +1006,15 @@ $trackerStatus = switch ($exitCode) {
 }
 Finalize-LabVIEWPidTracker -Status $trackerStatus -ExitCode $exitCode -CompareExitCode $exitCode -ProcessExitCode $exitCode -Command $cap.command -CapturePath $capPath -ReportGenerated $reportExists -DiffDetected ($exitCode -eq 1) -Mode $mode -Policy $policy -AutoCli $autoCli -DidCli $didCli
 
+<#
+.SYNOPSIS
+Stop-LeakedLabVIEW: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Stop-LeakedLabVIEW {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$LabVIEWExePath,
     [string]$Context
@@ -991,7 +1082,15 @@ function Stop-LeakedLabVIEW {
   return $closeSucceeded
 }
 
+<#
+.SYNOPSIS
+Get-LeakProcessMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LeakProcessMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([int[]]$ProcessIds)
   $details = @()
   foreach ($processId in $ProcessIds) {
@@ -1100,11 +1199,23 @@ exit $exitCode
   }
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

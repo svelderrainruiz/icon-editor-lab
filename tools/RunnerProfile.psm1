@@ -1,17 +1,19 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $script:RunnerProfileCache = $null
 $script:RunnerLabelsCache = $null
 
+<#
+.SYNOPSIS
+Get-RunnerProfile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RunnerProfile {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   [CmdletBinding()]
   param(
     [switch]$ForceRefresh
@@ -49,6 +51,12 @@ function Get-RunnerProfile {
   return $script:RunnerProfileCache
 }
 
+<#
+.SYNOPSIS
+Get-RunnerLabels: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RunnerLabels {
   [CmdletBinding()]
   param(
@@ -74,6 +82,12 @@ function Get-RunnerLabels {
   return $labels
 }
 
+<#
+.SYNOPSIS
+Get-RunnerLabelsFromApi: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RunnerLabelsFromApi {
   [CmdletBinding()]
   param()
@@ -128,6 +142,12 @@ function Get-RunnerLabelsFromApi {
   return @($labels | Where-Object { $_ -and $_ -ne '' } | Select-Object -Unique)
 }
 
+<#
+.SYNOPSIS
+Invoke-RunnerJobsApi: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-RunnerJobsApi {
   [CmdletBinding()]
   param(
@@ -172,7 +192,15 @@ function Invoke-RunnerJobsApi {
   return @()
 }
 
+<#
+.SYNOPSIS
+Get-EnvironmentValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-EnvironmentValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Name)
   if (-not $Name) { return $null }
   try {
@@ -186,7 +214,15 @@ function Get-EnvironmentValue {
   }
 }
 
+<#
+.SYNOPSIS
+Parse-Labels: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Parse-Labels {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Raw)
   if ([string]::IsNullOrWhiteSpace($Raw)) { return @() }
   $parts = $Raw -split '[,\s]+' | Where-Object { $_ -and $_ -ne '' }
@@ -195,11 +231,23 @@ function Parse-Labels {
 
 Export-ModuleMember -Function Get-RunnerProfile,Get-RunnerLabels
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

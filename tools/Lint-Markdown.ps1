@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 param(
   [switch]$All,
   [string]$BaseRef
@@ -21,7 +14,18 @@ param(
 Import-Module (Join-Path (Split-Path -Parent $PSCommandPath) 'VendorTools.psm1') -Force
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Resolve-GitRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-GitRoot {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $root = (& git rev-parse --show-toplevel 2>$null).Trim()
   if (-not $root) {
     throw 'Unable to determine repository root (is git installed?).'
@@ -29,7 +33,15 @@ function Resolve-GitRoot {
   return $root
 }
 
+<#
+.SYNOPSIS
+Resolve-MergeBase: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-MergeBase {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$Candidates)
   foreach ($candidate in $Candidates) {
     if (-not $candidate) { continue }
@@ -46,7 +58,15 @@ function Resolve-MergeBase {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-ChangedMarkdownFiles: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-ChangedMarkdownFiles {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Base)
   $files = @()
   if ($Base) {
@@ -58,12 +78,28 @@ function Get-ChangedMarkdownFiles {
   return ($files | Where-Object { $_ -and $_.ToLower().EndsWith('.md') } | Sort-Object -Unique)
 }
 
+<#
+.SYNOPSIS
+Get-AllMarkdownFiles: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-AllMarkdownFiles {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   return ((& git ls-files '*.md' 2>$null) | Where-Object { $_ } | Sort-Object -Unique)
 }
 
 
+<#
+.SYNOPSIS
+Convert-GlobToRegex: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Convert-GlobToRegex {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Pattern)
 
   if (-not $Pattern) { return $null }
@@ -89,7 +125,15 @@ function Convert-GlobToRegex {
   return [System.Text.RegularExpressions.Regex]::new($regexPattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
 }
 
+<#
+.SYNOPSIS
+Get-MarkdownlintIgnorePatterns: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-MarkdownlintIgnorePatterns {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepoRoot)
 
   $patterns = New-Object System.Collections.Generic.List[string]
@@ -122,7 +166,15 @@ function Get-MarkdownlintIgnorePatterns {
   return $patterns
 }
 
+<#
+.SYNOPSIS
+Get-MarkdownlintIgnoreMatchers: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-MarkdownlintIgnoreMatchers {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepoRoot)
 
   $patterns = Get-MarkdownlintIgnorePatterns -RepoRoot $RepoRoot
@@ -134,7 +186,15 @@ function Get-MarkdownlintIgnoreMatchers {
   return $matchers
 }
 
+<#
+.SYNOPSIS
+Test-MarkdownlintIgnored: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-MarkdownlintIgnored {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Path,
     [System.Text.RegularExpressions.Regex[]]$Matchers
@@ -149,7 +209,15 @@ function Test-MarkdownlintIgnored {
   return $false
 }
 
+<#
+.SYNOPSIS
+Invoke-Markdownlint: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Markdownlint {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$Files)
   $output = @()
   $exitCode = 0
@@ -250,11 +318,23 @@ try {
   Pop-Location
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

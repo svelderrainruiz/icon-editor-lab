@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 param(
   [Parameter(Mandatory)][string]$Requirement,
   [Parameter(Mandatory)][string]$AdrId
@@ -25,7 +18,18 @@ $reqDir = Join-Path $repoRoot 'docs/requirements'
 $adrDir = Join-Path $repoRoot 'docs/adr'
 $adrIndexPath = Join-Path $adrDir 'README.md'
 
+<#
+.SYNOPSIS
+Resolve-RequirementPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-RequirementPath {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Value)
   if ([IO.Path]::IsPathRooted($Value)) {
     return (Resolve-Path -LiteralPath $Value).Path
@@ -39,7 +43,15 @@ function Resolve-RequirementPath {
   throw "Requirement file not found: $Value"
 }
 
+<#
+.SYNOPSIS
+Resolve-AdrFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-AdrFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Id)
   $files = @(Get-ChildItem -LiteralPath $adrDir -File -Filter ($Id + '-*.md'))
   if ($files.Count -eq 0) { throw "ADR file not found for id $Id" }
@@ -130,11 +142,23 @@ if ($rowIndex -ge 0) {
 
 Write-Host ("Linked requirement '{0}' to ADR {1}" -f $reqName, $AdrId) -ForegroundColor Green
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

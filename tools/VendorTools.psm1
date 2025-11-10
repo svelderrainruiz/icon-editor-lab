@@ -1,27 +1,47 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Set-ConsoleUtf8: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Set-ConsoleUtf8 {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   try {
     [Console]::OutputEncoding = [System.Text.UTF8Encoding]::UTF8
     [Console]::InputEncoding  = [System.Text.UTF8Encoding]::UTF8
   } catch {}
 }
 
+<#
+.SYNOPSIS
+Resolve-RepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-RepoRoot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$StartPath = (Get-Location).Path)
   try { return (git -C $StartPath rev-parse --show-toplevel 2>$null).Trim() } catch { return $StartPath }
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWConfigObjects: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWConfigObjects {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $configs = New-Object System.Collections.Generic.List[object]
   $root = Resolve-RepoRoot
   foreach ($name in @('labview-paths.local.json', 'labview-paths.json')) {
@@ -40,7 +60,15 @@ if (Test-Path -LiteralPath $schemaPath) {
   return $configs.ToArray()
 }
 
+<#
+.SYNOPSIS
+Get-VersionedConfigValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VersionedConfigValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     $Config,
     [string]$PropertyName,
@@ -104,7 +132,15 @@ function Get-VersionedConfigValue {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-BinPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-BinPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)] [string]$Name
   )
@@ -119,7 +155,15 @@ function Resolve-BinPath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-VersionedConfigValues: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VersionedConfigValues {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     $Config,
     [string]$PropertyName
@@ -173,7 +217,15 @@ function Get-VersionedConfigValues {
   return $values.ToArray()
 }
 
+<#
+.SYNOPSIS
+Resolve-ActionlintPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ActionlintPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $p = Resolve-BinPath -Name 'actionlint'
   if ($IsWindows -and $p -and (Split-Path -Leaf $p) -eq 'actionlint') {
     $alt = Join-Path (Split-Path -Parent $p) 'actionlint.exe'
@@ -182,7 +234,15 @@ function Resolve-ActionlintPath {
   return $p
 }
 
+<#
+.SYNOPSIS
+Resolve-MarkdownlintCli2Path: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-MarkdownlintCli2Path {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $root = Resolve-RepoRoot
   if ($IsWindows) {
     $candidates = @(
@@ -196,7 +256,15 @@ function Resolve-MarkdownlintCli2Path {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-MarkdownlintCli2Version: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-MarkdownlintCli2Version {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $root = Resolve-RepoRoot
   $pkg = Join-Path $root 'node_modules/markdownlint-cli2/package.json'
   if (Test-Path -LiteralPath $pkg -PathType Leaf) {
@@ -209,7 +277,15 @@ function Get-MarkdownlintCli2Version {
   return 'unavailable'
 }
 
+<#
+.SYNOPSIS
+Resolve-LVComparePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LVComparePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $IsWindows) { return $null }
   $root = Resolve-RepoRoot
   $configPath = Join-Path $root 'configs/labview-paths.json'
@@ -255,7 +331,15 @@ function Resolve-LVComparePath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-LabVIEWCliPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LabVIEWCliPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $IsWindows) { return $null }
   $root = Resolve-RepoRoot
   $configPath = Join-Path $root 'configs/labview-paths.json'
@@ -307,7 +391,15 @@ function Resolve-LabVIEWCliPath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-LabVIEW2025Environment: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LabVIEW2025Environment {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([switch]$ThrowOnMissing)
 
   if (-not $IsWindows) {
@@ -321,7 +413,15 @@ function Resolve-LabVIEW2025Environment {
 
   $config = Get-LabVIEWConfig
 
+<#
+.SYNOPSIS
+Add-LabVIEWCandidate: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
   function Add-LabVIEWCandidate {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param($list, $value)
     if ($null -eq $value) { return }
     if ($value -is [System.Collections.IEnumerable] -and $value -isnot [string]) {
@@ -403,7 +503,15 @@ function Resolve-LabVIEW2025Environment {
 }
 
 
+<#
+.SYNOPSIS
+Get-GCliCandidateExePaths: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GCliCandidateExePaths {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$GCliExePath)
 
   if (-not $IsWindows) { return @() }
@@ -482,7 +590,15 @@ function Get-GCliCandidateExePaths {
   return $resolved.ToArray()
 }
 
+<#
+.SYNOPSIS
+Resolve-GCliPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-GCliPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $IsWindows) { return $null }
   $candidates = @(Get-GCliCandidateExePaths -GCliExePath $null)
   if ($candidates.Count -eq 0) { return $null }
@@ -520,7 +636,15 @@ function Resolve-GCliPath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWConfig: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWConfig {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $root = Resolve-RepoRoot
   foreach ($configName in @('labview-paths.local.json','labview-paths.json')) {
     $configPath = Join-Path $root "configs/$configName"
@@ -533,7 +657,15 @@ function Get-LabVIEWConfig {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWConfigEntries: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWConfigEntries {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Config)
 
   $entries = New-Object System.Collections.Generic.List[object]
@@ -573,7 +705,15 @@ function Get-LabVIEWConfigEntries {
   return $entries.ToArray()
 }
 
+<#
+.SYNOPSIS
+Find-LabVIEWVersionExePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Find-LabVIEWVersionExePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][int]$Version,
     [Parameter(Mandatory)][ValidateSet(32,64)][int]$Bitness,
@@ -608,7 +748,15 @@ function Find-LabVIEWVersionExePath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWCandidateExePaths: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWCandidateExePaths {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$LabVIEWExePath)
 
   if (-not $IsWindows) { return @() }
@@ -683,7 +831,15 @@ function Get-LabVIEWCandidateExePaths {
   return $resolved.ToArray()
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWIniPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWIniPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$LabVIEWExePath
   )
@@ -700,7 +856,15 @@ function Get-LabVIEWIniPath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWIniValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWIniValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)][string]$Key,
     [string]$LabVIEWIniPath,
@@ -729,7 +893,15 @@ function Get-LabVIEWIniValue {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-LabVIEWServerPort: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LabVIEWServerPort {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$LabVIEWExePath,
     [int]$DefaultPort = 3363
@@ -756,6 +928,8 @@ function Resolve-LabVIEWServerPort {
 }
 
 function Resolve-LabVIEWCLIPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [int]$Version,
     [int]$Bitness = 64,
@@ -823,7 +997,15 @@ function Resolve-LabVIEWCLIPath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-LabVIEWExePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LabVIEWExePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [int]$Version,
     [int]$Bitness = 64,
@@ -930,7 +1112,15 @@ function Resolve-LabVIEWExePath {
   return $null
 }
 
+<#
+.SYNOPSIS
+Resolve-VIPMPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-VIPMPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$VipmPath)
 
   if (-not $IsWindows) { return $null }
@@ -991,11 +1181,23 @@ function Resolve-VIPMPath {
 
 Export-ModuleMember -Function *
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

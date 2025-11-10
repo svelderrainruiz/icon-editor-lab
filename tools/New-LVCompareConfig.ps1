@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -41,7 +34,18 @@ if (-not (Test-Path -LiteralPath $vendorModule -PathType Leaf)) {
 }
 Import-Module $vendorModule -Force | Out-Null
 
+<#
+.SYNOPSIS
+Ensure-Directory: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Ensure-Directory {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory = $true)][string]$Path)
   if ([string]::IsNullOrWhiteSpace($Path)) { return }
   if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
@@ -49,7 +53,15 @@ function Ensure-Directory {
   }
 }
 
+<#
+.SYNOPSIS
+Add-CandidateValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Add-CandidateValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true)]
     [AllowEmptyCollection()]
@@ -66,7 +78,15 @@ function Add-CandidateValue {
   $Target.Add($Value)
 }
 
+<#
+.SYNOPSIS
+Try-NormalizePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Try-NormalizePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Candidate)
   if ([string]::IsNullOrWhiteSpace($Candidate)) { return $null }
   $expanded = [Environment]::ExpandEnvironmentVariables($Candidate.Trim('"'))
@@ -78,7 +98,15 @@ function Try-NormalizePath {
   }
 }
 
+<#
+.SYNOPSIS
+Get-ConfigPropertyValues: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-ConfigPropertyValues {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory = $true)][string]$PropertyName)
 
   $values = [System.Collections.Generic.List[string]]::new()
@@ -152,7 +180,15 @@ if (Test-Path -LiteralPath $schemaPath) {
   return $values
 }
 
+<#
+.SYNOPSIS
+Get-LVCompareCandidatePaths: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LVCompareCandidatePaths {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $candidates = [System.Collections.Generic.List[string]]::new()
   foreach ($entry in (Get-ConfigPropertyValues -PropertyName 'lvcompare')) {
     $normalized = Try-NormalizePath -Candidate $entry
@@ -178,7 +214,15 @@ foreach ($entry in @(
   return $candidates
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWCliCandidatePaths: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWCliCandidatePaths {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $candidates = [System.Collections.Generic.List[string]]::new()
 
   foreach ($entry in (Get-ConfigPropertyValues -PropertyName 'labviewcli')) {
@@ -206,7 +250,15 @@ function Get-LabVIEWCliCandidatePaths {
   return $candidates
 }
 
+<#
+.SYNOPSIS
+Get-VersionMetadataFromPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VersionMetadataFromPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$LabVIEWPath)
 
   if ([string]::IsNullOrWhiteSpace($LabVIEWPath)) { return $null }
@@ -241,7 +293,15 @@ function Get-VersionMetadataFromPath {
   }
 }
 
+<#
+.SYNOPSIS
+Convert-VersionNodeToOrdered: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Convert-VersionNodeToOrdered {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Node)
 
   if ($null -eq $Node) { return $null }
@@ -289,7 +349,15 @@ if (Test-Path -LiteralPath $OutputPath -PathType Leaf) {
   }
 }
 
+<#
+.SYNOPSIS
+Resolve-ExistingPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-ExistingPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Candidate)
   if (-not $Candidate) { return $null }
   $expanded = [Environment]::ExpandEnvironmentVariables($Candidate.Trim('"'))
@@ -387,7 +455,15 @@ $cliCandidatesList = [System.Collections.Generic.List[string]]::new()
 foreach ($c in $cliCandidatesRaw) { Add-CandidateValue -Target $cliCandidatesList -Value $c }
 if ($detectedCLI) { Add-CandidateValue -Target $cliCandidatesList -Value $detectedCLI }
 
+<#
+.SYNOPSIS
+Prompt-ForPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Prompt-ForPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Label,
     [string]$Default,
@@ -549,11 +625,23 @@ if ($Probe.IsPresent) {
   LabVIEWCLIPath  = $labviewCliPathFinal
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

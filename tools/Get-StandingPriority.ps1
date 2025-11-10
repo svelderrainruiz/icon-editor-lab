@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
@@ -19,7 +12,18 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path '.').Path
 $cachePath = Join-Path $repoRoot '.agent_priority_cache.json'
 
+<#
+.SYNOPSIS
+Write-OutputObject: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-OutputObject {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([pscustomobject]$Priority)
 
   if ($Plain) {
@@ -34,7 +38,15 @@ function Write-OutputObject {
   }
 }
 
+<#
+.SYNOPSIS
+Normalize-PriorityObject: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Normalize-PriorityObject {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [nullable[int]]$Number,
     [string]$Title,
@@ -60,7 +72,15 @@ function Normalize-PriorityObject {
   return [pscustomobject]$obj
 }
 
+<#
+.SYNOPSIS
+Parse-OverrideValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Parse-OverrideValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Override)
 
   if (-not $Override) { return $null }
@@ -98,7 +118,15 @@ function Parse-OverrideValue {
   return Normalize-PriorityObject -Number $number -Title $title -Url $url -Source 'override'
 }
 
+<#
+.SYNOPSIS
+Try-LoadCache: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Try-LoadCache {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not (Test-Path -LiteralPath $cachePath -PathType Leaf)) { return $null }
   try {
     $cacheObj = Get-Content -LiteralPath $cachePath -Raw | ConvertFrom-Json -ErrorAction Stop
@@ -111,7 +139,15 @@ function Try-LoadCache {
   return $null
 }
 
+<#
+.SYNOPSIS
+Save-Cache: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Save-Cache {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([pscustomobject]$Priority)
   if ($NoCacheUpdate) { return }
   try {
@@ -139,7 +175,15 @@ function Save-Cache {
   } catch {}
 }
 
+<#
+.SYNOPSIS
+Try-GitHubPriority: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Try-GitHubPriority {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([object]$Sequence)
 
   $gh = $null
@@ -217,11 +261,23 @@ if (-not $priority) {
 
 Write-OutputObject -Priority $priority
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

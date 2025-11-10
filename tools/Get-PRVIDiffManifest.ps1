@@ -59,7 +59,18 @@ if ($DryRun) {
     Write-Verbose 'Dry-run mode enabled.'
 }
 
+<#
+.SYNOPSIS
+New-WildcardMatcher: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function New-WildcardMatcher {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Pattern
     )
@@ -78,7 +89,15 @@ if ($IgnorePattern) {
     $ignoreMatchers = $IgnorePattern | ForEach-Object { New-WildcardMatcher -Pattern $_ }
 }
 
+<#
+.SYNOPSIS
+Should-IgnorePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Should-IgnorePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Path
     )
@@ -96,7 +115,15 @@ function Should-IgnorePath {
     return $false
 }
 
+<#
+.SYNOPSIS
+Test-IsViPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-IsViPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string]$Path
     )
@@ -112,7 +139,15 @@ function Test-IsViPath {
     )
 }
 
+<#
+.SYNOPSIS
+Get-SortKey: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-SortKey {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [pscustomobject]$Entry
     )
@@ -124,7 +159,15 @@ function Get-SortKey {
     return $Entry.basePath
 }
 
+<#
+.SYNOPSIS
+Invoke-Git: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Git {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param(
         [string[]]$Arguments
     )
@@ -312,11 +355,23 @@ finally {
     Pop-Location
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

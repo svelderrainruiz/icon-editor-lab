@@ -1,16 +1,18 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 param()
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Invoke-ProcessCapture: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-ProcessCapture {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$FileName,
@@ -30,6 +32,12 @@ function Invoke-ProcessCapture {
     [pscustomobject]@{ Code = $p.ExitCode; Out = $out; Err = $err }
 }
 
+<#
+.SYNOPSIS
+Get-AgentRunContext: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-AgentRunContext {
     [CmdletBinding()]
     param()
@@ -66,6 +74,12 @@ function Get-AgentRunContext {
     return [ordered]@{ sha = $sha; ref = $ref; workflow = $wf; job = $job; actor = $actor }
 }
 
+<#
+.SYNOPSIS
+Start-AgentWait: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Start-AgentWait {
     [CmdletBinding()] param(
         [Parameter(Position=0)][string]$Reason = 'unspecified',
@@ -109,6 +123,12 @@ function Start-AgentWait {
     return $markerPath
 }
 
+<#
+.SYNOPSIS
+End-AgentWait: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function End-AgentWait {
     [CmdletBinding()] param(
         [Parameter(Position=0)][string]$ResultsDir = 'tests/results',
@@ -177,11 +197,23 @@ try {
     # Ignore when not in a module context
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

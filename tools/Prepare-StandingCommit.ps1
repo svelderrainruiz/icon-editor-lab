@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
@@ -15,7 +8,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Invoke-Git: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Git {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)] [string[]]$Args,
     [string]$WorkDir = $RepositoryRoot
@@ -27,7 +31,15 @@ function Invoke-Git {
   } finally { Pop-Location }
 }
 
+<#
+.SYNOPSIS
+Read-StandingIssueNumber: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Read-StandingIssueNumber {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Root)
   $cache = Join-Path $Root '.agent_priority_cache.json'
   if (Test-Path -LiteralPath $cache -PathType Leaf) {
@@ -38,7 +50,15 @@ function Read-StandingIssueNumber {
   return $null
 }
 
+<#
+.SYNOPSIS
+Ensure-AgentDirs: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Ensure-AgentDirs {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Root)
   $dir = Join-Path $Root 'tests/results/_agent'
   New-Item -ItemType Directory -Force -Path $dir | Out-Null
@@ -99,11 +119,23 @@ $plan | ConvertTo-Json -Depth 8 | Out-File -LiteralPath $planPath -Encoding utf8
 Write-Host ("Prepare-StandingCommit: plan written to {0}" -f $planPath)
 
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

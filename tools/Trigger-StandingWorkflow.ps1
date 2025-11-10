@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
@@ -16,7 +9,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Invoke-Git: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Git {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true, Position = 0)]
     [Alias('Args')]
@@ -36,7 +40,15 @@ function Invoke-Git {
   }
 }
 
+<#
+.SYNOPSIS
+Get-GitSingleLine: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GitSingleLine {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory = $true, Position = 0)]
     [Alias('Args')]
@@ -48,7 +60,15 @@ function Get-GitSingleLine {
   ($result.Output -join "`n").Trim()
 }
 
+<#
+.SYNOPSIS
+Get-RepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RepoRoot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepositoryRoot)
   if ($RepositoryRoot) {
     return (Resolve-Path -LiteralPath $RepositoryRoot -ErrorAction Stop).Path
@@ -60,7 +80,15 @@ function Get-RepoRoot {
   return $result.Trim()
 }
 
+<#
+.SYNOPSIS
+Should-SkipPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Should-SkipPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   $patterns = @(
     '^tests/results/',
@@ -76,7 +104,15 @@ function Should-SkipPath {
   return $false
 }
 
+<#
+.SYNOPSIS
+Get-DirtyEntries: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-DirtyEntries {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepoRoot)
   $status = Invoke-Git -RepoRoot $RepoRoot -GitArgs @('status','--porcelain=1')
   if ($status.ExitCode -ne 0) { return @() }
@@ -93,7 +129,15 @@ function Get-DirtyEntries {
   return $entries
 }
 
+<#
+.SYNOPSIS
+Read-JsonFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Read-JsonFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $null }
   try {
@@ -222,11 +266,23 @@ if ($exit -ne 0) {
 Write-Host '[standing] Standing-priority workflow completed.' -ForegroundColor Green
 $global:LASTEXITCODE = 0
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

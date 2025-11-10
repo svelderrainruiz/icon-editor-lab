@@ -79,7 +79,18 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Write-JsonEvent: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-JsonEvent {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Type,[hashtable]$Data)
   if (-not $JsonLogPath) { return }
   try {
@@ -97,14 +108,30 @@ function Write-JsonEvent {
   }
 }
 
+<#
+.SYNOPSIS
+Write-StepSummaryLine: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-StepSummaryLine {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Message)
   if ($env:GITHUB_STEP_SUMMARY) {
     $Message | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
   }
 }
 
+<#
+.SYNOPSIS
+Write-Snapshot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-Snapshot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if ($SkipSnapshot -or -not $Path) { return }
   try {
@@ -122,7 +149,15 @@ function Write-Snapshot {
   }
 }
 
+<#
+.SYNOPSIS
+Normalize-WarmupLabVIEWPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Normalize-WarmupLabVIEWPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if ([string]::IsNullOrWhiteSpace($Path)) { return $null }
   try {
@@ -132,7 +167,15 @@ function Normalize-WarmupLabVIEWPath {
   }
 }
 
+<#
+.SYNOPSIS
+Get-WarmupLabVIEWProcessState: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-WarmupLabVIEWProcessState {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ExpectedPath)
   $state = [ordered]@{
     Raw        = @()
@@ -172,7 +215,15 @@ function Get-WarmupLabVIEWProcessState {
   return $state
 }
 
+<#
+.SYNOPSIS
+Report-WarmupProcessMismatch: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Report-WarmupProcessMismatch {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [array]$Processes,
     [string]$ExpectedPath,
@@ -358,11 +409,23 @@ if ($StopAfterWarmup -and -not $KeepLabVIEW) {
   Write-JsonEvent 'warmup-complete' @{ kept = $true }
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

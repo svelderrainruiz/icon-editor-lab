@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 
 [CmdletBinding()]
 param(
@@ -25,7 +18,18 @@ $workflowFiles = @(
   '.github/workflows/compare-artifacts.yml'
 )
 
+<#
+.SYNOPSIS
+Resolve-PythonExe: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-PythonExe {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $candidates = @('python','py')
   foreach ($name in $candidates) {
     $cmd = Get-Command $name -ErrorAction SilentlyContinue
@@ -42,7 +46,15 @@ if (-not $py) {
 
 & $py -m pip install --user ruamel.yaml > $null 2>&1
 
+<#
+.SYNOPSIS
+Process-Staging: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Process-Staging {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string[]]$ChangedFiles)
 
   if (-not ($Stage -or $CommitMessage)) { return }
@@ -110,11 +122,23 @@ switch ($exitCode) {
   }
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

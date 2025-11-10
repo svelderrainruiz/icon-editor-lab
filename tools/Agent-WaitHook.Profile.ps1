@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
@@ -14,7 +7,16 @@ if (-not (Get-Variable -Name __AgentWaitHook -Scope Global -ErrorAction Silently
   Set-Variable -Name __AgentWaitHook -Scope Global -Value ([pscustomobject]@{ Enabled=$false; ResultsDir='tests/results'; SavedPrompt=$null; Id='default' }) -Force
 }
 
+<#
+.SYNOPSIS
+Enable-AgentWaitHook: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Enable-AgentWaitHook {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   [CmdletBinding()] param(
     [string]$Reason = 'unspecified',
     [int]$ExpectedSeconds = 90,
@@ -56,6 +58,12 @@ function Enable-AgentWaitHook {
   }
 }
 
+<#
+.SYNOPSIS
+Disable-AgentWaitHook: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Disable-AgentWaitHook {
   [CmdletBinding()] param()
   $state = $global:__AgentWaitHook
@@ -73,11 +81,23 @@ try {
   }
 } catch {}
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

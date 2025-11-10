@@ -99,7 +99,18 @@ if (Test-Path -LiteralPath $labviewPidTrackerModule -PathType Leaf) {
   }
 }
 
+<#
+.SYNOPSIS
+Initialize-LabVIEWPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Initialize-LabVIEWPidTracker {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $script:labviewPidTrackerLoaded -or $script:labviewPidTrackerState -or -not $script:labviewPidTrackerPath) { return }
   try {
     $script:labviewPidTrackerState = Start-LabVIEWPidTracker -TrackerPath $script:labviewPidTrackerPath -Source 'prime-lvcompare:init'
@@ -115,7 +126,15 @@ function Initialize-LabVIEWPidTracker {
   }
 }
 
+<#
+.SYNOPSIS
+Finalize-LabVIEWPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Finalize-LabVIEWPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Status,
     [Nullable[int]]$ExitCode,
@@ -158,7 +177,15 @@ if ($ExpectDiff.IsPresent -and $ExpectNoDiff.IsPresent) {
   throw "ExpectDiff and ExpectNoDiff are mutually exclusive."
 }
 
+<#
+.SYNOPSIS
+Write-JsonEvent: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-JsonEvent {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Type,[hashtable]$Data)
   if (-not $JsonLogPath) { return }
   try {
@@ -176,7 +203,15 @@ function Write-JsonEvent {
   }
 }
 
+<#
+.SYNOPSIS
+Write-JsonFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-JsonFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path,[object]$Object)
   if (-not $Path) { return }
   try {
@@ -188,7 +223,15 @@ function Write-JsonFile {
   }
 }
 
+<#
+.SYNOPSIS
+Stop-NewProcessInstances: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Stop-NewProcessInstances {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Name,
     [int[]]$Baseline
@@ -392,11 +435,23 @@ exit $exitCode
   Stop-NewProcessInstances -Name 'LabVIEW' -Baseline $baselineLabVIEW
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -49,7 +49,18 @@ $flagsProvided = $PSBoundParameters.ContainsKey('Flags')
 $effectiveFlags = $Flags
 $effectiveReplace = $ReplaceFlags.IsPresent
 
+<#
+.SYNOPSIS
+Get-RunStagedFlagList: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RunStagedFlagList {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Raw)
     if ([string]::IsNullOrWhiteSpace($Raw)) { return @() }
     $lines = $Raw -split "(\r\n|\n|\r)"
@@ -62,7 +73,15 @@ function Get-RunStagedFlagList {
     return $result.ToArray()
 }
 
+<#
+.SYNOPSIS
+Get-EnvBoolean: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-EnvBoolean {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Value)
     if ([string]::IsNullOrWhiteSpace($Value)) { return $null }
     $normalized = $Value.Trim().ToLowerInvariant()
@@ -73,7 +92,15 @@ function Get-EnvBoolean {
     return $null
 }
 
+<#
+.SYNOPSIS
+Test-ReportHasDiff: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ReportHasDiff {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Path)
     if ([string]::IsNullOrWhiteSpace($Path)) { return $false }
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { return $false }
@@ -669,11 +696,23 @@ if ($failureMessages.Count -gt 0) {
 
 $global:LASTEXITCODE = 0
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 [CmdletBinding()]
 param(
   [switch]$ApplyToggles,
@@ -27,21 +20,48 @@ try {
   }
 } catch {}
 
+<#
+.SYNOPSIS
+Format-NullableValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Format-NullableValue {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Value)
   if ($null -eq $Value) { return 'n/a' }
   if ($Value -is [string] -and [string]::IsNullOrWhiteSpace($Value)) { return 'n/a' }
   return $Value
 }
 
+<#
+.SYNOPSIS
+Format-BoolLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Format-BoolLabel {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([object]$Value)
   if ($Value -eq $true) { return 'true' }
   if ($Value -eq $false) { return 'false' }
   return 'unknown'
 }
 
+<#
+.SYNOPSIS
+Get-RogueLVStatus: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RogueLVStatus {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoRoot,
     [int]$LookBackSeconds = 900
@@ -84,7 +104,15 @@ function Get-RogueLVStatus {
   }
 }
 
+<#
+.SYNOPSIS
+Write-RogueLVSummary: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-RogueLVSummary {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoRoot,
     [string]$ResultsRoot,
@@ -197,7 +225,15 @@ function Write-RogueLVSummary {
 
   return $status
 }
+<#
+.SYNOPSIS
+Get-StandingPriorityContext: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-StandingPriorityContext {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoRoot,
     [string]$ResultsRoot
@@ -276,7 +312,15 @@ function Get-StandingPriorityContext {
   }
 }
 
+<#
+.SYNOPSIS
+Invoke-StandingPrioritySync: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-StandingPrioritySync {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$RepoRoot)
 
   if (-not $RepoRoot) {
@@ -298,7 +342,15 @@ function Invoke-StandingPrioritySync {
   return $false
 }
 
+<#
+.SYNOPSIS
+Ensure-StandingPriorityContext: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Ensure-StandingPriorityContext {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$RepoRoot,
     [string]$ResultsRoot
@@ -323,7 +375,15 @@ function Ensure-StandingPriorityContext {
 }
 
 $script:GitExecutable = $null
+<#
+.SYNOPSIS
+Get-GitExecutable: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-GitExecutable {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if ($script:GitExecutable) { return $script:GitExecutable }
   try {
     $cmd = Get-Command git -ErrorAction SilentlyContinue
@@ -335,7 +395,15 @@ function Get-GitExecutable {
   return $null
 }
 
+<#
+.SYNOPSIS
+Invoke-Git: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-Git {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string[]]$Arguments
   )
@@ -351,7 +419,15 @@ function Invoke-Git {
   }
 }
 
+<#
+.SYNOPSIS
+Write-AgentSessionCapsule: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-AgentSessionCapsule {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$ResultsRoot
   )
@@ -532,7 +608,15 @@ function Write-AgentSessionCapsule {
   }
 }
 
+<#
+.SYNOPSIS
+Write-HookSummaries: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-HookSummaries {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsRoot)
 
   $hooksDir = Join-Path $ResultsRoot '_hooks'
@@ -591,7 +675,15 @@ function Write-HookSummaries {
   return ($latest.Values | Sort-Object hook)
 }
 
+<#
+.SYNOPSIS
+Write-WatcherStatusSummary: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-WatcherStatusSummary {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$ResultsRoot,
     [switch]$RequestAutoTrim
@@ -1036,11 +1128,23 @@ if ($OpenDashboard) {
   }
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

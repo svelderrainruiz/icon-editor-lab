@@ -1,0 +1,26 @@
+name: tools-ci
+on:
+  push:
+    paths:
+      - 'tools/**'
+      - 'tests/tools/**'
+      - '.github/workflows/tools-ci.yml'
+  pull_request:
+    paths:
+      - 'tools/**'
+      - 'tests/tools/**'
+      - '.github/workflows/tools-ci.yml'
+jobs:
+  pester:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          pwsh-version: '7.4.x'
+      - name: Run Pester for tools/ with coverage gate
+        shell: pwsh
+        run: |
+          Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+          ./tools/Invoke-ToolsTests.ps1 -CoverageThreshold 75

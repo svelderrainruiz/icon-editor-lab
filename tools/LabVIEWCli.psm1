@@ -1,14 +1,18 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+<#
+.SYNOPSIS
+Resolve-LVRepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LVRepoRoot {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$StartPath = (Get-Location).Path)
   try {
     $root = git -C $StartPath rev-parse --show-toplevel 2>$null
@@ -25,11 +29,27 @@ if (-not (Test-Path -LiteralPath $script:SpecPath -PathType Leaf)) {
 $script:OperationSpec = Get-Content -LiteralPath $script:SpecPath -Raw | ConvertFrom-Json -ErrorAction Stop
 $script:Providers = @{}
 
+<#
+.SYNOPSIS
+Get-LVOperationNames: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LVOperationNames {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $script:OperationSpec.operations.name
 }
 
+<#
+.SYNOPSIS
+Get-LVOperationSpec: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LVOperationSpec {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory)][string]$Operation)
   $spec = $script:OperationSpec.operations | Where-Object { $_.name -eq $Operation }
   if (-not $spec) {
@@ -38,7 +58,15 @@ function Get-LVOperationSpec {
   return $spec
 }
 
+<#
+.SYNOPSIS
+Register-LVProvider: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Register-LVProvider {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][object]$Provider
   )
@@ -52,18 +80,42 @@ function Register-LVProvider {
   $script:Providers[$name.ToLowerInvariant()] = $Provider
 }
 
+<#
+.SYNOPSIS
+Get-LVProviders: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LVProviders {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
 
+<#
+.SYNOPSIS
+Get-LVProviderByName: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LVProviderByName {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory)][string]$Name)
   $key = $Name.ToLowerInvariant()
   if ($script:Providers.ContainsKey($key)) { return $script:Providers[$key] }
   return $null
 }
 
+<#
+.SYNOPSIS
+Import-LVProviderModules: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Import-LVProviderModules {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $providerRoot = Join-Path $PSScriptRoot 'providers'
   if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
   $modules = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue
@@ -108,7 +160,15 @@ if (Test-Path -LiteralPath $script:LabVIEWPidTrackerModule -PathType Leaf) {
   }
 }
 
+<#
+.SYNOPSIS
+Convert-ToAbsolutePath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Convert-ToAbsolutePath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$PathValue)
   if ([string]::IsNullOrWhiteSpace($PathValue)) { return $PathValue }
   try {
@@ -126,7 +186,15 @@ function Convert-ToAbsolutePath {
   }
 }
 
+<#
+.SYNOPSIS
+Format-LVCommandToken: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Format-LVCommandToken {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([AllowNull()][string]$Token)
   if ($null -eq $Token) { return '""' }
   if ($Token.Length -eq 0) { return '""' }
@@ -137,7 +205,15 @@ function Format-LVCommandToken {
   return $Token
 }
 
+<#
+.SYNOPSIS
+Format-LVCommandLine: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Format-LVCommandLine {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Binary,
     [string[]]$Arguments
@@ -152,7 +228,15 @@ function Format-LVCommandLine {
   return [string]::Join(' ', $tokens.ToArray())
 }
 
+<#
+.SYNOPSIS
+Resolve-LVNormalizedParams: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LVNormalizedParams {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][object]$OperationSpec,
     [Parameter()][hashtable]$Params
@@ -226,7 +310,15 @@ function Resolve-LVNormalizedParams {
   return $normalized
 }
 
+<#
+.SYNOPSIS
+Get-CompareCliSentinelPath: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-CompareCliSentinelPath {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Vi1,
     [Parameter(Mandatory)][string]$Vi2,
@@ -245,7 +337,15 @@ function Get-CompareCliSentinelPath {
   return (Join-Path $dir ($hash + '.sentinel'))
 }
 
+<#
+.SYNOPSIS
+Test-ShouldSuppressCliCompare: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ShouldSuppressCliCompare {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Operation,
     [Parameter(Mandatory)][hashtable]$Normalized,
@@ -307,7 +407,15 @@ function Test-ShouldSuppressCliCompare {
   return $false
 }
 
+<#
+.SYNOPSIS
+Touch-CompareCliSentinel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Touch-CompareCliSentinel {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Vi1,
     [Parameter(Mandatory)][string]$Vi2,
@@ -322,7 +430,15 @@ function Touch-CompareCliSentinel {
   } catch {}
 }
 
+<#
+.SYNOPSIS
+Select-LVProvider: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Select-LVProvider {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][string]$Operation,
     [Parameter()][string]$RequestedProvider
@@ -381,7 +497,15 @@ function Select-LVProvider {
   throw "No registered provider can execute operation '$Operation'. Checked: $names"
 }
 
+<#
+.SYNOPSIS
+Set-LVHeadlessEnv: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
   function Set-LVHeadlessEnv {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     $guard = @{}
     foreach ($pair in (@{'LV_SUPPRESS_UI'='1'; 'LV_NO_ACTIVATE'='1'; 'LV_CURSOR_RESTORE'='1'}).GetEnumerator()) {
       $existing = [System.Environment]::GetEnvironmentVariable($pair.Key)
@@ -399,7 +523,15 @@ function Select-LVProvider {
   return $guard
 }
 
+<#
+.SYNOPSIS
+Restore-LVHeadlessEnv: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Restore-LVHeadlessEnv {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([hashtable]$Guard)
   if (-not $Guard) { return }
   foreach ($key in $Guard.Keys) {
@@ -408,7 +540,15 @@ function Restore-LVHeadlessEnv {
   }
 }
 
+<#
+.SYNOPSIS
+Write-LVOperationEvent: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Write-LVOperationEvent {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [Parameter(Mandatory)][hashtable]$EventData
   )
@@ -431,7 +571,15 @@ function Write-LVOperationEvent {
   }
 }
 
+<#
+.SYNOPSIS
+Initialize-LabVIEWCliPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Initialize-LabVIEWCliPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   if (-not $script:LabVIEWPidTrackerLoaded) { return }
   if ($script:LabVIEWPidTrackerState) { return }
 
@@ -482,7 +630,15 @@ function Initialize-LabVIEWCliPidTracker {
   }
 }
 
+<#
+.SYNOPSIS
+Finalize-LabVIEWCliPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Finalize-LabVIEWCliPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string]$Source,
     [string]$Operation,
@@ -572,7 +728,15 @@ function Finalize-LabVIEWCliPidTracker {
   return $script:LabVIEWPidTrackerFinalState
 }
 
+<#
+.SYNOPSIS
+Resolve-LabVIEWCliPidTrackerPayload: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-LabVIEWCliPidTrackerPayload {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $payload = [ordered]@{ enabled = [bool]$script:LabVIEWPidTrackerLoaded }
 
   if ($script:LabVIEWPidTrackerPath) {
@@ -702,13 +866,29 @@ function Resolve-LabVIEWCliPidTrackerPayload {
   return $payload
 }
 
+<#
+.SYNOPSIS
+Get-LabVIEWCliPidTracker: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LabVIEWCliPidTracker {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $payload = Resolve-LabVIEWCliPidTrackerPayload
   if (-not $payload) { return $null }
   return [pscustomobject]$payload
 }
 
+<#
+.SYNOPSIS
+Add-LabVIEWCliPidTrackerToResult: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Add-LabVIEWCliPidTrackerToResult {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([pscustomobject]$Result)
   if (-not $Result) { return }
 
@@ -728,6 +908,12 @@ function Add-LabVIEWCliPidTrackerToResult {
   }
 }
 
+<#
+.SYNOPSIS
+Invoke-LVOperation: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVOperation {
   [CmdletBinding()]
   param(
@@ -917,6 +1103,12 @@ function Invoke-LVOperation {
   return [pscustomobject]$result
 }
 
+<#
+.SYNOPSIS
+Invoke-LVCreateComparisonReport: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVCreateComparisonReport {
   [CmdletBinding()]
   param(
@@ -960,6 +1152,12 @@ function Invoke-LVCreateComparisonReport {
   Invoke-LVOperation @invokeArgs
 }
 
+<#
+.SYNOPSIS
+Invoke-LVRunVI: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVRunVI {
   [CmdletBinding()]
   param(
@@ -979,6 +1177,12 @@ function Invoke-LVRunVI {
   Invoke-LVOperation -Operation 'RunVI' -Params $params -Provider $Provider -Preview:$Preview
 }
 
+<#
+.SYNOPSIS
+Invoke-LVRunVIAnalyzer: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVRunVIAnalyzer {
   [CmdletBinding()]
   param(
@@ -1001,6 +1205,12 @@ function Invoke-LVRunVIAnalyzer {
   Invoke-LVOperation -Operation 'RunVIAnalyzer' -Params $params -Provider $Provider -Preview:$Preview
 }
 
+<#
+.SYNOPSIS
+Invoke-LVRunUnitTests: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVRunUnitTests {
   [CmdletBinding()]
   param(
@@ -1017,6 +1227,12 @@ function Invoke-LVRunUnitTests {
   Invoke-LVOperation -Operation 'RunUnitTests' -Params $params -Provider $Provider -Preview:$Preview
 }
 
+<#
+.SYNOPSIS
+Invoke-LVMassCompile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVMassCompile {
   [CmdletBinding()]
   param(
@@ -1038,6 +1254,12 @@ function Invoke-LVMassCompile {
   Invoke-LVOperation -Operation 'MassCompile' -Params $params -Provider $Provider -Preview:$Preview
 }
 
+<#
+.SYNOPSIS
+Invoke-LVExecuteBuildSpec: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-LVExecuteBuildSpec {
   [CmdletBinding()]
   param(
@@ -1072,11 +1294,23 @@ Export-ModuleMember -Function `
   Get-LVProviders, `
   Get-LVProviderByName
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

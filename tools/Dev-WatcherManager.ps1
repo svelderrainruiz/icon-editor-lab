@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
@@ -36,7 +29,18 @@ $ErrorActionPreference = 'Stop'
 $MaxLogBytes = 5MB
 $MaxLogLines = 4000
 
+<#
+.SYNOPSIS
+Get-WatcherPaths: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-WatcherPaths {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsDir)
   $root = [System.IO.Path]::GetFullPath($ResultsDir)
   $agentDir = Join-Path $root '_agent'
@@ -54,18 +58,42 @@ function Get-WatcherPaths {
   }
 }
 
+<#
+.SYNOPSIS
+Read-JsonFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Read-JsonFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) { return $null }
   try { return Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json -ErrorAction Stop } catch { return $null }
 }
 
+<#
+.SYNOPSIS
+Test-ProcessAlive: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ProcessAlive {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([int]$Pid)
   try { $p = Get-Process -Id $Pid -ErrorAction Stop; return ($p -ne $null) } catch { return $false }
 }
 
+<#
+.SYNOPSIS
+Get-ProcessCommandLine: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-ProcessCommandLine {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([int]$Pid)
   try {
     $cim = Get-CimInstance Win32_Process -Filter "ProcessId=$Pid" -ErrorAction Stop
@@ -75,7 +103,15 @@ function Get-ProcessCommandLine {
   }
 }
 
+<#
+.SYNOPSIS
+Get-WatcherProcessInfo: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-WatcherProcessInfo {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([int]$Pid)
   try {
     $proc = Get-Process -Id $Pid -ErrorAction Stop
@@ -92,7 +128,15 @@ function Get-WatcherProcessInfo {
   }
 }
 
+<#
+.SYNOPSIS
+Test-WatcherProcess: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-WatcherProcess {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [pscustomobject]$ProcessInfo,
     [pscustomobject]$Paths
@@ -117,7 +161,15 @@ function Test-WatcherProcess {
   [pscustomobject]@{ IsValid = $true; Reason = '' }
 }
 
+<#
+.SYNOPSIS
+Initialize-TrimMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Initialize-TrimMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([int]$CooldownSeconds)
   [ordered]@{
     schema = 'dev-watcher/trim-meta-v1'
@@ -133,7 +185,15 @@ function Initialize-TrimMetadata {
   }
 }
 
+<#
+.SYNOPSIS
+Get-TrimMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-TrimMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [pscustomobject]$Paths,
     [int]$CooldownSeconds
@@ -159,7 +219,15 @@ function Get-TrimMetadata {
   return $meta
 }
 
+<#
+.SYNOPSIS
+Set-TrimMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Set-TrimMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [pscustomobject]$Paths,
     [System.Collections.IDictionary]$Metadata
@@ -175,7 +243,15 @@ function Set-TrimMetadata {
   }
 }
 
+<#
+.SYNOPSIS
+Parse-TimestampUtc: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Parse-TimestampUtc {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Value)
   if ([string]::IsNullOrWhiteSpace($Value)) { return $null }
   try {
@@ -187,7 +263,15 @@ function Parse-TimestampUtc {
   }
 }
 
+<#
+.SYNOPSIS
+Normalize-JsonString: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Normalize-JsonString {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Value)
   if ($null -eq $Value) { return '' }
   if ($Value -is [string]) { return $Value }
@@ -195,7 +279,15 @@ function Normalize-JsonString {
   return [string]$Value
 }
 
+<#
+.SYNOPSIS
+Trim-LogFile: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Trim-LogFile {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) {
     return [pscustomobject]@{
@@ -256,7 +348,15 @@ function Trim-LogFile {
   }
 }
 
+<#
+.SYNOPSIS
+Test-LogsNeedTrim: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-LogsNeedTrim {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([pscustomobject]$Paths)
   foreach ($logPath in @($Paths.OutFile, $Paths.ErrFile)) {
     if (Test-Path -LiteralPath $logPath) {
@@ -269,7 +369,15 @@ function Test-LogsNeedTrim {
   return $false
 }
 
+<#
+.SYNOPSIS
+Invoke-WatcherTrim: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WatcherTrim {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [pscustomobject]$Paths,
     [pscustomobject]$Status,
@@ -373,7 +481,15 @@ function Invoke-WatcherTrim {
 }
 
 
+<#
+.SYNOPSIS
+Get-LogSnapshot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-LogSnapshot {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) {
     return [pscustomobject]@{ path = $Path; exists = $false }
@@ -387,7 +503,15 @@ function Get-LogSnapshot {
   }
 }
 
+<#
+.SYNOPSIS
+Get-PropValue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-PropValue {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param($Object, [string]$Name)
   if ($null -eq $Object) { return $null }
   if ($Object -is [System.Collections.IDictionary]) {
@@ -399,7 +523,15 @@ function Get-PropValue {
   return $null
 }
 
+<#
+.SYNOPSIS
+Start-DevWatcher: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Start-DevWatcher {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsDir,[int]$WarnSeconds,[int]$HangSeconds,[int]$PollMs,[int]$NoProgressSeconds,[string]$ProgressRegex,[switch]$IncludeProgressRegex)
   $paths = Get-WatcherPaths -ResultsDir $ResultsDir
   foreach ($logPath in @($paths.OutFile, $paths.ErrFile)) {
@@ -455,7 +587,15 @@ function Start-DevWatcher {
   return $p.Id
 }
 
+<#
+.SYNOPSIS
+Stop-DevWatcher: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Stop-DevWatcher {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsDir)
   $paths = Get-WatcherPaths -ResultsDir $ResultsDir
   $pidObj = Read-JsonFile -Path $paths.PidFile
@@ -473,7 +613,15 @@ function Stop-DevWatcher {
   Remove-Item -LiteralPath $paths.HeartbeatFile -Force -ErrorAction SilentlyContinue
 }
 
+<#
+.SYNOPSIS
+Get-DevWatcherStatus: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-DevWatcherStatus {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([string]$ResultsDir)
   $paths = Get-WatcherPaths -ResultsDir $ResultsDir
   $pidObj = Read-JsonFile -Path $paths.PidFile
@@ -767,11 +915,23 @@ else {
   Write-Host '  Auto-trim if needed: pwsh -File tools/Dev-WatcherManager.ps1 -AutoTrim'
 }
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

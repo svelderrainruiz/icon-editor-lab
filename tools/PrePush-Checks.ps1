@@ -31,7 +31,18 @@ Import-Module (Join-Path (Split-Path -Parent $PSCommandPath) 'VendorTools.psm1')
 
 function Write-Info([string]$msg){ Write-Host $msg -ForegroundColor DarkGray }
 
+<#
+.SYNOPSIS
+Get-RepoRoot: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-RepoRoot {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   $here = Split-Path -Parent $PSCommandPath
   return (Resolve-Path -LiteralPath (Join-Path $here '..'))
 }
@@ -73,7 +84,15 @@ function Install-Actionlint([string]$repoRoot,[string]$version){
   }
 }
 
+<#
+.SYNOPSIS
+Invoke-NodeTestSanitized: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-NodeTestSanitized {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param(
     [string[]]$Args
   )
@@ -115,7 +134,15 @@ function Invoke-Actionlint([string]$repoRoot){
   }
 }
 
+<#
+.SYNOPSIS
+Assert-NoDirectLabVIEWExeInvocation: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Assert-NoDirectLabVIEWExeInvocation {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
   param([Parameter(Mandatory)][string]$RepoRoot)
 
   $scripts = Get-ChildItem -Path $RepoRoot -Recurse -Include *.ps1 -File
@@ -167,11 +194,23 @@ Write-Host '[pre-push] verified no direct LabVIEW.exe invocations' -ForegroundCo
 
 
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

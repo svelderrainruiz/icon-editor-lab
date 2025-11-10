@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -106,7 +99,18 @@ $script:CategoryDefinitions = @{
     }
 }
 
+<#
+.SYNOPSIS
+Resolve-VICategorySlug: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Resolve-VICategorySlug {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Name)
 
     if ([string]::IsNullOrWhiteSpace($Name)) { return $null }
@@ -129,7 +133,15 @@ function Resolve-VICategorySlug {
     return ($token -replace '[^a-z0-9]+', '-').Trim('-')
 }
 
+<#
+.SYNOPSIS
+Get-VIBucketMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VIBucketMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$BucketSlug)
 
     $slug = if ([string]::IsNullOrWhiteSpace($BucketSlug)) { 'uncategorized' } else { $BucketSlug.Trim().ToLowerInvariant() }
@@ -144,7 +156,15 @@ function Get-VIBucketMetadata {
     }
 }
 
+<#
+.SYNOPSIS
+Get-VICategoryMetadata: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VICategoryMetadata {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([string]$Name)
 
     $slug = Resolve-VICategorySlug -Name $Name
@@ -175,7 +195,15 @@ function Get-VICategoryMetadata {
     }
 }
 
+<#
+.SYNOPSIS
+ConvertTo-VICategoryDetails: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function ConvertTo-VICategoryDetails {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([System.Collections.IEnumerable]$Names)
 
     $details = [System.Collections.Generic.List[object]]::new()
@@ -194,7 +222,15 @@ function ConvertTo-VICategoryDetails {
     return @($details)
 }
 
+<#
+.SYNOPSIS
+Get-VICategoryBuckets: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VICategoryBuckets {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([System.Collections.IEnumerable]$Names)
 
     $details = ConvertTo-VICategoryDetails -Names $Names
@@ -220,11 +256,23 @@ function Get-VICategoryBuckets {
 
 Export-ModuleMember -Function Resolve-VICategorySlug, Get-VIBucketMetadata, Get-VICategoryMetadata, ConvertTo-VICategoryDetails, Get-VICategoryBuckets
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(

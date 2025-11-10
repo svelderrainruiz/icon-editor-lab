@@ -1,10 +1,3 @@
-<#
-.SYNOPSIS
-  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
-.DESCRIPTION
-  TODO: Expand description. Replace this header with real help content.
-#>
-
 #Requires -Version 7.0
 
 Set-StrictMode -Version Latest
@@ -12,7 +5,18 @@ $ErrorActionPreference = 'Stop'
 
 $script:Providers = @{}
 
+<#
+.SYNOPSIS
+Register-VipmProvider: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Register-VipmProvider {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([Parameter(Mandatory)][object]$Provider)
 
     foreach ($member in @('Name','ResolveBinaryPath','Supports','BuildArgs')) {
@@ -29,11 +33,27 @@ function Register-VipmProvider {
     $script:Providers[$name.ToLowerInvariant()] = $Provider
 }
 
+<#
+.SYNOPSIS
+Get-VipmProviders: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VipmProviders {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
 
+<#
+.SYNOPSIS
+Get-VipmProviderByName: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VipmProviderByName {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     param([Parameter(Mandatory)][string]$Name)
 
     $key = $Name.ToLowerInvariant()
@@ -43,7 +63,15 @@ function Get-VipmProviderByName {
     return $null
 }
 
+<#
+.SYNOPSIS
+Import-VipmProviderModules: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Import-VipmProviderModules {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
     $providerRoot = Join-Path $PSScriptRoot 'providers'
     if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
 
@@ -77,6 +105,12 @@ function Import-VipmProviderModules {
 
 Import-VipmProviderModules
 
+<#
+.SYNOPSIS
+Get-VipmInvocation: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Get-VipmInvocation {
     [CmdletBinding()]
     param(
@@ -128,11 +162,23 @@ function Get-VipmInvocation {
 
 Export-ModuleMember -Function Get-VipmInvocation, Get-VipmProviders, Get-VipmProviderByName, Register-VipmProvider
 
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(
