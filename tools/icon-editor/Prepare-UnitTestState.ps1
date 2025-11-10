@@ -1,10 +1,11 @@
-#Requires -Version 7.0
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Prepare-UnitTestState.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Prepare-UnitTestState. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
+#Requires -Version 7.0
 
 [CmdletBinding()]
 param(

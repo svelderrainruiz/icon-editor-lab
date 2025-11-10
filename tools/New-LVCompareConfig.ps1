@@ -1,14 +1,15 @@
-#Requires -Version 7.0
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for New-LVCompareConfig.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for New-LVCompareConfig. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
+#Requires -Version 7.0
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [string]$OutputPath,
   [switch]$NonInteractive,

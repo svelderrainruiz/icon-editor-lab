@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Publish-VICompareSummary.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Publish-VICompareSummary. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'

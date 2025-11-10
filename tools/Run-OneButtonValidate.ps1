@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Run-OneButtonValidate.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Run-OneButtonValidate. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 [CmdletBinding()]
 param(
   [switch]$Stage,

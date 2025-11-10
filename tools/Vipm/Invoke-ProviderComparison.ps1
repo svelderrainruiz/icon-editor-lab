@@ -56,7 +56,7 @@ $PSModuleAutoLoadingPreference = 'None'
     Executes scenarios supplied via JSON and writes telemetry alongside the repo.
 #>
 
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
     [string[]]$Providers = @('vipm'),
     [object[]]$Scenario,

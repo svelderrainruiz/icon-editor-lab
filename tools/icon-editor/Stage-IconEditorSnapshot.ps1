@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Stage-IconEditorSnapshot.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Stage-IconEditorSnapshot. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 Set-StrictMode -Version Latest
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(

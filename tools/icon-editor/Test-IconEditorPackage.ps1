@@ -1,10 +1,11 @@
-#Requires -Version 7.0
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Test-IconEditorPackage.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Test-IconEditorPackage. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
+#Requires -Version 7.0
 
 param(
   [string[]]$VipPath,

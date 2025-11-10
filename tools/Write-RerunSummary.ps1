@@ -10,7 +10,7 @@ $PSModuleAutoLoadingPreference = 'None'
   name is known. Designed for use in GitHub Actions steps that already run
   within PowerShell (avoids nested pwsh invocations).
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$WorkflowName,
   [string]$WorkflowFile,

@@ -2,7 +2,7 @@
 .SYNOPSIS
   Append a detailed artifact map (exists, size, modified) to job summary.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [string[]]$Paths,
   [string]$PathsList,

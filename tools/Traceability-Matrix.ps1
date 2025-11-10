@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Traceability-Matrix.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Traceability-Matrix. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 # Traceability Matrix Builder (Traceability Matrix Plan v1.0.0)
 param(
   [string]$TestsPath = 'tests',

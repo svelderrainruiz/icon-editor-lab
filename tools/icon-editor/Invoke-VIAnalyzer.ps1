@@ -72,7 +72,7 @@ Extra arguments appended to the LabVIEWCLI invocation (after the analyzer args).
 .PARAMETER PassThru
 Return the telemetry object instead of just writing files.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)]
   [string]$ConfigPath,

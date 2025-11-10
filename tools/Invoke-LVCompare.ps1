@@ -82,7 +82,7 @@ param(
   defaults apply (300s for LabVIEW CLI captures, unlimited for direct LVCompare
   capture).
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$BaseVi,
   [Parameter(Mandatory=$true)][string]$HeadVi,

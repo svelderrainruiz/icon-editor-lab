@@ -1,3 +1,10 @@
+<#
+.SYNOPSIS
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
+.DESCRIPTION
+  TODO: Expand description. Replace this header with real help content.
+#>
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 Import-Module (Join-Path (Split-Path -Parent $PSScriptRoot) 'VendorTools.psm1') -Force

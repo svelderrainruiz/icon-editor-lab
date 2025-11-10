@@ -25,7 +25,7 @@ Show the staging plan without copying files.
 Internal hook for tests – a script block used to stage VI pairs. When omitted,
 the script runs tools/Stage-CompareInputs.ps1.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
     [Parameter(Mandatory)]
     [string]$ManifestPath,

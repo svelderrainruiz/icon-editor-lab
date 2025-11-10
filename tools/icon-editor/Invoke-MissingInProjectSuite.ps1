@@ -64,7 +64,7 @@ LabVIEW version to use for the analyzer gate (defaults to 2021).
 .PARAMETER ViAnalyzerBitness
 LabVIEW bitness for the analyzer gate (defaults to 64-bit).
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [string]$Label,
   [string]$ResultsPath = 'tests/results',

@@ -1,11 +1,12 @@
-#Requires -Version 7.0
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Import-HandoffState.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Import-HandoffState. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+
+#Requires -Version 7.0
+[CmdletBinding()]
 param(
   [string]$HandoffDir = (Join-Path (Resolve-Path '.').Path 'tests/results/_agent/handoff')
 )

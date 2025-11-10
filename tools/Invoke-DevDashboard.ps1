@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Invoke-DevDashboard.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Invoke-DevDashboard. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 param(
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
@@ -56,7 +57,7 @@ function Test-ValidLabel {
 }
 
 function Invoke-WithTimeout {
-[CmdletBinding(SupportsShouldProcess = $true)]
+  [CmdletBinding()]
   param(
     [Parameter(Mandatory)][scriptblock]$ScriptBlock,
     [Parameter()][int]$TimeoutSec = 600

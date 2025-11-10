@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Agent-Wait.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Agent-Wait. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 param()
 
 Set-StrictMode -Version Latest

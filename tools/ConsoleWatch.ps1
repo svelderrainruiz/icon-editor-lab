@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for ConsoleWatch.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for ConsoleWatch. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 try { Import-Module (Join-Path $PSScriptRoot 'ConsoleWatch.psm1') -Force } catch { throw "Failed to import ConsoleWatch.psm1: $($_.Exception.Message)" }

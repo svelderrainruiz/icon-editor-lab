@@ -2,7 +2,7 @@
 .SYNOPSIS
   Append a concise re-run hint block using gh workflow run with sample_id.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string]$Workflow,
   [string]$IncludeIntegration,

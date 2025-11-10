@@ -1,10 +1,11 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Update-SessionIndexWatcher.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Update-SessionIndexWatcher. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+
+[CmdletBinding()]
 param(
   [string]$ResultsDir = 'tests/results',
   [string]$WatcherJson

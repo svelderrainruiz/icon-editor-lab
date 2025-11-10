@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for New-Adr.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for New-Adr. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 param(
   [Parameter(Mandatory)]
   [string]$Title,

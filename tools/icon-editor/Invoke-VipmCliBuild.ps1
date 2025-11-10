@@ -1,15 +1,16 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Invoke-VipmCliBuild.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Invoke-VipmCliBuild. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
 #Requires -Version 7.0
 
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
     [string]$RepoRoot,
     [string]$IconEditorRoot,

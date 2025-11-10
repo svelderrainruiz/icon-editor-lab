@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Ensure-SessionIndex.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Ensure-SessionIndex. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
 param(
   [Parameter(Mandatory=$false)] [string]$ResultsDir = 'tests/results',
   [Parameter(Mandatory=$false)] [string]$SummaryJson = 'pester-summary.json'

@@ -2,7 +2,7 @@
 .SYNOPSIS
   Append a compact artifact path list to the job summary.
 #>
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [Parameter(Mandatory=$true)][string[]]$Paths,
   [string]$Title = 'Artifacts'

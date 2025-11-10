@@ -1,14 +1,15 @@
-#Requires -Version 7.0
 <#
 .SYNOPSIS
-  TODO: Write a concise synopsis for Export-LabTooling.
+  TODO: Brief synopsis for this tool function/script. (Auto-generated placeholder)
 .DESCRIPTION
-  This is an auto-generated help stub for Export-LabTooling. Update before release.
+  TODO: Expand description. Replace this header with real help content.
 #>
+
+#Requires -Version 7.0
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
-[CmdletBinding(SupportsShouldProcess = $true)]
+[CmdletBinding()]
 param(
   [string]$Destination = 'artifacts/icon-editor-lab-tooling.zip',
   [string[]]$IncludePaths = @(
