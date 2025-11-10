@@ -1,28 +1,28 @@
 # Quick-DispatcherSmoke.ps1
 
-**Path:** `icon-editor-lab-8/tools/Quick-DispatcherSmoke.ps1`  
-**Hash:** `b8dd68d05a1d`
+**Path:** `tools/Quick-DispatcherSmoke.ps1`
 
 ## Synopsis
-Quick local smoke test for Invoke-PesterTests.ps1.
+Runs a tiny ad-hoc Pester suite via `Invoke-PesterTests.ps1` to validate that the dispatcher works on the current machine/runner.
 
 ## Description
-Creates a temporary tests folder with a tiny passing test, runs the dispatcher,
+- Creates a temporary folder (optionally under `GITHUB_WORKSPACE` or `RUNNER_TEMP`), writes a minimal passing test, and invokes `Invoke-PesterTests.ps1 -TestsPath <temp>` so you can confirm the dispatcher schema output without touching real suites.
+- Prints the key fields from `pester-summary.json` and, when `-Raw` is provided, dumps the full JSON.
+- `-Keep` leaves the temp folder behind for debugging; otherwise it deletes the folder on success/failure.
 
-```
-tools/Quick-DispatcherSmoke.ps1
-tools/Quick-DispatcherSmoke.ps1 -Raw -Keep
-```
+### Parameters
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `Raw` | switch | Off | Also print the raw JSON summary. |
+| `Keep` | switch | Off | Don’t delete the temp directory. |
+| `ResultsPath` | string | `<temp>/results` | Override output folder (a `pester-summary.json` file is expected). |
+| `TestsRoot` | string | auto temp dir | Use an explicit root instead of generating one. |
+| `PreferWorkspace` | switch | Off | Prefer `GITHUB_WORKSPACE\.tmp-smoke` for temp files. |
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Console dump of summary metrics and optional raw JSON.
+- Temp directories removed unless `-Keep` is set.
 
 ## Related
-- Index: `../README.md`
+- `Invoke-PesterTests.ps1`
+- `docs/LABVIEW_GATING.md`

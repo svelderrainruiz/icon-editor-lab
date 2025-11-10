@@ -1,23 +1,27 @@
 # Render-RunSummary.ps1
 
-**Path:** `icon-editor-lab-8/tools/Render-RunSummary.ps1`  
-**Hash:** `59a313c22d98`
+**Path:** `tools/Render-RunSummary.ps1`
 
 ## Synopsis
-—
+Converts a `RunSummary` JSON file into Markdown (or plain text) for inclusion in GitHub step summaries or local logs.
 
 ## Description
-—
+- Imports `module/RunSummary/RunSummary.psm1` and calls `Convert-RunSummary` to format the summary file specified via `-InputFile` (or `RUNSUMMARY_INPUT_FILE` environment variable).
+- Supports Markdown or plain-text output via `-Format`, writes to stdout, and optionally saves to `-OutFile`.
+- `-AppendStepSummary` toggles inclusion of GitHub step-summary sections.
 
+### Parameters
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `InputFile` | string | `$env:RUNSUMMARY_INPUT_FILE` | Path to `run-summary.json`. |
+| `Format` | string (`Markdown`,`Text`) | `Markdown` | Output format. |
+| `OutFile` | string | - | Destination file (optional). |
+| `AppendStepSummary` | switch | Off | Include GHA step-summary markup. |
+| `Title` | string | `Compare Loop Run Summary` | Heading used in the Markdown output. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Formatted Markdown/text printed to stdout, optionally duplicated to `OutFile`.
 
 ## Related
-- Index: `../README.md`
+- `module/RunSummary/RunSummary.psm1`
+- `tools/render-ci-composite.ps1`

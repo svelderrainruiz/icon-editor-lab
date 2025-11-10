@@ -1,29 +1,25 @@
 # Prepare-StandingCommit.ps1
 
-**Path:** `icon-editor-lab-8/tools/Prepare-StandingCommit.ps1`  
-**Hash:** `abc2c2db66da`
+**Path:** `tools/Prepare-StandingCommit.ps1`
 
 ## Synopsis
-Requires -Version 7.0
+Stages deterministic changes for “standing priority” updates and writes `tests/results/_agent/commit-plan.json` so agents can hand off the next steps (or auto-commit).
 
 ## Description
-—
-
+- Adds all changes (`git add -A`), then unstages volatile files (`tests/results/**`, `.agent_priority_cache.json`) so only relevant files remain.
+- Captures staged file names, constructs a suggested commit message (`chore(#<issue>): standing priority update` when possible), and records metadata (branch, labels, test expectations) in `commit-plan.json`.
+- `-AutoCommit` attempts to run `git commit -m "<suggested>"` when files are staged; plan JSON notes whether the auto-commit succeeded.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `RepositoryRoot` | string | '.' |
-| `AutoCommit` | switch |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `RepositoryRoot` | string | `.` | Repo to operate on. |
+| `AutoCommit` | switch | Off | Commit immediately after preparing the plan. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- `tests/results/_agent/commit-plan.json` following `agent-commit-plan/v1`.
+- Optional commit if `-AutoCommit` succeeds.
 
 ## Related
-- Index: `../README.md`
+- `tools/Print-AgentHandoff.ps1`
+- `.agent_priority_cache.json`

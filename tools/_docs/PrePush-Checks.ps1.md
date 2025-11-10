@@ -1,23 +1,27 @@
 # PrePush-Checks.ps1
 
-**Path:** `icon-editor-lab-8/tools/PrePush-Checks.ps1`  
-**Hash:** `1b1d3910603f`
+**Path:** `tools/PrePush-Checks.ps1`
 
 ## Synopsis
-Local pre-push checks: run actionlint against workflows.
+Runs repo-level validations (actionlint, remote-ref guard, LabVIEW.exe usage scan) before allowing a push.
 
 ## Description
-Ensures a valid actionlint binary is used per-OS and runs it against .github/workflows.
+- Ensures remote refs are unambiguous via `tools/Assert-NoAmbiguousRemoteRefs.ps1`.
+- Locates (or installs) `actionlint` using `Resolve-ActionlintPath` / `tools/dl-actionlint.sh`, then lints every workflow under `.github/workflows`.
+- After linting, scans the repo for direct `LabVIEW.exe` invocations to enforce the LabVIEWCLI/G-cli contract.
+- Designed to run locally (`pre-push.ps1`) and in CI; optional flags let you pin the actionlint version or skip auto-install.
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+### Parameters
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `ActionlintVersion` | string | `1.7.7` | Version to install when missing. |
+| `InstallIfMissing` | bool | `$true` | Attempt to install actionlint when not found under `bin/`. |
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` – All checks passed.
+- `!=0` – Guard, lint, or LabVIEW scan failed (message printed to stderr).
 
 ## Related
-- Index: `../README.md`
+- `tools/hooks/scripts/pre-push.ps1`
+- `tools/dl-actionlint.sh`
+- `tools/Assert-NoAmbiguousRemoteRefs.ps1`

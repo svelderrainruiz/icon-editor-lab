@@ -1,23 +1,16 @@
 # Vipm.psm1
 
-**Path:** `icon-editor-lab-8/tools/Vipm.psm1`  
-**Hash:** `5c6447ccb3c0`
+**Path:** `tools/Vipm.psm1`
 
 ## Synopsis
-Requires -Version 7.0
+Provider registry/dispatcher for VIPM operations (`InstallVipc`, `BuildVip`, etc.) used throughout the icon-editor tooling.
 
 ## Description
-—
-
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+- Loads provider modules from `tools/providers/vipm*` (manifest or bare ps1), invokes each module’s `New-VipmProvider`, and stores the resulting provider objects.
+- `Get-VipmInvocation` resolves the provider binary path, builds the argument list for the requested operation, and returns a PSCustomObject `{ Provider, Binary, Arguments }` consumed by callers (e.g., `Invoke-VipmDependencies`).
+- Allows selecting a provider by name (classic `vipm`, g-cli, future providers) or letting the dispatcher pick the first provider that supports the requested operation.
 
 ## Related
-- Index: `../README.md`
+- `tools/providers/vipm/Provider.psm1`
+- `tools/providers/vipm-gcli/Provider.psm1`
+- `tools/icon-editor/VipmDependencyHelpers.psm1`

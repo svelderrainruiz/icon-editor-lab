@@ -1,28 +1,22 @@
 # New-SampleId.ps1
 
-**Path:** `icon-editor-lab-8/tools/New-SampleId.ps1`  
-**Hash:** `b4fb138c4117`
+**Path:** `tools/New-SampleId.ps1`
 
 ## Synopsis
-Generate a sample_id for workflow_dispatch runs.
+Generates a human-readable sample ID (used by workflow_dispatch runs and artifact folders) with an optional prefix.
 
 ## Description
-Emits a compact, readable sample id by default (ts-YYYYMMDD-HHMMSS-XXXX).
-
+- Format: `<prefix>ts-YYYYMMDD-HHMMSS-XXXX`, where `XXXX` is a random alphanumeric suffix.
+- Prints the ID to stdout so GitHub Actions can capture it via `$(pwsh ... )` or `GITHUB_OUTPUT`.
+- Keeps IDs short yet unique enough for manual triage.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `Prefix` | string |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `Prefix` | string | empty | Prepended verbatim (e.g., `icon-editor-`). |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Sample ID string written to stdout.
 
 ## Related
-- Index: `../README.md`
+- `.github/workflows/*.yml`

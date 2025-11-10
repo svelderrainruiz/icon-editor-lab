@@ -1,23 +1,29 @@
 # Measure-ResponseWindow.ps1
 
-**Path:** `icon-editor-lab-8/tools/Measure-ResponseWindow.ps1`  
-**Hash:** `e7aa03736530`
+**Path:** `tools/Measure-ResponseWindow.ps1`
 
 ## Synopsis
-Emit machine-friendly line
+Simple stopwatch utility for tracking “agent response windows”: start a timer before a wait, stop it afterward, and optionally fail when the elapsed time exceeds the tolerance.
 
 ## Description
-—
+- Relies on `Agent-Wait.ps1` to persist markers under `tests/results/_agent/sessions/<id>/`.
+- `-Action Start` writes a marker (reason, expected seconds, tolerance, timestamp). `-Action End` reads the marker, computes elapsed/expected deltas, and prints a machine-readable line. `-Action Status` dumps the last marker/result.
+- `-FailOnOutsideMargin` returns exit code 2 when the elapsed time exceeds the tolerance window, allowing CI to highlight SLA misses.
 
+### Parameters
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `Action` | string (`Start`,`End`,`Status`) | `End` |
+| `Reason` | string | `unspecified` | Context for the wait window. |
+| `ExpectedSeconds` | int | `90` | Target duration used for tolerance math. |
+| `ToleranceSeconds` | int | `5` | Margin before the window is considered violated. |
+| `ResultsDir` | string | `tests/results` | Root for `_agent/sessions`. |
+| `Id` | string | `default` | Session identifier (multiple overlapping timers can use different IDs). |
+| `FailOnOutsideMargin` | switch | Off | `End` exits non-zero when elapsed exceeds tolerance. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- `Start`: marker path; `End`: `RESULT reason=... elapsed=...` line + exit code; `Status`: prints last marker/last result info.
 
 ## Related
-- Index: `../README.md`
+- `tools/Agent-Wait.ps1`
+- `docs/LABVIEW_GATING.md`

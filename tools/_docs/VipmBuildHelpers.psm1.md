@@ -1,23 +1,15 @@
 # VipmBuildHelpers.psm1
 
-**Path:** `icon-editor-lab-8/tools/icon-editor/VipmBuildHelpers.psm1`  
-**Hash:** `8ec197cd417b`
+**Path:** `tools/icon-editor/VipmBuildHelpers.psm1`
 
 ## Synopsis
-Requires -Version 7.0
+Telemetry + orchestration helpers for VIPM package builds driven by icon-editor scripts.
 
 ## Description
-—
-
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+- `Initialize-VipmBuildTelemetry` / `Write-VipmBuildTelemetry` create JSON logs under `tests/results/_agent/icon-editor/vipm-cli-build`, capturing start/end timestamps, toolchain/provider, and artifact metadata.
+- `Get-VipmBuildArtifacts` enumerates recently built `.vip` artifacts (or other filters) so automation can publish or summarize the outputs.
+- `Invoke-VipmPackageBuild` wraps the VIPM modify/build/close scripts (via `Invoke-IconEditorVipPackaging`) and records telemetry; `-DisplayOnly` simply snapshots existing artifacts without running VIPM.
 
 ## Related
-- Index: `../README.md`
+- `tools/icon-editor/Invoke-VipmDependencies.ps1`
+- `tools/icon-editor/Publish-LocalArtifacts.ps1`

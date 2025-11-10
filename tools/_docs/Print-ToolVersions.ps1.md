@@ -1,23 +1,18 @@
 # Print-ToolVersions.ps1
 
-**Path:** `icon-editor-lab-8/tools/Print-ToolVersions.ps1`  
-**Hash:** `1a7a98207bfe`
+**Path:** `tools/Print-ToolVersions.ps1`
 
 ## Synopsis
-—
+Prints the versions of actionlint, Node.js, npm, and markdownlint-cli2 detected in the repo/tooling environment.
 
 ## Description
-—
+- Imports `VendorTools.psm1`, resolves each tool on the current PATH (actionlint via `Resolve-ActionlintPath`, Node via `Get-Command`, npm via `npm` package metadata, markdownlint via helper).
+- Falls back to `missing`/`unavailable` labels when tools aren’t installed or version queries fail.
+- Useful for CI logs and troubleshooting inconsistent developer environments.
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Four console lines (`actionlint`, `node`, `npm`, `markdownlint-cli2`) with version strings.
 
 ## Related
-- Index: `../README.md`
+- `tools/PrePush-Checks.ps1`
+- `tools/dl-actionlint.sh`

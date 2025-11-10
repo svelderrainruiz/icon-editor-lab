@@ -1,23 +1,19 @@
 # pre-push.ps1
 
-**Path:** `icon-editor-lab-8/tools/hooks/scripts/pre-push.ps1`  
-**Hash:** `bd8858ba9b16`
+**Path:** `tools/hooks/scripts/pre-push.ps1`
 
 ## Synopsis
-Requires -Version 7.0
+Lightweight Git hook that shells into `tools/PrePush-Checks.ps1` before `git push`.
 
 ## Description
-—
-
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+- Resolves the repo root, prints a banner, and runs `pwsh tools/PrePush-Checks.ps1`.
+- If the checks exit non-zero, the hook throws so Git aborts the push.
+- Keeps the hook itself minimal so all logic lives in `PrePush-Checks`.
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` – `PrePush-Checks.ps1` succeeded.
+- `!=0` – Checks failed; push aborted.
 
 ## Related
-- Index: `../README.md`
+- `tools/PrePush-Checks.ps1`
+- `.husky/pre-push`

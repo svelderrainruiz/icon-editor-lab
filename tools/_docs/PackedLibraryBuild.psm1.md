@@ -1,23 +1,18 @@
 # PackedLibraryBuild.psm1
 
-**Path:** `icon-editor-lab-8/tools/vendor/PackedLibraryBuild.psm1`  
-**Hash:** `ed494fb297ff`
+**Path:** `tools/vendor/PackedLibraryBuild.psm1`
 
 ## Synopsis
-Helper for orchestrating g-cli packed library builds across bitness targets.
+Utility module that orchestrates g-cli packed library builds by running vendor-provided modify/build/close/rename scripts for each target configuration.
 
 ## Description
-Executes a build/close/rename cycle for each provided target. Callers supply
-
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+- `Invoke-LVPackedLibraryBuild` accepts a script block (`InvokeAction`) that actually shells out to the vendor scripts (usually g-cli). For every target it:
+  1. Runs the modify/build script with the provided arguments.
+  2. Optionally calls a close script (to shut down LabVIEW between builds).
+  3. Runs the rename script to place the .lvlibp in the correct artifact location (supports `{{BaseArtifactPath}}` placeholder).
+- Cleans out previous artifacts (`CleanupPatterns`) before starting and raises helpful errors when required scripts/arguments are missing.
+- Allows callers to supply `OnBuildError` to handle/normalize vendor failures.
 
 ## Related
-- Index: `../README.md`
+- `tools/icon-editor/VipmBuildHelpers.psm1`
+- `tools/icon-editor/Invoke-VipmPackageBuild.ps1`

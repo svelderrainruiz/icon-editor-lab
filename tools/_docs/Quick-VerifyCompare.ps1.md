@@ -1,37 +1,29 @@
 # Quick-VerifyCompare.ps1
 
-**Path:** `icon-editor-lab-8/tools/Quick-VerifyCompare.ps1`  
-**Hash:** `f34806afe5ec`
+**Path:** `tools/Quick-VerifyCompare.ps1`
 
 ## Synopsis
-Quick local verification of Compare VI action outputs (seconds + nanoseconds) without running full Pester.
+Fast smoke test for `Invoke-CompareVI.psm1` that creates temporary base/head VIs (or uses provided paths) and prints compare timing/diff status.
 
 ## Description
-Creates temporary placeholder .vi files (unless explicit paths provided), invokes Invoke-CompareVI and
-
-```
-./tools/Quick-VerifyCompare.ps1
-./tools/Quick-VerifyCompare.ps1 -Same -ShowSummary
-./tools/Quick-VerifyCompare.ps1 -Base path\to\A.vi -Head path\to\B.vi
-```
-
+- Imports `scripts/CompareVI.psm1`, creates temporary `.vi` files when `-Base`/`-Head` aren't supplied, and optionally forces identical paths with `-Same`.
+- Calls `Invoke-CompareVI` with a mocked executor (to avoid requiring LVCompare.exe) and prints:
+  - Base/Head paths
+  - Exit code, diff flag, duration seconds/nanoseconds
+  - Optional Markdown summary when `-ShowSummary` is set.
+- Designed for local validation or debugging of CompareVI plumbing without running the full GitHub Action.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `Base` | string |  |
-| `Head` | string |  |
-| `Same` | switch |  |
-| `ShowSummary` | switch |  |
+| Name | Type | Notes |
+| --- | --- | --- |
+| `Base` | string | Existing VI path; auto-generated when omitted. |
+| `Head` | string | Existing VI path; auto-generated when omitted (or same as Base when `-Same`). |
+| `Same` | switch | Compare the exact same file (expect exit code 0, diff false). |
+| `ShowSummary` | switch | Emit a Markdown-style summary block after the stats. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Console summary plus optional Markdown block; temporary files cleaned up unless custom paths are provided.
 
 ## Related
-- Index: `../README.md`
+- `scripts/CompareVI.psm1`
+- `tools/Run-CompareSequence.ps1`
