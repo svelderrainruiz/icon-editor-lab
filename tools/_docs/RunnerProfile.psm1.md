@@ -1,28 +1,15 @@
 # RunnerProfile.psm1
 
-**Path:** `icon-editor-lab-8/tools/RunnerProfile.psm1`  
-**Hash:** `eea5d27992b8`
+**Path:** `tools/RunnerProfile.psm1`
 
 ## Synopsis
-—
+Utility module that gathers metadata about the current GitHub runner (name, OS, labels, image) for reporting and telemetry.
 
 ## Description
-—
-
-
-### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `ForceRefresh` | switch |  |
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+- `Get-RunnerProfile` reads environment variables (`RUNNER_NAME`, `RUNNER_OS`, `RUNNER_LABELS`, etc.), resolves runner labels either from env vars or the GitHub REST API (`gh api` fallback to PAT), and caches the results.
+- `Get-RunnerLabels` / `Get-RunnerLabelsFromApi` let other scripts reuse the label list without hitting the API repeatedly.
+- Used by RunnerInvoker and other scripts to annotate logs and session indices with the runner environment.
 
 ## Related
-- Index: `../README.md`
+- `tools/RunnerInvoker/RunnerInvoker.psm1`
+- GitHub Actions environment variables (`RUNNER_*`, `GITHUB_REPOSITORY`, `GITHUB_RUN_ID`)

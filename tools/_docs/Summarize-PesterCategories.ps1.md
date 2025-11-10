@@ -1,23 +1,24 @@
 # Summarize-PesterCategories.ps1
 
-**Path:** `icon-editor-lab-8/tools/Summarize-PesterCategories.ps1`  
-**Hash:** `74453b2a74a8`
+**Path:** `tools/Summarize-PesterCategories.ps1`
 
 ## Synopsis
-Aggregate per-category Pester session-index totals and append a compact block to job summary.
+Aggregates category-specific Pester session indices and appends an overview + per-category table to the GitHub step summary.
 
 ## Description
-—
+- For each category listed in `-Categories`, looks under `BaseDir/<category>/tests/results/session-index.json` (or `session-index.json` at the root) and extracts totals (status, total, passed, failed, errors, skipped, duration).
+- Builds an overall summary plus individual lines per category; if the current GitHub run has artifacts named `orchestrated-pester-results-<category>`, links to the artifact download URL.
+- Writes the formatted Markdown to `$GITHUB_STEP_SUMMARY`; exits silently when the env var isn’t set.
 
+### Parameters
+| Name | Type | Notes |
+| --- | --- | --- |
+| `BaseDir` | string | Root directory containing category subfolders. |
+| `Categories` | string[] | Category names (subfolder names). |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Markdown appended to the GitHub step summary documenting overall totals and per-category metrics.
 
 ## Related
-- Index: `../README.md`
+- `tools/Run-DX.ps1`
+- `tests/results/_agent/*`

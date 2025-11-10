@@ -1,23 +1,25 @@
 # Summarize-VIStaging.ps1
 
-**Path:** `icon-editor-lab-8/tools/Summarize-VIStaging.ps1`  
-**Hash:** `f1a87ceca8da`
+**Path:** `tools/Summarize-VIStaging.ps1`
 
 ## Synopsis
-Produces human-friendly summaries for staged LVCompare results.
+Renders a Markdown (and optional JSON) summary of the `vi-staging-compare.json` output produced by `Run-StagedLVCompare.ps1`.
 
 ## Description
-Reads the `vi-staging-compare.json` payload emitted by Run-StagedLVCompare,
+- Loads compare entries, optionally imports `VICategoryBuckets.psm1` to map change categories, and inspects compare reports to highlight included/suppressed sections, diff headings, and leak warnings.
+- Produces totals (pairs, diff/match counts, category/bucket breakdowns, leak warnings) plus a Markdown table showing per-VI status, report links, flags, and diff details.
+- `-MarkdownPath` and `-SummaryJsonPath` persist the outputs; `$GITHUB_OUTPUT` is updated with `markdown_path`, `summary_json`, and `compare_dir` for workflow use.
 
+### Parameters
+| Name | Type | Default |
+| --- | --- | --- |
+| `CompareJson` | string (required) | Path to `vi-staging-compare.json`. |
+| `MarkdownPath` | string | - |
+| `SummaryJsonPath` | string | - |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- PSCustomObject with `totals`, `pairs`, `markdown`, `compareDir`; optional Markdown/JSON files and GitHub outputs.
 
 ## Related
-- Index: `../README.md`
+- `tools/Run-StagedLVCompare.ps1`
+- `tools/Render-ViComparisonReport.ps1`

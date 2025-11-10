@@ -1,29 +1,24 @@
 # Write-PesterTopFailures.ps1
 
-**Path:** `icon-editor-lab-8/tools/Write-PesterTopFailures.ps1`  
-**Hash:** `da21dbe044da`
+**Path:** `tools/Write-PesterTopFailures.ps1`
 
 ## Synopsis
-Append a concise “Top Failures” section to the job summary from Pester outputs.
+Summarize the most recent Pester failures and append them to `GITHUB_STEP_SUMMARY`.
 
 ## Description
-—
-
+- Looks for `pester-failures.json` under `-ResultsDir` (default `tests/results`). When absent, falls back to parsing `pester-results.xml` (NUnit format) to extract failed test cases.
+- Prints up to `-Top` failures (default 5), showing test name and file/line when available; each entry is a markdown bullet with an optional message line.
+- No-op when `GITHUB_STEP_SUMMARY` is unset, so local runs don’t break.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `ResultsDir` | string | 'tests/results' |
-| `Top` | int | 5 |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `ResultsDir` | string | `tests/results` | Location of Pester result files. |
+| `Top` | int | `5` | Maximum number of failures to list. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Markdown appended to `GITHUB_STEP_SUMMARY` (`### Top Failures …`).
 
 ## Related
-- Index: `../README.md`
+- `tests/results/pester-failures.json`
+- `tests/results/pester-results.xml`

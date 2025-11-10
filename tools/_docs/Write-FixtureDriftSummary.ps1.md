@@ -1,29 +1,24 @@
 # Write-FixtureDriftSummary.ps1
 
-**Path:** `icon-editor-lab-8/tools/Write-FixtureDriftSummary.ps1`  
-**Hash:** `a83c88a01329`
+**Path:** `tools/Write-FixtureDriftSummary.ps1`
 
 ## Synopsis
-Append a concise Fixture Drift block from drift-summary.json (best-effort).
+Summarize fixture drift results by reading `drift-summary.json` (and related handshake/ PID tracker data) and writing a concise block to `GITHUB_STEP_SUMMARY`.
 
 ## Description
-—
-
+- Defaults to `results/fixture-drift/drift-summary.json` but both directory and filename are configurable.
+- When the summary JSON is missing or invalid, records that fact in the step summary instead of failing.
+- Prints counts (missing, hashMismatch, manifestError, etc.) along with any notes or LabVIEW PID tracker details captured by fixture-drift runs.
+- If `_handshake/ready.json` or `_handshake/end.json` exist inside the drift results, the script appends handshake statuses to the summary.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `Dir` | string | 'results/fixture-drift' |
-| `SummaryFile` | string | 'drift-summary.json' |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `Dir` | string | `results/fixture-drift` | Root directory for drift artifacts. |
+| `SummaryFile` | string | `drift-summary.json` | JSON file to parse within `Dir`. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Markdown appended to `GITHUB_STEP_SUMMARY` describing drift status, counts, tracker info, and notes.
 
 ## Related
-- Index: `../README.md`
+- `tools/Fixture-Drift/*.ps1`

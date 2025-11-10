@@ -1,34 +1,37 @@
 # Traceability-Matrix.ps1
 
-**Path:** `icon-editor-lab-8/tools/Traceability-Matrix.ps1`  
-**Hash:** `5e170c518953`
+**Path:** `tools/Traceability-Matrix.ps1`
 
 ## Synopsis
-Traceability Matrix Builder (Traceability Matrix Plan v1.0.0)
+Generate a requirements/ADR trace matrix by correlating annotated `*.Tests.ps1` files with their latest Pester results.
 
 ## Description
-—
-
+- Recursively scans `TestsPath` for `*.Tests.ps1`, parses inline annotations (`REQ:XYZ`, `ADR:1234`, or `# trace:` headers), and builds a slug for each file.
+- Loads requirement metadata from `docs/requirements` and ADR cards from `docs/adr`, then inspects `<ResultsRoot>/pester/<slug>/pester-results.xml` to determine whether each test passed, failed, or lacks data.
+- Produces `trace-matrix.json` (`trace-matrix/v1`) that captures summary counts, per-requirement and per-ADR coverage, uncovered tests/requirements, and any unknown identifiers.
+- With `-RenderHtml`, also renders `trace-matrix.html`, a reviewer-friendly report with color-coded chips linking requirements/ADRs to their covering test files.
+- Designed to support SRS/ISO traceability gates before shipping bundles.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `TestsPath` | string | 'tests' |
-| `ResultsRoot` | string | 'tests/results' |
-| `OutDir` | string |  |
-| `IncludePatterns` | string[] |  |
-| `RunId` | string |  |
-| `Seed` | string |  |
-| `RenderHtml` | switch |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `TestsPath` | string | `tests` | Root directory searched for `*.Tests.ps1`. |
+| `ResultsRoot` | string | `tests/results` | Location of Pester output folders. |
+| `OutDir` | string | `<ResultsRoot>/_trace` | Destination for JSON/HTML artifacts. |
+| `IncludePatterns` | string[] | — | Wildcard filter applied to test file names. |
+| `RunId` | string | — | Optional identifier stored in the summary. |
+| `Seed` | string | — | Arbitrary metadata captured in the summary. |
+| `RenderHtml` | switch | Off | Emit `trace-matrix.html` beside the JSON. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+## Outputs
+- `<OutDir>/trace-matrix.json` (`trace-matrix/v1`) containing summary, coverage nodes, and gap lists.
+- `<OutDir>/trace-matrix.html` when `-RenderHtml` is specified.
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` — Matrix generated successfully.
+- `!=0` — Failed to parse metadata, collect results, or write the artifacts.
 
 ## Related
-- Index: `../README.md`
+- `docs/requirements/Icon-Editor-Lab_SRS.md`
+- `docs/adr/*.md`
+- `tests/README.md` (Pester conventions)

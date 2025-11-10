@@ -1,28 +1,23 @@
 # Tail-Snapshots.ps1
 
-**Path:** `icon-editor-lab-8/tools/Tail-Snapshots.ps1`  
-**Hash:** `a82a446eeefe`
+**Path:** `tools/Tail-Snapshots.ps1`
 
 ## Synopsis
-Follow a metrics snapshots NDJSON file produced by -MetricsSnapshotPath and pretty-print selected fields.
+Continuously tails a metrics-snapshot NDJSON file (e.g., `metrics-snapshot-v2`) and pretty-prints iteration/diff/error counts plus percentile metrics.
 
 ## Description
-Reads appended JSON lines (schema metrics-snapshot-v2) and displays a rolling table of iteration, diffCount,
+- Opens the snapshot file in read share mode, reads new JSON lines as they arrive, and prints a formatted line containing iteration, diff count, error count, average seconds, and configured percentile columns.
+- Auto-detects percentile keys from the first object unless `-PercentileKeys` is specified. Useful when monitoring long-running comparators in real time.
 
-```
-pwsh -File ./tools/Tail-Snapshots.ps1 -Path snapshots.ndjson
-pwsh -File ./tools/Tail-Snapshots.ps1 -Path snapshots.ndjson -PercentileKeys p50,p90,p99
-```
+### Parameters
+| Name | Type | Default |
+| --- | --- | --- |
+| `Path` | string (required) | Snapshot NDJSON file. |
+| `IntervalSeconds` | double | `1.5` | Poll interval when at EOF. |
+| `PercentileKeys` | string | auto | Comma/space separated list (e.g., `p50,p90,p99`). |
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Writes formatted lines to stdout; continues until interrupted (Ctrl+C).
 
 ## Related
-- Index: `../README.md`
+- `tools/Write-FixtureValidationSummary.ps1` (produces metrics snapshots)

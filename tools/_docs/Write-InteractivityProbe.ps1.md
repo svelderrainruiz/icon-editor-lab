@@ -1,23 +1,23 @@
 # Write-InteractivityProbe.ps1
 
-**Path:** `icon-editor-lab-8/tools/Write-InteractivityProbe.ps1`  
-**Hash:** `b4ac54ebcfc7`
+**Path:** `tools/Write-InteractivityProbe.ps1`
 
 ## Synopsis
-Emit a small interactivity/console probe to the job Step Summary and stdout.
+Capture console interactivity signals (session ID, redirection flags, etc.) and append them to the GitHub Actions step summary plus stdout.
 
 ## Description
-—
+- Emits a `interactivity-probe/v1` JSON object with timestamp, OS version, session ID, and whether the current PowerShell host is interactive or redirected.
+- Prints the JSON to stdout for log scraping and, when `GITHUB_STEP_SUMMARY` is available, renders a Markdown section summarizing the probe results for reviewers.
+- Useful for diagnosing stuck runners or confirming whether a self-hosted agent is still able to display UI (required for certain LabVIEW flows).
+- Has no parameters; simply call from a step.
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+## Outputs
+- Stdout line containing the JSON payload.
+- Step summary section (“### Interactivity Probe”) any time `GITHUB_STEP_SUMMARY` is set.
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` — Probe captured successfully (or summary not available).
+- `!=0` — Unexpected PowerShell/runtime error writing JSON or summaries.
 
 ## Related
-- Index: `../README.md`
+- `docs/LABVIEW_GATING.md` (runner health signals)

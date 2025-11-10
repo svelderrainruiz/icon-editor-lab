@@ -1,28 +1,21 @@
 # Run-LoopDeterminism.ps1
 
-**Path:** `icon-editor-lab-8/tools/Run-LoopDeterminism.ps1`  
-**Hash:** `c34fb79d22c7`
+**Path:** `tools/Run-LoopDeterminism.ps1`
 
 ## Synopsis
-—
+Runs the loop-determinism lint (`tools/Lint-LoopDeterminism.Shim.ps1`) over every workflow in `.github/workflows`, optionally failing on violations.
 
 ## Description
-—
-
+- Enumerates all `.yml` files in `.github/workflows`, builds a semicolon-delimited list, and passes it to the shim script.
+- `-FailOnViolation` bubbles up to the shim so CI jobs can enforce deterministic loop constraints (usually for TestStand/Compare workflows).
 
 ### Parameters
 | Name | Type | Default |
-|---|---|---|
-| `FailOnViolation` | switch |  |
+| --- | --- | --- |
+| `FailOnViolation` | switch | Off |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Whatever `Lint-LoopDeterminism.Shim.ps1` prints; exit code 0 if lint passes.
 
 ## Related
-- Index: `../README.md`
+- `tools/Lint-LoopDeterminism.Shim.ps1`

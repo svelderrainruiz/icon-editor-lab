@@ -1,29 +1,34 @@
 # Simulate-Release.ps1
 
-**Path:** `icon-editor-lab-8/tools/priority/Simulate-Release.ps1`  
-**Hash:** `32ba6db67398`
+**Path:** `tools/priority/Simulate-Release.ps1`
 
 ## Synopsis
-Requires -Version 7.0
+Dry-run the standing release workflow: sync the priority router, validate SemVer, surface planned actions, and optionally execute the branch orchestrator.
 
 ## Description
-—
-
+- Calls `npm run priority:sync` (via the repo’s Node wrapper) to refresh `tests/results/_agent/issue/router.json`, which drives release actions.
+- Runs `tools/priority/validate-semver.mjs` to confirm the current version is valid; writes `tests/results/_agent/handoff/release-summary.json` (`agent-handoff/release-v1`) capturing version, status, and issues.
+- Prints the router’s planned actions to stdout and executes any `release:prep` scripts defined there.
+- When release steps exist:
+  - Default behavior (no flags) runs `tools/Branch-Orchestrator.ps1 -DryRun`.
+  - `-Execute` runs with `-Execute`, actually performing branching/push steps.
+  - `-DryRun` skips branch orchestrator entirely.
+- Throws when SemVer validation fails or required files (router plan, node wrapper) are missing so CI can block tagging.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `Execute` | switch |  |
-| `DryRun` | switch |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `Execute` | switch | Off | Run Branch-Orchestrator with `-Execute` after release prep. |
+| `DryRun` | switch | Off | Skip Branch-Orchestrator even if release actions exist. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+## Outputs
+- `tests/results/_agent/handoff/release-summary.json` — SemVer evaluation results.
+- Console log of planned actions and release-prep script execution.
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` — SemVer valid; release simulation completed.
+- Non-zero — Node/npm/semver failures, missing router plan, or any prep/orchestrator error.
 
 ## Related
-- Index: `../README.md`
+- `tools/priority/validate-semver.mjs`
+- `tools/Branch-Orchestrator.ps1`

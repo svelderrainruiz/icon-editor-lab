@@ -1,33 +1,29 @@
 # Run-VICompareSample.ps1
 
-**Path:** `icon-editor-lab-8/tools/Run-VICompareSample.ps1`  
-**Hash:** `89bd1da9283d`
+**Path:** `tools/Run-VICompareSample.ps1`
 
 ## Synopsis
-Requires -Version 7.0
+Runs a quick VI Compare smoke test using `tools/TestStand-CompareHarness.ps1`, producing `compare-report.html` and capture artifacts under `tests/results/teststand-session/<label>`.
 
 ## Description
-—
-
+- Resolves the provided base/head VI paths (relative paths default to bundled MissingInProject VIs), confirms the LabVIEW executable exists, and prepares an output directory under `OutputRoot/<Label>`.
+- Invokes `TestStand-CompareHarness.ps1` with sensible defaults (`-Warmup skip`, `-RenderReport`, `-CloseLabVIEW`, `-CloseLVCompare`, `-SameNameHint`) so the run generates a full compare report but avoids extra warmups.
+- `-DryRun` prints the command line without executing the harness—helpful when verifying machine setup.
 
 ### Parameters
 | Name | Type | Default |
-|---|---|---|
-| `LabVIEWPath` | string | 'C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe' |
-| `BaseVI` | string | 'vendor\icon-editor\.github\actions\missing-in-project\MissingInProject.vi' |
-| `HeadVI` | string | 'vendor\icon-editor\.github\actions\missing-in-project\MissingInProjectCLI.vi' |
-| `OutputRoot` | string | 'tests/results/teststand-session' |
-| `Label` | string | 'vi-compare-smoke' |
-| `DryRun` | switch |  |
+| --- | --- | --- |
+| `LabVIEWPath` | string | `C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe` |
+| `BaseVI` | string | `vendor/icon-editor/.github/actions/missing-in-project/MissingInProject.vi` |
+| `HeadVI` | string | `vendor/icon-editor/.github/actions/missing-in-project/MissingInProjectCLI.vi` |
+| `OutputRoot` | string | `tests/results/teststand-session` |
+| `Label` | string | `vi-compare-smoke` |
+| `DryRun` | switch | Off |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Compare harness artifacts (reports, logs, captures) under `tests/results/teststand-session/<label>`.
+- Console line pointing to `compare-report.html` when found.
 
 ## Related
-- Index: `../README.md`
+- `tools/TestStand-CompareHarness.ps1`
+- `docs/LVCOMPARE_LAB_PLAN.md`

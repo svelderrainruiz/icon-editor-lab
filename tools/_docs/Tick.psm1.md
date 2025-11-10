@@ -1,28 +1,22 @@
 # Tick.psm1
 
-**Path:** `icon-editor-lab-8/tools/Timing/Tick.psm1`  
-**Hash:** `90aac1922f7a`
+**Path:** `tools/Timing/Tick.psm1`
 
 ## Synopsis
-—
+Minimal stopwatch helpers (`Start/Wait/Read/Stop`) for scripts that need coarse millisecond timing or tick counts.
 
 ## Description
-—
+- `Start-TickCounter [-TickMilliseconds <int>]` spawns a `System.Diagnostics.Stopwatch`, starts it immediately, and tracks the desired tick interval (default 1 ms).
+- `Wait-Tick -Counter <obj> [-Milliseconds <int>]` sleeps for the requested interval and increments the counter’s `ticks` property; returns the counter for chaining.
+- `Read-TickCounter -Counter <obj>` reports `ticks`, `elapsedMs` (rounded to three decimals), and the original interval.
+- `Stop-TickCounter -Counter <obj>` stops the underlying stopwatch if still running.
+- Frequently used in local compare utilities to coordinate sentinel TTLs or throttle loops without relying on complex scheduling libraries.
 
-
-### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `TickMilliseconds` | int | 1 |
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Exports
+- `Start-TickCounter`
+- `Wait-Tick`
+- `Read-TickCounter`
+- `Stop-TickCounter`
 
 ## Related
-- Index: `../README.md`
+- `tools/Verify-LocalDiffSession.ps1`

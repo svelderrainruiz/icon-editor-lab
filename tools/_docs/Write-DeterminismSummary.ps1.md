@@ -1,23 +1,24 @@
 # Write-DeterminismSummary.ps1
 
-**Path:** `icon-editor-lab-8/tools/Write-DeterminismSummary.ps1`  
-**Hash:** `746c9265fcf9`
+**Path:** `tools/Write-DeterminismSummary.ps1`
 
 ## Synopsis
-Append a concise Determinism block to the job summary based on LOOP_* envs.
+Append a quick determinism profile summary (loop settings, quantile strategy, adaptive flags) to the GitHub step summary using environment variables.
 
 ## Description
-—
+- Reads `LVCI_DETERMINISTIC` plus the `LOOP_*` env vars (max iterations, interval, quantile, histogram bins, reconcile, adaptive).
+- When `GITHUB_STEP_SUMMARY` is available, emits a markdown block:
+  ```
+  ### Determinism
+  - Profile: deterministic
+  - Iterations: 10
+  ...
+  ```
+- Silently exits (code 0) when the step summary file is missing to avoid failing local runs.
+- Logs a notice instead of throwing if something goes wrong, keeping CI resilient.
 
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Markdown appended to `GITHUB_STEP_SUMMARY`.
 
 ## Related
-- Index: `../README.md`
+- `docs/LABVIEW_GATING.md` (determinism requirements)

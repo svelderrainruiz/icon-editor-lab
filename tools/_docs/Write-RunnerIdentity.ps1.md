@@ -1,28 +1,22 @@
 # Write-RunnerIdentity.ps1
 
-**Path:** `icon-editor-lab-8/tools/Write-RunnerIdentity.ps1`  
-**Hash:** `4a3542af3c49`
+**Path:** `tools/Write-RunnerIdentity.ps1`
 
 ## Synopsis
-Append runner identity metadata to job summary.
+Emit a short runner metadata block (name, OS/arch, repo/ref, run id, optional sample id) to the GitHub step summary.
 
 ## Description
-—
-
+- Reads standard GitHub env vars (`RUNNER_NAME`, `RUNNER_OS`, `RUNNER_ARCH`, `GITHUB_REPOSITORY`, `GITHUB_RUN_ID`, `GITHUB_REF_NAME`).
+- Creates a markdown section (`### Runner`) with bullet points; includes `sample_id` when supplied via `-SampleId`.
+- Automatically exits when `GITHUB_STEP_SUMMARY` is unset and logs notices instead of throwing on errors, keeping workflows resilient.
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `SampleId` | string |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `SampleId` | string | — | Optional identifier (e.g., rerun sample) printed in the summary. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Markdown appended to `GITHUB_STEP_SUMMARY`.
 
 ## Related
-- Index: `../README.md`
+- `tools/Write-RunProvenance.ps1`

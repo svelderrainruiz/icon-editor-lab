@@ -1,34 +1,32 @@
 # Sync-IconEditorFork.ps1
 
-**Path:** `icon-editor-lab-8/tools/icon-editor/Sync-IconEditorFork.ps1`  
-**Hash:** `c30fb57af8fd`
+**Path:** `tools/icon-editor/Sync-IconEditorFork.ps1`
 
 ## Synopsis
-Requires -Version 7.0
+Clones the upstream icon-editor repository (or a custom slug) to `vendor/icon-editor` or a specified working path, with optional fixture updates and local Validate runs.
 
 ## Description
-—
-
+- Resolves the Git remote (`RemoteName` default `icon-editor`). If the remote isn’t configured, `-RepoSlug` (`owner/repo`) is required.
+- Clones the requested branch into `tmp/icon-editor-sync`, mirrors it onto the target path (default `vendor/icon-editor`), and removes the temp clone.
+- Optional flags:
+  - `-UpdateFixture` runs `tools/icon-editor/Update-IconEditorFixtureReport.ps1`.
+  - `-RunValidateLocal` invokes `tools/icon-editor/Invoke-ValidateLocal.ps1` (supports `-SkipBootstrap`).
+- `-WorkingPath` lets you mirror into a custom directory (fixture/validate helpers are disabled in that mode).
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `RemoteName` | string | 'icon-editor' |
-| `RepoSlug` | string |  |
-| `Branch` | string | 'develop' |
-| `WorkingPath` | string |  |
-| `UpdateFixture` | switch |  |
-| `RunValidateLocal` | switch |  |
-| `SkipBootstrap` | switch |  |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `RemoteName` | string | `icon-editor` |
+| `RepoSlug` | string | - | `owner/repo` when the remote isn’t configured. |
+| `Branch` | string | `develop` |
+| `WorkingPath` | string | `vendor/icon-editor` |
+| `UpdateFixture` | switch | Off | Runs fixture report/manifest updates. |
+| `RunValidateLocal` | switch | Off | Runs local Validate pipeline (requires vendor path). |
+| `SkipBootstrap` | switch | Off | Passed through to Validate helper. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Synchronizes the vendor folder, prints a summary, and returns a PSCustomObject describing the remote, branch, and mirror path.
 
 ## Related
-- Index: `../README.md`
+- `vendor/icon-editor`
+- `tools/icon-editor/Update-IconEditorFixtureReport.ps1`

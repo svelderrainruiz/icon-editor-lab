@@ -1,29 +1,30 @@
 # Set-IntegrationEnv.Sample.ps1
 
-**Path:** `icon-editor-lab-8/tools/Set-IntegrationEnv.Sample.ps1`  
-**Hash:** `2cb7d2a5c7cc`
+**Path:** `tools/Set-IntegrationEnv.Sample.ps1`
 
 ## Synopsis
-Sample script to set environment variables required for CompareVI integration tests.
+Sample helper that resolves two VI paths and exports them to the current PowerShell session as `LV_BASE_VI` / `LV_HEAD_VI` for CompareVI test runs.
 
 ## Description
-Copies or points to existing VI files and sets LV_BASE_VI / LV_HEAD_VI for the current session.
-
+- Intended as a starting point for local integration testing. Update the default VI paths (or pass them via parameters) to real LabVIEW files before invoking.
+- Validates both paths; unresolved files trigger warnings and leave the corresponding env var blank so downstream scripts fail fast.
+- Echoes the resolved absolute paths for visibility and warns if the canonical LVCompare binary is missing.
+- Variables are scoped to the invoking shell (handy for `pwsh` sessions that run `tools/Run-HeadlessCompare.ps1` or TestStand harnesses).
 
 ### Parameters
-| Name | Type | Default |
-|---|---|---|
-| `BaseVi` | string | 'C:\Path\To\VI1.vi' |
-| `HeadVi` | string | 'C:\Path\To\VI2.vi' |
+| Name | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `BaseVi` | string | `C:\Path\To\VI1.vi` | Source VI representing the “base” side of the compare. |
+| `HeadVi` | string | `C:\Path\To\VI2.vi` | Source VI for the “head” side. |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
+## Outputs
+- Sets `LV_BASE_VI` and `LV_HEAD_VI` in the current environment when the files resolve.
+- Console warnings whenever the sample paths do not exist or LVCompare is missing from the canonical installation.
 
 ## Exit Codes
-- `0` success  
-- `!=0` failure
+- `0` — Script completed (even if paths were missing; check warnings).
+- `!=0` — Only occurs if PowerShell itself fails (e.g., permission error).
 
 ## Related
-- Index: `../README.md`
+- `tools/Run-HeadlessCompare.ps1`
+- `docs/LVCOMPARE_LAB_PLAN.md`

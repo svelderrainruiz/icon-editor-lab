@@ -1,23 +1,28 @@
 # Start-RunnerInvoker.ps1
 
-**Path:** `icon-editor-lab-8/tools/RunnerInvoker/Start-RunnerInvoker.ps1`  
-**Hash:** `715fc46c8f2d`
+**Path:** `tools/RunnerInvoker/Start-RunnerInvoker.ps1`
 
 ## Synopsis
-Default single-compare sessions to enable autostop unless explicitly disabled
+Starts the local RunnerInvoker loop: spins up the named pipe, tracks LabVIEW PIDs, writes readiness/heartbeat files, and runs `Start-InvokerLoop` until the sentinel is removed.
 
 ## Description
-—
+- Initializes the `_invoker` results directory, writes `ready.json`, heartbeat, and PID files, and optionally touches a sentinel file used to control shutdown.
+- Integrates with `LabVIEWPidTracker.psm1` to record LabVIEW processes started during invoker operations; writes `stopped.json` with final PID tracker context when the sentinel is removed.
+- Launches `Start-InvokerLoop` (from `RunnerInvoker.psm1`) in a background job and monitors it until the sentinel disappears; also records console spawn telemetry (`console-spawns.ndjson`).
 
+### Parameters
+| Name | Type | Default |
+| --- | --- | --- |
+| `PipeName` | string | auto (`lvci.invoker.<runId>.<job>.<attempt>`) |
+| `SentinelPath` | string | - | When deleted, stops the invoker loop. |
+| `ResultsDir` | string | `tests/results/_invoker` |
+| `ReadyFile` | string | `<ResultsDir>/_invoker/ready.json` |
+| `StoppedFile` | string | `<ResultsDir>/_invoker/stopped.json` |
+| `PidFile` | string | `<ResultsDir>/_invoker/pid.txt` |
 
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+## Outputs
+- Creates/updates files under `<ResultsDir>/_invoker` to signal readiness, PID, heartbeat, and final stop metadata (including LabVIEW PID tracker info when available).
 
 ## Related
-- Index: `../README.md`
+- `tools/RunnerInvoker/RunnerInvoker.psm1`
+- `tools/RunnerInvoker/Wait-InvokerReady.ps1`

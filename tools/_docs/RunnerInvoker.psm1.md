@@ -1,23 +1,16 @@
 # RunnerInvoker.psm1
 
-**Path:** `icon-editor-lab-8/tools/RunnerInvoker/RunnerInvoker.psm1`  
-**Hash:** `a1163cf9c94f`
+**Path:** `tools/RunnerInvoker/RunnerInvoker.psm1`
 
 ## Synopsis
-Temporarily exclude node.exe from tracking to avoid conflating with runner internals
+Modular invoker for local automation “planes” (running CompareVI, staging LVCompare, watchdog updates, etc.) that manages child-process tracking, single-compare state, and JSON logging.
 
 ## Description
-—
-
-
-
-## Preconditions
-- Ensure repo is checked out and dependencies are installed.
-- If script touches LabVIEW/VIPM, verify versions via environment vars or config.
-
-## Exit Codes
-- `0` success  
-- `!=0` failure
+- Provides helpers that RunnerInvoker scripts call to handle invoke requests (compare VI, run TestStand staging, update watchers, run DX suites, etc.). Each handler logs stdout/stderr, captures leak warnings, and records artifacts under `tests/results`.
+- Includes utility functions for spawns tracking (`Append-Spawns`), single compare gating (`Get/Set-SingleCompareState`), process persistence logs, JSON read/write helpers, and environment resolution.
+- The module is consumed by the `tools/RunnerInvoker/*.ps1` entrypoints (Start, Wait, Session lock) so local runs mimic CI’s invoker plane.
 
 ## Related
-- Index: `../README.md`
+- `tools/RunnerInvoker/Start-RunnerInvoker.ps1`
+- `tools/RunnerInvoker/Wait-InvokerReady.ps1`
+- `tools/RunnerInvoker/RunnerProfile.psm1`
