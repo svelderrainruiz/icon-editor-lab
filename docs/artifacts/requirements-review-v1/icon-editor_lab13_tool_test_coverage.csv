@@ -1,0 +1,16 @@
+tool_module,exports_detected,tests_covering,num_tests_covering
+icon-editor-lab-13/tools/actions/normalize-command.ts,(unknown),(none),0
+icon-editor-lab-13/tools/actions/parse-orchestrated.ts,(unknown),(none),0
+icon-editor-lab-13/tools/cli/validate-cli.ts,(unknown),(none),0
+icon-editor-lab-13/tools/generate-action-outputs.ts,(unknown),(none),0
+icon-editor-lab-13/tools/schemas/definitions.ts,"cliArtifactMetaSchema, cliOperationNamesSchema, cliOperationsParameterSchema, cliOperationsSchema, cliProcsSchema, cliProviderNamesSchema, cliProviderSchema, cliProvidersSchema, cliQuoteSchema, cliTokenizeSchema, cliVersionSchema, schemas, watcherRestSchema",(none),0
+icon-editor-lab-13/tools/schemas/generate-schemas.ts,(unknown),(none),0
+icon-editor-lab-13/tools/schemas/validate-json.ts,(unknown),(none),0
+icon-editor-lab-13/tools/shims/punycode-userland.ts,(unknown),(none),0
+icon-editor-lab-13/tools/test-discovery.ts,(unknown),(none),0
+icon-editor-lab-13/tools/vscode/comparevi-extension/src/extension.ts,"activate, deactivate",(none),0
+icon-editor-lab-13/tools/vscode/comparevi-extension/src/test/runTest.ts,(unknown),(none),0
+icon-editor-lab-13/tools/vscode/comparevi-extension/src/test/suite/extension.test.ts,(unknown),(none),0
+icon-editor-lab-13/tools/vscode/comparevi-extension/src/test/suite/index.ts,run,(none),0
+icon-editor-lab-13/tools/watchers/orchestrated-watch.ts,(unknown),(none),0
+icon-editor-lab-13/tools/workflows/update_workflows.py,"_ensure_job_concurrency, _ensure_job_needs, _find_step_index, _insert_after, _insert_before, _insert_step_relative, _insert_wire_j1_j2_in_job, _mk_hosted_notice_step, _mk_hosted_preflight_step, _mk_lv_guard_pre_step, _mk_rerun_hint_step, _mk_warmup_step, _mk_wire_guard_post_step, _mk_wire_guard_pre_step, _mk_wire_invoker_start_step, _mk_wire_invoker_stop_step, _mk_wire_probe_step, _mk_wire_session_index_step, _mk_wire_step, _set_job_if, _step_exists, apply_transforms, dump_yaml, ensure_force_run_input, ensure_hosted_notice, ensure_hosted_preflight, ensure_interactivity_probe_job, ensure_lint_resiliency, ensure_long_wire_fixture_drift_windows, ensure_orchestrated_drift_gate_defaults, ensure_preinit_force_run_outputs, ensure_rerun_hint_after_summary, ensure_rerun_hint_in_job, ensure_runner_unblock_guard, ensure_session_index_post_in_job, ensure_session_index_post_in_pester_matrix, ensure_wire_C1C2_around_drift, ensure_wire_G0G1_guard, ensure_wire_I1I2_invoker, ensure_wire_P1_after_final, ensure_wire_S1_before_session_index, ensure_wire_T1_for_tests, ensure_wire_probes_all_jobs, has_t1, insert_after_checkout, load_yaml, main, normalize_hosted_preflight_steps",(none),0

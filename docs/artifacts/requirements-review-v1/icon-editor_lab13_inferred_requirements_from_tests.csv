@@ -1,0 +1,180 @@
+test_file,describe,context,assertion
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,enables dev mode via wrapper script
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,disables dev mode via wrapper script after enabling
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,updates LocalHost.LibraryPaths in the LabVIEW ini when toggling dev mode
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,uses policy defaults when invoking enable wrapper with operation
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,throws when enable wrapper is missing helper scripts
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,throws when disable wrapper is missing helper scripts
+icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,,throws when reset helper script is missing
+icon-editor-lab-13/tests/IconEditorDevMode.Integration.Tests.ps1,IconEditor development mode (integration),,enables development mode for LabVIEW 2025 x64 when available
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,produces a successful summary when all iterations pass
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,stops on scenario failure and records the reason
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,fails when analyzer flags dev-mode drift
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,fails when enable telemetry shows verification gaps
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,fails when disable telemetry reports settle failure
+icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,,fails when fewer than three verified iterations succeed
+icon-editor-lab-13/tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,Invoke-LabVIEWRogueSweep,captures settle summary and verification snapshot
+icon-editor-lab-13/tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,Invoke-LabVIEWRogueSweep,records failures once and preserves settle errors
+icon-editor-lab-13/tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,Invoke-LabVIEWRogueSweep,records sweep payload when no rogue processes remain
+icon-editor-lab-13/tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,Invoke-LabVIEWRogueSweep,throws when RequireClean detects rogue LabVIEW PIDs
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,returns null state when no marker exists
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,records dev-mode state toggles
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,enables development mode via helper
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,closes only requested bitness when enabling single target
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,disables development mode via helper
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,supports alternate bitness overrides
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,uses policy defaults when operation is provided
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,surfaces g-cli timeout output when add-token script fails
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,skips verification when no LabVIEW targets are present
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,throws when expecting active tokens but icon editor path is missing
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,throws when expecting removal but icon editor path persists
+icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,script execution,round-trips dev mode toggles using LabVIEW.ini
+icon-editor-lab-13/tests/IconEditorMissingInProject.CompareOnly.Tests.ps1,MissingInProject compare-only suite,LabVIEW compare gate,passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit)
+icon-editor-lab-13/tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,LabVIEW dev-mode token behaviour,passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit)
+icon-editor-lab-13/tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,LabVIEW dev-mode token behaviour,fails MissingInProject after dev mode is disabled (LabVIEW <Version> <Bitness>-bit)
+icon-editor-lab-13/tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,LabVIEW dev-mode token behaviour,skips negative MissingInProject coverage when MIP_SKIP_NEGATIVE=1
+icon-editor-lab-13/tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,LabVIEW dev-mode token behaviour,builds the icon editor packed library after validations (LabVIEW <Version> <Bitness>-bit)
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,extracts the package file name from the VIPB
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,computes a deterministic package path inside the default builds folder
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,supports overriding the output directory when computing package path
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,"captures stdout, stderr, and warnings from provider process failure"
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,reports exit code and warnings for successful runs
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,returns metadata when the package exists
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,throws when the expected package is missing
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,returns a structured snapshot even when LabVIEW 2023 is unavailable
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,invokes g-cli provider when requested and surfaces provider metadata
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,invokes VIPM provider when requested and reports provider name
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,throws when provider process exits non-zero and includes output
+icon-editor-lab-13/tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,Process helpers,warns when g-cli provider detects disabled VI Server but proceeds
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Enable-DevMode.ps1 forwards parameters to IconEditorDevMode
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Disable-DevMode.ps1 forwards parameters to IconEditorDevMode
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Describe-IconEditorFixture.ps1 requires -FixturePath
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Update-IconEditorFixtureReport.ps1 requires -FixturePath
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Stage-IconEditorSnapshot.ps1 honors baseline paths
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Invoke-ValidateLocal.ps1 requires FixturePath
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets
+icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,,Simulate-IconEditorBuild.ps1 produces dry-run artifacts
+icon-editor-lab-13/tests/Invoke-FixtureViDiffs.Tests.ps1,Invoke-FixtureViDiffs.ps1,,creates summary and marks dry-run entries
+icon-editor-lab-13/tests/Invoke-FixtureViDiffs.Tests.ps1,Invoke-FixtureViDiffs.ps1,,records comparison outcomes using a stub compare script
+icon-editor-lab-13/tests/Invoke-IconEditorBuild.Tests.ps1,Invoke-IconEditorBuild.ps1,,runs full build and packaging flow
+icon-editor-lab-13/tests/Invoke-IconEditorBuild.Tests.ps1,Invoke-IconEditorBuild.ps1,,skips packaging when requested
+icon-editor-lab-13/tests/Invoke-IconEditorBuild.Tests.ps1,Invoke-IconEditorBuild.ps1,,forwards toolchain overrides to the build script and manifest
+icon-editor-lab-13/tests/Invoke-IconEditorBuild.Tests.ps1,Invoke-IconEditorBuild.ps1,,runs missing-in-project checks before executing unit tests
+icon-editor-lab-13/tests/Invoke-IconEditorSnapshotFromRepo.Tests.ps1,Invoke-IconEditorSnapshotFromRepo.ps1,,generates a snapshot workspace using changed files from the repo
+icon-editor-lab-13/tests/Invoke-IconEditorVipPackaging.Tests.ps1,Invoke-IconEditorVipPackaging helper,,runs modify/build/close scripts and captures emitted VI packages
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,passes the VI path via -v when invoking g-cli
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,honors MIP_GCLI_CONNECT_TIMEOUT_MS override
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,succeeds when helper reports no missing files
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,retries helper when initial invocation fails
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,fails when helper reports missing files
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,fails with exit code 1 when helper does not emit results and fails
+icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,,exits with error when helper script is missing
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,writes a run report and toggles MIP_SKIP_NEGATIVE by default
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,auto-generates a label when omitted using branch + sha metadata
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,allows selecting the full suite explicitly
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,restores MIP_SKIP_NEGATIVE when IncludeNegative is used and failures bubble up
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,cleans existing artifacts and mirrors latest outputs to the root when requested
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,fails when RequireCompareReport is set but compare report is missing
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,runs analyzer and enforces heuristics when RequireCompareReport is set
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,fails when analyzer detects missing images under RequireCompareReport
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,fails when VI Analyzer detects broken VIs before running the suite
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,retries VI Analyzer once after dev-mode recovery succeeds
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,fails with a clear message when VI Analyzer reports a newer saved version
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,records analyzer metadata when the gate passes
+icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,,generates a compare report via fallback runner when required and no report exists
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,writes telemetry and captures broken VI entries
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,emits RSL files and passes optional CLI flags
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,captures version mismatch errors from the report
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,throws when LabVIEWCLI returns non-zero exit code
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,surfaces analyzer-specific error codes
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,resolves structured config files referencing folders
+icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,,treats test failure exit code 3 as fatal
+icon-editor-lab-13/tests/Invoke-VIDiffSweep.Tests.ps1,Invoke-VIDiffSweep.ps1,,runs the sweep and returns candidate summary
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,skips pure renames without launching compares when run in DryRun mode
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,selects VI files with content changes for comparison decisions
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,reuses cached skip decisions on subsequent full sweeps
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,skips small size deltas via heuristics
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,skips paths configured via prefix rules
+icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,,throttles compare workload when a commit exceeds the configured limit
+icon-editor-lab-13/tests/Invoke-VipmDependencies.Tests.ps1,Invoke-VipmDependencies.ps1 argument handling,,applies dependencies for each version/bitness combination via vipm-gcli
+icon-editor-lab-13/tests/Invoke-VipmDependencies.Tests.ps1,Invoke-VipmDependencies.ps1 argument handling,,lists packages via the vipm provider in display-only mode
+icon-editor-lab-13/tests/Invoke-VipmDependencies.Tests.ps1,Invoke-VipmDependencies.ps1 argument handling,,fails fast when VIPM is not running
+icon-editor-lab-13/tests/MipScenarioHelpers.Tests.ps1,MipScenarioHelpers,Write-AnalyzerDevModeWarning,prints guidance when dev-mode flag is set
+icon-editor-lab-13/tests/MipScenarioHelpers.Tests.ps1,MipScenarioHelpers,Write-AnalyzerDevModeWarning,returns false when analyzer JSON missing
+icon-editor-lab-13/tests/Prepare-FixtureViDiffs.Tests.ps1,Prepare-FixtureViDiffs.ps1,,emits requests when baseline manifest hash diverges
+icon-editor-lab-13/tests/Prepare-FixtureViDiffs.Tests.ps1,Prepare-FixtureViDiffs.ps1,,uses baseline environment paths when parameters are omitted
+icon-editor-lab-13/tests/Prepare-LabVIEWHost.Tests.ps1,Prepare-LabVIEWHost helper,,parses comma/space separated lists and returns a dry-run summary
+icon-editor-lab-13/tests/Prepare-LabVIEWHost.Tests.ps1,Prepare-LabVIEWHost helper,,records dev-mode telemetry links when enable scripts run
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,emits baseline skip messaging when manifest env is missing
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,truncates fixture-only asset listings beyond five entries per category
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,renders placeholders for missing custom-action hashes and mismatch status
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,renders empty fixture-only asset section when no assets are present
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,summarises baseline delta when manifest env is supplied
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,lists manifest delta entries with bullet details
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,writes markdown to stdout when OutputPath is omitted
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,renders headings when artifacts and custom actions are empty
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,reflects runner dependency mismatches in stakeholder summary
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,handles missing packageSmoke metadata without throwing
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,computes delta when baseline entries is null
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,computes delta when baseline entries omit optional fields
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,truncates fixture-only assets independently per category
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,includes script assets with scripts prefix in manifest delta
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,formats artifacts with zero size and missing hash
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,lists changed entries in delta when hashes differ
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,preserves custom action ordering
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,rejects baseline manifest paths outside the repository
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,invokes Describe helper when ReportPath is omitted
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,supports relative baseline manifest within repo fallback
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,skips delta when relative baseline manifest is missing in repo fallback
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,updates ICON_EDITOR_PACKAGE.md when -UpdateDoc is specified
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,updates documentation when -UpdateDoc is used without OutputPath
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,throws when OutputPath directory does not exist
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,reports delta errors when baseline manifest cannot be parsed
+icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,,handles empty baseline manifest files without crashing
+icon-editor-lab-13/tests/Render-ViComparisonReport.Tests.ps1,Render-ViComparisonReport.ps1,,renders with partial/missing artifact properties (IDictionary + PSCustomObject)
+icon-editor-lab-13/tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,,parses matrix job titles
+icon-editor-lab-13/tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,,returns null for unexpected titles
+icon-editor-lab-13/tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,,prefers explicit parameters over job title parsing
+icon-editor-lab-13/tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,,applies default workspace and vipc path when omitted
+icon-editor-lab-13/tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,,routes apply replay through vipm toolchain by default
+icon-editor-lab-13/tests/Simulate-IconEditorBuild.Tests.ps1,Simulate-IconEditorBuild.ps1,,materialises fixture artifacts and manifest
+icon-editor-lab-13/tests/Simulate-IconEditorBuild.Tests.ps1,Simulate-IconEditorBuild.ps1,,handles legacy fixtures with install\plugins layout
+icon-editor-lab-13/tests/Simulate-IconEditorBuild.Tests.ps1,Simulate-IconEditorBuild.ps1,,falls back to Copy-Item overlay when robocopy is unavailable
+icon-editor-lab-13/tests/Simulate-IconEditorBuild.Tests.ps1,Simulate-IconEditorBuild.ps1,,emits VIP diff metadata when a requests output directory is provided
+icon-editor-lab-13/tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,,stages a snapshot using an existing source and skips validation
+icon-editor-lab-13/tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,,invokes the provided validate helper with dry-run semantics
+icon-editor-lab-13/tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,,honours baseline environment variables when parameters are omitted
+icon-editor-lab-13/tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,,honors dev mode overrides
+icon-editor-lab-13/tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,,fails when LabVIEW 2025 x64 is unavailable
+icon-editor-lab-13/tests/Test-IconEditorPackage.Tests.ps1,Test-IconEditorPackage.ps1,,returns skipped summary when no VIP artifacts supplied
+icon-editor-lab-13/tests/Test-IconEditorPackage.Tests.ps1,Test-IconEditorPackage.ps1,,throws when VIPs are required but missing
+icon-editor-lab-13/tests/Test-IconEditorPackage.Tests.ps1,Test-IconEditorPackage.ps1,,validates a well-formed VIP package
+icon-editor-lab-13/tests/Test-IconEditorPackage.Tests.ps1,Test-IconEditorPackage.ps1,,flags missing artifacts inside the VIP
+icon-editor-lab-13/tests/Update-IconEditorFixtureReport.Tests.ps1,Update-IconEditorFixtureReport.ps1,,suppresses summary output when -NoSummary is specified
+icon-editor-lab-13/tests/Update-IconEditorFixtureReport.Tests.ps1,Update-IconEditorFixtureReport.ps1,,throws when the describe helper fails to emit a report
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates company name
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates product name
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates summary
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates license
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates version
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates LabVIEW target
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates summary mirror
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates product description
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates release notes text
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates packager name
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates website url
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates copyright
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,updates configuration file name
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,regenerates ID and Modified date
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,creates release notes file
+icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,Library general settings,touches only the targeted nodes
+icon-editor-lab-13/tests/tools/Tools.Help.Tests.ps1,tools/ help synopsis coverage,,Each tool script has a non-empty .SYNOPSIS
+icon-editor-lab-13/tests/tools/Tools.ShouldProcess.Help.Tests.ps1,Tools module exported functions,,exports at least one function
+icon-editor-lab-13/tests/tools/Tools.ShouldProcess.Help.Tests.ps1,Tools module exported functions,,each function supports ShouldProcess (CmdletBinding) and -WhatIf parameter
+icon-editor-lab-13/tests/tools/Tools.ShouldProcess.Help.Tests.ps1,Tools module exported functions,,each function has a non-empty .SYNOPSIS
+icon-editor-lab-13/tests/tools/Tools.ShouldProcess.Help.Tests.ps1,Tools module exported functions,,each function accepts -WhatIf without throwing
+icon-editor-lab-13/tests/tools/Tools.WhatIf.Tests.ps1,tools/ mutating scripts expose -WhatIf via CmdletBinding,,Mutating script exposes -WhatIf parameter
