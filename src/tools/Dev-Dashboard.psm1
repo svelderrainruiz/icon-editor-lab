@@ -10,12 +10,10 @@ Resolve-PathSafe: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Resolve-PathSafe {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
+  [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
   param([string]$Path)
+
+  if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   if (-not $Path) { return $null }
   try {
     $resolved = Resolve-Path -LiteralPath $Path -ErrorAction Stop
