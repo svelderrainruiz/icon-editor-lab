@@ -1,0 +1,77 @@
+{
+  "baseline": {
+    "tag": "BL-REL-2042-R2.0",
+    "commit": "abcd1234"
+  },
+  "target": {
+    "tag": "BL-PRE-2043-RC2",
+    "commit": "efgh5678"
+  },
+  "generatedAt": "2025-11-10T02:08:08.027376Z",
+  "tool": "rc2-generator",
+  "summary": {
+    "changed": 1,
+    "added": 2,
+    "deleted": 1,
+    "riskHigh": 3,
+    "riskMedium": 1,
+    "riskLow": 0
+  },
+  "changes": [
+    {
+      "path": "src/VIs/module_1.vi",
+      "changeType": "deleted",
+      "hashBefore": "7d427d5e50f87f35c238e4b7676d797e42dab3c8",
+      "hashAfter": "479001ee18011da895cc12b8a40de84126367c69",
+      "callers": [],
+      "risk": "medium",
+      "notes": "RC2 sample",
+      "metrics": {
+        "sizeBefore": 163,
+        "sizeAfter": 92
+      }
+    },
+    {
+      "path": "src/VIs/module_2.vi",
+      "changeType": "added",
+      "hashBefore": "7619dd2b98db3b1a6f0063af50441e9888e8314a",
+      "hashAfter": "e613d3840f96e84390157bef6ba67e7ef30ca5ba",
+      "callers": [
+        "caller_0",
+        "caller_1"
+      ],
+      "risk": "high",
+      "notes": "RC2 sample",
+      "metrics": {
+        "sizeBefore": 126,
+        "sizeAfter": 94
+      }
+    },
+    {
+      "path": "src/VIs/module_3.vi",
+      "changeType": "changed",
+      "hashBefore": "2956c601b80f18af8c6f5ae1b8906f73c3084da8",
+      "hashAfter": "d8603f23d30da688285f305937ca54163bd0f8b6",
+      "callers": [],
+      "risk": "high",
+      "notes": "RC2 sample",
+      "metrics": {
+        "sizeBefore": 135,
+        "sizeAfter": 187
+      }
+    },
+    {
+      "path": "src/VIs/module_4.vi",
+      "changeType": "added",
+      "hashBefore": "dac1f04fe99f68a99d215318034427f7e37a5c2b",
+      "hashAfter": "cbba4f9225ad62ab2bdda60ecb4b704584384352",
+      "callers": [],
+      "risk": "high",
+      "notes": "RC2 sample",
+      "metrics": {
+        "sizeBefore": 150,
+        "sizeAfter": 188
+      }
+    }
+  ]
+}

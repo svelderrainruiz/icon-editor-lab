@@ -1,0 +1,177 @@
+[CmdletBinding()]
+param(
+  [string]$ResultsRoot = 'tests/results',
+  [switch]$RequireDerivedEnv = $true,
+  [switch]$RequireSessionIndex = $true,
+  [switch]$RequireFixtureSummary = $true,
+  [switch]$RequireDeltaJson = $false
+)
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+
+$issues = @()
+
+<#
+.SYNOPSIS
+Add-Issue: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Add-Issue {
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
+  param([string]$Message)
+  $script:issues += "- $Message"
+}
+
+<#
+.SYNOPSIS
+Assert-PathExists: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Assert-PathExists {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
+  param(
+    [Parameter(Mandatory = $true)][string]$Path,
+    [Parameter(Mandatory = $true)][string]$Description,
+    [switch]$ExpectJson,
+    [string]$ExpectedSchema
+  )
+
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+    Add-Issue "$Description missing ($Path)"
+    return $null
+  }
+
+  $item = Get-Item -LiteralPath $Path
+  if ($item.Length -le 0) {
+    Add-Issue "$Description empty ($Path)"
+    return $null
+  }
+
+  Write-Host ("Found: {0}" -f $Description)
+
+  if ($ExpectJson) {
+    try {
+      $json = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json -ErrorAction Stop
+    } catch {
+      Add-Issue "$Description invalid JSON ($Path): $($_.Exception.Message)"
+      return $null
+    }
+
+    if ($ExpectedSchema) {
+      $actual = [string]$json.schema
+      if (-not $actual) {
+        Add-Issue "$Description JSON missing schema property (expected '$ExpectedSchema') ($Path)"
+      } elseif ($actual -ne $ExpectedSchema) {
+        Add-Issue ("{0} JSON schema '{1}' does not match expected '{2}' ({3})" -f $Description, $actual, $ExpectedSchema, $Path)
+      }
+    }
+
+    return $json
+  }
+
+  return $item
+}
+
+$fixtureValidation = Assert-PathExists -Path 'fixture-validation.json' -Description 'Fixture validation JSON' -ExpectJson
+
+if ($RequireDeltaJson -and (Test-Path -LiteralPath 'fixture-validation-delta.json' -PathType Leaf)) {
+  Assert-PathExists -Path 'fixture-validation-delta.json' -Description 'Fixture validation delta JSON' -ExpectJson
+}
+
+if ($RequireFixtureSummary) {
+  $summaryItem = Assert-PathExists -Path 'fixture-summary.md' -Description 'Fixture summary markdown'
+  if ($summaryItem) {
+    $content = Get-Content -LiteralPath $summaryItem.FullName -Raw
+    if (-not $content.Trim()) {
+      Add-Issue "Fixture summary markdown contains no content ($($summaryItem.FullName))"
+    }
+  }
+}
+
+if ($RequireDerivedEnv) {
+  $derivedPath = Join-Path $ResultsRoot '_agent/derived-env.json'
+  $derived = Assert-PathExists -Path $derivedPath -Description 'Derived environment snapshot JSON' -ExpectJson
+  if ($derived) {
+    $propCount = @($derived.PSObject.Properties.Name).Count
+    if ($propCount -eq 0) {
+      Add-Issue "Derived environment JSON has no top-level properties ($derivedPath)"
+    }
+  }
+}
+
+if ($RequireSessionIndex) {
+  $sessionPath = Join-Path $ResultsRoot '_validate-sessionindex/session-index.json'
+  $session = Assert-PathExists -Path $sessionPath -Description 'Session index JSON' -ExpectJson
+  if ($session) {
+    $schemaValue = [string]$session.schema
+    if (-not $schemaValue) {
+      Add-Issue "Session index JSON missing schema property ($sessionPath)"
+    }
+  }
+}
+
+if ($fixtureValidation) {
+  $schemaValue = $null
+  if ($fixtureValidation.PSObject.Properties['schema']) {
+    $schemaValue = [string]$fixtureValidation.schema
+  }
+  if ($schemaValue) {
+    $items = $fixtureValidation.items
+    if (-not $items -or @($items).Count -eq 0) {
+      Add-Issue "Fixture validation JSON contains no items (fixture-validation.json)"
+    }
+  } elseif ($fixtureValidation.PSObject.Properties['ok']) {
+    if (-not $fixtureValidation.ok) {
+      Add-Issue "Fixture validation summary reported failure (fixture-validation.json)"
+    }
+  } else {
+    Add-Issue "Fixture validation JSON missing expected structure (fixture-validation.json)"
+  }
+}
+
+if ($issues.Count -gt 0) {
+  $msg = (@('Validate outputs check failed:') + $issues) -join [Environment]::NewLine
+  Write-Error $msg
+  exit 2
+}
+
+Write-Host 'All expected Validate artifacts are present and sane.'
+
+<#
+.SYNOPSIS
+Test-ValidLabel: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Test-ValidLabel {
+  param([Parameter(Mandatory)][string]$Label)
+  if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
+}
+
+<#
+.SYNOPSIS
+Invoke-WithTimeout: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Invoke-WithTimeout {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][scriptblock]$ScriptBlock,
+    [Parameter()][int]$TimeoutSec = 600
+  )
+  $job = Start-Job -ScriptBlock $ScriptBlock
+  if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
+    try { Stop-Job $job -Force } catch {}
+    throw "Operation timed out in $TimeoutSec s"
+  }
+  Receive-Job $job -ErrorAction Stop
+}

@@ -1,0 +1,37 @@
+Test,Describe[0],Tags[0],Its,Shoulds,ToolRefs
+tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,"IconEditor, DevMode, Scripts",7,20,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1, tools/icon-editor/Reset-IconEditorWorkspace.ps1"
+tests/IconEditorDevMode.Integration.Tests.ps1,IconEditor development mode (integration),"IconEditor, Integration, DevMode",1,5,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
+tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,"IconEditor, DevMode, Stability",6,29,tools/icon-editor/Test-DevModeStability.ps1
+tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,"IconEditor, DevMode, Telemetry",4,22,tools/icon-editor/IconEditorDevMode.psm1
+tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,IconEditor,12,28,
+tests/IconEditorMissingInProject.CompareOnly.Tests.ps1,MissingInProject compare-only suite,"IconEditor, Integration, MissingInProject, CompareOnly",1,5,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
+tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,"IconEditor, Integration, MissingInProject",4,15,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
+tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,,12,35,"tools/GCli.psm1, tools/Vipm.psm1, tools/icon-editor/IconEditorPackage.psm1"
+tests/IconEditorPackaging.Smoke.Tests.ps1,Icon Editor packaging smoke guards,"IconEditor, Packaging, Smoke",12,47,"tools/Detect-RogueLV.ps1, tools/icon-editor/Describe-IconEditorFixture.ps1, tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1, tools/icon-editor/IconEditorDevMode.psm1, tools/icon-editor/Invoke-ValidateLocal.ps1, tools/icon-editor/Invoke-VipmCliBuild.ps1, tools/icon-editor/Prepare-FixtureViDiffs.ps1, tools/icon-editor/Render-IconEditorFixtureReport.ps1, tools/icon-editor/Simulate-IconEditorBuild.ps1, tools/icon-editor/Stage-IconEditorSnapshot.ps1, tools/icon-editor/Update-IconEditorFixtureReport.ps1"
+tests/Invoke-FixtureViDiffs.Tests.ps1,Invoke-FixtureViDiffs.ps1,,2,8,tools/icon-editor/Invoke-FixtureViDiffs.ps1
+tests/Invoke-IconEditorBuild.Tests.ps1,Invoke-IconEditorBuild.ps1,"IconEditor, Build, Unit",4,64,
+tests/Invoke-IconEditorSnapshotFromRepo.Tests.ps1,Invoke-IconEditorSnapshotFromRepo.ps1,"IconEditor, Snapshot, Integration",1,8,tools/icon-editor/Invoke-IconEditorSnapshotFromRepo.ps1
+tests/Invoke-IconEditorVipPackaging.Tests.ps1,Invoke-IconEditorVipPackaging helper,"IconEditor, Packaging, Unit",1,3,
+tests/Invoke-MissingInProjectCLI.Tests.ps1,Invoke-MissingInProjectCLI.ps1,"MissingInProject, Unit",7,40,
+tests/Invoke-MissingInProjectSuite.Tests.ps1,Invoke-MissingInProjectSuite.ps1,"Unit, IconEditor, MissingInProject",13,66,
+tests/Invoke-VIAnalyzer.Tests.ps1,Invoke-VIAnalyzer.ps1,"Unit, IconEditor, VIAnalyzer",7,33,
+tests/Invoke-VIDiffSweep.Tests.ps1,Invoke-VIDiffSweep.ps1,"Compare, Sweep, Integration",1,6,tools/icon-editor/Invoke-VIDiffSweep.ps1
+tests/Invoke-VIDiffSweepStrong.Tests.ps1,Invoke-VIDiffSweepStrong.ps1,"Script, IconEditor",6,48,
+tests/Invoke-VipmDependencies.Tests.ps1,Invoke-VipmDependencies.ps1 argument handling,"Unit, VipmDependencies",3,1,
+tests/MipScenarioHelpers.Tests.ps1,MipScenarioHelpers,"Unit, IconEditor, MissingInProject",2,2,
+tests/Prepare-FixtureViDiffs.Tests.ps1,Prepare-FixtureViDiffs.ps1,"IconEditor, VICompare, Unit",2,17,"tools/icon-editor/Describe-IconEditorFixture.ps1, tools/icon-editor/Prepare-FixtureViDiffs.ps1"
+tests/Prepare-LabVIEWHost.Tests.ps1,Prepare-LabVIEWHost helper,"Unit, IconEditor",2,20,tools/icon-editor/Prepare-LabVIEWHost.ps1
+tests/Render-IconEditorFixtureReport.Tests.ps1,Render-IconEditorFixtureReport.ps1,"IconEditor, FixtureReport, Render, Unit",26,51,"tools/icon-editor/Describe-IconEditorFixture.ps1, tools/icon-editor/Render-IconEditorFixtureReport.ps1"
+tests/Render-ViComparisonReport.Tests.ps1,Render-ViComparisonReport.ps1,,1,7,tools/icon-editor/Render-ViComparisonReport.ps1
+tests/Replay-ApplyVipcJob.Tests.ps1,Replay-ApplyVipcJob helpers,Unit,5,11,
+tests/Simulate-IconEditorBuild.Tests.ps1,Simulate-IconEditorBuild.ps1,"IconEditor, Simulation, Unit",4,23,
+tests/Stage-IconEditorSnapshot.Tests.ps1,Stage-IconEditorSnapshot.ps1,"IconEditor, Snapshot, Unit",5,64,tools/icon-editor/Stage-IconEditorSnapshot.ps1
+tests/Test-IconEditorPackage.Tests.ps1,Test-IconEditorPackage.ps1,"IconEditor, Packaging, Unit",4,12,
+tests/Update-IconEditorFixtureReport.Tests.ps1,Update-IconEditorFixtureReport.ps1,"IconEditor, FixtureReport, Unit",2,8,tools/icon-editor/Update-IconEditorFixtureReport.ps1
+tests/UpdateVipbDisplayInfo.Tests.ps1,Update-VipbDisplayInfo.ps1,,16,17,
+tests/tools/Tools.Help.Tests.ps1,tools/ help synopsis coverage,"tools, help",1,2,
+tests/tools/Tools.ShouldProcess.Help.Tests.ps1,Tools module exported functions,,4,6,
+tests/tools/Tools.WhatIf.Tests.ps1,tools/ mutating scripts expose -WhatIf via CmdletBinding,"tools, whatif",1,1,
+tools/Tests/Tools.Help.Tests.ps1,Exported functions have Synopsis help,,2,3,
+tools/Tests/Tools.ShouldProcess.Tests.ps1,Mutating functions declare SupportsShouldProcess,,2,2,
+tools/Tests/Tools.WhatIf.Tests.ps1,-WhatIf does not throw (non-mandatory paths),,1,0,

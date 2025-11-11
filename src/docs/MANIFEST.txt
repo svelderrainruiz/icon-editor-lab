@@ -1,0 +1,10 @@
+Icon-Editor-Lab Pre-Release Bundle
+Tag: BL-PRE-2043-RC2
+Generated: 2025-11-10T02:08:08Z
+
+Includes:
+- src/icon-editor-lab/ (placeholder)  ← replace with real sources/artifacts
+- architecture/adr/ (ADR-001..008 + INDEX.md)
+- system/ docs (System Definition, ICD, mapping, scenarios)
+- artifacts/ (RC2 sample JSONs)
+- reports/pre-release/index.html (RC2 summary)

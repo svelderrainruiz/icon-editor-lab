@@ -1,0 +1,17 @@
+{
+  "label": "baseline",
+  "inputs": [
+    "samples/project-A",
+    "samples/project-B"
+  ],
+  "timeoutSec": 600,
+  "toolPaths": {
+    "lvCompare": "C:/Program Files/National Instruments/Shared/labview/lvcompare.exe",
+    "labVIEW": "C:/Program Files/National Instruments/LabVIEW 2023/labview.exe"
+  },
+  "noiseProfile": {
+    "ignoreFrontPanelCosmetic": true,
+    "ignoreBlockDiagramReflow": false,
+    "ignoreTimestampMetadata": false
+  }
+}

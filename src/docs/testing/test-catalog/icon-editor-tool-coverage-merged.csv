@@ -1,0 +1,23 @@
+Tool,#Tests,Tests
+tools/icon-editor/Describe-IconEditorFixture.ps1,3,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Prepare-FixtureViDiffs.Tests.ps1; tests/Render-IconEditorFixtureReport.Tests.ps1
+tools/icon-editor/Disable-DevMode.ps1,5,tests/Enable-Disable-DevMode.Tests.ps1; tests/IconEditorDevMode.Integration.Tests.ps1; tests/IconEditorMissingInProject.CompareOnly.Tests.ps1; tests/IconEditorMissingInProject.DevMode.Tests.ps1; tests/IconEditorPackaging.Smoke.Tests.ps1
+tools/icon-editor/Enable-DevMode.ps1,5,tests/Enable-Disable-DevMode.Tests.ps1; tests/IconEditorDevMode.Integration.Tests.ps1; tests/IconEditorMissingInProject.CompareOnly.Tests.ps1; tests/IconEditorMissingInProject.DevMode.Tests.ps1; tests/IconEditorPackaging.Smoke.Tests.ps1
+tools/icon-editor/Invoke-FixtureViDiffs.ps1,1,tests/Invoke-FixtureViDiffs.Tests.ps1
+tools/icon-editor/Invoke-IconEditorBuild.ps1,1,tests/Invoke-IconEditorBuild.Tests.ps1
+tools/icon-editor/Invoke-IconEditorSnapshotFromRepo.ps1,1,tests/Invoke-IconEditorSnapshotFromRepo.Tests.ps1
+tools/icon-editor/Invoke-MissingInProjectSuite.ps1,1,tests/Invoke-MissingInProjectSuite.Tests.ps1
+tools/icon-editor/Invoke-VIAnalyzer.ps1,1,tests/Invoke-VIAnalyzer.Tests.ps1
+tools/icon-editor/Invoke-VIDiffSweep.ps1,1,tests/Invoke-VIDiffSweep.Tests.ps1
+tools/icon-editor/Invoke-VIDiffSweepStrong.ps1,1,tests/Invoke-VIDiffSweepStrong.Tests.ps1
+tools/icon-editor/Invoke-ValidateLocal.ps1,1,tests/IconEditorPackaging.Smoke.Tests.ps1
+tools/icon-editor/Invoke-VipmCliBuild.ps1,1,tests/IconEditorPackaging.Smoke.Tests.ps1
+tools/icon-editor/Prepare-FixtureViDiffs.ps1,2,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Prepare-FixtureViDiffs.Tests.ps1
+tools/icon-editor/Prepare-LabVIEWHost.ps1,1,tests/Prepare-LabVIEWHost.Tests.ps1
+tools/icon-editor/Render-IconEditorFixtureReport.ps1,2,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Render-IconEditorFixtureReport.Tests.ps1
+tools/icon-editor/Render-ViComparisonReport.ps1,1,tests/Render-ViComparisonReport.Tests.ps1
+tools/icon-editor/Reset-IconEditorWorkspace.ps1,1,tests/Enable-Disable-DevMode.Tests.ps1
+tools/icon-editor/Simulate-IconEditorBuild.ps1,2,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Simulate-IconEditorBuild.Tests.ps1
+tools/icon-editor/Stage-IconEditorSnapshot.ps1,2,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Stage-IconEditorSnapshot.Tests.ps1
+tools/icon-editor/Test-DevModeStability.ps1,1,tests/IconEditorDevMode.Stability.Tests.ps1
+tools/icon-editor/Test-IconEditorPackage.ps1,1,tests/Test-IconEditorPackage.Tests.ps1
+tools/icon-editor/Update-IconEditorFixtureReport.ps1,2,tests/IconEditorPackaging.Smoke.Tests.ps1; tests/Update-IconEditorFixtureReport.Tests.ps1

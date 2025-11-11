@@ -1,0 +1,69 @@
+name: CI (Windows AllSigned)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  windows-signed:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: PowerShell/PowerShell@v1
+        with:
+          version: '7.4.x'
+
+      - name: Import code signing cert (if provided)
+        shell: pwsh
+        env:
+          SIGNING_CERT_B64: ${{ secrets.SIGNING_CERT_B64 }}
+          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+        run: |
+          if ($env:SIGNING_CERT_B64) {
+            $bytes = [Convert]::FromBase64String($env:SIGNING_CERT_B64)
+            [IO.File]::WriteAllBytes('code-signing.pfx', $bytes)
+            $sec = ConvertTo-SecureString -String $env:SIGNING_CERT_PASSWORD -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath .\code-signing.pfx -CertStoreLocation Cert:\CurrentUser\My -Password $sec
+            Write-Output "Imported code-signing cert: $($cert.Thumbprint)"
+          } else {
+            Write-Output "No SIGNING_CERT_B64 provided. Will rely on pre-installed certs."
+          }
+
+      - name: Sign scripts
+        shell: pwsh
+        run: |
+          ./tools/Sign-Scripts.ps1
+
+      - name: Enforce AllSigned and verify signatures
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope Process -Force
+          ./tools/Verify-Signatures.ps1
+
+      - name: Validate example config
+        shell: pwsh
+        run: |
+          ./tools/Validate-Config.ps1 -ConfigPath ./configs/examples/vi-diff-heuristics.json
+
+      - name: Run Pester schema tests
+        shell: pwsh
+        run: |
+          Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck
+          Invoke-Pester ./tests/ConfigSchema.Tests.ps1 -CI -Output Detailed
+
+      - name: Run ScriptAnalyzer
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -SkipPublisherCheck
+          $settings = '.pssa/PSScriptAnalyzerSettings.psd1'
+          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings $settings -ReportSummary
+          if ($results) { $results | Format-Table -AutoSize; throw 'PSScriptAnalyzer found issues' }

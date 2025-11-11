@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/icon-editor/vi-diff-heuristics.schema.json",
+  "title": "VI Diff Heuristics Config",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "label",
+    "inputs"
+  ],
+  "properties": {
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9._-]{1,64}$",
+      "description": "Short label used for folder and report names"
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^(?!\\.\\.)[^;&|`]+$"
+      },
+      "description": "List of input file or directory paths for LVCompare/analysis"
+    },
+    "timeoutSec": {
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 3600,
+      "default": 600,
+      "description": "Global timeout for external tool execution (seconds)"
+    },
+    "toolPaths": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lvCompare": {
+          "type": "string",
+          "pattern": "^(?:[A-Za-z]:[\\\\/]|/).+",
+          "description": "Absolute path (Windows or POSIX) to lvcompare"
+        },
+        "labVIEW": {
+          "type": "string",
+          "pattern": "^(?:[A-Za-z]:[\\\\/]|/).+",
+          "description": "Absolute path to labview executable"
+        },
+        "vipm": {
+          "type": "string",
+          "pattern": "^(?:[A-Za-z]:[\\\\/]|/).+",
+          "description": "Absolute path to VIPM executable"
+        }
+      }
+    },
+    "noiseProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ignoreFrontPanelCosmetic": {
+          "type": "boolean",
+          "default": false
+        },
+        "ignoreBlockDiagramReflow": {
+          "type": "boolean",
+          "default": false
+        },
+        "ignoreTimestampMetadata": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "description": "Optional knobs to treat certain differences as noise"
+    }
+  }
+}

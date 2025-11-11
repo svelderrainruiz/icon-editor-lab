@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2025-11-10T02:08:08.028483Z",
+  "tool": "rc2-generator",
+  "range": {
+    "from": "BL-REL-2042-R2.0",
+    "to": "BL-PRE-2043-RC2"
+  },
+  "entries": [
+    {
+      "viPath": "src/VIs/module_0.vi",
+      "timeline": [
+        {
+          "commit": "00abcd",
+          "author": "alice",
+          "date": "2025-11-10T02:08:08.028338Z",
+          "message": "rc2 change 00",
+          "changeType": "added",
+          "testsLinked": [
+            "TC-100"
+          ],
+          "coverageDelta": 3.13,
+          "baselineTag": "BL-PRE-2043-RC2"
+        },
+        {
+          "commit": "01abcd",
+          "author": "bob",
+          "date": "2025-11-09T02:08:08.028367Z",
+          "message": "rc2 change 01",
+          "changeType": "added",
+          "testsLinked": [
+            "TC-101"
+          ],
+          "coverageDelta": 3.74,
+          "baselineTag": "BL-PRE-2043-RC2"
+        }
+      ]
+    },
+    {
+      "viPath": "src/VIs/module_1.vi",
+      "timeline": [
+        {
+          "commit": "10abcd",
+          "author": "alice",
+          "date": "2025-11-10T02:08:08.028381Z",
+          "message": "rc2 change 10",
+          "changeType": "added",
+          "testsLinked": [
+            "TC-110"
+          ],
+          "coverageDelta": 1.89,
+          "baselineTag": "BL-PRE-2043-RC2"
+        },
+        {
+          "commit": "11abcd",
+          "author": "bob",
+          "date": "2025-11-09T02:08:08.028392Z",
+          "message": "rc2 change 11",
+          "changeType": "renamed",
+          "testsLinked": [
+            "TC-111"
+          ],
+          "coverageDelta": -0.75,
+          "baselineTag": "BL-PRE-2043-RC2"
+        }
+      ]
+    },
+    {
+      "viPath": "src/VIs/module_2.vi",
+      "timeline": [
+        {
+          "commit": "20abcd",
+          "author": "alice",
+          "date": "2025-11-10T02:08:08.028399Z",
+          "message": "rc2 change 20",
+          "changeType": "modified",
+          "testsLinked": [
+            "TC-120"
+          ],
+          "coverageDelta": -0.77,
+          "baselineTag": "BL-PRE-2043-RC2"
+        },
+        {
+          "commit": "21abcd",
+          "author": "bob",
+          "date": "2025-11-09T02:08:08.028407Z",
+          "message": "rc2 change 21",
+          "changeType": "modified",
+          "testsLinked": [
+            "TC-121"
+          ],
+          "coverageDelta": 0.45,
+          "baselineTag": "BL-PRE-2043-RC2"
+        }
+      ]
+    }
+  ]
+}

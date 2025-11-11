@@ -1,0 +1,248 @@
+{
+  "orphan_tests_count": 20,
+  "orphan_tests_sample": [
+    "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+    "icon-editor-lab-13/tests/Invoke-IconEditorSnapshotFromRepo.Tests.ps1",
+    "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+    "icon-editor-lab-13/tests/Invoke-VIAnalyzer.Tests.ps1",
+    "icon-editor-lab-13/tests/Invoke-VIDiffSweep.Tests.ps1",
+    "icon-editor-lab-13/tests/Invoke-VIDiffSweepStrong.Tests.ps1",
+    "icon-editor-lab-13/tests/Prepare-FixtureViDiffs.Tests.ps1",
+    "icon-editor-lab-13/tests/Render-IconEditorFixtureReport.Tests.ps1",
+    "icon-editor-lab-13/tests/Render-ViComparisonReport.Tests.ps1",
+    "icon-editor-lab-13/tests/Simulate-IconEditorBuild.Tests.ps1",
+    "icon-editor-lab-13/tests/Test-IconEditorPackage.Tests.ps1",
+    "icon-editor-lab-13/tests/Update-IconEditorFixtureReport.Tests.ps1",
+    "icon-editor-lab-13/tests/UpdateVipbDisplayInfo.Tests.ps1",
+    "icon-editor-lab-13/tests/tools/Tools.Help.Tests.ps1",
+    "icon-editor-lab-13/tests/tools/Tools.Loader.ps1",
+    "icon-editor-lab-13/tests/tools/Tools.ShouldProcess.Help.Tests.ps1",
+    "icon-editor-lab-13/tests/tools/Tools.WhatIf.Tests.ps1",
+    "icon-editor-lab-13/tools/Tests/Tools.Help.Tests.ps1",
+    "icon-editor-lab-13/tools/Tests/Tools.ShouldProcess.Tests.ps1",
+    "icon-editor-lab-13/tools/Tests/Tools.WhatIf.Tests.ps1"
+  ],
+  "ambiguous_functions_count": 0,
+  "ambiguous_functions_sample": [],
+  "skipped_tests_count": 1,
+  "skipped_tests": [
+    "icon-editor-lab-13/tools/Tests/Tools.WhatIf.Tests.ps1"
+  ],
+  "pending_tests_count": 0,
+  "pending_tests": [],
+  "conflicting_expectations_count": 3,
+  "conflicting_expectations_sample": [
+    {
+      "type": "Conflicting expectations for same function within a Describe",
+      "function": "(unknown)",
+      "describe": "IconEditor dev-mode stability harness",
+      "examples": [
+        {
+          "test_file": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+          "assertion": "produces a successful summary when all iterations pass"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+          "assertion": "stops on scenario failure and records the reason"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+          "assertion": "fails when analyzer flags dev-mode drift"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+          "assertion": "fails when enable telemetry shows verification gaps"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1",
+          "assertion": "fails when disable telemetry reports settle failure"
+        }
+      ]
+    },
+    {
+      "type": "Conflicting expectations for same function within a Describe",
+      "function": "(unknown)",
+      "describe": "Invoke-MissingInProjectSuite.ps1",
+      "examples": [
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+          "assertion": "writes a run report and toggles MIP_SKIP_NEGATIVE by default"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+          "assertion": "auto-generates a label when omitted using branch + sha metadata"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+          "assertion": "allows selecting the full suite explicitly"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+          "assertion": "restores MIP_SKIP_NEGATIVE when IncludeNegative is used and failures bubble up"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1",
+          "assertion": "cleans existing artifacts and mirrors latest outputs to the root when requested"
+        }
+      ]
+    },
+    {
+      "type": "Conflicting expectations for same function within a Describe",
+      "function": "global",
+      "describe": "Invoke-MissingInProjectCLI.ps1",
+      "examples": [
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1",
+          "assertion": "passes the VI path via -v when invoking g-cli"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1",
+          "assertion": "honors MIP_GCLI_CONNECT_TIMEOUT_MS override"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1",
+          "assertion": "succeeds when helper reports no missing files"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1",
+          "assertion": "retries helper when initial invocation fails"
+        },
+        {
+          "test_file": "icon-editor-lab-13/tests/Invoke-MissingInProjectCLI.Tests.ps1",
+          "assertion": "fails when helper reports missing files"
+        }
+      ]
+    }
+  ],
+  "inverse_pairs_count": 20,
+  "inverse_pairs_sample": [
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "(unknown)",
+      "describe": "IconEditor dev-mode stability harness",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorDevMode.Stability.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "(unknown)",
+      "describe": "Invoke-MissingInProjectSuite.ps1",
+      "verbs": [
+        "set",
+        "clear"
+      ],
+      "example_test": "icon-editor-lab-13/tests/Invoke-MissingInProjectSuite.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Assert-IconEditorDevModeTokenState",
+      "describe": "IconEditor dev mode helpers",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Disable-IconEditorDevelopmentMode",
+      "describe": "Icon Editor packaging smoke guards",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Disable-IconEditorDevelopmentMode",
+      "describe": "IconEditor dev mode helpers",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Enable-IconEditorDevelopmentMode",
+      "describe": "Enable/Disable dev mode scripts",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Enable-IconEditorDevelopmentMode",
+      "describe": "Icon Editor packaging smoke guards",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorPackaging.Smoke.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Enable-IconEditorDevelopmentMode",
+      "describe": "IconEditor dev mode helpers",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Find-LabVIEWVersionExePath",
+      "describe": "Enable/Disable dev mode scripts",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/Enable-Disable-DevMode.Tests.ps1"
+    },
+    {
+      "type": "Enable/Disable (or similar) mixed in same test scope",
+      "function": "Find-LabVIEWVersionExePath",
+      "describe": "IconEditor dev mode helpers",
+      "verbs": [
+        "enable",
+        "disable"
+      ],
+      "example_test": "icon-editor-lab-13/tests/IconEditorDevMode.Tests.ps1"
+    }
+  ],
+  "large_tools_with_zero_direct_test_refs_count": 50,
+  "large_tools_with_zero_direct_test_refs_sample": [
+    "icon-editor-lab-13/tools/After-CommitActions.ps1",
+    "icon-editor-lab-13/tools/Agent-Wait.ps1",
+    "icon-editor-lab-13/tools/Agent-Warmup.ps1",
+    "icon-editor-lab-13/tools/Assert-ValidateOutputs.ps1",
+    "icon-editor-lab-13/tools/Auto-Release-WhenGreen.ps1",
+    "icon-editor-lab-13/tools/Branch-Orchestrator.ps1",
+    "icon-editor-lab-13/tools/Build-VSCExtension.ps1",
+    "icon-editor-lab-13/tools/Calibrate-LabVIEWBuffer.ps1",
+    "icon-editor-lab-13/tools/Check-TrackedBuildArtifacts.ps1",
+    "icon-editor-lab-13/tools/Check-WorkflowDrift.ps1",
+    "icon-editor-lab-13/tools/Collect-RunnerHealth.ps1",
+    "icon-editor-lab-13/tools/Compare-RefsToTemp.ps1",
+    "icon-editor-lab-13/tools/Compare-VIHistory.ps1",
+    "icon-editor-lab-13/tools/CompareVI.Tools/CompareVI.Tools.psm1",
+    "icon-editor-lab-13/tools/ConsoleUx.psm1",
+    "icon-editor-lab-13/tools/ConsoleWatch.psm1",
+    "icon-editor-lab-13/tools/Detect-RogueLV.ps1",
+    "icon-editor-lab-13/tools/Dev-Dashboard.ps1",
+    "icon-editor-lab-13/tools/Dev-Dashboard.psm1",
+    "icon-editor-lab-13/tools/Dev-WatcherManager.ps1",
+    "icon-editor-lab-13/tools/Diagnose-LabVIEWSetup.ps1",
+    "icon-editor-lab-13/tools/Diff-FixtureValidationJson.ps1",
+    "icon-editor-lab-13/tools/Dispatcher/TestSelection.psm1",
+    "icon-editor-lab-13/tools/Follow-OrchestratedRun.ps1",
+    "icon-editor-lab-13/tools/Follow-PesterArtifacts.ps1"
+  ]
+}

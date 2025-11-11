@@ -1,0 +1,294 @@
+ReqID,Tool,ProposedRequirement,VerifiedBy,VerificationMethod
+ICL-REQ-001,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall enables dev mode via wrapper script.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-002,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall disables dev mode via wrapper script after enabling.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-003,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall updates LocalHost.LibraryPaths in the LabVIEW ini when toggling dev mode.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-004,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall uses policy defaults when invoking enable wrapper with operation.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-005,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall throws when enable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-006,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall throws when disable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-007,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall throws when reset helper script is missing.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-008,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall enables dev mode via wrapper script.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-009,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall disables dev mode via wrapper script after enabling.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-010,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall updates LocalHost.LibraryPaths in the LabVIEW ini when toggling dev mode.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-011,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall uses policy defaults when invoking enable wrapper with operation.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-012,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall throws when enable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-013,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall throws when disable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-014,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall throws when reset helper script is missing.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-015,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall enables dev mode via wrapper script.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-016,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall disables dev mode via wrapper script after enabling.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-017,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall updates LocalHost.LibraryPaths in the LabVIEW ini when toggling dev mode.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-018,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall uses policy defaults when invoking enable wrapper with operation.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-019,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall throws when enable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-020,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall throws when disable wrapper is missing helper scripts.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-021,tools/icon-editor/Reset-IconEditorWorkspace.ps1,Reset-IconEditorWorkspace shall throws when reset helper script is missing.,tests/Enable-Disable-DevMode.Tests.ps1,Test
+ICL-REQ-022,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall enables development mode for LabVIEW 2025 x64 when available.,tests/IconEditorDevMode.Integration.Tests.ps1,Test
+ICL-REQ-023,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall enables development mode for LabVIEW 2025 x64 when available.,tests/IconEditorDevMode.Integration.Tests.ps1,Test
+ICL-REQ-024,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall produces a successful summary when all iterations pass.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-025,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall stops on scenario failure and records the reason.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-026,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall fails when analyzer flags dev-mode drift.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-027,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall fails when enable telemetry shows verification gaps.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-028,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall fails when disable telemetry reports settle failure.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-029,tools/icon-editor/Test-DevModeStability.ps1,Test-DevModeStability shall fails when fewer than three verified iterations succeed.,tests/IconEditorDevMode.Stability.Tests.ps1,Test
+ICL-REQ-030,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall captures settle summary and verification snapshot.,tests/IconEditorDevMode.Telemetry.Tests.ps1,Test
+ICL-REQ-031,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall records failures once and preserves settle errors.,tests/IconEditorDevMode.Telemetry.Tests.ps1,Test
+ICL-REQ-032,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall records sweep payload when no rogue processes remain.,tests/IconEditorDevMode.Telemetry.Tests.ps1,Test
+ICL-REQ-033,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall throws when RequireClean detects rogue LabVIEW PIDs.,tests/IconEditorDevMode.Telemetry.Tests.ps1,Test
+ICL-REQ-034,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.CompareOnly.Tests.ps1,Test
+ICL-REQ-035,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.CompareOnly.Tests.ps1,Test
+ICL-REQ-036,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-037,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall fails MissingInProject after dev mode is disabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-038,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall skips negative MissingInProject coverage when MIP_SKIP_NEGATIVE=1.,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-039,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall builds the icon editor packed library after validations (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-040,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall passes MissingInProject when dev mode is enabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-041,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall fails MissingInProject after dev mode is disabled (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-042,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall skips negative MissingInProject coverage when MIP_SKIP_NEGATIVE=1.,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-043,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall builds the icon editor packed library after validations (LabVIEW <Version> <Bitness>-bit).,tests/IconEditorMissingInProject.DevMode.Tests.ps1,Test
+ICL-REQ-044,tools/GCli.psm1,GCli shall extracts the package file name from the VIPB.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-045,tools/GCli.psm1,GCli shall computes a deterministic package path inside the default builds folder.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-046,tools/GCli.psm1,GCli shall supports overriding the output directory when computing package path.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-047,tools/GCli.psm1,"GCli shall captures stdout, stderr, and warnings from provider process failure.",tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-048,tools/GCli.psm1,GCli shall reports exit code and warnings for successful runs.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-049,tools/GCli.psm1,GCli shall returns metadata when the package exists.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-050,tools/GCli.psm1,GCli shall throws when the expected package is missing.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-051,tools/GCli.psm1,GCli shall returns a structured snapshot even when LabVIEW 2023 is unavailable.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-052,tools/GCli.psm1,GCli shall invokes g-cli provider when requested and surfaces provider metadata.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-053,tools/GCli.psm1,GCli shall invokes VIPM provider when requested and reports provider name.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-054,tools/GCli.psm1,GCli shall throws when provider process exits non-zero and includes output.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-055,tools/GCli.psm1,GCli shall warns when g-cli provider detects disabled VI Server but proceeds.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-056,tools/Vipm.psm1,Vipm shall extracts the package file name from the VIPB.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-057,tools/Vipm.psm1,Vipm shall computes a deterministic package path inside the default builds folder.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-058,tools/Vipm.psm1,Vipm shall supports overriding the output directory when computing package path.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-059,tools/Vipm.psm1,"Vipm shall captures stdout, stderr, and warnings from provider process failure.",tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-060,tools/Vipm.psm1,Vipm shall reports exit code and warnings for successful runs.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-061,tools/Vipm.psm1,Vipm shall returns metadata when the package exists.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-062,tools/Vipm.psm1,Vipm shall throws when the expected package is missing.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-063,tools/Vipm.psm1,Vipm shall returns a structured snapshot even when LabVIEW 2023 is unavailable.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-064,tools/Vipm.psm1,Vipm shall invokes g-cli provider when requested and surfaces provider metadata.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-065,tools/Vipm.psm1,Vipm shall invokes VIPM provider when requested and reports provider name.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-066,tools/Vipm.psm1,Vipm shall throws when provider process exits non-zero and includes output.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-067,tools/Vipm.psm1,Vipm shall warns when g-cli provider detects disabled VI Server but proceeds.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-068,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall extracts the package file name from the VIPB.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-069,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall computes a deterministic package path inside the default builds folder.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-070,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall supports overriding the output directory when computing package path.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-071,tools/icon-editor/IconEditorPackage.psm1,"IconEditorPackage shall captures stdout, stderr, and warnings from provider process failure.",tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-072,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall reports exit code and warnings for successful runs.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-073,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall returns metadata when the package exists.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-074,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall throws when the expected package is missing.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-075,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall returns a structured snapshot even when LabVIEW 2023 is unavailable.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-076,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall invokes g-cli provider when requested and surfaces provider metadata.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-077,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall invokes VIPM provider when requested and reports provider name.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-078,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall throws when provider process exits non-zero and includes output.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-079,tools/icon-editor/IconEditorPackage.psm1,IconEditorPackage shall warns when g-cli provider detects disabled VI Server but proceeds.,tests/IconEditorPackage.Tests.ps1,Test
+ICL-REQ-080,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-081,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-082,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-083,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-084,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-085,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-086,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-087,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-088,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-089,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-090,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-091,tools/Detect-RogueLV.ps1,Detect-RogueLV shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-092,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-093,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-094,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-095,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-096,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-097,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-098,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-099,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-100,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-101,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-102,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-103,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-104,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-105,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-106,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-107,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-108,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-109,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-110,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-111,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-112,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-113,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-114,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-115,tools/icon-editor/Disable-DevMode.ps1,Disable-DevMode shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-116,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-117,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-118,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-119,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-120,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-121,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-122,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-123,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-124,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-125,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-126,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-127,tools/icon-editor/Enable-DevMode.ps1,Enable-DevMode shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-128,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-129,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-130,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-131,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-132,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-133,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-134,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-135,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-136,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-137,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-138,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-139,tools/icon-editor/IconEditorDevMode.psm1,IconEditorDevMode shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-140,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-141,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-142,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-143,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-144,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-145,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-146,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-147,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-148,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-149,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-150,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-151,tools/icon-editor/Invoke-ValidateLocal.ps1,Invoke-ValidateLocal shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-152,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-153,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-154,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-155,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-156,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-157,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-158,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-159,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-160,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-161,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-162,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-163,tools/icon-editor/Invoke-VipmCliBuild.ps1,Invoke-VipmCliBuild shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-164,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-165,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-166,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-167,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-168,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-169,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-170,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-171,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-172,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-173,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-174,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-175,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-176,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-177,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-178,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-179,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-180,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-181,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-182,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-183,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-184,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-185,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-186,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-187,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-188,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-189,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-190,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-191,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-192,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-193,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-194,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-195,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-196,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-197,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-198,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-199,tools/icon-editor/Simulate-IconEditorBuild.ps1,Simulate-IconEditorBuild shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-200,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-201,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-202,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-203,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-204,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-205,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-206,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-207,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-208,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-209,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-210,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-211,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-212,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Enable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-213,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Disable-DevMode.ps1 forwards parameters to IconEditorDevMode.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-214,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Describe-IconEditorFixture.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-215,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Update-IconEditorFixtureReport.ps1 requires -FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-216,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Describe-IconEditorFixture.ps1 produces a summary for a synthetic VIP.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-217,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-218,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Stage-IconEditorSnapshot.ps1 honors baseline paths.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-219,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Invoke-ValidateLocal.ps1 requires FixturePath.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-220,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Prepare-FixtureViDiffs.ps1 emits requests with a baseline manifest.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-221,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Render-IconEditorFixtureReport.ps1 includes delta information when baseline manifest env var is set.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-222,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-223,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall Simulate-IconEditorBuild.ps1 produces dry-run artifacts.,tests/IconEditorPackaging.Smoke.Tests.ps1,Test
+ICL-REQ-224,tools/icon-editor/Invoke-FixtureViDiffs.ps1,Invoke-FixtureViDiffs shall creates summary and marks dry-run entries.,tests/Invoke-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-225,tools/icon-editor/Invoke-FixtureViDiffs.ps1,Invoke-FixtureViDiffs shall records comparison outcomes using a stub compare script.,tests/Invoke-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-226,tools/icon-editor/Invoke-IconEditorSnapshotFromRepo.ps1,Invoke-IconEditorSnapshotFromRepo shall generates a snapshot workspace using changed files from the repo.,tests/Invoke-IconEditorSnapshotFromRepo.Tests.ps1,Test
+ICL-REQ-227,tools/icon-editor/Invoke-VIDiffSweep.ps1,Invoke-VIDiffSweep shall runs the sweep and returns candidate summary.,tests/Invoke-VIDiffSweep.Tests.ps1,Test
+ICL-REQ-228,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall emits requests when baseline manifest hash diverges.,tests/Prepare-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-229,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall uses baseline environment paths when parameters are omitted.,tests/Prepare-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-230,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall emits requests when baseline manifest hash diverges.,tests/Prepare-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-231,tools/icon-editor/Prepare-FixtureViDiffs.ps1,Prepare-FixtureViDiffs shall uses baseline environment paths when parameters are omitted.,tests/Prepare-FixtureViDiffs.Tests.ps1,Test
+ICL-REQ-232,tools/icon-editor/Prepare-LabVIEWHost.ps1,Prepare-LabVIEWHost shall parses comma/space separated lists and returns a dry-run summary.,tests/Prepare-LabVIEWHost.Tests.ps1,Test
+ICL-REQ-233,tools/icon-editor/Prepare-LabVIEWHost.ps1,Prepare-LabVIEWHost shall records dev-mode telemetry links when enable scripts run.,tests/Prepare-LabVIEWHost.Tests.ps1,Test
+ICL-REQ-234,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall emits baseline skip messaging when manifest env is missing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-235,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall truncates fixture-only asset listings beyond five entries per category.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-236,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall renders placeholders for missing custom-action hashes and mismatch status.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-237,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall renders empty fixture-only asset section when no assets are present.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-238,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall summarises baseline delta when manifest env is supplied.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-239,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall lists manifest delta entries with bullet details.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-240,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall writes markdown to stdout when OutputPath is omitted.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-241,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall renders headings when artifacts and custom actions are empty.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-242,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall reflects runner dependency mismatches in stakeholder summary.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-243,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall handles missing packageSmoke metadata without throwing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-244,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall computes delta when baseline entries is null.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-245,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall computes delta when baseline entries omit optional fields.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-246,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall truncates fixture-only assets independently per category.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-247,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall includes script assets with scripts prefix in manifest delta.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-248,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall formats artifacts with zero size and missing hash.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-249,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall lists changed entries in delta when hashes differ.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-250,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall preserves custom action ordering.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-251,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall rejects baseline manifest paths outside the repository.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-252,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall invokes Describe helper when ReportPath is omitted.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-253,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall supports relative baseline manifest within repo fallback.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-254,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall skips delta when relative baseline manifest is missing in repo fallback.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-255,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall updates ICON_EDITOR_PACKAGE.md when -UpdateDoc is specified.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-256,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall updates documentation when -UpdateDoc is used without OutputPath.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-257,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall throws when OutputPath directory does not exist.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-258,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall reports delta errors when baseline manifest cannot be parsed.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-259,tools/icon-editor/Describe-IconEditorFixture.ps1,Describe-IconEditorFixture shall handles empty baseline manifest files without crashing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-260,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall emits baseline skip messaging when manifest env is missing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-261,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall truncates fixture-only asset listings beyond five entries per category.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-262,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall renders placeholders for missing custom-action hashes and mismatch status.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-263,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall renders empty fixture-only asset section when no assets are present.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-264,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall summarises baseline delta when manifest env is supplied.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-265,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall lists manifest delta entries with bullet details.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-266,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall writes markdown to stdout when OutputPath is omitted.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-267,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall renders headings when artifacts and custom actions are empty.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-268,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall reflects runner dependency mismatches in stakeholder summary.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-269,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall handles missing packageSmoke metadata without throwing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-270,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall computes delta when baseline entries is null.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-271,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall computes delta when baseline entries omit optional fields.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-272,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall truncates fixture-only assets independently per category.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-273,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall includes script assets with scripts prefix in manifest delta.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-274,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall formats artifacts with zero size and missing hash.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-275,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall lists changed entries in delta when hashes differ.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-276,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall preserves custom action ordering.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-277,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall rejects baseline manifest paths outside the repository.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-278,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall invokes Describe helper when ReportPath is omitted.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-279,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall supports relative baseline manifest within repo fallback.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-280,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall skips delta when relative baseline manifest is missing in repo fallback.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-281,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall updates ICON_EDITOR_PACKAGE.md when -UpdateDoc is specified.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-282,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall updates documentation when -UpdateDoc is used without OutputPath.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-283,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall throws when OutputPath directory does not exist.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-284,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall reports delta errors when baseline manifest cannot be parsed.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-285,tools/icon-editor/Render-IconEditorFixtureReport.ps1,Render-IconEditorFixtureReport shall handles empty baseline manifest files without crashing.,tests/Render-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-286,tools/icon-editor/Render-ViComparisonReport.ps1,Render-ViComparisonReport shall renders with partial/missing artifact properties (IDictionary + PSCustomObject).,tests/Render-ViComparisonReport.Tests.ps1,Test
+ICL-REQ-287,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall stages a snapshot using an existing source and skips validation.,tests/Stage-IconEditorSnapshot.Tests.ps1,Test
+ICL-REQ-288,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall invokes the provided validate helper with dry-run semantics.,tests/Stage-IconEditorSnapshot.Tests.ps1,Test
+ICL-REQ-289,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall honours baseline environment variables when parameters are omitted.,tests/Stage-IconEditorSnapshot.Tests.ps1,Test
+ICL-REQ-290,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall honors dev mode overrides.,tests/Stage-IconEditorSnapshot.Tests.ps1,Test
+ICL-REQ-291,tools/icon-editor/Stage-IconEditorSnapshot.ps1,Stage-IconEditorSnapshot shall fails when LabVIEW 2025 x64 is unavailable.,tests/Stage-IconEditorSnapshot.Tests.ps1,Test
+ICL-REQ-292,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall suppresses summary output when -NoSummary is specified.,tests/Update-IconEditorFixtureReport.Tests.ps1,Test
+ICL-REQ-293,tools/icon-editor/Update-IconEditorFixtureReport.ps1,Update-IconEditorFixtureReport shall throws when the describe helper fails to emit a report.,tests/Update-IconEditorFixtureReport.Tests.ps1,Test

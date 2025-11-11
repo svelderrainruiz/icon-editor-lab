@@ -1,0 +1,44 @@
+{
+  "run": {
+    "id": "MIP-RC2-202511100208",
+    "start": "2025-11-10T02:08:08.029318Z",
+    "end": "2025-11-10T02:11:08.029323Z",
+    "tag": "BL-PRE-2043-RC2",
+    "commit": "efgh5678",
+    "mode": "prod",
+    "agent": "local-sample-agent"
+  },
+  "results": {
+    "lint": {
+      "errors": 0,
+      "warnings": 1,
+      "passed": true
+    },
+    "lunit": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0,
+      "coveragePct": 96.2,
+      "report": "artifacts/lunit/lunit_results.xml"
+    },
+    "package": {
+      "built": true,
+      "artifacts": [
+        "artifacts/vipkg/sample.vip"
+      ],
+      "checksums": "sha256:abcd"
+    },
+    "reports": {
+      "viComparison": "artifacts/vi-comparison/vi_diff_report.json",
+      "viHistory": "artifacts/vi-history/vi_history.json"
+    }
+  },
+  "artifacts": {
+    "directory": "artifacts/",
+    "files": [
+      "vi_diff_report.json",
+      "vi_history.json",
+      "lunit_results.xml"
+    ]
+  }
+}

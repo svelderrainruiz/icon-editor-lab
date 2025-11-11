@@ -1,0 +1,5 @@
+ID,Feature,CoverageItem,Preconditions,Steps,Expected
+TC-001,Mutator ShouldProcess,SupportsShouldProcess,Module loaded,Inspect CmdletBinding,True detected
+TC-002,WhatIf,-WhatIf behavior,No mandatory params,Invoke -WhatIf,No terminating error
+TC-003,Help,Synopsis present,Module loaded,Get-Help -Full,Synopsis not empty
+TC-004,Parse,AST parse,Repo checkout,Run AST parser,0 parse errors

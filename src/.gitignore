@@ -1,0 +1,108 @@
+# Build artifacts and tools
+bin/
+node_modules/
+tools/modules/
+coverage/
+artifacts/vsix/
+
+# Test results
+tests/results/
+tests/results
+tests/results/**
+!tests/results
+!tests/results/
+!tests/results/.gitkeep
+!tests/results/cli-only/
+!tests/results/cli-only/README.md
+!tests/results/teststand-session/
+!tests/results/teststand-session/session-index.json
+# Local dashboard output
+tools/dashboard/dashboard.html
+# Root-level CI artifacts (timestamped at runtime; never commit)
+/results/
+# Local temp workdirs created during ad-hoc runs
+.tmp-smoke/
+tmp-*/
+tmp-*.yml
+tmp-*.py
+tmp-agg/
+tmp-orch/
+tmp-rc-pester-results/
+tmp-fast-results/
+tmp-int-results/
+tmp/
+# Root-level transient test artifacts (should not be committed)
+testResults.xml
+tests/results/pester-results.xml
+tests/results/pester-results*.xml
+pester-results.xml
+final.json
+tests/results/pester-summary.txt
+tests/results/pester-summary.json
+tests/results/pester-failures.json
+tests/results/pester-artifacts.json
+tests/results/pester-selected-files.txt
+tests/results/delta.json
+tests/results/delta-history.jsonl
+tests/results/flaky-delta.json
+tests/results/flaky-demo-state.txt
+tests/results/custom-summary.json
+
+# Temporary files
+*.tmp
+.DS_Store
+actionlint
+tmp-*.json
+
+# Test temporary directories and results
+tests/tmp-*/
+tests/tmp/
+tests/tmp-*.yml
+tests/results-*/
+home/
+delta.json
+
+# ------------------------------
+# Hardened ignore rules (scoped)
+# ------------------------------
+
+# C#/.NET build outputs (any project under src/)
+src/**/obj/
+src/**/bin/
+
+# IDE cruft
+.vs/
+*.user
+*.suo
+
+# Test frameworks / runners
+TestResults/
+
+# Packages
+*.nupkg
+
+# Root solution (temporary guard; remove when intentionally tracking a solution)
+/compare-vi-cli-action.sln
+
+# Local IDE/Build artifacts (C#/.NET)
+src/**/obj/
+src/**/bin/
+.vs/
+*.suo
+*.user
+/compare-vi-cli-action.sln
+
+# VS Code extension build artifacts
+/tools/vscode/comparevi-extension/node_modules/
+/tools/vscode/comparevi-extension/out/
+/tools/vscode/comparevi-extension/dist/
+
+tools/vscode/comparevi-extension/.vscode-test/
+
+# Python bytecode caches
+**/__pycache__/
+*.pyc
+
+# Allow committed fixtures under the VS Code helper
+!vscode/comparevi-helper/test/fixtures/workspace/tmp-commit-236ffab/
+!vscode/comparevi-helper/test/fixtures/workspace/tmp-commit-236ffab/**
