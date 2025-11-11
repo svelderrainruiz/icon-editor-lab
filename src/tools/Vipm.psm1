@@ -71,20 +71,28 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Import-VipmProviderModules {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
-    $rootPath = $PSScriptRoot
-    if (-not $rootPath) {
-        $maybePath = $null
-        if ($PSCommandPath) {
-            $maybePath = $PSCommandPath
-        } elseif ($MyInvocation -and $MyInvocation.MyCommand -and ($MyInvocation.MyCommand | Get-Member -Name Path -ErrorAction SilentlyContinue)) {
-            $maybePath = $MyInvocation.MyCommand.Path
+    $providerOverride = $env:ICON_EDITOR_VIPM_PROVIDER_ROOT
+    $providerRoot = $null
+    if ($providerOverride) {
+        $providerRoot = $providerOverride
+    } else {
+        $rootPath = $PSScriptRoot
+        if (-not $rootPath) {
+            $maybePath = $null
+            if ($PSCommandPath) {
+                $maybePath = $PSCommandPath
+            } elseif ($MyInvocation -and $MyInvocation.MyCommand -and ($MyInvocation.MyCommand | Get-Member -Name Path -ErrorAction SilentlyContinue)) {
+                $maybePath = $MyInvocation.MyCommand.Path
+            }
+            if ($maybePath) {
+                $rootPath = Split-Path -Parent $maybePath
+            }
         }
-        if ($maybePath) {
-            $rootPath = Split-Path -Parent $maybePath
-        }
+        if (-not $rootPath) { return }
+        $providerRoot = Join-Path $rootPath 'providers'
     }
-    if (-not $rootPath) { return }
-    $providerRoot = Join-Path $rootPath 'providers'
+
+    if (-not $providerRoot) { return }
     if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
 
     $providerDirs = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue |

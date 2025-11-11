@@ -20,6 +20,27 @@ function script:New-TestVipmProvider {
     return $provider
 }
 
+function script:New-VipmProviderModuleContent {
+    param(
+        [string]$Name,
+        [string]$Binary = 'C:\vipm.exe',
+        [string]$Operation = 'build'
+    )
+@'
+function New-VipmProvider {
+    $provider = [pscustomobject]@{
+        ProviderName = '__NAME__'
+        ProviderBinary = '__BINARY__'
+    }
+    $provider | Add-Member -MemberType ScriptMethod -Name Name -Value { $this.ProviderName } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name ResolveBinaryPath -Value { $this.ProviderBinary } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name Supports -Value { param($op) $op -eq '__OP__' } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name BuildArgs -Value { param($op,$params) @('--provider','__NAME__') } -Force
+    return $provider
+}
+'@.Replace('__NAME__',$Name).Replace('__BINARY__',$Binary).Replace('__OP__',$Operation)
+}
+
 Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
     BeforeAll {
         $here = $PSScriptRoot
@@ -38,6 +59,9 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
     }
 
     AfterEach {
+        if (Test-Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT) {
+            Remove-Item Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -ErrorAction SilentlyContinue
+        }
         if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
             Remove-Module Vipm -Force -ErrorAction SilentlyContinue
         }
@@ -127,6 +151,64 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
             $provider = New-TestVipmProvider -Name 'Viz' -Supports { $false }
             Register-VipmProvider -Provider $provider
             { Get-VipmInvocation -Operation 'deploy' } | Should -Throw
+        }
+    }
+
+    Context 'Import-VipmProviderModules' {
+        It 'registers providers discovered via manifests and fallback scripts' {
+            $providerRoot = Join-Path $TestDrive 'vipm-providers'
+            $manifestDir = Join-Path $providerRoot 'vipm-alpha'
+            New-Item -ItemType Directory -Force -Path $manifestDir | Out-Null
+            $manifestPath = Join-Path $manifestDir 'vipm-alpha.Provider.psd1'
+            "@{ ModuleVersion = '1.0.0'; RootModule = 'Provider.psm1' }" | Set-Content -LiteralPath $manifestPath -Encoding utf8
+            (New-VipmProviderModuleContent -Name 'Alpha' -Binary 'C:\alpha\vipm.exe') |
+                Set-Content -LiteralPath (Join-Path $manifestDir 'Provider.psm1') -Encoding utf8
+
+            $fallbackDir = Join-Path $providerRoot 'vipm-beta'
+            New-Item -ItemType Directory -Force -Path $fallbackDir | Out-Null
+            (New-VipmProviderModuleContent -Name 'Beta' -Binary 'C:\beta\vipm.exe') |
+                Set-Content -LiteralPath (Join-Path $fallbackDir 'Provider.psm1') -Encoding utf8
+
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
+            if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
+                Remove-Module Vipm -Force -ErrorAction SilentlyContinue
+            }
+            Import-Module -Name $script:ModulePath -Force
+
+            $names = Get-VipmProviders | ForEach-Object { $_.Name() }
+            $names | Should -Contain 'Alpha'
+            $names | Should -Contain 'Beta'
+
+            $invoke = Get-VipmInvocation -Operation 'build' -ProviderName 'beta'
+            $invoke.Provider | Should -Be 'Beta'
+            $invoke.Arguments | Should -Contain '--provider'
+        }
+
+        It 'emits warnings when provider modules fail to register' {
+            $providerRoot = Join-Path $TestDrive 'vipm-invalid'
+            $invalidDir = Join-Path $providerRoot 'vipm-bad'
+            New-Item -ItemType Directory -Force -Path $invalidDir | Out-Null
+            @'
+function New-VipmProvider {
+    return $null
+}
+'@ | Set-Content -LiteralPath (Join-Path $invalidDir 'Provider.psm1') -Encoding utf8
+
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
+            if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
+                Remove-Module Vipm -Force -ErrorAction SilentlyContinue
+            }
+            Import-Module -Name $script:ModulePath -Force
+
+            Mock -CommandName Write-Warning -ModuleName Vipm
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
+            Assert-MockCalled -CommandName Write-Warning -ModuleName Vipm -Times 1
+            (Get-VipmProviders | Measure-Object).Count | Should -Be 0
         }
     }
 

@@ -91,5 +91,43 @@ Describe 'Timing tick helpers' -Tag 'Unit','Tools','Timing' {
                 { Stop-TickCounter -Counter ([pscustomobject]@{ ticks = 0; stopwatch = $null }) } | Should -Not -Throw
             }
         }
+
+    Context 'Support utilities' {
+        It 'validates labels using Test-ValidLabel' {
+            InModuleScope Tick {
+                { Test-ValidLabel -Label 'alpha-123_Release.1' } | Should -Not -Throw
+                { Test-ValidLabel -Label 'bad label!' } | Should -Throw '*Invalid label*'
+            }
+        }
+
+        It 'runs Invoke-WithTimeout successfully and handles timeouts' {
+            InModuleScope Tick {
+                $jobId = 99
+                Mock -CommandName Start-Job -MockWith {
+                    param([scriptblock]$ScriptBlock)
+                    & $ScriptBlock | Out-Null
+                    return $jobId
+                }
+                Mock -CommandName Wait-Job -MockWith {
+                    param([int[]]$Id,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    $true
+                }
+                Mock -CommandName Receive-Job -MockWith {
+                    param([int[]]$Id,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    'done'
+                }
+                Invoke-WithTimeout -ScriptBlock { 'work' } -TimeoutSec 5 | Should -Be 'done'
+
+                Mock -CommandName Wait-Job -MockWith {
+                    param([int[]]$Id,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    $false
+                }
+                Mock -CommandName Stop-Job -MockWith {
+                    param([int[]]$Id,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                }
+                { Invoke-WithTimeout -ScriptBlock { Start-Sleep -Milliseconds 10 } -TimeoutSec 0 } | Should -Throw '*timed out*'
+            }
+        }
+    }
 }
 
