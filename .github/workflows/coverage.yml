@@ -23,90 +23,19 @@ jobs:
       - name: Install Pester v6
         shell: pwsh
         run: |
-          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-          if (-not (Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue)) {
-            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser -ErrorAction Stop
-          }
-          $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
-          if (-not $repo) {
-            Write-Warning 'PSGallery repository missing; registering PSGallery explicitly.'
-            Register-PSRepository -Name PSGallery `
-              -SourceLocation 'https://www.powershellgallery.com/api/v2' `
-              -ScriptSourceLocation 'https://www.powershellgallery.com/api/v2' `
-              -PublishLocation 'https://www.powershellgallery.com/api/v2/package/' `
-              -InstallationPolicy Trusted
-          }
-          else {
-            Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          }
-          $attempt = 0
-          $installed = $false
-          do {
-            try {
-              Install-Module Pester -MinimumVersion 6.0.0 -Repository PSGallery -Force -Scope CurrentUser -ErrorAction Stop
-              Import-Module  Pester -MinimumVersion 6.0.0 -Force -ErrorAction Stop
-              $installed = $true
-            }
-            catch {
-              $attempt++
-              Write-Warning "Pester installation attempt $attempt failed: $($_.Exception.Message)"
-              if ($attempt -lt 3) {
-                Write-Warning 'Retrying install...'
-                Start-Sleep -Seconds 5
-              }
-            }
-          } while (-not $installed -and $attempt -lt 3)
-          if (-not $installed) {
-            Write-Warning 'Falling back to pre-installed Pester module.'
-            Import-Module Pester -ErrorAction Stop
-          }
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+          Import-Module  Pester -MinimumVersion 6.0.0
 
       - name: Run Pester (Cobertura + JUnit)
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
-          $safeTargets = @(
-            'tests/smoke',
-            'tests/sample.tests.ps1',
-            'tests/Sanity.Tests.ps1',
-            'src/tests/tools/ConsoleUx.Unit.Tests.ps1',
-            'src/tests/tools/LabVIEWCli.Utility.Tests.ps1',
-            'src/tests/tools/Once-Guard.Unit.Tests.ps1',
-            'src/tests/tools/RunnerProfile.Utility.Tests.ps1',
-            'src/tests/tools/Timing.Tick.Unit.Tests.ps1'
-          )
-          $paths = @()
-          foreach ($target in $safeTargets) {
-            if (Test-Path $target) {
-              $paths += $target
-            }
-          }
-          if ($paths.Count -eq 0) {
-            Write-Warning 'No hermetic test targets found; falling back to tests/smoke if available.'
-            if (Test-Path 'tests/smoke') {
-              $paths = @('tests/smoke')
-            }
-            else {
-              throw 'No deterministic test targets available for coverage run.'
-            }
-          }
-          Write-Host ("Invoking Pester on curated targets: {0}" -f ($paths -join ', '))
           $config = New-PesterConfiguration
-          $config.Run.Path = $paths
+          $config.Run.Path = 'tests'
           $config.CodeCoverage.Enabled = $true
           $config.CodeCoverage.OutputFormat = 'Cobertura'
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
-          $coverageTargets = @(
-            'src/tools/ConsoleUx.psm1',
-            'src/tools/Once-Guard.psm1',
-            'src/tools/Timing/Tick.psm1'
-          ) | Where-Object { Test-Path $_ }
-          if ($coverageTargets.Count -gt 0) {
-            $config.CodeCoverage.Path = $coverageTargets
-          }
-          else {
-            Write-Warning 'No coverage targets discovered under src/tools; proceeding without instrumentation filter.'
-          }
           $config.TestResult.Enabled = $true
           $config.TestResult.OutputFormat = 'JUnitXml'
           $config.TestResult.OutputPath   = 'artifacts/test-results/results.xml'
@@ -119,11 +48,8 @@ jobs:
           if (-not (Test-Path artifacts/coverage/coverage.xml)) {
             throw 'coverage.xml missing'
           }
-          $doc = [System.Xml.XmlDocument]::new()
-          $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
-          $coverageNode = $doc.SelectSingleNode('/coverage')
-          if (-not $coverageNode) { throw 'Invalid coverage.xml: missing root node' }
-          $rate = [double]$coverageNode.Attributes.GetNamedItem('line-rate').Value
+          [xml]$doc = Get-Content artifacts/coverage/coverage.xml
+          $rate = [double]$doc.coverage.GetAttribute('line-rate')
           $pct  = [math]::Round($rate * 100, 2)
           if ($pct -lt [double]$env.COVERAGE_MIN) {
             throw "Coverage $pct% < $env.COVERAGE_MIN%"
@@ -138,11 +64,10 @@ jobs:
           if (-not (Test-Path artifacts/coverage/coverage.xml)) {
             throw 'coverage.xml missing'
           }
-          $doc = [System.Xml.XmlDocument]::new()
-          $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
-          $classes = $doc.SelectNodes('/coverage/packages/package/classes/class')
+          [xml]$doc = Get-Content artifacts/coverage/coverage.xml
+          $classes = $doc.coverage.packages.package.classes.class
           if ($null -eq $classes) {
-            Write-Host 'No classes reported; skipping file-floor enforcement.'
+            Write-Host 'No classes discovered in coverage report; skipping file-floor enforcement.'
             return
           }
           $violations = @()
@@ -152,7 +77,7 @@ jobs:
               $total = $lines.Count
               $covered = ($lines | Where-Object { [int]$_.hits -gt 0 }).Count
               $pct = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 100 }
-              if ($pct -lt [double]$env:COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
+              if ($pct -lt [double]$env.COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
             }
           }
           if ($violations.Count -gt 0) {
