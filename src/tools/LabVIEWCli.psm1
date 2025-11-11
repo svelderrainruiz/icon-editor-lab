@@ -119,7 +119,13 @@ function Import-LVProviderModules {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
   param()
-  $providerRoot = Join-Path $PSScriptRoot 'providers'
+  $providerOverride = $env:ICON_EDITOR_LV_PROVIDER_ROOT
+  $providerRoot = $null
+  if ($providerOverride) {
+    $providerRoot = $providerOverride
+  } else {
+    $providerRoot = Join-Path $PSScriptRoot 'providers'
+  }
   if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
   $modules = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue
   foreach ($modDir in $modules) {
