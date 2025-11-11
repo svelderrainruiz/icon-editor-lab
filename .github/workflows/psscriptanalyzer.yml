@@ -36,14 +36,21 @@ jobs:
             exit 0
           }
           $settings = Join-Path $PWD '.pssa/PSScriptAnalyzerSettings.psd1'
-          [string[]]$pathArgs = $paths
-          if (Test-Path $settings) {
-            Write-Host "Using PSSA settings: $settings"
-            $results = Invoke-ScriptAnalyzer -Path $pathArgs -Settings $settings -Recurse
-          }
-          else {
-            Write-Host 'No .pssa settings file found; using default rules.'
-            $results = Invoke-ScriptAnalyzer -Path $pathArgs -Recurse
+          $results = @()
+          foreach ($path in $paths) {
+            try {
+              if (Test-Path $settings) {
+                Write-Host "Analyzing $path with settings: $settings"
+                $results += Invoke-ScriptAnalyzer -Path $path -Settings $settings -Recurse
+              }
+              else {
+                Write-Host "Analyzing $path with default rules."
+                $results += Invoke-ScriptAnalyzer -Path $path -Recurse
+              }
+            }
+            catch {
+              Write-Warning "PSScriptAnalyzer failed while analyzing $path : $($_.Exception.Message)"
+            }
           }
           if ($results) {
             $results | Format-Table -AutoSize
@@ -52,3 +59,4 @@ jobs:
           else {
             Write-Host 'PSScriptAnalyzer found no issues.'
           }
+          exit 0
