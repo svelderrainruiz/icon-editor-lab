@@ -89,6 +89,7 @@ jobs:
             'tests/Sanity.Tests.ps1',
             'src/tests/tools/ConsoleUx.Unit.Tests.ps1',
             'src/tests/tools/LabVIEWCli.Utility.Tests.ps1',
+            'src/tests/tools/LabVIEWPidTracker.Unit.Tests.ps1',
             'src/tests/tools/Once-Guard.Unit.Tests.ps1',
             'src/tests/tools/RunnerProfile.Utility.Tests.ps1',
             'src/tests/tools/Timing.Tick.Unit.Tests.ps1'
@@ -116,6 +117,7 @@ jobs:
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
           $coverageTargets = @(
             'src/tools/ConsoleUx.psm1',
+            'src/tools/LabVIEWPidTracker.psm1',
             'src/tools/Once-Guard.psm1',
             'src/tools/Timing/Tick.psm1'
           ) | Where-Object { Test-Path $_ }
