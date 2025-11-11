@@ -93,7 +93,9 @@ jobs:
             'src/tests/tools/Once-Guard.Unit.Tests.ps1',
             'src/tests/tools/RunnerProfile.Utility.Tests.ps1',
             'src/tests/tools/Timing.Tick.Unit.Tests.ps1',
-            'src/tests/tools/ConsoleWatch.Unit.Tests.ps1'
+            'src/tests/tools/ConsoleWatch.Unit.Tests.ps1',
+            'src/tests/tools/Vipm.Unit.Tests.ps1',
+            'src/tests/tools/GCli.Unit.Tests.ps1'
           )
           $paths = @()
           foreach ($target in $safeTargets) {
@@ -120,7 +122,11 @@ jobs:
             'src/tools/ConsoleUx.psm1',
             'src/tools/LabVIEWPidTracker.psm1',
             'src/tools/Once-Guard.psm1',
-            'src/tools/Timing/Tick.psm1'
+            'src/tools/Timing/Tick.psm1',
+            'src/tools/RunnerProfile.psm1',
+            'src/tools/ConsoleWatch.psm1',
+            'src/tools/Vipm.psm1',
+            'src/tools/GCli.psm1'
           ) | Where-Object { Test-Path $_ }
           if ($coverageTargets.Count -gt 0) {
             $config.CodeCoverage.Path = $coverageTargets
