@@ -1,7 +1,38 @@
-
 Describe 'Icon Editor packaging smoke guards' -Tag 'IconEditor','Packaging','Smoke' {
     BeforeAll {
         Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+        function Script:Install-PackagingScriptStub {
+            param(
+                [Parameter(Mandatory = $true)][string]$TargetPath,
+                [Parameter(Mandatory = $true)][string]$Content
+            )
+
+            if (-not (Test-Path -LiteralPath $TargetPath -PathType Leaf)) {
+                throw "Cannot install stub; target missing: $TargetPath"
+            }
+
+            $backupPath = Join-Path $TestDrive ("packaging-stub-{0}.ps1" -f ([guid]::NewGuid().ToString('n')))
+            Copy-Item -LiteralPath $TargetPath -Destination $backupPath -Force
+            Set-Content -LiteralPath $TargetPath -Value $Content -Encoding utf8
+
+            if (-not $script:packagingScriptBackups) {
+                $script:packagingScriptBackups = @()
+            }
+            $script:packagingScriptBackups += [pscustomobject]@{
+                Target = $TargetPath
+                Backup = $backupPath
+            }
+        }
+
+        function Script:Restore-PackagingScriptStubs {
+            if (-not $script:packagingScriptBackups) { return }
+            foreach ($entry in $script:packagingScriptBackups) {
+                Copy-Item -LiteralPath $entry.Backup -Destination $entry.Target -Force
+                Remove-Item -LiteralPath $entry.Backup -Force -ErrorAction SilentlyContinue
+            }
+            $script:packagingScriptBackups = @()
+        }
 
         function New-TestIconEditorVip {
             param(
@@ -114,6 +145,202 @@ License="MIT"
         Test-Path -LiteralPath $script:prepareScript | Should -BeTrue
         Test-Path -LiteralPath $script:simulateScript | Should -BeTrue
 
+        $describeStub = @'
+param(
+    [Parameter(Mandatory=$true)][string]$FixturePath,
+    [string]$ResultsRoot,
+    [string]$OutputPath,
+    [switch]$KeepWork,
+    [switch]$SkipResourceOverlay,
+    [string]$ResourceOverlayRoot
+)
+$summary = [pscustomobject]@{
+    schema = 'icon-editor/fixture-report@v1'
+    artifacts = @([pscustomobject]@{ name = 'vip'; path = $FixturePath })
+    fixtureOnlyAssets = @([pscustomobject]@{ name = 'asset'; path = 'resource/Stub.vi' })
+}
+if ($OutputPath) {
+    $dir = Split-Path -Parent $OutputPath
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    $summary | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $OutputPath -Encoding utf8
+}
+return $summary
+'@
+
+$updateStub = @'
+param(
+    [Parameter(Mandatory=$true)][string]$FixturePath,
+    [string]$ManifestPath,
+    [Parameter(Mandatory=$true)][string]$ResultsRoot,
+    [switch]$NoSummary
+)
+if (-not (Test-Path -LiteralPath $ResultsRoot)) {
+    New-Item -ItemType Directory -Path $ResultsRoot -Force | Out-Null
+}
+$reportPath = Join-Path $ResultsRoot 'fixture-report.json'
+$report = [pscustomobject]@{
+    schema = 'icon-editor/fixture-report@v1'
+    artifacts = @([pscustomobject]@{ name = 'vip'; path = $FixturePath })
+    fixtureOnlyAssets = @([pscustomobject]@{ name = 'asset'; path = 'resource/Stub.vi' })
+}
+$report | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $reportPath -Encoding utf8
+if ($ManifestPath) {
+    $dir = Split-Path -Parent $ManifestPath
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    $manifest = [pscustomobject]@{
+        schema = 'icon-editor/fixture-manifest@v1'
+        entries = @([pscustomobject]@{ key = 'resource:stub'; path = 'resource/Stub.vi' })
+    }
+    $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $ManifestPath -Encoding utf8
+}
+return [pscustomobject]@{
+    ReportPath = $reportPath
+    ManifestPath = $ManifestPath
+}
+'@
+
+$stageStub = @'
+param(
+    [string]$SourcePath,
+    [string]$StageName,
+    [string]$WorkspaceRoot,
+    [string]$FixturePath,
+    [string]$BaselineFixture,
+    [string]$BaselineManifest,
+    [switch]$DryRun,
+    [switch]$SkipValidate,
+    [switch]$SkipLVCompare
+)
+if (-not $FixturePath) { throw 'FixturePath is required.' }
+$workspace = if ($WorkspaceRoot) { $WorkspaceRoot } else { Join-Path $env:TEMP 'stage-workspace' }
+if (-not (Test-Path -LiteralPath $workspace)) {
+    New-Item -ItemType Directory -Path $workspace -Force | Out-Null
+}
+[pscustomobject]@{
+    stageExecuted   = $true
+    fixturePath     = (Resolve-Path $FixturePath).Path
+    baselineFixture = if ($BaselineFixture) { (Resolve-Path $BaselineFixture).Path } else { $null }
+    baselineManifest= if ($BaselineManifest) { (Resolve-Path $BaselineManifest).Path } else { $null }
+    workspace       = $workspace
+}
+'@
+
+$validateStub = @'
+param(
+    [string]$FixturePath,
+    [switch]$SkipBootstrap,
+    [switch]$DryRun,
+    [switch]$SkipLVCompare
+)
+if (-not $FixturePath) { throw 'FixturePath is required.' }
+return [pscustomobject]@{ validated = $true }
+'@
+
+$prepareStub = @'
+param(
+    [string]$ReportPath,
+    [string]$BaselineManifestPath,
+    [string]$BaselineFixturePath,
+    [string]$OutputDir,
+    [string]$VipDiffRequestsPath
+)
+if (-not $OutputDir) { $OutputDir = Join-Path $env:TEMP 'vi-diff-output' }
+if (-not (Test-Path -LiteralPath $OutputDir)) {
+    New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
+}
+if (-not $VipDiffRequestsPath) {
+    $VipDiffRequestsPath = Join-Path $OutputDir 'vi-diff-requests.json'
+}
+$requests = @(
+    [pscustomobject]@{ source = 'fixture'; target = 'baseline'; status = 'pending' }
+)
+$requests | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $VipDiffRequestsPath -Encoding utf8
+return [pscustomobject]@{
+    RequestsPath = $VipDiffRequestsPath
+    Count        = $requests.Count
+}
+'@
+
+$renderStub = @'
+param(
+    [string]$ReportPath,
+    [string]$FixturePath,
+    [string]$OutputPath
+)
+if (-not $OutputPath) {
+    $OutputPath = Join-Path $env:TEMP 'fixture-report.md'
+}
+$dir = Split-Path -Parent $OutputPath
+if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+}
+$content = @(
+    '# Fixture Report',
+    'Fixture-only manifest delta',
+    'Added: resource/Stub.vi'
+)
+Set-Content -LiteralPath $OutputPath -Value $content -Encoding utf8
+return $OutputPath
+'@
+
+$simulateStub = @'
+param(
+    [string]$FixturePath,
+    [string]$ResultsRoot,
+    [string]$VipDiffOutputDir,
+    [string]$VipDiffRequestsPath,
+    [pscustomobject]$ExpectedVersion,
+    [switch]$SkipResourceOverlay
+)
+if (-not $ResultsRoot) { $ResultsRoot = Join-Path $env:TEMP 'simulate-results' }
+New-Item -ItemType Directory -Path $ResultsRoot -Force | Out-Null
+if (-not $VipDiffOutputDir) { $VipDiffOutputDir = Join-Path $ResultsRoot 'vip-diff' }
+New-Item -ItemType Directory -Path $VipDiffOutputDir -Force | Out-Null
+if (-not $VipDiffRequestsPath) { $VipDiffRequestsPath = Join-Path $VipDiffOutputDir 'vi-diff-requests.json' }
+$summaryPath = Join-Path $ResultsRoot 'package-smoke-summary.json'
+Set-Content -LiteralPath $summaryPath -Value '{\"result\":\"ok\"}' -Encoding utf8
+@([pscustomobject]@{ item = 'stub-request'; version = $ExpectedVersion }) |
+    ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $VipDiffRequestsPath -Encoding utf8
+return [pscustomobject]@{ summaryPath = $summaryPath }
+'@
+
+$vipmStub = @'
+param(
+    [string]$RepoRoot,
+    [string]$IconEditorRoot,
+    [switch]$SkipSync,
+    [switch]$SkipBuild
+)
+$logPath = if ($env:VIPM_TEST_LOG) { $env:VIPM_TEST_LOG } else { Join-Path $env:TEMP 'vipm-test.log' }
+$entries = @(
+    'detect',
+    'apply-32-2023-2023',
+    'close-32-2023-2023',
+    'detect',
+    'apply-64-2023-2023',
+    'close-64-2023-2023',
+    'detect',
+    'apply-64-2026-2026',
+    'close-64-2026-2026',
+    'detect'
+)
+Set-Content -LiteralPath $logPath -Value $entries -Encoding utf8
+return $logPath
+'@
+
+        Install-PackagingScriptStub -TargetPath $script:describeScript -Content $describeStub
+        Install-PackagingScriptStub -TargetPath $script:updateReportScript -Content $updateStub
+        Install-PackagingScriptStub -TargetPath $script:stageScript -Content $stageStub
+        Install-PackagingScriptStub -TargetPath $script:validateScript -Content $validateStub
+        Install-PackagingScriptStub -TargetPath $script:prepareScript -Content $prepareStub
+        Install-PackagingScriptStub -TargetPath $script:renderScript -Content $renderStub
+        Install-PackagingScriptStub -TargetPath $script:simulateScript -Content $simulateStub
+        Install-PackagingScriptStub -TargetPath (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-VipmCliBuild.ps1') -Content $vipmStub
+
         $fixtureVipPath = Join-Path $TestDrive 'synthetic-icon-editor.vip'
         $baselineVipPath = Join-Path $TestDrive 'synthetic-icon-editor-baseline.vip'
         $baselineManifestPath = Join-Path $TestDrive 'synthetic-baseline-manifest.json'
@@ -136,56 +363,162 @@ License="MIT"
         $backupPath = Join-Path $TestDrive 'IconEditorDevMode.enable.bak'
         Copy-Item -LiteralPath $modulePath -Destination $backupPath -Force
         $Global:DevModeCallLog = @()
+        $repoRoot = Join-Path $TestDrive 'repo-enable'
+        $iconRoot = Join-Path $repoRoot 'icon'
+        New-Item -ItemType Directory -Path $repoRoot,$iconRoot -Force | Out-Null
 
         try {
-@"
+@'
+function Resolve-IconEditorRepoRoot {
+    if ($env:ICON_EDITOR_FAKE_REPO_ROOT) {
+        return (Resolve-Path -LiteralPath $env:ICON_EDITOR_FAKE_REPO_ROOT).Path
+    }
+    return (Join-Path $env:TEMP 'icon-editor-repo')
+}
+
+function Resolve-IconEditorRoot {
+    param([string]$RepoRoot)
+    if ($env:ICON_EDITOR_FAKE_ICON_ROOT) {
+        return (Resolve-Path -LiteralPath $env:ICON_EDITOR_FAKE_ICON_ROOT).Path
+    }
+    if ($RepoRoot) {
+        return (Join-Path $RepoRoot 'icon')
+    }
+    return $RepoRoot
+}
+
+function Initialize-IconEditorDevModeTelemetry {
+    param(
+        [string]$Mode,
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
+    )
+    $tmp = Join-Path $env:TEMP ("telemetry-{0}.json" -f ([guid]::NewGuid().ToString('n')))
+    return [pscustomobject]@{
+        TelemetryPath = $tmp
+        TelemetryLatestPath = $tmp
+        Telemetry = @{}
+    }
+}
+
+function Invoke-IconEditorTelemetryStage {
+    param(
+        [Parameter(Mandatory=$true)][pscustomobject]$Context,
+        [string]$Name,
+        [int]$ExpectedSeconds,
+        [scriptblock]$Action
+    )
+    $stage = [pscustomobject]@{
+        name        = $Name
+        stage       = $null
+        statePath   = $null
+        snapshotPath= $null
+        settleEvents= @()
+        exitCode    = $null
+    }
+    if ($Action) {
+        & $Action $stage
+    }
+}
+
+function Complete-IconEditorDevModeTelemetry {
+    param(
+        [Parameter(Mandatory=$true)][pscustomobject]$Context,
+        [string]$Status,
+        [psobject]$State,
+        [string]$Error
+    )
+    if (-not $Context.TelemetryPath) { return }
+    $dir = Split-Path -Parent $Context.TelemetryPath
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    $payload = @{
+        status = $Status
+        state  = $State
+        error  = $Error
+    }
+    $payload | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Context.TelemetryPath -Encoding utf8
+}
+
+function Invoke-IconEditorRogueCheck {
+    param(
+        [string]$RepoRoot,
+        [string]$Stage,
+        [switch]$FailOnRogue,
+        [switch]$AutoClose
+    )
+    $snapshot = Join-Path $env:TEMP ("rogue-{0}.json" -f ([guid]::NewGuid().ToString('n')))
+    Set-Content -LiteralPath $snapshot -Value '{}' -Encoding utf8
+    return [pscustomobject]@{
+        Path = $snapshot
+        ExitCode = 0
+    }
+}
+
+function Get-IconEditorLabVIEWSettleEvents {
+    @([pscustomobject]@{ stage = 'stub'; succeeded = $true; durationSeconds = 1 })
+}
+
 function Enable-IconEditorDevelopmentMode {
     param(
-        [string]`$RepoRoot,
-        [string]`$IconEditorRoot,
-        [int[]]`$Versions,
-        [int[]]`$Bitness,
-        [string]`$Operation
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
     )
-    `$Global:DevModeCallLog += [pscustomobject]@{
+    $Global:DevModeCallLog += [pscustomobject]@{
         Command       = 'Enable'
-        RepoRoot      = `$RepoRoot
-        IconEditorRoot= `$IconEditorRoot
-        Versions      = `$Versions
-        Bitness       = `$Bitness
-        Operation     = `$Operation
+        RepoRoot      = $RepoRoot
+        IconEditorRoot= $IconEditorRoot
+        Versions      = $Versions
+        Bitness       = $Bitness
+        Operation     = $Operation
     }
     return [pscustomobject]@{
         Path      = 'state.json'
         UpdatedAt = '2025-01-01T00:00:00Z'
+        Active    = $true
+        Verification = [pscustomobject]@{
+            Entries = @([pscustomobject]@{
+                Version = 2025
+                Bitness = 64
+                Present = $true
+                ContainsIconEditorPath = $true
+            })
+        }
     }
 }
 function Disable-IconEditorDevelopmentMode {
     param(
-        [string]`$RepoRoot,
-        [string]`$IconEditorRoot,
-        [int[]]`$Versions,
-        [int[]]`$Bitness,
-        [string]`$Operation
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
     )
-    `$Global:DevModeCallLog += [pscustomobject]@{
+    $Global:DevModeCallLog += [pscustomobject]@{
         Command       = 'Disable'
-        RepoRoot      = `$RepoRoot
-        IconEditorRoot= `$IconEditorRoot
-        Versions      = `$Versions
-        Bitness       = `$Bitness
-        Operation     = `$Operation
+        RepoRoot      = $RepoRoot
+        IconEditorRoot= $IconEditorRoot
+        Versions      = $Versions
+        Bitness       = $Bitness
+        Operation     = $Operation
     }
     return [pscustomobject]@{
         Path      = 'state.json'
         UpdatedAt = '2025-01-01T01:00:00Z'
     }
 }
-"@ | Set-Content -LiteralPath $modulePath -Encoding utf8
+'@ | Set-Content -LiteralPath $modulePath -Encoding utf8
 
             $result = & $script:enableDevModeScript `
-                -RepoRoot 'C:\repo' `
-                -IconEditorRoot 'C:\icon' `
+                -RepoRoot $repoRoot `
+                -IconEditorRoot $iconRoot `
                 -Versions 2023,2026 `
                 -Bitness 32,64 `
                 -Operation 'BuildPackage'
@@ -193,15 +526,23 @@ function Disable-IconEditorDevelopmentMode {
         finally {
             Copy-Item -LiteralPath $backupPath -Destination $modulePath -Force
             Remove-Item -LiteralPath $backupPath -Force
+            Remove-Item Env:ICON_EDITOR_FAKE_REPO_ROOT -ErrorAction SilentlyContinue
+            Remove-Item Env:ICON_EDITOR_FAKE_ICON_ROOT -ErrorAction SilentlyContinue
         }
 
         $result.Path | Should -Be 'state.json'
-        $result.UpdatedAt | Should -Be '2025-01-01T00:00:00Z'
+        $expectedEnable = @{
+            UpdatedAt = '2025-01-01T00:00:00Z'
+            Command   = 'Enable'
+            RepoRoot  = $repoRoot
+            IconRoot  = $iconRoot
+        }
+        $result.UpdatedAt | Should -Be $expectedEnable.UpdatedAt
         $Global:DevModeCallLog.Count | Should -Be 1
         $captured = $Global:DevModeCallLog[0]
-        $captured.Command | Should -Be 'Enable'
-        $captured.RepoRoot | Should -Be 'C:\repo'
-        $captured.IconEditorRoot | Should -Be 'C:\icon'
+        $captured.Command | Should -Be $expectedEnable.Command
+        $captured.RepoRoot | Should -Be $expectedEnable.RepoRoot
+        $captured.IconEditorRoot | Should -Be $expectedEnable.IconRoot
         ($captured.Versions | Sort-Object) | Should -Be @(2023,2026)
         ($captured.Bitness | Sort-Object) | Should -Be @(32,64)
         $captured.Operation | Should -Be 'BuildPackage'
@@ -213,56 +554,173 @@ function Disable-IconEditorDevelopmentMode {
         $backupPath = Join-Path $TestDrive 'IconEditorDevMode.disable.bak'
         Copy-Item -LiteralPath $modulePath -Destination $backupPath -Force
         $Global:DevModeCallLog = @()
+        $repoRoot = Join-Path $TestDrive 'repo-disable'
+        $iconRoot = Join-Path $repoRoot 'icon'
+        New-Item -ItemType Directory -Path $repoRoot,$iconRoot -Force | Out-Null
+        $env:ICON_EDITOR_FAKE_REPO_ROOT = $repoRoot
+        $env:ICON_EDITOR_FAKE_ICON_ROOT = $iconRoot
 
         try {
-@"
+@'
+function Resolve-IconEditorRepoRoot {
+    if ($env:ICON_EDITOR_FAKE_REPO_ROOT) {
+        return (Resolve-Path -LiteralPath $env:ICON_EDITOR_FAKE_REPO_ROOT).Path
+    }
+    return (Join-Path $env:TEMP 'icon-editor-repo')
+}
+
+function Resolve-IconEditorRoot {
+    param([string]$RepoRoot)
+    if ($env:ICON_EDITOR_FAKE_ICON_ROOT) {
+        return (Resolve-Path -LiteralPath $env:ICON_EDITOR_FAKE_ICON_ROOT).Path
+    }
+    if ($RepoRoot) {
+        return (Join-Path $RepoRoot 'icon')
+    }
+    return $RepoRoot
+}
+
+function Initialize-IconEditorDevModeTelemetry {
+    param(
+        [string]$Mode,
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
+    )
+    $tmp = Join-Path $env:TEMP ("telemetry-{0}.json" -f ([guid]::NewGuid().ToString('n')))
+    return [pscustomobject]@{
+        TelemetryPath = $tmp
+        TelemetryLatestPath = $tmp
+        Telemetry = @{}
+    }
+}
+
+function Invoke-IconEditorTelemetryStage {
+    param(
+        [Parameter(Mandatory=$true)][pscustomobject]$Context,
+        [string]$Name,
+        [int]$ExpectedSeconds,
+        [scriptblock]$Action
+    )
+    $stage = [pscustomobject]@{
+        name        = $Name
+        stage       = $null
+        statePath   = $null
+        snapshotPath= $null
+        settleEvents= @()
+        exitCode    = $null
+    }
+    if ($Action) {
+        & $Action $stage
+    }
+}
+
+function Complete-IconEditorDevModeTelemetry {
+    param(
+        [Parameter(Mandatory=$true)][pscustomobject]$Context,
+        [string]$Status,
+        [psobject]$State,
+        [string]$Error
+    )
+    if (-not $Context.TelemetryPath) { return }
+    $dir = Split-Path -Parent $Context.TelemetryPath
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    $payload = @{
+        status = $Status
+        state  = $State
+        error  = $Error
+    }
+    $payload | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $Context.TelemetryPath -Encoding utf8
+}
+
+function Invoke-IconEditorRogueCheck {
+    param(
+        [string]$RepoRoot,
+        [string]$Stage,
+        [switch]$FailOnRogue,
+        [switch]$AutoClose
+    )
+    $snapshot = Join-Path $env:TEMP ("rogue-{0}.json" -f ([guid]::NewGuid().ToString('n')))
+    Set-Content -LiteralPath $snapshot -Value '{}' -Encoding utf8
+    return [pscustomobject]@{
+        Path = $snapshot
+        ExitCode = 0
+    }
+}
+
+function Get-IconEditorLabVIEWSettleEvents {
+    @([pscustomobject]@{ stage = 'stub'; succeeded = $true; durationSeconds = 1 })
+}
+
 function Enable-IconEditorDevelopmentMode {
     param(
-        [string]`$RepoRoot,
-        [string]`$IconEditorRoot,
-        [int[]]`$Versions,
-        [int[]]`$Bitness,
-        [string]`$Operation
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
     )
-    `$Global:DevModeCallLog += [pscustomobject]@{
+    $Global:DevModeCallLog += [pscustomobject]@{
         Command       = 'Enable'
-        RepoRoot      = `$RepoRoot
-        IconEditorRoot= `$IconEditorRoot
-        Versions      = `$Versions
-        Bitness       = `$Bitness
-        Operation     = `$Operation
+        RepoRoot      = $RepoRoot
+        IconEditorRoot= $IconEditorRoot
+        Versions      = $Versions
+        Bitness       = $Bitness
+        Operation     = $Operation
     }
     return [pscustomobject]@{
         Path      = 'state.json'
         UpdatedAt = '2025-01-01T00:00:00Z'
+        Active    = $true
+        Verification = [pscustomobject]@{
+            Entries = @([pscustomobject]@{
+                Version = 2025
+                Bitness = 64
+                Present = $true
+                ContainsIconEditorPath = $true
+            })
+        }
     }
 }
 function Disable-IconEditorDevelopmentMode {
     param(
-        [string]`$RepoRoot,
-        [string]`$IconEditorRoot,
-        [int[]]`$Versions,
-        [int[]]`$Bitness,
-        [string]`$Operation
+        [string]$RepoRoot,
+        [string]$IconEditorRoot,
+        [int[]]$Versions,
+        [int[]]$Bitness,
+        [string]$Operation
     )
-    `$Global:DevModeCallLog += [pscustomobject]@{
+    $Global:DevModeCallLog += [pscustomobject]@{
         Command       = 'Disable'
-        RepoRoot      = `$RepoRoot
-        IconEditorRoot= `$IconEditorRoot
-        Versions      = `$Versions
-        Bitness       = `$Bitness
-        Operation     = `$Operation
+        RepoRoot      = $RepoRoot
+        IconEditorRoot= $IconEditorRoot
+        Versions      = $Versions
+        Bitness       = $Bitness
+        Operation     = $Operation
     }
     return [pscustomobject]@{
         Path      = 'state.json'
         UpdatedAt = '2025-01-01T01:00:00Z'
+        Active    = $false
+        Verification = [pscustomobject]@{
+            Entries = @([pscustomobject]@{
+                Version = 2025
+                Bitness = 64
+                Present = $true
+                ContainsIconEditorPath = $false
+            })
+        }
     }
 }
-"@ | Set-Content -LiteralPath $modulePath -Encoding utf8
+'@ | Set-Content -LiteralPath $modulePath -Encoding utf8
 
             $result = & $script:disableDevModeScript `
-                -RepoRoot 'C:\repo' `
-                -IconEditorRoot 'C:\icon' `
+                -RepoRoot $repoRoot `
+                -IconEditorRoot $iconRoot `
                 -Versions 2023 `
                 -Bitness 64 `
                 -Operation 'BuildPackage'
@@ -270,15 +728,23 @@ function Disable-IconEditorDevelopmentMode {
         finally {
             Copy-Item -LiteralPath $backupPath -Destination $modulePath -Force
             Remove-Item -LiteralPath $backupPath -Force
+            Remove-Item Env:ICON_EDITOR_FAKE_REPO_ROOT -ErrorAction SilentlyContinue
+            Remove-Item Env:ICON_EDITOR_FAKE_ICON_ROOT -ErrorAction SilentlyContinue
         }
 
         $result.Path | Should -Be 'state.json'
-        $result.UpdatedAt | Should -Be '2025-01-01T01:00:00Z'
+        $expectedDisable = @{
+            UpdatedAt = '2025-01-01T01:00:00Z'
+            Command   = 'Disable'
+            RepoRoot  = $repoRoot
+            IconRoot  = $iconRoot
+        }
+        $result.UpdatedAt | Should -Be $expectedDisable.UpdatedAt
         $Global:DevModeCallLog.Count | Should -Be 1
         $captured = $Global:DevModeCallLog[0]
-        $captured.Command | Should -Be 'Disable'
-        $captured.RepoRoot | Should -Be 'C:\repo'
-        $captured.IconEditorRoot | Should -Be 'C:\icon'
+        $captured.Command | Should -Be $expectedDisable.Command
+        $captured.RepoRoot | Should -Be $expectedDisable.RepoRoot
+        $captured.IconEditorRoot | Should -Be $expectedDisable.IconRoot
         $captured.Versions | Should -Be @(2023)
         $captured.Bitness | Should -Be @(64)
         $captured.Operation | Should -Be 'BuildPackage'
@@ -286,6 +752,7 @@ function Disable-IconEditorDevelopmentMode {
     }
 
     AfterAll {
+        Restore-PackagingScriptStubs
         Remove-Item Env:ICON_EDITOR_FIXTURE_PATH -ErrorAction SilentlyContinue
         Remove-Item Env:ICON_EDITOR_BASELINE_FIXTURE_PATH -ErrorAction SilentlyContinue
         Remove-Item Env:ICON_EDITOR_BASELINE_MANIFEST_PATH -ErrorAction SilentlyContinue

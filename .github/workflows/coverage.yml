@@ -31,8 +31,19 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
+          $paths = @()
+          foreach ($candidate in @('tests', 'src/tests')) {
+            if (Test-Path $candidate) {
+              $paths += $candidate
+            }
+          }
+          if ($paths.Count -eq 0) {
+            Write-Warning 'No test directories found (tests/src/tests); defaulting to tests'
+            $paths = @('tests')
+          }
+          Write-Host ("Invoking Pester on: {0}" -f ($paths -join ', '))
           $config = New-PesterConfiguration
-          $config.Run.Path = 'tests'
+          $config.Run.Path = $paths
           $config.CodeCoverage.Enabled = $true
           $config.CodeCoverage.OutputFormat = 'Cobertura'
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
@@ -77,7 +88,7 @@ jobs:
               $total = $lines.Count
               $covered = ($lines | Where-Object { [int]$_.hits -gt 0 }).Count
               $pct = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 100 }
-              if ($pct -lt [double]$env.COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
+              if ($pct -lt [double]$env:COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
             }
           }
           if ($violations.Count -gt 0) {
