@@ -154,6 +154,24 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
             }
         }
+
+        It 'uses run attempt metadata when multiple candidates match' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '99'
+            $env:RUNNER_NAME = 'runner-a'
+            $env:GITHUB_RUN_ATTEMPT = '2'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('v1'); run_attempt=1; status='completed'; name='build' },
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('v2'); run_attempt=2; status='completed'; name='build' }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'v2'
+                $labels | Should -Not -Contain 'v1'
+            }
+        }
     }
 
     Context 'Invoke-RunnerJobsApi' {
@@ -178,6 +196,29 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
             InModuleScope RunnerProfile {
                 Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith { throw [System.Management.Automation.CommandNotFoundException]::new() }
                 Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999' | Should -BeNullOrEmpty
+            }
+        }
+
+        It 'prefers gh CLI output when command is available' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '555'
+            Remove-Item Env:GH_TOKEN -ErrorAction SilentlyContinue
+            Remove-Item Env:GITHUB_TOKEN -ErrorAction SilentlyContinue
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith { throw 'REST path should not execute' }
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            param([Parameter(ValueFromRemainingArguments=$true)][object[]]$Args)
+                            Set-Variable -Name LASTEXITCODE -Scope Global -Value 0
+                            '{"jobs":[{"runner_name":"gh-cli","labels":["macos","arm64"],"status":"completed"}]}'
+                        }
+                    }
+                }
+                $jobs = Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '555'
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'gh-cli'
+                $jobs[0].labels | Should -Contain 'macos'
             }
         }
 
