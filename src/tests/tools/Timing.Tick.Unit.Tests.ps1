@@ -74,23 +74,26 @@ Describe 'Timing tick helpers' -Tag 'Unit','Tools','Timing' {
         }
     }
 
-    It 'enforces minimum wait interval and returns counter without stopwatch' {
+    It 'clamps wait intervals and respects instrumentation toggle' {
         InModuleScope Tick {
             $counter = Start-TickCounter -TickMilliseconds 4
-            $before = $counter.ticks
-            $result = Wait-Tick -Counter $counter -Milliseconds 0
-            $result | Should -Be $counter
-            ($result.ticks - $before) | Should -Be 1
+            Mock -ModuleName Tick -CommandName Invoke-TickDelay
+            Wait-Tick -Counter $counter -Milliseconds 0 | Out-Null
+            Assert-MockCalled -CommandName Invoke-TickDelay -ModuleName Tick -Times 1 -ParameterFilter { $Milliseconds -eq 1 }
+            $script:TickInstrumentationEnabled = $false
+            Wait-Tick -Counter $counter -Milliseconds 50 | Out-Null
+            Assert-MockCalled -CommandName Invoke-TickDelay -ModuleName Tick -Times 1
+            $script:TickInstrumentationEnabled = $true
             Stop-TickCounter -Counter $counter
         }
     }
 
-        It 'handles null counter and missing stopwatch gracefully' {
-            InModuleScope Tick {
-                Wait-Tick -Counter $null -Milliseconds 0 | Should -BeNullOrEmpty
-                { Stop-TickCounter -Counter ([pscustomobject]@{ ticks = 0; stopwatch = $null }) } | Should -Not -Throw
-            }
+    It 'handles null counter and missing stopwatch gracefully' {
+        InModuleScope Tick {
+            Wait-Tick -Counter $null -Milliseconds 0 | Should -BeNullOrEmpty
+            { Stop-TickCounter -Counter ([pscustomobject]@{ ticks = 0; stopwatch = $null }) } | Should -Not -Throw
         }
+    }
 
     Context 'Support utilities' {
         It 'validates labels using Test-ValidLabel' {
