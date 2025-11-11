@@ -24,6 +24,9 @@ jobs:
         shell: pwsh
         run: |
           [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+          if (-not (Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue)) {
+            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser -ErrorAction Stop
+          }
           $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
           if (-not $repo) {
             Write-Warning 'PSGallery repository missing; registering PSGallery explicitly.'
@@ -37,6 +40,7 @@ jobs:
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           }
           $attempt = 0
+          $installed = $false
           do {
             try {
               Install-Module Pester -MinimumVersion 6.0.0 -Repository PSGallery -Force -Scope CurrentUser -ErrorAction Stop
@@ -45,13 +49,17 @@ jobs:
             }
             catch {
               $attempt++
-              if ($attempt -ge 3) {
-                throw
+              Write-Warning "Pester installation attempt $attempt failed: $($_.Exception.Message)"
+              if ($attempt -lt 3) {
+                Write-Warning 'Retrying install...'
+                Start-Sleep -Seconds 5
               }
-              Write-Warning "Pester installation attempt $attempt failed: $($_.Exception.Message). Retrying..."
-              Start-Sleep -Seconds 5
             }
-          } while (-not $installed)
+          } while (-not $installed -and $attempt -lt 3)
+          if (-not $installed) {
+            Write-Warning 'Falling back to pre-installed Pester module.'
+            Import-Module Pester -ErrorAction Stop
+          }
 
       - name: Run Pester (Cobertura + JUnit)
         shell: pwsh
