@@ -3,6 +3,7 @@ $ErrorActionPreference = 'Stop'
 
 $script:RunnerProfileCache = $null
 $script:RunnerLabelsCache = $null
+$script:RunnerProfileInstrumentationEnabled = $true
 
 <#
 .SYNOPSIS
@@ -13,11 +14,21 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Get-RunnerProfile {
   [CmdletBinding()]
   param(
-    [switch]$ForceRefresh
+    [switch]$ForceRefresh,
+    [switch]$DisableInstrumentation
   )
 
     # ShouldProcess guard: honor -WhatIf / -Confirm
     if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+
+  if ($DisableInstrumentation -or -not $script:RunnerProfileInstrumentationEnabled) {
+    $profile = [ordered]@{
+      machine = [System.Environment]::MachineName
+      labels  = @()
+      instrumentationDisabled = $true
+    }
+    return [pscustomobject]$profile
+  }
 
   if (-not $ForceRefresh -and $script:RunnerProfileCache) {
     return $script:RunnerProfileCache

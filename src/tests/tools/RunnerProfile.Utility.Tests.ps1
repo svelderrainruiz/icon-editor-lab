@@ -258,6 +258,7 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 $fresh.name | Should -Be 'runner-1'
             }
         }
+
     }
 }
 
