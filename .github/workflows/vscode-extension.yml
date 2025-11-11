@@ -1,0 +1,51 @@
+name: VSCode Extension CI
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "src/tools/vscode/comparevi-extension/**"
+      - ".github/workflows/vscode-extension.yml"
+  pull_request:
+    branches: ["**"]
+    paths:
+      - "src/tools/vscode/comparevi-extension/**"
+      - ".github/workflows/vscode-extension.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vscode-extension:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/tools/vscode/comparevi-extension
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+          cache-dependency-path: src/tools/vscode/comparevi-extension/package-lock.json
+
+      - name: Cache npm directories
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            src/tools/vscode/comparevi-extension/node_modules
+          key: ${{ runner.os }}-vscode-${{ hashFiles('src/tools/vscode/comparevi-extension/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-vscode-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build --if-present
+
+      - name: Run tests
+        run: npm test --if-present
