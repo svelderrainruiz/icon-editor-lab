@@ -73,4 +73,23 @@ Describe 'Timing tick helpers' -Tag 'Unit','Tools','Timing' {
             $counter.stopwatch.IsRunning | Should -BeFalse
         }
     }
+
+    It 'enforces minimum wait interval and returns counter without stopwatch' {
+        InModuleScope Tick {
+            $counter = Start-TickCounter -TickMilliseconds 4
+            $before = $counter.ticks
+            $result = Wait-Tick -Counter $counter -Milliseconds 0
+            $result | Should -Be $counter
+            ($result.ticks - $before) | Should -Be 1
+            Stop-TickCounter -Counter $counter
+        }
+    }
+
+        It 'handles null counter and missing stopwatch gracefully' {
+            InModuleScope Tick {
+                Wait-Tick -Counter $null -Milliseconds 0 | Should -BeNullOrEmpty
+                { Stop-TickCounter -Counter ([pscustomobject]@{ ticks = 0; stopwatch = $null }) } | Should -Not -Throw
+            }
+        }
 }
+
