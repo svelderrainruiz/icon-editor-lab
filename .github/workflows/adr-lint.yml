@@ -20,8 +20,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ADR_DIR="architecture/adr"
-          ALT_DIR="adr"
+          ROOT="${GITHUB_WORKSPACE:-$PWD}"
+          ADR_DIR="${ROOT}/architecture/adr"
+          ALT_DIR="${ROOT}/adr"
           if [[ ! -d "$ADR_DIR" && ! -d "$ALT_DIR" ]]; then
             echo "::error::No ADR directories found (architecture/adr or adr)." >&2
             exit 1
