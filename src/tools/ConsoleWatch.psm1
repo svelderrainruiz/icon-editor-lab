@@ -5,6 +5,48 @@ if (-not (Get-Variable -Name ConsoleWatchState -Scope Script -ErrorAction Silent
   $script:ConsoleWatchState = @{}
 }
 
+function Write-ConsoleWatchRecord {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [Parameter(Mandatory)][string[]]$TargetsLower,
+    [Parameter(Mandatory)][int]$ProcessId,
+    [Parameter(Mandatory)][string]$ProcessName,
+    [Parameter(Mandatory)][int]$ParentProcessId
+  )
+  if (-not $ProcessName) { return $null }
+  $normalized = $ProcessName.ToLowerInvariant()
+  if ($TargetsLower -notcontains $normalized) { return $null }
+
+  $meta = $null
+  try { $meta = Get-CimInstance Win32_Process -Filter ("ProcessId={0}" -f $ProcessId) -ErrorAction SilentlyContinue } catch {}
+  $cmd = if ($meta) { [string]$meta.CommandLine } else { $null }
+
+  $parent = $null
+  if ($ParentProcessId -gt 0) {
+    try { $parent = Get-CimInstance Win32_Process -Filter ("ProcessId={0}" -f $ParentProcessId) -ErrorAction SilentlyContinue } catch {}
+  }
+
+  $hasWindow = $false
+  try {
+    $proc = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
+    if ($proc) { $hasWindow = ($proc.MainWindowHandle -ne 0) }
+  } catch { $hasWindow = $false }
+
+  $record = [pscustomobject]@{
+    ts         = (Get-Date).ToString('o')
+    pid        = [int]$ProcessId
+    name       = $ProcessName
+    ppid       = [int]$ParentProcessId
+    parentName = if ($parent) { [string]$parent.Name } else { $null }
+    cmd        = $cmd
+    hasWindow  = [bool]$hasWindow
+  }
+
+  try { $record | ConvertTo-Json -Compress | Add-Content -LiteralPath $Path -Encoding utf8 } catch {}
+  return $record
+}
+
 <#
 .SYNOPSIS
 Start-ConsoleWatch: brief description (TODO: refine).
@@ -33,18 +75,8 @@ function Start-ConsoleWatch {
       try {
         $pid = $e.SourceEventArgs.NewEvent.ProcessID
         $name = [string]$e.SourceEventArgs.NewEvent.ProcessName
-        if (-not $name) { return }
-        if ($using:targetsLower -notcontains $name.ToLowerInvariant()) { return }
         $ppid = $e.SourceEventArgs.NewEvent.ParentProcessID
-        $meta = $null
-        try { $meta = Get-CimInstance Win32_Process -Filter ("ProcessId={0}" -f $pid) -ErrorAction SilentlyContinue } catch {}
-        $cmd = $null; if ($meta) { $cmd = $meta.CommandLine }
-        $parent = $null
-        try { $parent = Get-CimInstance Win32_Process -Filter ("ProcessId={0}" -f $ppid) -ErrorAction SilentlyContinue } catch {}
-        $hasWindow = $false
-        try { $hasWindow = ((Get-Process -Id $pid -ErrorAction SilentlyContinue).MainWindowHandle -ne 0) } catch { $hasWindow = $false }
-        $rec = [pscustomobject]@{ ts=(Get-Date).ToString('o'); pid=[int]$pid; name=$name; ppid=[int]$ppid; parentName=if ($parent) { [string]$parent.Name } else { $null }; cmd=$cmd; hasWindow=$hasWindow }
-        try { $rec | ConvertTo-Json -Compress | Add-Content -LiteralPath $using:ndjson -Encoding utf8 } catch {}
+        Write-ConsoleWatchRecord -Path $using:ndjson -TargetsLower $using:targetsLower -ProcessId $pid -ProcessName $name -ParentProcessId $ppid | Out-Null
       } catch {}
     } | Out-Null
     $script:ConsoleWatchState[$id] = @{ Mode='event'; OutDir=$OutDir; Targets=$targetsLower; Path=$ndjson }
