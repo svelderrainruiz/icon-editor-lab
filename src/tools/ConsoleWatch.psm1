@@ -4,6 +4,7 @@ $ErrorActionPreference = 'Stop'
 if (-not (Get-Variable -Name ConsoleWatchState -Scope Script -ErrorAction SilentlyContinue)) {
   $script:ConsoleWatchState = @{}
 }
+$script:ConsoleWatchInstrumentationEnabled = $true
 
 function Write-ConsoleWatchRecord {
   [CmdletBinding()]
@@ -57,10 +58,14 @@ function Start-ConsoleWatch {
   [CmdletBinding()]
   param(
     [Parameter(Mandatory)][string]$OutDir,
-    [string[]]$Targets = @('conhost','pwsh','powershell','cmd','wt')
+    [string[]]$Targets = @('conhost','pwsh','powershell','cmd','wt'),
+    [switch]$DisableInstrumentation
   )
     # ShouldProcess guard: honor -WhatIf / -Confirm
     if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
+  if ($DisableInstrumentation.IsPresent -or -not $script:ConsoleWatchInstrumentationEnabled) {
+    return 'ConsoleWatch_disabled'
+  }
   if (-not (Test-Path -LiteralPath $OutDir -PathType Container)) { try { New-Item -ItemType Directory -Force -Path $OutDir | Out-Null } catch {} }
   $id = 'ConsoleWatch_' + ([guid]::NewGuid().ToString('n'))
   $ndjson = Join-Path $OutDir 'console-spawns.ndjson'
@@ -102,6 +107,22 @@ function Stop-ConsoleWatch {
       [Parameter(Mandatory)][string]$OutDir,
       [string]$Phase
   )
+  if ($Id -eq 'ConsoleWatch_disabled') {
+    $summary = [ordered]@{
+      schema        = 'console-watch-summary/v1'
+      phase         = $Phase
+      generatedAtUtc= (Get-Date).ToUniversalTime().ToString('o')
+      counts        = @{}
+      last          = @()
+      path          = (Join-Path $OutDir 'console-spawns.ndjson')
+      disabled      = $true
+    }
+    try {
+      $sumPath = Join-Path $OutDir 'console-watch-summary.json'
+      $summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $sumPath -Encoding utf8
+    } catch {}
+    return $summary
+  }
   $state = $script:ConsoleWatchState[$Id]
   if ($state.Mode -eq 'event') { try { Unregister-Event -SourceIdentifier $Id -ErrorAction SilentlyContinue } catch {}; try { Remove-Event -SourceIdentifier $Id -ErrorAction SilentlyContinue } catch {} }
   $summary = [ordered]@{ schema='console-watch-summary/v1'; phase=$Phase; generatedAtUtc=(Get-Date).ToUniversalTime().ToString('o'); counts=[ordered]@{}; last=@(); path=(Join-Path $OutDir 'console-spawns.ndjson') }
