@@ -30,7 +30,11 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
 
     BeforeEach {
         $script:envBackup = @{}
-        foreach ($name in @('RUNNER_LABELS','RUNNER_NAME','RUNNER_OS','RUNNER_ENVIRONMENT','RUNNER_ARCH','RUNNER_TRACKING_ID','ImageOS','ImageVersion')) {
+        foreach ($name in @(
+            'RUNNER_LABELS','RUNNER_NAME','RUNNER_OS','RUNNER_ENVIRONMENT','RUNNER_ARCH','RUNNER_TRACKING_ID',
+            'ImageOS','ImageVersion','GITHUB_REPOSITORY','GITHUB_RUN_ID','GITHUB_JOB','GITHUB_RUN_ATTEMPT',
+            'GH_TOKEN','GITHUB_TOKEN'
+        )) {
             $script:envBackup[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
         InModuleScope RunnerProfile {
@@ -89,6 +93,60 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 $first | Should -Contain 'self-hosted'
                 $second | Should -Be $first
                 Assert-MockCalled -ModuleName RunnerProfile -CommandName Get-RunnerLabelsFromApi -Times 1 -Exactly
+            }
+        }
+    }
+
+    Context 'Get-RunnerLabelsFromApi' {
+        It 'selects jobs matching runner name and attempt when API returns data' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '42'
+            $env:RUNNER_NAME = 'runner-a'
+            $env:GITHUB_JOB = 'coverage'
+            $env:GITHUB_RUN_ATTEMPT = '3'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('self-hosted','windows'); run_attempt=3; name='coverage'; status='completed' },
+                        [pscustomobject]@{ runner_name='runner-b'; labels=@('linux','x64'); run_attempt=1; name='coverage'; status='completed' }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'self-hosted'
+                $labels | Should -Contain 'windows'
+                $labels | Should -Not -Contain 'linux'
+            }
+        }
+
+        It 'returns empty when repository metadata is missing' {
+            InModuleScope RunnerProfile {
+                Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
+            }
+        }
+    }
+
+    Context 'Invoke-RunnerJobsApi' {
+        It 'returns jobs from REST API when gh CLI is unavailable' {
+            $env:GH_TOKEN = 'gho_mock'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith { throw [System.Management.Automation.CommandNotFoundException]::new() }
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith {
+                    [pscustomobject]@{
+                        jobs = @(
+                            [pscustomobject]@{ runner_name='runner-a'; labels=@('ubuntu'); status='completed' }
+                        )
+                    }
+                }
+                $jobs = @(Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999')
+                ($jobs | Measure-Object).Count | Should -Be 1
+                $jobs[0].labels | Should -Contain 'ubuntu'
+            }
+        }
+
+        It 'returns empty when no tokens are present' {
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith { throw [System.Management.Automation.CommandNotFoundException]::new() }
+                Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999' | Should -BeNullOrEmpty
             }
         }
     }
