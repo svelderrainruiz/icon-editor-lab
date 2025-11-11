@@ -1,0 +1,161 @@
+name: icon-editor-lab_PostMerge_RC_Orchestration
+version: v4.9
+mode: orchestrate
+runner: local
+depth: deep
+evidence_source: runbook-only
+timestamp_mode: at-run
+
+env:
+  LEFT_URL: "https://github.com/svelderrainruiz/icon-editor-lab"
+  RIGHT_URL: "https://github.com/svelderrainruiz/icon-editor-lab-15"
+  ALLOW_RIGHT_REF: "off"
+  RC_TAG: "rc0.1.0"
+  COVERAGE_MIN: "75"
+  COVERAGE_ENFORCE: "true"
+
+macros:
+  bash_prelude: |
+    set -euo pipefail
+    fail(){ echo "❌ $*"; exit 1; }
+    note(){ echo "👉 $*"; }
+    require(){ command -v "$1" >/dev/null 2>&1 || fail "Missing command: $1"; }
+    require_file(){ [ -s "$1" ] || fail "Missing or empty file: $1"; }
+    json_has_verified(){
+      local file="$1"
+      local key="$2"
+      local wanted="$3"
+      local ok
+      ok="$(jq --arg w "$wanted" -r 'select(.path==$w) | .status' "$file" 2>/dev/null || true)"
+      [ "$ok" = "VERIFIED-HEAD" ] || [ "$ok" = "VERIFIED-REF" ] || fail "Path not VERIFIED in $(basename "$file"): $wanted (got: ${ok:-none})"
+    }
+    coverage_pct_from_cobertura(){
+      python - <<'PY' "$1"
+import sys, xml.etree.ElementTree as ET
+p = sys.argv[1]
+try:
+    rate = float(ET.parse(p).getroot().attrib.get("line-rate", "-1"))
+    pct = round(rate*100)
+    print(pct if 0 <= pct <= 100 else -1)
+except Exception:
+    print(-1)
+PY
+    }
+
+tasks:
+  - id: verify-branch-integrity
+    desc: Confirm develop contains CI, ADR, RTM, and smoke test at HEAD
+    cmd: |
+      {{bash_prelude}}
+      require git
+      git fetch origin develop
+      git checkout develop
+      for f in \
+        ".github/workflows/coverage.yml" \
+        ".github/workflows/docs-link-check.yml" \
+        "adr/ADR-0001.md" \
+        "docs/RTM.md" \
+        "tests/Sanity.Tests.ps1"
+      do
+        [ -f "$f" ] || fail "Expected file missing on develop: $f"
+      done
+      note "All expected files present on develop."
+
+  - id: trigger-ci-and-gate
+    desc: Run coverage + lychee locally (Codex runner) and enforce ≥ $COVERAGE_MIN %
+    cmd: |
+      {{bash_prelude}}
+      if command -v pwsh >/dev/null 2>&1; then
+        pwsh -NoLogo -Command "
+          Set-PSRepository PSGallery -InstallationPolicy Trusted;
+          Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser;
+          New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null;
+          $config = @{
+            Run         = @{ Path = 'tests' }
+            CodeCoverage= @{ Enabled = $true; OutputFormat = 'Cobertura'; OutputPath = 'artifacts/coverage/coverage.xml' }
+            TestResult  = @{ Enabled = $true; OutputFormat = 'JUnitXml';  OutputPath = 'artifacts/test-results/results.xml' }
+          };
+          Invoke-Pester -Configuration $config;
+        "
+        require_file artifacts/coverage/coverage.xml
+        pct="$(coverage_pct_from_cobertura artifacts/coverage/coverage.xml)"
+        [ "$pct" -ge "${COVERAGE_MIN}" ] || fail "Coverage ${pct}% < ${COVERAGE_MIN}%"
+        note "Coverage OK: ${pct}% ≥ ${COVERAGE_MIN}%"
+      else
+        note "pwsh not found locally; rely on GitHub Actions run for coverage gate."
+      fi
+
+      if command -v lychee >/dev/null 2>&1; then
+        lychee --no-progress --retry 2 --timeout 20s "**/*.md" || fail "Lychee reported broken links"
+        note "Lychee OK locally."
+      else
+        note "lychee not found locally; will validate via GitHub Actions."
+      fi
+
+  - id: update-docs
+    desc: Expand ADR rationale and seed first RTM row linking requirement → test → code
+    cmd: |
+      {{bash_prelude}}
+      require git
+      printf "\n## Decision Drivers\n- Establish measurable CI gates (coverage, docs integrity)\n- Enable traceability via RTM baseline\n\n## Alternatives Considered\n- Defer gates until feature maturity (rejected: risk of drift)\n\n" >> adr/ADR-0001.md
+
+      if ! grep -q 'RQ-0001' docs/RTM.md; then
+        printf "| RQ-0001 | tests/Sanity.Tests.ps1 | (TBD: src module) | artifacts/coverage/coverage.xml |\n" >> docs/RTM.md
+      fi
+
+      git add adr/ADR-0001.md docs/RTM.md
+      git commit -m "docs: expand ADR-0001; seed initial RTM trace row" || note "No doc changes to commit."
+
+  - id: run-release-candidate
+    desc: Execute RC runbook to produce artifacts for rc0.1.0
+    cmd: |
+      {{bash_prelude}}
+      require bash
+      [ -x /workspace/RUNBOOK_rc0.1.0.sh ] || fail "Runbook missing: /workspace/RUNBOOK_rc0.1.0.sh"
+      export LEFT_URL RIGHT_URL ALLOW_RIGHT_REF
+      bash /workspace/RUNBOOK_rc0.1.0.sh
+
+  - id: verify-artifacts
+    desc: Enforce artifact presence and VERIFIED statuses in key path JSONL
+    cmd: |
+      {{bash_prelude}}
+      require jq
+      REL="releases/${RC_TAG}/compare"
+      require_file "$REL/repo_status.properties"
+      require_file "$REL/left_key_paths.jsonl"
+      require_file "$REL/right_key_paths.jsonl"
+      require_file "$REL/snippets.txt"
+      require_file "$REL/timestamp_utc.txt"
+      require_file "$REL/checksums.txt"
+
+      json_has_verified "$REL/left_key_paths.jsonl" ".path" ".github/workflows"
+      json_has_verified "$REL/left_key_paths.jsonl" ".path" "docs"
+      json_has_verified "$REL/left_key_paths.jsonl" ".path" "tests"
+      if ! jq -e 'select(.path=="architecture" and (.status=="VERIFIED-HEAD" or .status=="VERIFIED-REF"))' "$REL/left_key_paths.jsonl" >/dev/null; then
+        json_has_verified "$REL/left_key_paths.jsonl" ".path" "adr"
+      fi
+      note "Artifact verification ✅"
+
+  - id: update-backlog
+    desc: Add backlog items for RTM completion, ADRs, and CM records; idempotent
+    cmd: |
+      {{bash_prelude}}
+      touch BACKLOG.md
+      {
+        echo "- [ ] Populate RTM.md with full requirement set (≥ ${COVERAGE_MIN}% covered)"
+        echo "- [ ] Add ADRs for Definition of Done and CI evolution"
+        echo "- [ ] Update CMP with RC baseline and status accounting"
+      } >> BACKLOG.md
+      note "Backlog updated."
+
+  - id: prepare-next-iteration
+    desc: Tag next RC only if prior tasks succeeded; create skeleton release notes
+    cmd: |
+      {{bash_prelude}}
+      require git
+      mkdir -p docs/releases
+      [ -f docs/releases/v0.2.0.md ] || {
+        printf "# v0.2.0 (RC)\n\n- Integrated CI gates (coverage ≥ %s%%, docs link-check)\n- Seeded RTM and ADR discipline\n" "${COVERAGE_MIN}" > docs/releases/v0.2.0.md
+      }
+      git add docs/releases/v0.2.0.md BACKLOG.md
+      git commit -m "docs: draft v0.2.0 release notes; backlog updates" || note "No release-note changes."

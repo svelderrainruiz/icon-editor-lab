@@ -1,87 +1,100 @@
 name: PR Coverage Gate
+
 on:
   push:
     branches: ["**"]
   pull_request:
     branches: ["**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   coverage:
     runs-on: windows-latest
-    permissions:
-      contents: read
     env:
-      COVERAGE_MIN: "75"          # global threshold (percent)
-      COVERAGE_ENFORCE: "true"    # set to "false" to log warning instead of failing
+      COVERAGE_MIN: "75"
+      COVERAGE_ENFORCE: "true"
+      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1"
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ensure Pester v6
+      - name: Install Pester v6
         shell: pwsh
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
           Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
+          Import-Module  Pester -MinimumVersion 6.0.0
 
-      - name: Prepare artifacts dirs
-        shell: pwsh
-        run: New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
-
-      - name: Run Pester with Cobertura + JUnit
+      - name: Run Pester (Cobertura + JUnit)
         shell: pwsh
         run: |
-          $config = @{
-            Run         = @{ Path = 'tests' }
-            CodeCoverage= @{ Enabled = $true; OutputFormat = 'Cobertura'; OutputPath = 'artifacts/coverage/coverage.xml' }
-            TestResult  = @{ Enabled = $true; OutputFormat = 'JUnitXml';  OutputPath = 'artifacts/test-results/results.xml' }
+          New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
+          $paths = @()
+          foreach ($candidate in @('tests', 'src/tests')) {
+            if (Test-Path $candidate) {
+              $paths += $candidate
+            }
           }
+          if ($paths.Count -eq 0) {
+            Write-Warning 'No test directories found (tests/src/tests); defaulting to tests'
+            $paths = @('tests')
+          }
+          Write-Host ("Invoking Pester on: {0}" -f ($paths -join ', '))
+          $config = New-PesterConfiguration
+          $config.Run.Path = $paths
+          $config.CodeCoverage.Enabled = $true
+          $config.CodeCoverage.OutputFormat = 'Cobertura'
+          $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
+          $config.TestResult.Enabled = $true
+          $config.TestResult.OutputFormat = 'JUnitXml'
+          $config.TestResult.OutputPath   = 'artifacts/test-results/results.xml'
           Invoke-Pester -Configuration $config
 
-      - name: Enforce coverage threshold (≥ ${{ env.COVERAGE_MIN }}%)
+      - name: Enforce global line coverage (>= ${{ env.COVERAGE_MIN }}%)
+        if: env.COVERAGE_ENFORCE == 'true'
         shell: pwsh
         run: |
-          $min = [double]$env:COVERAGE_MIN
-          $enf = ($env:COVERAGE_ENFORCE -eq 'true')
           if (-not (Test-Path artifacts/coverage/coverage.xml)) {
-            if ($enf) { Write-Error "Missing coverage.xml"; exit 1 } else { Write-Warning "Missing coverage.xml (enforcement off)"; exit 0 }
+            throw 'coverage.xml missing'
           }
           [xml]$doc = Get-Content artifacts/coverage/coverage.xml
           $rate = [double]$doc.coverage.GetAttribute('line-rate')
-          if ($rate -lt 0 -or $rate -gt 1) { if ($enf) { Write-Error "Invalid line-rate in coverage.xml"; exit 1 } else { Write-Warning "Invalid line-rate (enforcement off)"; exit 0 } }
-          $pct  = [math]::Round($rate*100,2)
-          if ($enf -and $pct -lt $min) { Write-Error "Coverage $pct% < $min%"; exit 1 }
-          Write-Host "Coverage OK: $pct% (min=$min%, enforce=$enf)"
+          $pct  = [math]::Round($rate * 100, 2)
+          if ($pct -lt [double]$env.COVERAGE_MIN) {
+            throw "Coverage $pct% < $env.COVERAGE_MIN%"
+          }
+          Write-Host "Coverage OK: $pct% >= $env.COVERAGE_MIN%"
 
-      - name: Enforce per-file floors for critical modules (≥ ${{ env.COVERAGE_MIN }}%)
-        if: always()
+      - name: Enforce file floors for critical modules (>= ${{ env.COVERAGE_MIN }}%)
+        if: env.COVERAGE_ENFORCE == 'true'
         shell: pwsh
         run: |
-          # Adjust critical set as real modules emerge:
-          $critical = @('src/Core.psm1','tools/Build.ps1')
-          if (-not (Test-Path artifacts/coverage/coverage.xml)) { Write-Host "No coverage.xml; skip file floors"; exit 0 }
+          $critical = $env:CRITICAL_PATHS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+          if (-not (Test-Path artifacts/coverage/coverage.xml)) {
+            throw 'coverage.xml missing'
+          }
           [xml]$doc = Get-Content artifacts/coverage/coverage.xml
           $classes = $doc.coverage.packages.package.classes.class
-          if ($null -eq $classes) { Write-Host "No classes in coverage; skip file floors"; exit 0 }
-          $min = [double]$env:COVERAGE_MIN
-          $viol = @()
-          foreach($c in $classes){
-            $file = $c.filename
-            if($critical -contains $file){
+          if ($null -eq $classes) {
+            Write-Host 'No classes reported; skipping file-floor enforcement.'
+            return
+          }
+          $violations = @()
+          foreach ($c in $classes) {
+            if ($critical -contains $c.filename) {
               $lines = @($c.lines.line)
               $total = $lines.Count
-              $covered = ($lines | ? { [int]$_.hits -gt 0 }).Count
-              $pct = if($total -gt 0){ [math]::Round(($covered/$total)*100,2) } else { 100 }
-              if($pct -lt $min){ $viol += "$file=$pct%" }
+              $covered = ($lines | Where-Object { [int]$_.hits -gt 0 }).Count
+              $pct = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 100 }
+              if ($pct -lt [double]$env:COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
             }
           }
-          if($viol.Count -gt 0){ Write-Error "File floor breaches: $($viol -join ', ')"; exit 1 }
-          Write-Host "File floors OK"
-
-      - name: Upload coverage.xml
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-xml
-          path: artifacts/coverage/coverage.xml
+          if ($violations.Count -gt 0) {
+            throw "File floor breaches: $($violations -join ', ')"
+          }
+          Write-Host 'File floors OK'
 
       - name: Upload JUnit results
         if: always()
@@ -89,3 +102,10 @@ jobs:
         with:
           name: junit-results
           path: artifacts/test-results/results.xml
+
+      - name: Upload coverage.xml
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: artifacts/coverage/coverage.xml

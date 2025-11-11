@@ -1,0 +1,15 @@
+# CODEOWNERS (seed)
+# Adjust owners to real teams/users later.
+
+# Source & tooling
+/src/                @svelderrainruiz
+/tools/              @svelderrainruiz
+
+# Tests & CI
+/tests/              @svelderrainruiz
+/.github/workflows/  @svelderrainruiz
+
+# Docs & decisions
+/docs/               @svelderrainruiz
+/architecture/       @svelderrainruiz
+/architecture/adr/   @svelderrainruiz

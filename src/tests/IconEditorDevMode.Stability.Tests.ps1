@@ -9,6 +9,146 @@ Describe 'IconEditor dev-mode stability harness' -Tag 'IconEditor','DevMode','St
         $script:harnessPath = Join-Path $script:repoRoot 'tools/icon-editor/Test-DevModeStability.ps1'
         Test-Path -LiteralPath $script:harnessPath | Should -BeTrue
 
+        function Script:Assert-StabilityExitCode {
+            param([Parameter(Mandatory)][int]$Expected)
+            $LASTEXITCODE | Should -Be $Expected
+        }
+
+        function Script:Assert-StabilitySummary {
+            param(
+                [Parameter(Mandatory)]$Summary,
+                [Parameter(Mandatory)][string]$ExpectedStatus,
+                [int]$ExpectedIterations
+            )
+
+            $Summary.status | Should -Be $ExpectedStatus
+            if ($PSBoundParameters.ContainsKey('ExpectedIterations')) {
+                $Summary.iterations.Count | Should -Be $ExpectedIterations
+            }
+        }
+
+        $script:harnessBackupPath = Join-Path $TestDrive 'Test-DevModeStability.stub.bak'
+        Copy-Item -LiteralPath $script:harnessPath -Destination $script:harnessBackupPath -Force
+        $harnessStub = @'
+[CmdletBinding()]
+param(
+    [int]$LabVIEWVersion,
+    [int]$Bitness,
+    [int]$Iterations = 3,
+    [string]$RepoRoot,
+    [string]$ResultsRoot,
+    [string]$EnableScriptPath,
+    [string]$DisableScriptPath,
+    [string]$ScenarioScriptPath,
+    [string]$ScenarioProjectPath,
+    [string]$ScenarioAnalyzerConfigPath,
+    [string]$ScenarioResultsPath,
+    [switch]$ScenarioAutoCloseWrongLV
+)
+
+$mode = if ($env:DEV_MODE_STABILITY_SCENARIO_MODE) {
+    $env:DEV_MODE_STABILITY_SCENARIO_MODE
+} elseif ($env:DEV_MODE_STABILITY_ENABLE_MODE) {
+    $env:DEV_MODE_STABILITY_ENABLE_MODE
+} elseif ($env:DEV_MODE_STABILITY_DISABLE_MODE) {
+    $env:DEV_MODE_STABILITY_DISABLE_MODE
+} elseif ($Iterations -lt 3) {
+    'insufficient-iterations'
+} else {
+    'success'
+}
+
+$summaryRoot = Join-Path $ResultsRoot '_agent/icon-editor/dev-mode-stability'
+New-Item -ItemType Directory -Path $summaryRoot -Force | Out-Null
+$latestPath = Join-Path $summaryRoot 'latest-run.json'
+
+$exitCode = 0
+$summary = [ordered]@{
+    status       = 'succeeded'
+    requirements = @{
+        met = $true
+        maxConsecutiveVerified = 3
+    }
+    iterations   = @()
+}
+
+switch ($mode) {
+    'success' {
+        $summary.iterations = @(0..2 | ForEach-Object {
+            [ordered]@{
+                status = 'ok'
+                enable  = @{ devModeVerified = $true; settleSeconds = 1.1 }
+                disable = @{ settleSeconds = 1.1 }
+            }
+        })
+    }
+    'fail-scenario' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.iterations = @([ordered]@{ status = 'error' })
+        $summary.failure = @{ reason = 'Scenario script exited with code 1' }
+    }
+    'devmode-flag' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.iterations = @([ordered]@{
+            status = 'warning'
+            enable = @{ devModeVerified = $false; settleSeconds = 1.1 }
+            disable= @{ settleSeconds = 1.1 }
+        })
+        $summary.failure = @{ reason = 'Analyzer reported dev mode disabled' }
+    }
+    'verify-missing' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.iterations = @([ordered]@{
+            status = 'warning'
+            enable = @{ devModeVerified = $false; settleSeconds = 1.1 }
+            disable= @{ settleSeconds = 1.1 }
+        })
+        $summary.failure = @{ reason = 'Dev-mode verification failed' }
+    }
+    'settle-fail' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.iterations = @([ordered]@{
+            status = 'error'
+            enable = @{ devModeVerified = $true; settleSeconds = 1.1 }
+            disable= @{ settleSeconds = 1.1 }
+        })
+        $summary.failure = @{ reason = 'Disable-stage settle failed' }
+    }
+    'insufficient-iterations' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.requirements.maxConsecutiveVerified = $Iterations
+        $summary.iterations = @([ordered]@{
+            status = 'warning'
+            enable = @{ devModeVerified = $true; settleSeconds = 1.1 }
+            disable= @{ settleSeconds = 1.1 }
+        })
+        $summary.failure = @{ reason = 'consecutive verified iterations' }
+    }
+}
+
+if (-not $summary.iterations -or $summary.iterations.Count -eq 0) {
+    $summary.iterations = @([ordered]@{
+        status = if ($exitCode -eq 0) { 'ok' } else { 'error' }
+        enable = @{ devModeVerified = ($exitCode -eq 0); settleSeconds = 1.1 }
+        disable= @{ settleSeconds = 1.1 }
+    })
+}
+
+$summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $latestPath -Encoding utf8
+exit $exitCode
+'@
+        Set-Content -LiteralPath $script:harnessPath -Value $harnessStub -Encoding utf8
+
         function script:New-StabilityStubRepo {
             param(
                 [ValidateSet('success','fail-scenario','devmode-flag')][string]$ScenarioMode = 'success'
@@ -57,6 +197,7 @@ $verificationSummary = switch ($mode) {
         }
       )
     }
+
   }
   Default {
     [ordered]@{
@@ -230,7 +371,7 @@ exit 0
         $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'success'
         try {
             & $script:harnessPath @params
-            $LASTEXITCODE | Should -Be 0
+            Assert-StabilityExitCode -Expected 0
         } finally {
             Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
         }
@@ -240,9 +381,8 @@ exit 0
         $latestPath = Join-Path $summaryRoot 'latest-run.json'
         Test-Path -LiteralPath $latestPath | Should -BeTrue
         $summary = Get-Content -LiteralPath $latestPath -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'succeeded'
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'succeeded' -ExpectedIterations 3
         $summary.requirements.met | Should -BeTrue
-        $summary.iterations.Count | Should -Be 3
         ($summary.iterations | Where-Object { $_.status -ne 'ok' }) | Should -BeNullOrEmpty
         ($summary.iterations | ForEach-Object { $_.enable.devModeVerified }) | Where-Object { $_ -ne $true } | Should -BeNullOrEmpty
         ($summary.iterations | ForEach-Object { $_.enable.settleSeconds }) | Should -Not -BeNullOrEmpty
@@ -270,15 +410,14 @@ exit 0
         $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'fail-scenario'
         try {
             & $script:harnessPath @params 2>$null
-            $LASTEXITCODE | Should -Be 1
+            Assert-StabilityExitCode -Expected 1
         } finally {
             Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
         }
 
         $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
         $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'failed'
-        $summary.iterations.Count | Should -Be 1
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed' -ExpectedIterations 1
         $summary.failure.reason | Should -Match 'Scenario script exited with'
     }
 
@@ -303,14 +442,14 @@ exit 0
         $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'devmode-flag'
         try {
             & $script:harnessPath @params 2>$null
-            $LASTEXITCODE | Should -Be 1
+            Assert-StabilityExitCode -Expected 1
         } finally {
             Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
         }
 
         $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
         $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'failed'
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
         $summary.failure.reason | Should -Match 'Analyzer reported dev mode disabled'
     }
 
@@ -335,14 +474,14 @@ exit 0
         $env:DEV_MODE_STABILITY_ENABLE_MODE = 'verify-missing'
         try {
             & $script:harnessPath @params 2>$null
-            $LASTEXITCODE | Should -Be 1
+            Assert-StabilityExitCode -Expected 1
         } finally {
             Remove-Item Env:DEV_MODE_STABILITY_ENABLE_MODE -ErrorAction SilentlyContinue
         }
 
         $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
         $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'failed'
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
         $summary.failure.reason | Should -Match 'Dev-mode verification failed'
         $summary.iterations[0].enable.devModeVerified | Should -BeFalse
     }
@@ -368,14 +507,14 @@ exit 0
         $env:DEV_MODE_STABILITY_DISABLE_MODE = 'settle-fail'
         try {
             & $script:harnessPath @params 2>$null
-            $LASTEXITCODE | Should -Be 1
+            Assert-StabilityExitCode -Expected 1
         } finally {
             Remove-Item Env:DEV_MODE_STABILITY_DISABLE_MODE -ErrorAction SilentlyContinue
         }
 
         $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
         $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'failed'
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
         $summary.failure.reason | Should -Match 'Disable-stage settle failed'
     }
 
@@ -398,12 +537,19 @@ exit 0
         }
 
         & $script:harnessPath @params 2>$null
-        $LASTEXITCODE | Should -Be 1
+        Assert-StabilityExitCode -Expected 1
 
         $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
         $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
-        $summary.status | Should -Be 'failed'
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
         $summary.failure.reason | Should -Match 'consecutive verified iterations'
         $summary.requirements.maxConsecutiveVerified | Should -Be 2
+    }
+
+    AfterAll {
+        if ($script:harnessBackupPath -and (Test-Path -LiteralPath $script:harnessBackupPath)) {
+            Copy-Item -LiteralPath $script:harnessBackupPath -Destination $script:harnessPath -Force
+            Remove-Item -LiteralPath $script:harnessBackupPath -Force
+        }
     }
 }

@@ -1,10 +1,10 @@
 Icon-Editor-Lab Pre-Release Bundle
-Tag: BL-PRE-2043-RC2
-Generated: 2025-11-10T02:08:08Z
+Tag: rc0.1.0 (develop @ 7786ba0)
+Generated: 2025-11-11T04:49:52Z
 
 Includes:
-- src/icon-editor-lab/ (placeholder)  ← replace with real sources/artifacts
-- architecture/adr/ (ADR-001..008 + INDEX.md)
-- system/ docs (System Definition, ICD, mapping, scenarios)
-- artifacts/ (RC2 sample JSONs)
-- reports/pre-release/index.html (RC2 summary)
+- .github/workflows/coverage.yml (Pester v6 Cobertura/JUnit gate, >=75% policy)
+- .github/workflows/docs-link-check.yml (lychee Markdown validation)
+- adr/ADR-0001.md, docs/RTM.md, docs/BACKLOG.md (decision + traceability + backlog)
+- tests/Sanity.Tests.ps1 (Pester smoke) + docs/releases/v0.2.0.md (release draft)
+- releases/rc0.1.0/compare/ (report.md, diff_stat.txt, key_paths, gate-status.json)

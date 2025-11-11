@@ -1,0 +1,9 @@
+.github/workflows/coverage.yml
+.github/workflows/docs-link-check.yml
+adr/ADR-0001.md
+docs/RTM.md
+docs/BACKLOG.md
+architecture/adr/INDEX.md
+tests/Sanity.Tests.ps1
+releases/rc0.1.0/compare/
+docs/releases/v0.2.0.md

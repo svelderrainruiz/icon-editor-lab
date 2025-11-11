@@ -1,0 +1,18 @@
+{
+  "rc": "rc0.1.0",
+  "generated": "2025-11-10T20:49:28.1508314-08:00",
+  "gates": {
+    "coverage": {
+      "status": "PENDING",
+      "notes": "Awaiting run of PR Coverage Gate on develop after merge"
+    },
+    "link-check": {
+      "status": "PENDING",
+      "notes": "Lychee workflow queued for next push"
+    },
+    "runbook": {
+      "status": "BLOCKED",
+      "notes": "Required script /workspace/RUNBOOK_rc0.1.0.sh missing on runner"
+    }
+  }
+}
