@@ -8,12 +8,12 @@ Resolve-LVRepoRoot: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Resolve-LVRepoRoot {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
   param([string]$StartPath = (Get-Location).Path)
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   try {
     $root = git -C $StartPath rev-parse --show-toplevel 2>$null
     if ($root) { return $root.Trim() }
@@ -38,6 +38,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Get-LVOperationNames {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   $script:OperationSpec.operations.name
 }
 
@@ -89,6 +90,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Get-LVProviders {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
 
@@ -116,6 +118,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Import-LVProviderModules {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   $providerRoot = Join-Path $PSScriptRoot 'providers'
   if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
   $modules = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue
@@ -506,6 +509,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
   function Set-LVHeadlessEnv {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
     $guard = @{}
     foreach ($pair in (@{'LV_SUPPRESS_UI'='1'; 'LV_NO_ACTIVATE'='1'; 'LV_CURSOR_RESTORE'='1'}).GetEnumerator()) {
       $existing = [System.Environment]::GetEnvironmentVariable($pair.Key)
@@ -580,6 +584,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Initialize-LabVIEWCliPidTracker {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   if (-not $script:LabVIEWPidTrackerLoaded) { return }
   if ($script:LabVIEWPidTrackerState) { return }
 
@@ -737,6 +742,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Resolve-LabVIEWCliPidTrackerPayload {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   $payload = [ordered]@{ enabled = [bool]$script:LabVIEWPidTrackerLoaded }
 
   if ($script:LabVIEWPidTrackerPath) {
@@ -875,6 +881,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Get-LabVIEWCliPidTracker {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
+  param()
   $payload = Resolve-LabVIEWCliPidTrackerPayload
   if (-not $payload) { return $null }
   return [pscustomobject]$payload

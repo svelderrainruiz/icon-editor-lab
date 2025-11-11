@@ -4,16 +4,22 @@ param()
 
 Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
     BeforeAll {
-        $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
-        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src\tools\RunnerProfile.psm1')).Path
+        $here = $PSScriptRoot
+        if (-not $here -and $PSCommandPath) {
+            $here = Split-Path -Parent $PSCommandPath
+        }
+        if (-not $here -and $MyInvocation.MyCommand.Path) {
+            $here = Split-Path -Parent $MyInvocation.MyCommand.Path
+        }
+        if (-not $here) {
+            throw 'Unable to determine test location.'
+        }
+        $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
+        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/RunnerProfile.psm1')).Path
         if (Get-Module -Name RunnerProfile -ErrorAction SilentlyContinue) {
             Remove-Module RunnerProfile -Force -ErrorAction SilentlyContinue
         }
-        $module = New-Module -Name RunnerProfile -ScriptBlock {
-            param($path)
-            . $path
-        } -ArgumentList $script:modulePath
-        Import-Module $module -Force
+        Import-Module -Name $script:modulePath -Force -ErrorAction Stop
     }
 
     AfterAll {

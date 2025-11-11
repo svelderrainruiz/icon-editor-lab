@@ -18,8 +18,6 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Invoke-Once {
 
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   [CmdletBinding()]
   param(
     [Parameter(Mandatory)][string]$Key,
@@ -27,6 +25,9 @@ function Invoke-Once {
     [string]$ScopeDirectory = (Join-Path (Get-Location).Path 'tests/results/_agent/post'),
     [switch]$WhatIf
   )
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
 
   if ([string]::IsNullOrWhiteSpace($Key)) { throw "Invoke-Once: Key cannot be empty." }
   if (-not (Test-Path -LiteralPath $ScopeDirectory)) {

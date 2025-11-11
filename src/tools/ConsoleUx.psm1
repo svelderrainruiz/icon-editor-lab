@@ -7,13 +7,13 @@ Get-DxLevel: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-DxLevel {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   [CmdletBinding()]
   param(
     [ValidateSet('quiet','concise','normal','detailed','debug')][string]$Override
   )
+
+  # ShouldProcess guard: honor -WhatIf / -Confirm
+  if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   if ($PSBoundParameters.ContainsKey('Override') -and $Override) { return $Override }
   $raw = $env:DX_CONSOLE_LEVEL
   if (-not $raw) { return 'normal' }

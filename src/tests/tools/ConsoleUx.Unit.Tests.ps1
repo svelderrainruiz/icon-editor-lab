@@ -4,16 +4,22 @@ param()
 
 Describe 'ConsoleUx diagnostics helpers' -Tag 'Unit','Tools','ConsoleUx' {
     BeforeAll {
-        $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
-        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src\tools\ConsoleUx.psm1')).Path
+        $here = $PSScriptRoot
+        if (-not $here -and $PSCommandPath) {
+            $here = Split-Path -Parent $PSCommandPath
+        }
+        if (-not $here -and $MyInvocation.MyCommand.Path) {
+            $here = Split-Path -Parent $MyInvocation.MyCommand.Path
+        }
+        if (-not $here) {
+            throw 'Unable to determine test location.'
+        }
+        $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
+        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/ConsoleUx.psm1')).Path
         if (Get-Module -Name ConsoleUx -ErrorAction SilentlyContinue) {
             Remove-Module ConsoleUx -Force -ErrorAction SilentlyContinue
         }
-        $module = New-Module -Name ConsoleUx -ScriptBlock {
-            param($path)
-            . $path
-        } -ArgumentList $script:modulePath
-        Import-Module $module -Force
+        Import-Module -Name $script:modulePath -Force -ErrorAction Stop
     }
 
     AfterAll {

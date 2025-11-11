@@ -4,16 +4,22 @@ param()
 
 Describe 'Invoke-Once guard' -Tag 'Unit','Tools','OnceGuard' {
     BeforeAll {
-        $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
-        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src\tools\Once-Guard.psm1')).Path
+        $here = $PSScriptRoot
+        if (-not $here -and $PSCommandPath) {
+            $here = Split-Path -Parent $PSCommandPath
+        }
+        if (-not $here -and $MyInvocation.MyCommand.Path) {
+            $here = Split-Path -Parent $MyInvocation.MyCommand.Path
+        }
+        if (-not $here) {
+            throw 'Unable to determine test location.'
+        }
+        $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
+        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/Once-Guard.psm1')).Path
         if (Get-Module -Name 'Once-Guard' -ErrorAction SilentlyContinue) {
             Remove-Module 'Once-Guard' -Force -ErrorAction SilentlyContinue
         }
-        $module = New-Module -Name 'Once-Guard' -ScriptBlock {
-            param($path)
-            . $path
-        } -ArgumentList $script:modulePath
-        Import-Module $module -Force
+        Import-Module -Name $script:modulePath -Force -ErrorAction Stop
     }
 
     AfterAll {
@@ -25,15 +31,13 @@ Describe 'Invoke-Once guard' -Tag 'Unit','Tools','OnceGuard' {
     It 'executes the action once and records a marker' {
         $scope = Join-Path $TestDrive 'once'
         $counter = [ref]0
-        InModuleScope 'Once-Guard' {
-            Invoke-Once -Key 'alpha' -ScopeDirectory $scope -Action {
-                $counter.Value++
-            } | Should -BeTrue
+        Invoke-Once -Key 'alpha' -ScopeDirectory $scope -Action {
+            $counter.Value++
+        } | Should -BeTrue
 
-            Invoke-Once -Key 'alpha' -ScopeDirectory $scope -Action {
-                $counter.Value++
-            } | Should -BeFalse
-        }
+        Invoke-Once -Key 'alpha' -ScopeDirectory $scope -Action {
+            $counter.Value++
+        } | Should -BeFalse
 
         $counter.Value | Should -Be 1
         $marker = Join-Path $scope 'once-alpha.marker'
@@ -45,9 +49,7 @@ Describe 'Invoke-Once guard' -Tag 'Unit','Tools','OnceGuard' {
         $scope = Join-Path $TestDrive 'missing' 'nested'
         Test-Path $scope | Should -BeFalse
 
-        InModuleScope 'Once-Guard' {
-            Invoke-Once -Key 'make-scope' -ScopeDirectory $scope -Action { } | Should -BeTrue
-        }
+        Invoke-Once -Key 'make-scope' -ScopeDirectory $scope -Action { } | Should -BeTrue
 
         Test-Path $scope | Should -BeTrue
     }
@@ -56,11 +58,9 @@ Describe 'Invoke-Once guard' -Tag 'Unit','Tools','OnceGuard' {
         $scope = Join-Path $TestDrive 'whatif'
         $ran = [ref]$false
 
-        InModuleScope 'Once-Guard' {
-            Invoke-Once -Key 'noop' -ScopeDirectory $scope -Action {
-                $ran.Value = $true
-            } -WhatIf | Should -BeTrue
-        }
+        Invoke-Once -Key 'noop' -ScopeDirectory $scope -Action {
+            $ran.Value = $true
+        } -WhatIf | Should -BeTrue
 
         $ran.Value | Should -BeFalse
         Test-Path $scope | Should -BeTrue

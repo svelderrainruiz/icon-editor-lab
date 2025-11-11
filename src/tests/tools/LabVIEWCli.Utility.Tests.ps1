@@ -4,16 +4,22 @@ param()
 
 Describe 'LabVIEWCli utility helpers' -Tag 'Unit','Tools','LabVIEWCli' {
     BeforeAll {
-        $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
-        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src\tools\LabVIEWCli.psm1')).Path
+        $here = $PSScriptRoot
+        if (-not $here -and $PSCommandPath) {
+            $here = Split-Path -Parent $PSCommandPath
+        }
+        if (-not $here -and $MyInvocation.MyCommand.Path) {
+            $here = Split-Path -Parent $MyInvocation.MyCommand.Path
+        }
+        if (-not $here) {
+            throw 'Unable to determine test location.'
+        }
+        $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
+        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/LabVIEWCli.psm1')).Path
         if (Get-Module -Name LabVIEWCli -ErrorAction SilentlyContinue) {
             Remove-Module LabVIEWCli -Force -ErrorAction SilentlyContinue
         }
-        $module = New-Module -Name LabVIEWCli -ScriptBlock {
-            param($path)
-            . $path
-        } -ArgumentList $script:modulePath
-        Import-Module $module -Force
+        Import-Module -Name $script:modulePath -Force -ErrorAction Stop
     }
 
     AfterAll {
@@ -36,9 +42,10 @@ Describe 'LabVIEWCli utility helpers' -Tag 'Unit','Tools','LabVIEWCli' {
             $start = Join-Path $TestDrive 'workspace\sub'
             New-Item -ItemType Directory -Path $start -Force | Out-Null
 
-            InModuleScope LabVIEWCli {
-                Resolve-LVRepoRoot -StartPath $start -Confirm:$false | Should -Be (Resolve-Path $start).Path
-            }
+            InModuleScope LabVIEWCli -ScriptBlock {
+                param($startPath)
+                Resolve-LVRepoRoot -StartPath $startPath -Confirm:$false | Should -Be (Resolve-Path $startPath).Path
+            } -ArgumentList $start
         }
     }
 
@@ -62,9 +69,10 @@ Describe 'LabVIEWCli utility helpers' -Tag 'Unit','Tools','LabVIEWCli' {
                 $relative = '.\file.txt'
                 Set-Content -Path $relative -Value 'data'
                 $expected = (Resolve-Path $relative).Path
-                InModuleScope LabVIEWCli {
-                    Convert-ToAbsolutePath -PathValue $relative -Confirm:$false | Should -Be $expected
-                }
+                InModuleScope LabVIEWCli -ScriptBlock {
+                    param($pathValue, $expectedPath)
+                    Convert-ToAbsolutePath -PathValue $pathValue -Confirm:$false | Should -Be $expectedPath
+                } -ArgumentList $relative, $expected
             }
             finally {
                 Pop-Location
