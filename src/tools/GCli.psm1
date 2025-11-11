@@ -12,12 +12,11 @@ Register-GCliProvider: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Register-GCliProvider {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param([Parameter(Mandatory)][object]$Provider)
 
     # ShouldProcess guard: honor -WhatIf / -Confirm
     if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
-    param([Parameter(Mandatory)][object]$Provider)
 
     foreach ($member in @('Name','ResolveBinaryPath','Supports','BuildArgs')) {
         if (-not ($Provider | Get-Member -Name $member -ErrorAction SilentlyContinue)) {
@@ -41,6 +40,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-GCliProviders {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param()
 
     return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
