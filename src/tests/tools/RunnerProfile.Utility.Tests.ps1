@@ -123,6 +123,37 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
             }
         }
+
+        It 'falls back to job name and latest non-queued run when runner name is absent' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '77'
+            $env:GITHUB_JOB = 'e2e'
+            $env:GITHUB_RUN_ATTEMPT = ''
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name=$null; name='build'; status='completed'; started_at=[datetime]'2025-11-11'; labels=@('build') },
+                        [pscustomobject]@{ runner_name=$null; name='e2e'; status='in_progress'; started_at=[datetime]'2025-11-12'; labels=@('e2e','windows') },
+                        [pscustomobject]@{ runner_name=$null; name='e2e'; status='completed'; started_at=[datetime]'2025-11-10'; labels=@('old') }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'e2e'
+                $labels | Should -Contain 'windows'
+                $labels | Should -Not -Contain 'old'
+            }
+        }
+
+        It 'returns empty when candidate job has no labels array' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '88'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @([pscustomobject]@{ runner_name='abc'; labels=$null; status='completed'; name='build' })
+                }
+                Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
+            }
+        }
     }
 
     Context 'Invoke-RunnerJobsApi' {
@@ -149,6 +180,7 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999' | Should -BeNullOrEmpty
             }
         }
+
     }
 
     Context 'Get-RunnerProfile' {
@@ -187,3 +219,4 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
         }
     }
 }
+
