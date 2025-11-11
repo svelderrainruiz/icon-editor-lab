@@ -59,6 +59,17 @@ Set-Content -LiteralPath '$closeLog' -Value (Get-Date).ToString('o') -Encoding u
                 CloseLog = $closeLog
             }
         }
+
+        function Script:Assert-TelemetryOutcome {
+            param(
+                [Parameter(Mandatory)]$Payload,
+                [Parameter(Mandatory)][string]$ExpectedMode,
+                [Parameter(Mandatory)][string]$ExpectedStatus
+            )
+
+            $Payload.mode   | Should -Be $ExpectedMode
+            $Payload.status | Should -Be $ExpectedStatus
+        }
     }
 
     It 'captures settle summary and verification snapshot' {
@@ -104,8 +115,8 @@ Set-Content -LiteralPath '$closeLog' -Value (Get-Date).ToString('o') -Encoding u
         Test-Path -LiteralPath $context.TelemetryLatestPath | Should -BeTrue
 
         $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
-        $payload.mode | Should -Be 'enable'
-        $payload.status | Should -Be 'succeeded'
+        $expectedOutcome = @{ Mode = 'enable'; Status = 'succeeded' }
+        Assert-TelemetryOutcome -Payload $payload -ExpectedMode $expectedOutcome.Mode -ExpectedStatus $expectedOutcome.Status
         $payload.statePath | Should -Be 'state.json'
         $payload.verificationSummary.presentCount | Should -Be 1
         $payload.verificationSummary.containsIconEditorCount | Should -Be 1
@@ -138,8 +149,8 @@ Set-Content -LiteralPath '$closeLog' -Value (Get-Date).ToString('o') -Encoding u
         Complete-IconEditorDevModeTelemetry -Context $context -Status 'succeeded'
 
         $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
-        $payload.mode | Should -Be 'disable'
-        $payload.status | Should -Be 'failed'
+        $expectedOutcome = @{ Mode = 'disable'; Status = 'failed' }
+        Assert-TelemetryOutcome -Payload $payload -ExpectedMode $expectedOutcome.Mode -ExpectedStatus $expectedOutcome.Status
         $payload.error | Should -Be 'boom'
         $payload.settleSummary.failedEvents | Should -Be 1
         $payload.settleSummary.failedStages | Should -Be 'failing-settle'

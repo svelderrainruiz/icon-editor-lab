@@ -373,6 +373,19 @@ foreach ($version in $Versions) {
         }
     }
 
+    function Script:Assert-DevModeState {
+        param(
+            [Parameter(Mandatory)][pscustomobject]$Result,
+            [Parameter(Mandatory)][string]$IconEditorRoot,
+            [Parameter(Mandatory)][bool]$ExpectedActive,
+            [Parameter(Mandatory)][string]$ExpectedMarker
+        )
+
+        $Result.Active | Should -Be $ExpectedActive
+        (Get-Content -LiteralPath (Join-Path $IconEditorRoot 'dev-mode.txt') -Raw).Trim() |
+            Should -Be $ExpectedMarker
+    }
+
     It 'enables dev mode via wrapper script' {
         $stub = Initialize-DevModeStubRepo -Name 'enable-script'
 
@@ -382,8 +395,8 @@ foreach ($version in $Versions) {
             -Versions 2026 `
             -Bitness 64
 
-        $result.Active | Should -BeTrue
-        (Get-Content -LiteralPath (Join-Path $stub.IconEditorRoot 'dev-mode.txt') -Raw).Trim() | Should -Be 'dev-mode:on-64'
+        Assert-DevModeState -Result $result -IconEditorRoot $stub.IconEditorRoot `
+            -ExpectedActive $true -ExpectedMarker 'dev-mode:on-64'
         Test-Path -LiteralPath $result.Path | Should -BeTrue
     }
 
@@ -402,8 +415,8 @@ foreach ($version in $Versions) {
             -Versions 2026 `
             -Bitness 64
 
-        $result.Active | Should -BeFalse
-        (Get-Content -LiteralPath (Join-Path $stub.IconEditorRoot 'dev-mode.txt') -Raw).Trim() | Should -Be 'dev-mode:off-64'
+        Assert-DevModeState -Result $result -IconEditorRoot $stub.IconEditorRoot `
+            -ExpectedActive $false -ExpectedMarker 'dev-mode:off-64'
     }
 
     It 'updates LocalHost.LibraryPaths in the LabVIEW ini when toggling dev mode' {
@@ -476,16 +489,16 @@ foreach ($version in $Versions) {
             -IconEditorRoot $stub.IconEditorRoot `
             -Operation 'Compare'
 
-        $state.Active | Should -BeTrue
         $state.Source | Should -Be 'Enable-IconEditorDevelopmentMode:Compare'
-        (Get-Content -LiteralPath (Join-Path $stub.IconEditorRoot 'dev-mode.txt') -Raw).Trim() | Should -Be 'dev-mode:on-64'
+        Assert-DevModeState -Result $state -IconEditorRoot $stub.IconEditorRoot `
+            -ExpectedActive $true -ExpectedMarker 'dev-mode:on-64'
 
         $disableState = & $script:disableScript `
             -RepoRoot $stub.RepoRoot `
             -IconEditorRoot $stub.IconEditorRoot `
             -Operation 'Compare'
-        $disableState.Active | Should -BeFalse
-        (Get-Content -LiteralPath (Join-Path $stub.IconEditorRoot 'dev-mode.txt') -Raw).Trim() | Should -Be 'dev-mode:off-64'
+        Assert-DevModeState -Result $disableState -IconEditorRoot $stub.IconEditorRoot `
+            -ExpectedActive $false -ExpectedMarker 'dev-mode:off-64'
     }
 
     It 'throws when enable wrapper is missing helper scripts' {
