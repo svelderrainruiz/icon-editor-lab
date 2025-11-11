@@ -58,6 +58,32 @@ Describe 'ConsoleWatch helpers' -Tag 'Unit','Tools','ConsoleWatch' {
             }
             Remove-Variable -Name ConsoleWatchSkipPath -Scope Global -ErrorAction SilentlyContinue
         }
+
+        It 'marks hasWindow false when Get-Process fails' {
+            $global:ConsoleWatchWindowPath = Join-Path $TestDrive 'window.ndjson'
+            InModuleScope ConsoleWatch {
+                Mock -CommandName Get-CimInstance -ModuleName ConsoleWatch -MockWith { $null }
+                Mock -CommandName Get-Process -ModuleName ConsoleWatch -MockWith { throw 'boom' }
+                $record = Write-ConsoleWatchRecord -Path $global:ConsoleWatchWindowPath -TargetsLower @('pwsh') -ProcessId 9 -ProcessName 'pwsh' -ParentProcessId 0
+                $record.hasWindow | Should -BeFalse
+            }
+            Remove-Variable -Name ConsoleWatchWindowPath -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'skips parent resolution when parent process id is zero' {
+            InModuleScope ConsoleWatch {
+                $script:ParentFilters = New-Object System.Collections.Generic.List[string]
+                Mock -CommandName Get-CimInstance -ModuleName ConsoleWatch -MockWith {
+                    param([string]$ClassName,[string]$Filter)
+                    $script:ParentFilters.Add($Filter) | Out-Null
+                    $null
+                }
+                Write-ConsoleWatchRecord -Path (Join-Path $TestDrive 'parent.ndjson') -TargetsLower @('pwsh') -ProcessId 15 -ProcessName 'pwsh' -ParentProcessId 0 | Out-Null
+                $script:ParentFilters | Should -Contain 'ProcessId=15'
+                $script:ParentFilters | Should -HaveCount 1
+                Remove-Variable -Name ParentFilters -Scope Script -ErrorAction SilentlyContinue
+            }
+        }
     }
 
     Context 'Start-ConsoleWatch' {
@@ -84,6 +110,19 @@ Describe 'ConsoleWatch helpers' -Tag 'Unit','Tools','ConsoleWatch' {
             $id = Start-ConsoleWatch -OutDir (Join-Path $TestDrive 'watch-snapshot') -Targets @('pwsh')
             $state = InModuleScope ConsoleWatch { param($key) $script:ConsoleWatchState[$key] } -ArgumentList $id
             $state.Mode | Should -Not -BeNullOrEmpty
+            $state.Targets | Should -Contain 'pwsh'
+        }
+
+        It 'falls back to snapshot mode when event registration fails' {
+            $outDir = Join-Path $TestDrive 'snapshot-fallback'
+            Mock -CommandName Register-CimIndicationEvent -ModuleName ConsoleWatch -MockWith { throw 'nope' }
+            Mock -CommandName Get-Process -ModuleName ConsoleWatch -MockWith {
+                [pscustomobject]@{ ProcessName='pwsh'; Id=123; StartTime=(Get-Date) }
+            }
+            $id = Start-ConsoleWatch -OutDir $outDir -Targets @('pwsh')
+            $state = InModuleScope ConsoleWatch { param($key) $script:ConsoleWatchState[$key] } -ArgumentList $id
+            $state.Mode | Should -Be 'snapshot'
+            $state.Pre | Should -HaveCount 1
             $state.Targets | Should -Contain 'pwsh'
         }
     }
@@ -145,3 +184,4 @@ Describe 'ConsoleWatch helpers' -Tag 'Unit','Tools','ConsoleWatch' {
         }
     }
 }
+
