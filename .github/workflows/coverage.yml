@@ -15,7 +15,8 @@ jobs:
     runs-on: windows-latest
     env:
       COVERAGE_MIN: "75"
-      COVERAGE_ENFORCE: "false"
+      COVERAGE_ENFORCE: "true"
+      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1"
     steps:
       - uses: actions/checkout@v4
 
@@ -30,8 +31,19 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
+          $paths = @()
+          foreach ($candidate in @('tests', 'src/tests')) {
+            if (Test-Path $candidate) {
+              $paths += $candidate
+            }
+          }
+          if ($paths.Count -eq 0) {
+            Write-Warning 'No test directories found (tests/src/tests); defaulting to tests'
+            $paths = @('tests')
+          }
+          Write-Host ("Invoking Pester on: {0}" -f ($paths -join ', '))
           $config = New-PesterConfiguration
-          $config.Run.Path = 'tests'
+          $config.Run.Path = $paths
           $config.CodeCoverage.Enabled = $true
           $config.CodeCoverage.OutputFormat = 'Cobertura'
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
@@ -55,17 +67,20 @@ jobs:
           }
           Write-Host "Coverage OK: $pct% >= $env.COVERAGE_MIN%"
 
-      - name: Enforce file floors for critical modules (75%)
+      - name: Enforce file floors for critical modules (>= ${{ env.COVERAGE_MIN }}%)
         if: env.COVERAGE_ENFORCE == 'true'
         shell: pwsh
         run: |
-          $critical = @('src/Core.psm1', 'tools/Build.ps1')
+          $critical = $env:CRITICAL_PATHS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }
           if (-not (Test-Path artifacts/coverage/coverage.xml)) {
             throw 'coverage.xml missing'
           }
           [xml]$doc = Get-Content artifacts/coverage/coverage.xml
           $classes = $doc.coverage.packages.package.classes.class
-          if ($null -eq $classes) { return }
+          if ($null -eq $classes) {
+            Write-Host 'No classes reported; skipping file-floor enforcement.'
+            return
+          }
           $violations = @()
           foreach ($c in $classes) {
             if ($critical -contains $c.filename) {
@@ -73,7 +88,7 @@ jobs:
               $total = $lines.Count
               $covered = ($lines | Where-Object { [int]$_.hits -gt 0 }).Count
               $pct = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 100 }
-              if ($pct -lt 75) { $violations += "$($c.filename)=$pct%" }
+              if ($pct -lt [double]$env:COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
             }
           }
           if ($violations.Count -gt 0) {

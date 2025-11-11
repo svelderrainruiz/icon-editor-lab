@@ -23,6 +23,8 @@ jobs:
             --no-progress --retry 2 --timeout 20s --exclude-mail
             --format markdown --output .lychee/report.md
             "**/*.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload lychee report
         if: always()
