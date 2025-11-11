@@ -121,7 +121,9 @@ jobs:
           }
           $doc = [System.Xml.XmlDocument]::new()
           $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
-          $rate = [double]$doc.coverage.GetAttribute('line-rate')
+          $coverageNode = $doc.SelectSingleNode('/coverage')
+          if (-not $coverageNode) { throw 'Invalid coverage.xml: missing root node' }
+          $rate = [double]$coverageNode.Attributes.GetNamedItem('line-rate').Value
           $pct  = [math]::Round($rate * 100, 2)
           if ($pct -lt [double]$env.COVERAGE_MIN) {
             throw "Coverage $pct% < $env.COVERAGE_MIN%"
@@ -138,7 +140,7 @@ jobs:
           }
           $doc = [System.Xml.XmlDocument]::new()
           $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
-          $classes = $doc.coverage.packages.package.classes.class
+          $classes = $doc.SelectNodes('/coverage/packages/package/classes/class')
           if ($null -eq $classes) {
             Write-Host 'No classes reported; skipping file-floor enforcement.'
             return
