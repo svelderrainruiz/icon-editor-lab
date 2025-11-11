@@ -23,12 +23,19 @@ jobs:
       - name: Install Pester v6
         shell: pwsh
         run: |
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
           $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
           if (-not $repo) {
-            Write-Warning 'PSGallery repository missing; registering default repository.'
-            Register-PSRepository -Default
+            Write-Warning 'PSGallery repository missing; registering PSGallery explicitly.'
+            Register-PSRepository -Name PSGallery `
+              -SourceLocation 'https://www.powershellgallery.com/api/v2' `
+              -ScriptSourceLocation 'https://www.powershellgallery.com/api/v2' `
+              -PublishLocation 'https://www.powershellgallery.com/api/v2/package/' `
+              -InstallationPolicy Trusted
           }
-          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          else {
+            Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          }
           $attempt = 0
           do {
             try {
