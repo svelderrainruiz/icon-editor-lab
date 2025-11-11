@@ -23,9 +23,28 @@ jobs:
       - name: Install Pester v6
         shell: pwsh
         run: |
+          $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
+          if (-not $repo) {
+            Write-Warning 'PSGallery repository missing; registering default repository.'
+            Register-PSRepository -Default
+          }
           Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
-          Install-Module Pester -MinimumVersion 6.0.0 -Force -Scope CurrentUser
-          Import-Module  Pester -MinimumVersion 6.0.0
+          $attempt = 0
+          do {
+            try {
+              Install-Module Pester -MinimumVersion 6.0.0 -Repository PSGallery -Force -Scope CurrentUser -ErrorAction Stop
+              Import-Module  Pester -MinimumVersion 6.0.0 -Force -ErrorAction Stop
+              $installed = $true
+            }
+            catch {
+              $attempt++
+              if ($attempt -ge 3) {
+                throw
+              }
+              Write-Warning "Pester installation attempt $attempt failed: $($_.Exception.Message). Retrying..."
+              Start-Sleep -Seconds 5
+            }
+          } while (-not $installed)
 
       - name: Run Pester (Cobertura + JUnit)
         shell: pwsh
