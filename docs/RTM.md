@@ -1,4 +1,4 @@
-# RTM (seed)
+# RTM (Requirements Traceability Matrix)
 
-|Req|Test|Code|Evidence|
-|---|---|---|---|
+| Req | Test | Code | Evidence |
+|-----|------|------|----------|
