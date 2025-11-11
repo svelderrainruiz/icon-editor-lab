@@ -1,0 +1,48 @@
+name: ADR Lint
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate ADR structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          ADR_DIR="architecture/adr"
+          ALT_DIR="adr"
+          if [[ ! -d "$ADR_DIR" && ! -d "$ALT_DIR" ]]; then
+            echo "::error::No ADR directories found (architecture/adr or adr)." >&2
+            exit 1
+          fi
+          TARGET="$ADR_DIR"
+          if [[ ! -d "$TARGET" ]]; then
+            TARGET="$ALT_DIR"
+          fi
+          mapfile -t ADR_FILES < <(find "$TARGET" -maxdepth 1 -type f -name '*.md' | sort)
+          if [[ ${#ADR_FILES[@]} -eq 0 ]]; then
+            echo "::error::No ADR markdown files found under $TARGET." >&2
+            exit 1
+          fi
+          for file in "${ADR_FILES[@]}"; do
+            head -n 1 "$file" | grep -Eq '^# ' || {
+              echo "::error::ADR missing H1 title: $file" >&2
+              exit 1
+            }
+            grep -Eq '^Status:' "$file" || {
+              echo "::error::ADR missing Status line: $file" >&2
+              exit 1
+            }
+          done
+          echo "ADR directory ($TARGET) contains ${#ADR_FILES[@]} entries with headers and status lines."
