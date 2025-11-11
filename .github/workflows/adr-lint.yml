@@ -20,7 +20,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mapfile -t ADR_FILES < <(git ls-tree -r --name-only HEAD -- 'architecture/adr/*.md' 'adr/*.md' | sort -u)
+          mapfile -t ADR_FILES < <(git ls-tree -r --name-only HEAD | grep -E '^(architecture/adr|adr)/.+\.md$' || true)
           if [[ ${#ADR_FILES[@]} -eq 0 ]]; then
             echo "::error::No ADR markdown files found under architecture/adr or adr." >&2
             exit 1
