@@ -181,6 +181,27 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
             }
         }
 
+        It 'prefers gh CLI output when command is available' {
+            Remove-Item Env:GH_TOKEN -ErrorAction SilentlyContinue
+            Remove-Item Env:GITHUB_TOKEN -ErrorAction SilentlyContinue
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith { throw 'REST should not be used when gh CLI succeeds' }
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            param([Parameter(ValueFromRemainingArguments=$true)][object[]]$GhArgs)
+                            Set-Variable -Name LASTEXITCODE -Scope Global -Value 0
+                            '{"jobs":[{"runner_name":"cli-runner","labels":["macos","arm64"],"status":"completed"}]}'
+                        }
+                    }
+                }
+                $jobs = @(Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '1234')
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'cli-runner'
+                $jobs[0].labels | Should -Contain 'macos'
+            }
+        }
+
     }
 
     Context 'Get-RunnerProfile' {
@@ -217,6 +238,6 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 $fresh.name | Should -Be 'runner-1'
             }
         }
+
     }
 }
-
