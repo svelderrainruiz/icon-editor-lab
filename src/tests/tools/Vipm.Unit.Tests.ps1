@@ -80,6 +80,12 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
             $provider = [pscustomobject]@{}
             { Register-VipmProvider -Provider $provider } | Should -Throw
         }
+
+        It 'throws when provider Name() returns whitespace' {
+            $provider = New-TestVipmProvider
+            $provider | Add-Member -MemberType ScriptMethod -Name Name -Value { '   ' } -Force
+            { Register-VipmProvider -Provider $provider } | Should -Throw 'Provider registration failed: Name() returned empty.'
+        }
     }
 
     Context 'Get-VipmInvocation' {
@@ -210,6 +216,16 @@ function New-VipmProvider {
             Assert-MockCalled -CommandName Write-Warning -ModuleName Vipm -Times 1
             (Get-VipmProviders | Measure-Object).Count | Should -Be 0
         }
+
+        It 'returns early when override root does not exist' {
+            $missingRoot = Join-Path $TestDrive 'no-such-dir'
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $missingRoot
+            if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
+                Remove-Module Vipm -Force -ErrorAction SilentlyContinue
+            }
+            Import-Module -Name $script:ModulePath -Force
+            (Get-VipmProviders | Measure-Object).Count | Should -Be 0
+        }
     }
 
     Context 'Test-ValidLabel' {
@@ -221,6 +237,34 @@ function New-VipmProvider {
             { InModuleScope Vipm { Test-ValidLabel -Label 'bad label!' } } | Should -Throw
         }
     }
+    Context 'Support utilities' {
+        It 'handles Invoke-WithTimeout success and timeout cases' {
+            InModuleScope Vipm {
+                $jobId = 321
+                Mock -CommandName Start-Job -MockWith {
+                    param([scriptblock]$ScriptBlock)
+                    & $ScriptBlock | Out-Null
+                    return $jobId
+                }
+                Mock -CommandName Wait-Job -MockWith {
+                    param($Argument,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    $true
+                }
+                Mock -CommandName Receive-Job -MockWith {
+                    param($Argument,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    'done'
+                }
+                Invoke-WithTimeout -ScriptBlock { 'ok' } -TimeoutSec 5 | Should -Be 'done'
+                Mock -CommandName Wait-Job -MockWith {
+                    param($Argument,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                    $false
+                }
+                Mock -CommandName Stop-Job -MockWith {
+                    param($Argument,[Parameter(ValueFromRemainingArguments=$true)][object[]]$Ignore)
+                }
+                { Invoke-WithTimeout -ScriptBlock { Start-Sleep -Milliseconds 5 } -TimeoutSec 0 } | Should -Throw '*timed out*'
+            }
+        }
+    }
 
 }
-
