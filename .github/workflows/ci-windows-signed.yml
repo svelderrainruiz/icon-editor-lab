@@ -106,17 +106,31 @@ jobs:
           name: unsigned
           path: unsigned
 
-      - name: Require code-signing secrets
+      - name: Determine signing mode
+        id: determine_signing_mode
+        shell: pwsh
         run: |
-          if ([string]::IsNullOrWhiteSpace('${{ secrets.WIN_CODESIGN_PFX_B64 }}') -or [string]::IsNullOrWhiteSpace('${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}')) {
-            throw 'Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-dev.'
+          $hasSecrets = -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_B64 }}") -and -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}")
+          $owner = "${{ github.repository_owner }}"
+          if ($hasSecrets) {
+            "HAS_PROD_CERT=true"  | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=true"  | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            Write-Host "Real code-signing secrets detected; enabling prod signing."
+          } elseif ($owner -eq 'LabVIEW-Community-CI-CD') {
+            throw "Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-dev."
+          } else {
+            "HAS_PROD_CERT=false" | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            Write-Warning "No code-signing secrets detected (fork mode). Proceeding with ephemeral cert."
           }
 
       - name: Decode PFX (temp file)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
         run: |
           [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('${{ secrets.WIN_CODESIGN_PFX_B64 }}'))
 
       - name: Sign binaries (signtool)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
         run: |
           $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
           if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
@@ -127,8 +141,8 @@ jobs:
             & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' /tr $tsa /td SHA256 $f.FullName
           }
 
-      - name: Sign scripts (Authenticode) — fork-safe (no timestamp, timeout, progress)
-        if: ${{ github.repository != 'LabVIEW-Community-CI-CD/icon-editor-lab' }}
+      - name: Sign scripts (Authenticode) - fork-safe (no timestamp, timeout, progress)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert != 'true' }}
         shell: pwsh
         env:
           TS_TIMEOUT_SEC: 20
@@ -183,8 +197,8 @@ jobs:
           }
           if ($fail -gt 0) { throw "$fail script(s) failed to sign (fork path)." }
 
-      - name: Sign scripts (Authenticode) — upstream (timestamp + timeout + fallback)
-        if: ${{ github.repository == 'LabVIEW-Community-CI-CD/icon-editor-lab' }}
+      - name: Sign scripts (Authenticode) - upstream (timestamp + timeout + fallback)
+        if: ${{ github.repository == 'LabVIEW-Community-CI-CD/icon-editor-lab' && steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
         shell: pwsh
         env:
           TSA_URL: ${{ env.TSA_URL }}
@@ -248,6 +262,7 @@ jobs:
           if ($fail -gt 0) { throw "$fail script(s) failed to sign." }
 
       - name: Verify PE signatures
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
         run: |
           $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
           if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
@@ -257,13 +272,14 @@ jobs:
 
       - name: Verify script signatures
         run: |
+          $hasProdCert = [string]::Equals($env:HAS_PROD_CERT, 'true', [System.StringComparison]::OrdinalIgnoreCase)
           $expected = '${{ env.EXPECTED_THUMBPRINT }}'
           $invalid = @()
           $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
           foreach ($s in $scripts) {
             $sig = Get-AuthenticodeSignature $s.FullName
             if ($sig.Status -ne 'Valid') { $invalid += $s.FullName; continue }
-            if ($expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
+            if ($hasProdCert -and $expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
               throw "Unexpected signer for $($s.Name): $($sig.SignerCertificate.Thumbprint), expected $expected"
             }
           }
@@ -299,17 +315,31 @@ jobs:
           name: unsigned
           path: unsigned
 
-      - name: Require code-signing secrets
+      - name: Determine signing mode
+        id: determine_signing_mode_prod
+        shell: pwsh
         run: |
-          if ([string]::IsNullOrWhiteSpace('${{ secrets.WIN_CODESIGN_PFX_B64 }}') -or [string]::IsNullOrWhiteSpace('${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}')) {
-            throw 'Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-prod.'
+          $hasSecrets = -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_B64 }}") -and -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}")
+          $owner = "${{ github.repository_owner }}"
+          if ($hasSecrets) {
+            "HAS_PROD_CERT=true"  | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=true"  | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            Write-Host "Real code-signing secrets detected; enabling prod signing."
+          } elseif ($owner -eq 'LabVIEW-Community-CI-CD') {
+            throw "Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-prod."
+          } else {
+            "HAS_PROD_CERT=false" | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            Write-Warning "No code-signing secrets detected (fork mode). Proceeding with ephemeral cert."
           }
 
       - name: Decode PFX (temp file)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
         run: |
           [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('${{ secrets.WIN_CODESIGN_PFX_B64 }}'))
 
       - name: Sign binaries (signtool)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
         run: |
           $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
           if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
@@ -320,7 +350,63 @@ jobs:
             & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' /tr $tsa /td SHA256 $f.FullName
           }
 
-      - name: Sign scripts (Authenticode) — prod (timestamp + timeout + fallback)
+      - name: Sign scripts (Authenticode) - fork-safe (no timestamp, timeout, progress)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert != 'true' }}
+        shell: pwsh
+        env:
+          TS_TIMEOUT_SEC: 20
+          MAX_SIGN_FILES: 500
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
+          Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
+
+          $thumb = $cert.Thumbprint
+          $files = Get-ChildItem unsigned -Recurse -File -Include *.ps1,*.psm1 -ErrorAction SilentlyContinue | Select-Object -First ([int]$env:MAX_SIGN_FILES)
+          if (-not $files) { Write-Host 'No scripts to sign.'; exit 0 }
+
+          function Invoke-SignWithTimeout {
+            param([string]$Path,[string]$Thumb,[int]$TimeoutSec)
+            $sw = [System.Diagnostics.Stopwatch]::StartNew()
+            $sb = { param($p,$t) $c = Get-ChildItem "Cert:\CurrentUser\My\$t"; Set-AuthenticodeSignature -FilePath $p -Certificate $c -HashAlgorithm SHA256 | Out-Null }
+            if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
+              $job = Start-ThreadJob -ScriptBlock $sb -ArgumentList $Path,$Thumb
+            } else {
+              $job = Start-Job -ScriptBlock $sb -ArgumentList $Path,$Thumb
+            }
+            try {
+              if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
+                try { Stop-Job $job -Force } catch {}
+                try { Receive-Job $job -ErrorAction SilentlyContinue | Out-Null } catch {}
+                return @{ status='timeout'; ms=$sw.ElapsedMilliseconds }
+              }
+              try {
+                Receive-Job $job -ErrorAction Stop | Out-Null
+                return @{ status='ok'; ms=$sw.ElapsedMilliseconds }
+              } catch {
+                return @{ status='error'; error=$_.Exception.Message; ms=$sw.ElapsedMilliseconds }
+              }
+            } finally {
+              $sw.Stop()
+              try { Remove-Job $job -Force -ErrorAction SilentlyContinue } catch {}
+            }
+          }
+
+          $i=0; $fail=0; $timeout=[int]$env:TS_TIMEOUT_SEC
+          foreach ($f in $files) {
+            $i++
+            Write-Host ("[{0}/{1}] Signing {2}" -f $i,$files.Count,$f.FullName)
+            $res = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout
+            switch ($res.status) { 'ok' { Write-Host ("  ✓ ok ({0} ms)" -f $res.ms) } 'timeout' { Write-Warning ("  ⏱ timeout after {0} ms" -f $res.ms); $fail++ } 'error' { Write-Warning ("  ⚠ error: {0}" -f $res.error); $fail++ } }
+          }
+          if ($fail -gt 0) { throw "$fail script(s) failed to sign (fork path)." }
+
+      - name: Sign scripts (Authenticode) - prod (timestamp + timeout + fallback)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
         env:
           TSA_URL: ${{ env.TSA_URL }}
           TS_TIMEOUT_SEC: 25
@@ -383,6 +469,7 @@ jobs:
           if ($fail -gt 0) { throw "$fail script(s) failed to sign." }
 
       - name: Verify PE signatures
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
         run: |
           $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
           if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
@@ -392,13 +479,14 @@ jobs:
 
       - name: Verify script signatures
         run: |
+          $hasProdCert = [string]::Equals($env:HAS_PROD_CERT, 'true', [System.StringComparison]::OrdinalIgnoreCase)
           $expected = '${{ env.EXPECTED_THUMBPRINT }}'
           $invalid = @()
           $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
           foreach ($s in $scripts) {
             $sig = Get-AuthenticodeSignature $s.FullName
             if ($sig.Status -ne 'Valid') { $invalid += $s.FullName; continue }
-            if ($expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
+            if ($hasProdCert -and $expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
               throw "Unexpected signer for $($s.Name): $($sig.SignerCertificate.Thumbprint), expected $expected"
             }
           }
