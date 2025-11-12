@@ -48,6 +48,18 @@ function Write-ConsoleWatchRecord {
   return $record
 }
 
+function Invoke-ConsoleWatchEventRecord {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [Parameter(Mandatory)][string[]]$TargetsLower,
+    [Parameter(Mandatory)][int]$ProcessId,
+    [Parameter(Mandatory)][string]$ProcessName,
+    [int]$ParentProcessId
+  )
+  Write-ConsoleWatchRecord -Path $Path -TargetsLower $TargetsLower -ProcessId $ProcessId -ProcessName $ProcessName -ParentProcessId $ParentProcessId | Out-Null
+}
+
 <#
 .SYNOPSIS
 Start-ConsoleWatch: brief description (TODO: refine).
@@ -78,10 +90,8 @@ function Start-ConsoleWatch {
     Register-CimIndicationEvent -ClassName Win32_ProcessStartTrace -SourceIdentifier $id -Action {
       param($e)
       try {
-        $pid = $e.SourceEventArgs.NewEvent.ProcessID
-        $name = [string]$e.SourceEventArgs.NewEvent.ProcessName
-        $ppid = $e.SourceEventArgs.NewEvent.ParentProcessID
-        Write-ConsoleWatchRecord -Path $using:ndjson -TargetsLower $using:targetsLower -ProcessId $pid -ProcessName $name -ParentProcessId $ppid | Out-Null
+        $event = $e.SourceEventArgs.NewEvent
+        Invoke-ConsoleWatchEventRecord -Path $using:ndjson -TargetsLower $using:targetsLower -ProcessId $event.ProcessID -ProcessName ([string]$event.ProcessName) -ParentProcessId $event.ParentProcessID
       } catch {}
     } | Out-Null
     $script:ConsoleWatchState[$id] = @{ Mode='event'; OutDir=$OutDir; Targets=$targetsLower; Path=$ndjson }
