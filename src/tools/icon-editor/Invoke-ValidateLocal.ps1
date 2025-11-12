@@ -1,14 +1,25 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+#Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
+  [Parameter()][int]$TimeoutSec = 600,
+  [string]$FixturePath,
+  [string]$BaselineFixture,
+  [string]$BaselineManifest,
+  [string]$ResourceOverlayRoot,
+  [switch]$SkipLVCompare,
+  [string]$ResultsRoot,
+  [switch]$KeepWorkspace,
+  [switch]$SkipBootstrap,
+  [switch]$IncludeSimulation,
+  [switch]$DryRun
 )
-#Requires -Version 7.0
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
 
 <#
 .SYNOPSIS
@@ -48,19 +59,6 @@ Also run Simulate-IconEditorBuild VIP diff (dry-run compare and report).
 
 #>
 
-param(
-  [string]$FixturePath,
-  [string]$BaselineFixture,
-  [string]$BaselineManifest,
-  [string]$ResourceOverlayRoot,
-  [switch]$SkipLVCompare,
-  [string]$ResultsRoot,
-  [switch]$KeepWorkspace,
-  [switch]$SkipBootstrap,
-  [switch]$IncludeSimulation,
-  [switch]$DryRun
-)
-
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
@@ -87,6 +85,15 @@ function Resolve-PathFromRepo {
 }
 
 $repoRoot = Resolve-RepoRoot
+$iconEditorToolsRoot = Join-Path $repoRoot 'tools/icon-editor'
+if (-not (Test-Path -LiteralPath $iconEditorToolsRoot -PathType Container)) {
+  $altToolsRoot = Join-Path $repoRoot 'src/tools/icon-editor'
+  if (Test-Path -LiteralPath $altToolsRoot -PathType Container) {
+    $iconEditorToolsRoot = $altToolsRoot
+  } else {
+    throw "Icon Editor tooling not found under '$iconEditorToolsRoot' or '$altToolsRoot'."
+  }
+}
 
 if (-not $SkipBootstrap.IsPresent) {
   Write-Host '==> Running priority bootstrap'
@@ -149,7 +156,7 @@ $describeParams = @{
 if ($overlayResolved) {
   $describeParams['ResourceOverlayRoot'] = $overlayResolved
 }
-$summary = & (Join-Path $repoRoot 'tools/icon-editor/Describe-IconEditorFixture.ps1') @describeParams
+$summary = & (Join-Path $iconEditorToolsRoot 'Describe-IconEditorFixture.ps1') @describeParams
 
 if (-not (Test-Path -LiteralPath $describeOut -PathType Leaf)) {
   Write-Host '    Report missing after describe; writing summary manually'
@@ -179,7 +186,7 @@ if ($overlayResolved) {
   $prepareArgs['ResourceOverlayRoot'] = $overlayResolved
 }
 Write-Host '==> Preparing VI diff requests'
-& (Join-Path $repoRoot 'tools/icon-editor/Prepare-FixtureViDiffs.ps1') @prepareArgs | Out-Null
+& (Join-Path $iconEditorToolsRoot 'Prepare-FixtureViDiffs.ps1') @prepareArgs | Out-Null
 
 $requestsPath = Join-Path $viDiffRoot 'vi-diff-requests.json'
 $requestCount = 0
@@ -197,14 +204,14 @@ if (Test-Path -LiteralPath $capturesRoot) {
 $skipCompare = $SkipLVCompare.IsPresent -or ($requestCount -le 0) -or $DryRun.IsPresent
 if ($skipCompare) {
   Write-Host '==> Skipping LVCompare execution (dry-run)'
-  & (Join-Path $repoRoot 'tools/icon-editor/Invoke-FixtureViDiffs.ps1') `
+  & (Join-Path $iconEditorToolsRoot 'Invoke-FixtureViDiffs.ps1') `
     -RequestsPath $requestsPath `
     -CapturesRoot $capturesRoot `
     -SummaryPath (Join-Path $capturesRoot 'vi-comparison-summary.json') `
     -DryRun | Out-Null
 } else {
   Write-Host '==> Running LVCompare on requests'
-  & (Join-Path $repoRoot 'tools/icon-editor/Invoke-FixtureViDiffs.ps1') `
+  & (Join-Path $iconEditorToolsRoot 'Invoke-FixtureViDiffs.ps1') `
     -RequestsPath $requestsPath `
     -CapturesRoot $capturesRoot `
     -SummaryPath (Join-Path $capturesRoot 'vi-comparison-summary.json') `
@@ -213,7 +220,7 @@ if ($skipCompare) {
 
 $summaryPath = Join-Path $capturesRoot 'vi-comparison-summary.json'
 if (Test-Path -LiteralPath $summaryPath -PathType Leaf) {
-  & (Join-Path $repoRoot 'tools/icon-editor/Render-ViComparisonReport.ps1') `
+  & (Join-Path $iconEditorToolsRoot 'Render-ViComparisonReport.ps1') `
     -SummaryPath $summaryPath `
     -OutputPath (Join-Path $capturesRoot 'vi-comparison-report.md') | Out-Null
 }
@@ -231,15 +238,15 @@ if ($IncludeSimulation.IsPresent) {
   if ($overlayResolved) {
     $simulateParams['ResourceOverlayRoot'] = $overlayResolved
   }
-  & (Join-Path $repoRoot 'tools/icon-editor/Simulate-IconEditorBuild.ps1') @simulateParams | Out-Null
+  & (Join-Path $iconEditorToolsRoot 'Simulate-IconEditorBuild.ps1') @simulateParams | Out-Null
   $simRequests = Join-Path $simRoot 'vi-diff-requests.json'
   if (Test-Path -LiteralPath $simRequests -PathType Leaf) {
-    & (Join-Path $repoRoot 'tools/icon-editor/Invoke-FixtureViDiffs.ps1') `
+    & (Join-Path $iconEditorToolsRoot 'Invoke-FixtureViDiffs.ps1') `
       -RequestsPath $simRequests `
       -CapturesRoot (Join-Path $resultsRootResolved 'vip-vi-diff-captures') `
       -SummaryPath (Join-Path $resultsRootResolved 'vip-vi-diff-captures/vi-comparison-summary.json') `
       -DryRun | Out-Null
-    & (Join-Path $repoRoot 'tools/icon-editor/Render-ViComparisonReport.ps1') `
+    & (Join-Path $iconEditorToolsRoot 'Render-ViComparisonReport.ps1') `
       -SummaryPath (Join-Path $resultsRootResolved 'vip-vi-diff-captures/vi-comparison-summary.json') `
       -OutputPath (Join-Path $resultsRootResolved 'vip-vi-diff-captures/vi-comparison-report.md') | Out-Null
   }
