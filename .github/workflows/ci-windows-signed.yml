@@ -93,7 +93,6 @@ jobs:
     timeout-minutes: 30
     environment: codesign-dev
     env:
-      TSA_URL: ${{ vars.CODE_SIGNING_TSA_URL || env.TSA_URL }}
       EXPECTED_THUMBPRINT: ${{ vars.PROD_CERT_THUMBPRINT }}
     steps:
       - name: Download unsigned artifacts
@@ -173,7 +172,6 @@ jobs:
     timeout-minutes: 30
     environment: codesign-prod
     env:
-      TSA_URL: ${{ vars.CODE_SIGNING_TSA_URL || env.TSA_URL }}
       EXPECTED_THUMBPRINT: ${{ vars.PROD_CERT_THUMBPRINT }}
     steps:
       - name: Download unsigned artifacts
