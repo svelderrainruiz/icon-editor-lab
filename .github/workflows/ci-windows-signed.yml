@@ -45,7 +45,14 @@ jobs:
       - name: Sign scripts
         shell: pwsh
         run: |
-          ./tools/Sign-Scripts.ps1
+          $cert = Get-ChildItem Cert:\CurrentUser\My | Where-Object {
+            $_.HasPrivateKey -and $_.EnhancedKeyUsageList.FriendlyName -contains 'Code Signing'
+          } | Select-Object -First 1
+          if (-not $cert) {
+            Write-Warning 'No code-signing certificate detected; skipping signing step.'
+            return
+          }
+          ./tools/Sign-Scripts.ps1 -Thumbprint $cert.Thumbprint
 
       - name: Enforce AllSigned and verify signatures
         shell: pwsh
