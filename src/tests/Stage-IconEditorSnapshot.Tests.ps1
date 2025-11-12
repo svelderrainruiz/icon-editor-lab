@@ -9,6 +9,100 @@ Describe 'Stage-IconEditorSnapshot.ps1' -Tag 'IconEditor','Snapshot','Unit' {
 
         Test-Path -LiteralPath $script:stageScript | Should -BeTrue
         Test-Path -LiteralPath $script:vendorPath | Should -BeTrue
+
+        $script:snapshotStubRecords = @()
+        function Script:Install-SnapshotScriptStub {
+            param(
+                [Parameter(Mandatory=$true)][string]$RelativePath,
+                [Parameter(Mandatory=$true)][string]$Content
+            )
+
+            $target = Join-Path $script:repoRoot $RelativePath
+            if (-not (Test-Path -LiteralPath $target -PathType Leaf)) {
+                throw "Cannot stub missing snapshot helper: $RelativePath"
+            }
+
+            $backup = Join-Path $TestDrive ("snapshot-stub-{0}.ps1" -f ([guid]::NewGuid().ToString('n')))
+            Copy-Item -LiteralPath $target -Destination $backup -Force
+            Set-Content -LiteralPath $target -Value $Content -Encoding utf8
+
+            $script:snapshotStubRecords += [pscustomobject]@{
+                Target = $target
+                Backup = $backup
+            }
+        }
+
+        function Script:Restore-SnapshotScriptStubs {
+            if (-not $script:snapshotStubRecords) { return }
+            foreach ($entry in $script:snapshotStubRecords) {
+                Copy-Item -LiteralPath $entry.Backup -Destination $entry.Target -Force
+                Remove-Item -LiteralPath $entry.Backup -Force -ErrorAction SilentlyContinue
+            }
+            $script:snapshotStubRecords = @()
+        }
+
+        Install-SnapshotScriptStub -RelativePath 'tools/icon-editor/Describe-IconEditorFixture.ps1' -Content @'
+param(
+  [string]$FixturePath,
+  [string]$ResultsRoot,
+  [string]$OutputPath,
+  [switch]$KeepWork,
+  [switch]$SkipResourceOverlay,
+  [string]$ResourceOverlayRoot
+)
+if (-not $ResultsRoot) {
+  $ResultsRoot = Join-Path ([System.IO.Path]::GetTempPath()) 'describe-stub'
+}
+if (-not (Test-Path -LiteralPath $ResultsRoot -PathType Container)) {
+  New-Item -ItemType Directory -Path $ResultsRoot -Force | Out-Null
+}
+$summary = [pscustomobject]@{
+  schema    = 'icon-editor/fixture-report@v1'
+  artifacts = @([pscustomobject]@{ name = 'vip'; path = $FixturePath })
+}
+if ($OutputPath) {
+  $dir = Split-Path -Parent $OutputPath
+  if ($dir -and -not (Test-Path -LiteralPath $dir -PathType Container)) {
+    New-Item -ItemType Directory -Path $dir -Force | Out-Null
+  }
+  $summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $OutputPath -Encoding utf8
+}
+return $summary
+'@
+
+        Install-SnapshotScriptStub -RelativePath 'tools/icon-editor/Update-IconEditorFixtureReport.ps1' -Content @'
+param(
+  [string]$FixturePath,
+  [string]$ManifestPath,
+  [string]$ResultsRoot,
+  [string]$ResourceOverlayRoot,
+  [switch]$SkipDocUpdate,
+  [switch]$CheckOnly,
+  [switch]$NoSummary
+)
+if (-not $ResultsRoot) {
+  $ResultsRoot = Join-Path ([System.IO.Path]::GetTempPath()) 'fixture-report-stub'
+}
+if (-not (Test-Path -LiteralPath $ResultsRoot -PathType Container)) {
+  New-Item -ItemType Directory -Path $ResultsRoot -Force | Out-Null
+}
+$reportPath = Join-Path $ResultsRoot 'fixture-report.json'
+$report = [pscustomobject]@{
+  schema = 'icon-editor/fixture-report@v1'
+  artifacts = @([pscustomobject]@{ name = 'vip'; path = $FixturePath })
+}
+$report | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $reportPath -Encoding utf8
+if ($ManifestPath) {
+  $manifest = [pscustomobject]@{
+    schema  = 'icon-editor/fixture-manifest@v1'
+    entries = @([pscustomobject]@{ path = $FixturePath; checksum = 'stub' })
+  }
+  $manifest | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $ManifestPath -Encoding utf8
+}
+return [pscustomobject]@{
+  reportPath = $reportPath
+}
+'@
     }
 
     BeforeEach {
@@ -330,6 +424,59 @@ $stubTemplate.Replace('__LOG_PATH__', $logPath) | Set-Content -LiteralPath $vali
         ($Global:StageDevModeLog[1].Bitness -join ',')  | Should -Be '32'
     }
 
+    It 'propagates SkipLVCompare flag to Invoke-ValidateLocal' {
+        if (-not $script:fixturePath -or -not (Test-Path -LiteralPath $script:fixturePath -PathType Leaf)) {
+            Set-ItResult -Skip -Because 'ICON_EDITOR_FIXTURE_PATH not supplied; skipping snapshot staging test.'
+            return
+        }
+
+        $workspaceRoot = Join-Path $TestDrive 'workspace-skipcompare'
+        $validateStubDir = Join-Path $TestDrive 'validate-skipcompare'
+        $null = New-Item -ItemType Directory -Path $validateStubDir -Force
+        $logPath = Join-Path $validateStubDir 'log.json'
+        $validateStub = Join-Path $validateStubDir 'Invoke-ValidateLocal.ps1'
+$stubTemplate = @'
+param(
+  [string]$BaselineFixture,
+  [string]$BaselineManifest,
+  [string]$ResourceOverlayRoot,
+  [string]$ResultsRoot,
+  [switch]$SkipLVCompare,
+  [switch]$DryRun,
+  [switch]$SkipBootstrap
+)
+$payload = [ordered]@{
+  skipLVCompare = $SkipLVCompare.IsPresent
+  dryRun        = $DryRun.IsPresent
+  skipBootstrap = $SkipBootstrap.IsPresent
+}
+$payload | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath "__LOG_PATH__" -Encoding utf8
+'@
+$stubTemplate.Replace('__LOG_PATH__', $logPath) | Set-Content -LiteralPath $validateStub -Encoding utf8
+
+        $result = & $script:stageScript `
+            -SourcePath $script:vendorPath `
+            -WorkspaceRoot $workspaceRoot `
+            -StageName 'unit-skip-compare' `
+            -FixturePath $script:fixturePath `
+            -InvokeValidateScript $validateStub `
+            -SkipLVCompare `
+            -SkipDevMode
+
+        $result | Should -Not -BeNullOrEmpty
+        Test-Path -LiteralPath $result.validateRoot -PathType Container | Should -BeTrue
+        Test-Path -LiteralPath $logPath -PathType Leaf | Should -BeTrue
+
+        $log = Get-Content -LiteralPath $logPath -Raw | ConvertFrom-Json -Depth 3
+        $log.skipLVCompare | Should -BeTrue
+        $log.dryRun | Should -BeFalse
+        $log.skipBootstrap | Should -BeFalse
+
+        $snapshotIndex = Get-Content -LiteralPath $result.sessionIndexPath -Raw | ConvertFrom-Json -Depth 6
+        $snapshotIndex.validation.enabled | Should -BeTrue
+        ($snapshotIndex.validation.resultsRoot -ne $null) | Should -BeTrue
+    }
+
     It 'fails when LabVIEW 2025 x64 is unavailable' {
         function Get-IconEditorDevModeLabVIEWTargets {
             param(
@@ -380,6 +527,10 @@ $stubTemplate.Replace('__LOG_PATH__', $logPath) | Set-Content -LiteralPath $vali
         $threw | Should -BeTrue
 
         $Global:StageDevModeLog.Count | Should -Be 0
+    }
+
+    AfterAll {
+        Restore-SnapshotScriptStubs
     }
 }
 
