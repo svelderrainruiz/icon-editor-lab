@@ -45,7 +45,8 @@ param(
   [switch]$UseTimestamp,
   [string]$TimestampServer = 'https://timestamp.digicert.com',
   [string]$Mode = 'fork',
-  [string]$SummaryPath
+  [string]$SummaryPath,
+  [switch]$SimulateTimestampFailure
 )
 
 Set-StrictMode -Version Latest
@@ -81,7 +82,7 @@ function Invoke-SignInline {
 }
 
 function Invoke-SignWithTimestamp {
-  param([string]$Path,[string]$Thumb,[string]$TimestampUrl,[int]$TimeoutSec)
+  param([string]$Path,[string]$Thumb,[string]$TimestampUrl,[int]$TimeoutSec,[switch]$SimulateFailure)
   $sw = [System.Diagnostics.Stopwatch]::StartNew()
   $sb = {
     param($file,$thumb,$tsa)
@@ -102,9 +103,18 @@ function Invoke-SignWithTimestamp {
     }
     try {
       Receive-Job $job -ErrorAction Stop | Out-Null
-      return @{ status = 'ok'; ms = $sw.ElapsedMilliseconds }
+      $result = @{ status = 'ok'; ms = $sw.ElapsedMilliseconds }
+      if ($SimulateFailure) {
+        $result.status = 'timeout'
+      }
+      return $result
     } catch {
-      return @{ status = 'error'; ms = $sw.ElapsedMilliseconds; error = $_.Exception.Message }
+      $result = @{ status = 'error'; ms = $sw.ElapsedMilliseconds; error = $_.Exception.Message }
+      if ($SimulateFailure) {
+        $result.status = 'timeout'
+        $result.Remove('error') | Out-Null
+      }
+      return $result
     }
   } finally {
     $sw.Stop()
@@ -124,7 +134,7 @@ foreach ($file in $files) {
   Write-Host ("[$Mode] [{0}/{1}] Signing {2}" -f $index,$files.Count,$file.FullName)
   if ($UseTimestamp) {
     $tsa = if ([string]::IsNullOrWhiteSpace($TimestampServer)) { 'https://timestamp.digicert.com' } else { $TimestampServer }
-    $primary = Invoke-SignWithTimestamp -Path $file.FullName -Thumb $CertificateThumbprint -TimestampUrl $tsa -TimeoutSec $TimeoutSeconds
+    $primary = Invoke-SignWithTimestamp -Path $file.FullName -Thumb $CertificateThumbprint -TimestampUrl $tsa -TimeoutSec $TimeoutSeconds -SimulateFailure:$SimulateTimestampFailure
     switch ($primary.status) {
       'ok'      { Write-Host ("  ✓ ok ({0} ms)" -f $primary.ms); $successMs += $primary.ms }
       'timeout' {
