@@ -1,6 +1,4 @@
 # Sign-Scripts.ps1
-Set-StrictMode -Version Latest
-$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
 [CmdletBinding()]
 param(
   [Parameter()][string]$Thumbprint,
@@ -8,6 +6,8 @@ param(
   [Parameter()][string[]]$Include = @("*.ps1","*.psm1"),
   [Parameter()][string[]]$ExcludeDirs = @(".git",".github",".venv","node_modules")
 )
+Set-StrictMode -Version Latest
+$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
 function Get-CodeSigningCert {
   param([string]$Thumbprint)
   if ($Thumbprint) {

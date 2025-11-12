@@ -14,4 +14,6 @@ function Write-LogSafe {
     $ts = (Get-Date).ToString('s')
     Write-Output "[$ts][$Level] $msg"
 }
-Export-ModuleMember -Function Write-LogSafe
+if ($ExecutionContext.SessionState.Module) {
+    Export-ModuleMember -Function Write-LogSafe
+}
