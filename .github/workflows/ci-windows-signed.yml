@@ -128,18 +128,24 @@ jobs:
 
       - name: Sign scripts (Authenticode)
         run: |
-          try {
-            $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `
-                   -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `
-                   -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
-            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
-              "$env:RUNNER_TEMP\codesign.pfx",
-              '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}',
-              $flags)
-          } catch {
-            Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
-            $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
-            $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+          if ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {
+            Write-Host "Repo is $env:GITHUB_REPOSITORY (fork). Using ephemeral dev cert for script signing."
+            $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          }
+          else {
+            try {
+              $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `
+                     -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `
+                     -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
+              $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
+                "$env:RUNNER_TEMP\codesign.pfx",
+                '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}',
+                $flags)
+            } catch {
+              Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
+              $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
+              $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+            }
           }
           $tsa = '${{ env.TSA_URL }}'
           $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
@@ -221,18 +227,24 @@ jobs:
 
       - name: Sign scripts (Authenticode)
         run: |
-          try {
-            $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `
-                   -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `
-                   -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
-            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
-              "$env:RUNNER_TEMP\codesign.pfx",
-              '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}',
-              $flags)
-          } catch {
-            Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
-            $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
-            $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+          if ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {
+            Write-Host "Repo is $env:GITHUB_REPOSITORY (fork). Using ephemeral dev cert for script signing."
+            $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          }
+          else {
+            try {
+              $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `
+                     -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `
+                     -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
+              $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
+                "$env:RUNNER_TEMP\codesign.pfx",
+                '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}',
+                $flags)
+            } catch {
+              Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
+              $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
+              $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+            }
           }
           $tsa = '${{ env.TSA_URL }}'
           $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
