@@ -1,37 +1,24 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-# Helper module for g-cli provider integration.
-function Invoke-GCliClose {
-  param(
-    [Parameter(Mandatory)][string]$LabVIEWExePath,
-    [Parameter()][string]$Arguments
-  )
-  $message = "Stub g-cli close invoked with $Arguments"
-  Write-Verbose $message
-  return [pscustomobject]@{
-    LabVIEWExePath = $LabVIEWExePath
-    Arguments      = $Arguments
-    Message        = $message
-  }
-}
-
-function Get-LabVIEWGCliPath {
+function Get-LabVIEWCliPath {
   [CmdletBinding()]
   param(
-    [Parameter()][ValidateNotNullOrEmpty()][string]$Manager = 'labviewcli',
-    [Parameter()][string[]]$Candidates
+    [Parameter()][ValidateNotNullOrEmpty()][string[]]$Candidates
   )
-  if ($env:LABVIEWGCLI_PATH) {
-    return $env:LABVIEWGCLI_PATH
+
+  if ($env:LABVIEWCLI_PATH) {
+    return $env:LABVIEWCLI_PATH
   }
 
   $candidates = if ($Candidates -and $Candidates.Count) {
     $Candidates
-  } else {
-    @($Manager, 'labviewcli', 'g-cli')
+  }
+  else {
+    @('labviewcli')
   }
   $candidates = $candidates | Where-Object { $_ }
+
   foreach ($candidate in $candidates) {
     $command = Get-Command $candidate -CommandType Application -ErrorAction SilentlyContinue
     if ($command) {
@@ -43,20 +30,19 @@ function Get-LabVIEWGCliPath {
     }
   }
 
-  return $Manager
+  return $candidates[-1]
 }
 
-function Invoke-LabVIEWGCli {
+function Invoke-LabVIEWCli {
   [CmdletBinding()]
   param(
-    [Parameter()][string]$Manager = 'labviewcli',
     [Parameter()][string]$Command,
     [Parameter()][string[]]$AdditionalArguments,
     [Parameter()][switch]$NoSplash,
     [Parameter()][int]$TimeoutSeconds = 120
   )
 
-  $path = Get-LabVIEWGCliPath -Manager $Manager
+  $path = Get-LabVIEWCliPath
   $arguments = @()
 
   if ($Command) {
@@ -76,7 +62,8 @@ function Invoke-LabVIEWGCli {
   if ($TimeoutSeconds -gt 0) {
     try {
       Wait-Process -Id $process.Id -TimeoutSeconds $TimeoutSeconds -ErrorAction Stop
-    } catch {
+    }
+    catch {
       Stop-Process -Id $process.Id -Force
       throw
     }
@@ -89,4 +76,19 @@ function Invoke-LabVIEWGCli {
   }
 }
 
-Export-ModuleMember -Function Invoke-GCliClose, Get-LabVIEWGCliPath, Invoke-LabVIEWGCli
+function Invoke-LabVIEWCliClose {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$LabVIEWExePath,
+    [Parameter()][string]$Arguments
+  )
+  $message = "labviewcli close stub invoked with $Arguments"
+  Write-Verbose $message
+  return [pscustomobject]@{
+    LabVIEWExePath = $LabVIEWExePath
+    Arguments      = $Arguments
+    Message        = $message
+  }
+}
+
+Export-ModuleMember -Function Get-LabVIEWCliPath, Invoke-LabVIEWCli, Invoke-LabVIEWCliClose

@@ -97,6 +97,7 @@ jobs:
             'src/tests/tools/Vipm.Unit.Tests.ps1',
             'src/tests/tools/GCli.Unit.Tests.ps1',
             'src/tests/tools/Tools.GetPesterVersion.Tests.ps1',
+            'src/tests/tools/LabVIEWLabVIEWCli.Unit.Tests.ps1',
             'src/tests/tools/Dev-Dashboard.Unit.Tests.ps1'
           )
           $paths = @()
@@ -130,6 +131,7 @@ jobs:
             'src/tools/ConsoleWatch.psm1',
             'src/tools/Vipm.psm1',
             'src/tools/GCli.psm1',
+            'src/tools/LabVIEWLabVIEWCLI.psm1',
             'src/tools/Get-PesterVersion.ps1'
           ) | Where-Object { Test-Path $_ }
           if ($coverageTargets.Count -gt 0) {

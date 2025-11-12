@@ -32,7 +32,7 @@ Describe "Render-ViComparisonReport.ps1" -Tag 'LVCompare','Unit' {
         $summaryPath = Join-Path $resultsRoot 'vi-comparison-summary.json'
         $outputPath  = Join-Path $resultsRoot 'vi-comparison-report.md'
 
-        $summary = [pscustomobject]@{}
+        $summary = [pscustomobject]@{ counts = $null }
         $summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $summaryPath -Encoding utf8
 
         & $script:scriptPath -SummaryPath $summaryPath -OutputPath $outputPath | Out-Null

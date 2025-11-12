@@ -1,21 +1,20 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+ #Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
+  [Parameter()][int]$TimeoutSec = 600,
+  [string]$RequestsPath,
+  [string]$CapturesRoot,
+  [string]$SummaryPath,
+  [switch]$DryRun,
+  [int]$TimeoutSeconds,
+  [string]$CompareScript
 )
-param(
-    [string]$RequestsPath,
-    [string]$CapturesRoot,
-    [string]$SummaryPath,
-    [switch]$DryRun,
-    [int]$TimeoutSeconds,
-    [string]$CompareScript
-)
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
 if (-not (Test-Path 'variable:Global:InvokeValidateLocalStubLog')) {
     $Global:InvokeValidateLocalStubLog = @()
 } elseif (-not $Global:InvokeValidateLocalStubLog) {
