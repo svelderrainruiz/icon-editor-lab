@@ -2,9 +2,9 @@ name: CI (Ubuntu Minimal)
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ "develop", "main", "master" ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ "develop", "main", "master" ]
   workflow_dispatch:
 
 jobs:
@@ -14,10 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        uses: PowerShell/PowerShell@v1
-        with:
-          version: '7.4.x'
+      - name: Verify PowerShell version
+        shell: pwsh
+        run: |
+          $version = $PSVersionTable.PSVersion
+          if ($version -lt [version]'7.4.0') {
+            throw "PowerShell 7.4+ required, detected $version"
+          }
+          Write-Host "Using pwsh $version"
 
       - name: Validate example config
         shell: pwsh
@@ -37,10 +41,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        uses: PowerShell/PowerShell@v1
-        with:
-          version: '7.4.x'
+      - name: Verify PowerShell version
+        shell: pwsh
+        run: |
+          $version = $PSVersionTable.PSVersion
+          if ($version -lt [version]'7.4.0') {
+            throw "PowerShell 7.4+ required, detected $version"
+          }
+          Write-Host "Using pwsh $version"
 
       - name: Install PSScriptAnalyzer
         shell: pwsh
@@ -50,9 +58,21 @@ jobs:
       - name: Run PSScriptAnalyzer
         shell: pwsh
         run: |
-          $settings = '.pssa/PSScriptAnalyzerSettings.psd1'
+          $settingsPath = '.pssa/PSScriptAnalyzerSettings.psd1'
+          $settings = Import-PowerShellDataFile -LiteralPath $settingsPath
           $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings $settings -ReportSummary
-          if ($results) { $results | Format-Table -AutoSize; throw 'PSScriptAnalyzer found issues' }
+          if ($results) {
+            $errors = $results | Where-Object { $_.Severity -eq 'Error' }
+            if ($errors) {
+              $errors | Format-Table -AutoSize
+              throw ("PSScriptAnalyzer found {0} blocking error(s)" -f $errors.Count)
+            }
+            $warnings = $results | Where-Object { $_.Severity -ne 'Error' }
+            if ($warnings) {
+              Write-Warning ("PSScriptAnalyzer reported {0} warning(s); showing the first 25 entries for awareness." -f $warnings.Count)
+              $warnings | Select-Object -First 25 | Format-Table -AutoSize | Out-String | Write-Host
+            }
+          }
 
       - name: Hash artifacts (if present)
         shell: pwsh

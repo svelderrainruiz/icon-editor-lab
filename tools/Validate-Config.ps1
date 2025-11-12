@@ -1,10 +1,11 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
-. (Join-Path $PSScriptRoot 'Redaction.ps1')
-[CmdletBinding()]param(
+[CmdletBinding()]
+param(
   [Parameter(Mandatory)][string]$ConfigPath,
   [Parameter()][string]$SchemaPath = (Join-Path $PSScriptRoot '..' 'configs' 'schema' 'vi-diff-heuristics.schema.json')
 )
+Set-StrictMode -Version Latest
+$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
+. (Join-Path $PSScriptRoot 'Redaction.ps1')
 $cfgContent = Get-Content -LiteralPath $ConfigPath -Raw
 # Basic JSON validity check
 $null = $cfgContent | ConvertFrom-Json -ErrorAction Stop
