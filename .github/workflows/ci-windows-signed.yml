@@ -39,7 +39,7 @@ jobs:
           $samplePs1 = Join-Path '${{ env.SIGN_ROOT }}' 'Sample-Signed.ps1'
           "Write-Output 'Sample payload for signing test.'" | Set-Content -Path $samplePs1 -Encoding UTF8
           $sampleExe = Join-Path '${{ env.SIGN_ROOT }}' 'sample.exe'
-          Set-Content -Path $sampleExe -Value ([byte[]](1..16)) -Encoding Byte
+          [IO.File]::WriteAllBytes($sampleExe, [byte[]](1..16))
           Write-Host 'Generated placeholder artifacts under ${{ env.SIGN_ROOT }}. Replace this block with actual build steps.'
 
       - name: Self-sign outputs for PRs (ephemeral cert)
