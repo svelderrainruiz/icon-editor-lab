@@ -1,0 +1,232 @@
+name: Tag Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    env:
+      COVERAGE_MIN: "75"
+      COVERAGE_ENFORCE: "true"
+      CRITICAL_PATHS: >-
+        src/tools/Tools.psm1,
+        src/tools/LabVIEWCli.psm1,
+        src/tools/ConsoleWatch.psm1,
+        src/tools/Vipm.psm1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pester v6 (fallback to latest stable)
+        shell: pwsh
+        run: |
+          [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+          if (-not (Get-PackageProvider -Name NuGet -ListAvailable -ErrorAction SilentlyContinue)) {
+            Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser -ErrorAction Stop
+          }
+          $repo = Get-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
+          if (-not $repo) {
+            Register-PSRepository -Name PSGallery `
+              -SourceLocation 'https://www.powershellgallery.com/api/v2' `
+              -ScriptSourceLocation 'https://www.powershellgallery.com/api/v2' `
+              -PublishLocation 'https://www.powershellgallery.com/api/v2/package/' `
+              -InstallationPolicy Trusted
+          }
+          else {
+            Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          }
+          $minVersion = [version]'6.0.0'
+          $fallbackVersion = '5.7.1'
+          $targetVersion = $null
+          try {
+            $candidate = Find-Module -Name Pester -Repository PSGallery -AllowPrerelease -AllVersions `
+              | Where-Object { [version]$_.Version -ge $minVersion } `
+              | Sort-Object { [version]$_.Version } -Descending `
+              | Select-Object -First 1
+            if ($candidate) {
+              $targetVersion = $candidate.Version
+              Write-Host "Found Pester version $targetVersion >= $minVersion."
+            }
+          }
+          catch {
+            Write-Warning "Find-Module lookup failed: $($_.Exception.Message)"
+          }
+          if (-not $targetVersion) {
+            Write-Warning "Pester >= $minVersion not available. Falling back to $fallbackVersion."
+            $targetVersion = $fallbackVersion
+          }
+          $attempt = 0
+          $installed = $false
+          do {
+            try {
+              Install-Module Pester -RequiredVersion $targetVersion -Repository PSGallery -Force -Scope CurrentUser -AllowPrerelease -ErrorAction Stop
+              Import-Module  Pester -RequiredVersion $targetVersion -Force -ErrorAction Stop
+              $installed = $true
+            }
+            catch {
+              $attempt++
+              Write-Warning "Pester installation attempt $attempt failed: $($_.Exception.Message)"
+              if ($attempt -lt 3) {
+                Start-Sleep -Seconds 5
+              }
+            }
+          } while (-not $installed -and $attempt -lt 3)
+          if (-not $installed) {
+            Write-Warning 'Falling back to bundled Pester module.'
+            Import-Module Pester -ErrorAction Stop
+          }
+
+      - name: Run Pester (Cobertura + JUnit)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts/coverage,artifacts/test-results | Out-Null
+          $safeTargets = @(
+            'tests/smoke',
+            'tests/sample.tests.ps1',
+            'tests/Sanity.Tests.ps1',
+            'src/tests/tools/ConsoleUx.Unit.Tests.ps1',
+            'src/tests/tools/LabVIEWCli.Utility.Tests.ps1',
+            'src/tests/tools/LabVIEWPidTracker.Unit.Tests.ps1',
+            'src/tests/tools/Once-Guard.Unit.Tests.ps1',
+            'src/tests/tools/RunnerProfile.Utility.Tests.ps1',
+            'src/tests/tools/Timing.Tick.Unit.Tests.ps1',
+            'src/tests/tools/ConsoleWatch.Unit.Tests.ps1',
+            'src/tests/tools/Vipm.Unit.Tests.ps1',
+            'src/tests/tools/GCli.Unit.Tests.ps1',
+            'src/tests/tools/Tools.GetPesterVersion.Tests.ps1',
+            'src/tests/tools/LabVIEWLabVIEWCli.Unit.Tests.ps1',
+            'src/tests/tools/Dev-Dashboard.Unit.Tests.ps1'
+          )
+          $paths = @()
+          foreach ($target in $safeTargets) {
+            if (Test-Path $target) {
+              $paths += $target
+            }
+          }
+          if ($paths.Count -eq 0) {
+            Write-Warning 'No hermetic test targets found; falling back to tests/smoke if available.'
+            if (Test-Path 'tests/smoke') {
+              $paths = @('tests/smoke')
+            }
+            else {
+              throw 'No deterministic test targets available for coverage run.'
+            }
+          }
+          Write-Host ("Invoking Pester on curated targets: {0}" -f ($paths -join ', '))
+          $config = New-PesterConfiguration
+          $config.Run.Path = $paths
+          $config.CodeCoverage.Enabled = $true
+          $config.CodeCoverage.OutputFormat = 'Cobertura'
+          $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
+          $coverageTargets = @(
+            'src/tools/ConsoleUx.psm1',
+            'src/tools/LabVIEWCli.psm1',
+            'src/tools/LabVIEWPidTracker.psm1',
+            'src/tools/Once-Guard.psm1',
+            'src/tools/Timing/Tick.psm1',
+            'src/tools/RunnerProfile.psm1',
+            'src/tools/ConsoleWatch.psm1',
+            'src/tools/Vipm.psm1',
+            'src/tools/GCli.psm1',
+            'src/tools/LabVIEWLabVIEWCLI.psm1',
+            'src/tools/Get-PesterVersion.ps1'
+          ) | Where-Object { Test-Path $_ }
+          if ($coverageTargets.Count -gt 0) {
+            $config.CodeCoverage.Path = $coverageTargets
+          }
+          else {
+            Write-Warning 'No coverage target files discovered; entire run will be instrumented.'
+          }
+          $config.TestResult.Enabled = $true
+          $config.TestResult.OutputFormat = 'JUnitXml'
+          $config.TestResult.OutputPath   = 'artifacts/test-results/results.xml'
+          Invoke-Pester -Configuration $config
+
+      - name: Enforce global line coverage (>= ${{ env.COVERAGE_MIN }}%)
+        if: env.COVERAGE_ENFORCE == 'true'
+        shell: pwsh
+        run: |
+          if (-not (Test-Path artifacts/coverage/coverage.xml)) {
+            throw 'coverage.xml missing'
+          }
+          $doc = [System.Xml.XmlDocument]::new()
+          $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
+          $coverageNode = $doc.SelectSingleNode('/coverage')
+          if (-not $coverageNode) { throw 'Invalid coverage.xml: missing root node.' }
+          $rate = [double]$coverageNode.Attributes.GetNamedItem('line-rate').Value
+          $pct  = [math]::Round($rate * 100, 2)
+          if ($pct -lt [double]$env.COVERAGE_MIN) {
+            throw "Coverage $pct% < $env.COVERAGE_MIN%"
+          }
+          Write-Host "Coverage OK: $pct% >= $env.COVERAGE_MIN%"
+
+      - name: Enforce file floors for critical modules (>= ${{ env.COVERAGE_MIN }}%)
+        if: env.COVERAGE_ENFORCE == 'true'
+        shell: pwsh
+        run: |
+          $critical = $env:CRITICAL_PATHS -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ }
+          if (-not (Test-Path artifacts/coverage/coverage.xml)) {
+            throw 'coverage.xml missing'
+          }
+          $doc = [System.Xml.XmlDocument]::new()
+          $doc.Load((Resolve-Path 'artifacts/coverage/coverage.xml'))
+          $classes = $doc.SelectNodes('/coverage/packages/package/classes/class')
+          if ($null -eq $classes -or $classes.Count -eq 0) {
+            Write-Host 'No classes reported; skipping file-floor enforcement.'
+            return
+          }
+          $violations = @()
+          foreach ($c in $classes) {
+            if ($critical -contains $c.filename) {
+              $lines = @($c.SelectNodes('lines/line'))
+              $total = $lines.Count
+              $covered = ($lines | Where-Object { [int]$_.GetAttribute('hits') -gt 0 }).Count
+              $pct = if ($total -gt 0) { [math]::Round(($covered / $total) * 100, 2) } else { 100 }
+              if ($pct -lt [double]$env:COVERAGE_MIN) { $violations += "$($c.filename)=$pct%" }
+            }
+          }
+          if ($violations.Count -gt 0) {
+            throw "File floor breaches: $($violations -join ', ')"
+          }
+          Write-Host 'File floors OK'
+
+      - name: Upload JUnit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: artifacts/test-results/results.xml
+
+      - name: Upload coverage.xml
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: artifacts/coverage/coverage.xml
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          gh release create "$TAG" \
+            --title "$TAG" \
+            --notes "Automated release for $TAG. See artifacts for coverage & test results."
+
+      - name: Attach artifacts to Release
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          gh release upload "$TAG" artifacts/coverage/coverage.xml artifacts/test-results/results.xml --clobber || true
