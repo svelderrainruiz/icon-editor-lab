@@ -1,13 +1,19 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-# <summary>Helper module for g-cli provider integration.</summary>
+# Helper module for g-cli provider integration.
 function Invoke-GCliClose {
   param(
     [Parameter(Mandatory)][string]$LabVIEWExePath,
     [Parameter()][string]$Arguments
   )
-  Write-Verbose "Stub g-cli close invoked with $Arguments"
+  $message = "Stub g-cli close invoked with $Arguments"
+  Write-Verbose $message
+  return [pscustomobject]@{
+    LabVIEWExePath = $LabVIEWExePath
+    Arguments      = $Arguments
+    Message        = $message
+  }
 }
 
 Export-ModuleMember -Function Invoke-GCliClose
