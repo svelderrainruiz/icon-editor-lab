@@ -1,5 +1,5 @@
 #Requires -Version 7.0
-
+[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [string]$FixturePath,
   [string]$ManifestPath,
@@ -7,17 +7,14 @@ param(
   [string]$ResourceOverlayRoot,
   [switch]$SkipDocUpdate,     # retained for backward compatibility (no-op)
   [switch]$CheckOnly,         # retained for backward compatibility (no-op)
-  [switch]$NoSummary          # retained for backward compatibility (no-op)
-)
-
-Set-StrictMode -Version Latest
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
+  [switch]$NoSummary,         # retained for backward compatibility (no-op)
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
   [Parameter()][int]$TimeoutSec = 600
 )
+
+Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 function Resolve-RepoRoot {
@@ -33,7 +30,25 @@ if ($SkipDocUpdate.IsPresent) {
 }
 
 $repoRoot = Resolve-RepoRoot
-$describeScript = Join-Path $repoRoot 'tools/icon-editor/Describe-IconEditorFixture.ps1'
+$toolsRoot = Join-Path $repoRoot 'tools'
+$altToolsRoot = Join-Path $repoRoot 'src/tools'
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and -not (Test-Path -LiteralPath $altToolsRoot -PathType Container)) {
+  throw "Unable to locate a 'tools' directory under '$toolsRoot' or '$altToolsRoot'."
+}
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and (Test-Path -LiteralPath $altToolsRoot -PathType Container)) {
+  $toolsRoot = $altToolsRoot
+}
+$iconEditorToolsRoot = Join-Path $toolsRoot 'icon-editor'
+if (-not (Test-Path -LiteralPath $iconEditorToolsRoot -PathType Container)) {
+  $altIconRoot = Join-Path $altToolsRoot 'icon-editor'
+  if (Test-Path -LiteralPath $altIconRoot -PathType Container) {
+    $iconEditorToolsRoot = $altIconRoot
+  } else {
+    throw "Icon editor tooling not found under '$iconEditorToolsRoot' or '$altIconRoot'."
+  }
+}
+
+$describeScript = Join-Path $iconEditorToolsRoot 'Describe-IconEditorFixture.ps1'
 if (-not (Test-Path -LiteralPath $describeScript -PathType Leaf)) {
   throw "Descriptor script not found at '$describeScript'."
 }

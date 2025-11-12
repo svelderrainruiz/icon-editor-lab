@@ -1,16 +1,10 @@
-Set-StrictMode -Version Latest
+#Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
-#Requires -Version 7.0
-
-param(
+  [Parameter()][int]$TimeoutSec = 600,
   [string]$SourcePath,
   [string]$ResourceOverlayRoot,
   [string]$StageName,
@@ -31,6 +25,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
 
 function Resolve-RepoRoot {
   param([string]$StartPath = (Get-Location).Path)
@@ -164,7 +159,27 @@ function Resolve-DevModeSelection {
 
 $repoRoot = Resolve-RepoRoot
 $scriptRoot = Split-Path -Parent $PSCommandPath
-$devModulePath = Join-Path $repoRoot 'tools/icon-editor/IconEditorDevMode.psm1'
+
+$toolsRoot = Join-Path $repoRoot 'tools'
+$altToolsRoot = Join-Path $repoRoot 'src/tools'
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and -not (Test-Path -LiteralPath $altToolsRoot -PathType Container)) {
+  throw "Unable to locate a 'tools' directory under '$toolsRoot' or '$altToolsRoot'."
+}
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and (Test-Path -LiteralPath $altToolsRoot -PathType Container)) {
+  $toolsRoot = $altToolsRoot
+}
+
+$iconEditorToolsRoot = Join-Path $toolsRoot 'icon-editor'
+if (-not (Test-Path -LiteralPath $iconEditorToolsRoot -PathType Container)) {
+  $altIconRoot = Join-Path $altToolsRoot 'icon-editor'
+  if (Test-Path -LiteralPath $altIconRoot -PathType Container) {
+    $iconEditorToolsRoot = $altIconRoot
+  } else {
+    throw "Icon editor tooling not found under '$iconEditorToolsRoot' or '$altIconRoot'."
+  }
+}
+
+$devModulePath = Join-Path $iconEditorToolsRoot 'IconEditorDevMode.psm1'
 
 $sourceResolved = Resolve-PathOptional -Path $SourcePath -BasePath $repoRoot
 if (-not $sourceResolved) {
@@ -213,7 +228,7 @@ if (-not (Test-Path -LiteralPath $fixtureResolved -PathType Leaf)) {
 $baselineFixtureResolved = Resolve-PathOptional -Path $BaselineFixture -BasePath $repoRoot
 $baselineManifestResolved = Resolve-PathOptional -Path $BaselineManifest -BasePath $repoRoot
 
-$updateReportScript = Join-Path $repoRoot 'tools/icon-editor/Update-IconEditorFixtureReport.ps1'
+$updateReportScript = Join-Path $iconEditorToolsRoot 'Update-IconEditorFixtureReport.ps1'
 if (-not (Test-Path -LiteralPath $updateReportScript -PathType Leaf)) {
   throw "Update fixture report script not found at '$updateReportScript'."
 }
@@ -239,7 +254,7 @@ if (-not $SkipValidate.IsPresent) {
   $validateScript = if ($InvokeValidateScript) {
     Resolve-PathOptional -Path $InvokeValidateScript -BasePath $repoRoot
   } else {
-    Join-Path $repoRoot 'tools/icon-editor/Invoke-ValidateLocal.ps1'
+    Join-Path $iconEditorToolsRoot 'Invoke-ValidateLocal.ps1'
   }
   if (-not (Test-Path -LiteralPath $validateScript -PathType Leaf)) {
     throw "Invoke-ValidateLocal.ps1 not found at '$validateScript'."
