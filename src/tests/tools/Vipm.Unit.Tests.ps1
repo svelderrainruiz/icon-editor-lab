@@ -176,11 +176,15 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
                 Set-Content -LiteralPath (Join-Path $fallbackDir 'Provider.psm1') -Encoding utf8
 
             $resolvedRoot = (Resolve-Path $providerRoot).Path
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
 
             $names = Get-VipmProviders | ForEach-Object { $_.Name() }
             $names | Should -Contain 'Alpha'
@@ -202,13 +206,13 @@ function New-VipmProvider {
 '@ | Set-Content -LiteralPath (Join-Path $invalidDir 'Provider.psm1') -Encoding utf8
 
             $resolvedRoot = (Resolve-Path $providerRoot).Path
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
 
             Mock -CommandName Write-Warning -ModuleName Vipm
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             InModuleScope Vipm {
                 $script:Providers.Clear()
                 Import-VipmProviderModules
@@ -219,11 +223,15 @@ function New-VipmProvider {
 
         It 'returns early when override root does not exist' {
             $missingRoot = Join-Path $TestDrive 'no-such-dir'
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $missingRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $missingRoot
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
             (Get-VipmProviders | Measure-Object).Count | Should -Be 0
         }
     }
