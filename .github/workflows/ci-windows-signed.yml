@@ -17,10 +17,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PowerShell
-        uses: actions/setup-pwsh@v4
-        with:
-          pwsh-version: '7.4.x'
+      - name: Verify PowerShell version
+        shell: pwsh
+        run: |
+          $version = $PSVersionTable.PSVersion
+          if ($version -lt [version]'7.4.0') {
+            throw "PowerShell 7.4+ required, detected $version"
+          }
+          Write-Host "Using pwsh $version"
 
       - name: Import code signing cert (if provided)
         shell: pwsh
