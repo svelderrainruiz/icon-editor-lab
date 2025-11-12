@@ -20,7 +20,8 @@ $PSModuleAutoLoadingPreference = 'None'
 .EXAMPLE
   pwsh -File ./tools/Tail-Snapshots.ps1 -Path snapshots.ndjson -PercentileKeys p50,p90,p99
 #>
-[CmdletBinding()]param(
+[CmdletBinding()]
+param(
   [Parameter(Mandatory)][string]$Path,
   [double]$IntervalSeconds = 1.5,
   [string]$PercentileKeys
