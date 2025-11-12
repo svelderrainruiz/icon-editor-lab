@@ -26,6 +26,30 @@ function script:New-TestGCliProvider {
     return $provider
 }
 
+function script:New-GCliProviderModuleContent {
+    param(
+        [string]$Name,
+        [string]$Binary = 'C:\tools\g-cli.exe',
+        [string]$Manager = 'vipm',
+        [string]$Operation = 'build'
+    )
+@'
+function New-GCliProvider {
+    $provider = [pscustomobject]@{
+        ProviderName    = '__NAME__'
+        ProviderBinary  = '__BINARY__'
+        ProviderManager = '__MANAGER__'
+    }
+    $provider | Add-Member -MemberType ScriptMethod -Name Name -Value { $this.ProviderName } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name ResolveBinaryPath -Value { $this.ProviderBinary } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name Supports -Value { param($op) $op -eq '__OP__' } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name BuildArgs -Value { param($op,$params) @('--provider','__NAME__') } -Force
+    $provider | Add-Member -MemberType ScriptMethod -Name Manager -Value { $this.ProviderManager } -Force
+    return $provider
+}
+'@.Replace('__NAME__',$Name).Replace('__BINARY__',$Binary).Replace('__MANAGER__',$Manager).Replace('__OP__',$Operation)
+}
+
 Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
     BeforeAll {
         $here = $PSScriptRoot
@@ -34,6 +58,9 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
         if (-not $here) { throw 'Unable to determine test root.' }
         $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
         $script:ModulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/GCli.psm1')).Path
+        $script:InitialProviderRoot = Join-Path $TestDrive 'gcli-initial-empty'
+        New-Item -ItemType Directory -Force -Path $script:InitialProviderRoot | Out-Null
+        Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $script:InitialProviderRoot
         if (Get-Module -Name GCli -ErrorAction SilentlyContinue) {
             Remove-Module GCli -Force -ErrorAction SilentlyContinue
         }
@@ -45,6 +72,10 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
             if ($script:Providers) {
                 $script:Providers.Clear()
             }
+            $script:ProvidersPopulated = $false
+        }
+        if ($script:InitialProviderRoot) {
+            Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $script:InitialProviderRoot
         }
     }
 
@@ -53,12 +84,19 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
             if ($script:Providers) {
                 $script:Providers.Clear()
             }
+            $script:ProvidersPopulated = $false
+        }
+        if (Test-Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT) {
+            Remove-Item Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -ErrorAction SilentlyContinue
         }
     }
 
     AfterAll {
         if (Get-Module -Name GCli -ErrorAction SilentlyContinue) {
             Remove-Module GCli -Force -ErrorAction SilentlyContinue
+        }
+        if (Test-Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT) {
+            Remove-Item Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -ErrorAction SilentlyContinue
         }
     }
 
@@ -109,119 +147,92 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
 
     Context 'Import-GCliProviderModules' {
         It 'registers providers discovered via manifest and fallback scripts' {
-            $moduleDir = Split-Path -Parent $script:ModulePath
-            $providerRoot = Join-Path $moduleDir 'providers'
-            $state = @{
-                ProviderRoot  = $providerRoot
-                AlphaDir      = Join-Path $providerRoot 'alpha'
-                BetaDir       = Join-Path $providerRoot 'beta'
-            }
-            $state.AlphaManifest = Join-Path $state.AlphaDir 'alpha.Provider.psd1'
-            $state.BetaFallback  = Join-Path $state.BetaDir 'Provider.psm1'
-            $state.Directories   = @(
-                [pscustomobject]@{ FullName = $state.AlphaDir; Name = 'alpha' },
-                [pscustomobject]@{ FullName = $state.BetaDir;  Name = 'beta'  }
-            )
-            $global:__GCliImportTestState = $state
+            $providerRoot = Join-Path $TestDrive 'gcli-providers'
+            $manifestDir = Join-Path $providerRoot 'gcli-alpha'
+            New-Item -ItemType Directory -Force -Path $manifestDir | Out-Null
+            "@{ ModuleVersion = '1.0.0'; RootModule = 'Provider.psm1' }" |
+                Set-Content -LiteralPath (Join-Path $manifestDir 'gcli-alpha.Provider.psd1') -Encoding utf8
+            (New-GCliProviderModuleContent -Name 'Alpha' -Manager 'vipm' -Operation 'build') |
+                Set-Content -LiteralPath (Join-Path $manifestDir 'Provider.psm1') -Encoding utf8
 
-            Mock -CommandName Test-Path -ModuleName GCli -MockWith {
-                param($LiteralPath,[Microsoft.PowerShell.Commands.TestPathType]$PathType)
-                $state = $global:__GCliImportTestState
-                if ($LiteralPath -eq $state.ProviderRoot) { return $true }
-                if ($LiteralPath -eq $state.AlphaManifest) { return $true }
-                if ($LiteralPath -eq (Join-Path $state.BetaDir 'beta.Provider.psd1')) { return $false }
-                if ($LiteralPath -eq $state.BetaFallback) { return $true }
-                return $false
+            $fallbackDir = Join-Path $providerRoot 'gcli-beta'
+            New-Item -ItemType Directory -Force -Path $fallbackDir | Out-Null
+            (New-GCliProviderModuleContent -Name 'Beta' -Manager 'nipm' -Operation 'deploy') |
+                Set-Content -LiteralPath (Join-Path $fallbackDir 'Provider.psm1') -Encoding utf8
+
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $resolvedRoot
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $false
+                Import-GCliProviderModules
             }
 
-            Mock -CommandName Get-ChildItem -ModuleName GCli -MockWith {
-                param($Path,[switch]$Directory)
-                $state = $global:__GCliImportTestState
-                $state.Directories
-            }
+            $names = Get-GCliProviders | ForEach-Object { $_.Name() }
+            $names | Should -Contain 'Alpha'
+            $names | Should -Contain 'Beta'
 
-            Mock -CommandName Import-Module -ModuleName GCli -MockWith {
-                param($Name,[switch]$Force,[switch]$PassThru)
-                $state = $global:__GCliImportTestState
-                if ($Name -eq $state.AlphaManifest) { return [pscustomobject]@{ Name = 'AlphaManifest' } }
-                if ($Name -eq $state.BetaFallback) { return [pscustomobject]@{ Name = 'BetaFallback' } }
-                throw "Unexpected module path: $Name"
-            }
-
-            Mock -CommandName Get-Command -ModuleName GCli -MockWith {
-                param($Name,$Module,$ErrorAction)
-                switch ($Module) {
-                    'AlphaManifest' { return { New-TestGCliProvider -Name 'alpha' -Manager 'vipm' -Supports { param($op) $op -eq 'build' } } }
-                    'BetaFallback'  { return { New-TestGCliProvider -Name 'beta'  -Manager 'nipm' -Supports { param($op) $op -eq 'deploy' } } }
-                    default { throw "Unexpected module $Module" }
-                }
-            }
-
-            try {
-                InModuleScope GCli {
-                    $script:Providers.Clear()
-                    Import-GCliProviderModules
-                    (Get-GCliProviders | ForEach-Object { $_.Name() }) | Should -Contain 'alpha'
-                    (Get-GCliProviders | ForEach-Object { $_.Name() }) | Should -Contain 'beta'
-                    (Get-GCliProviders -Manager 'nipm').Name() | Should -Be 'beta'
-                }
-            } finally {
-                $global:__GCliImportTestState = $null
-            }
+            $invoke = Get-GCliInvocation -Operation 'deploy' -Manager 'nipm'
+            $invoke.Provider | Should -Be 'Beta'
+            $invoke.Arguments | Should -Contain '--provider'
         }
 
         It 'writes a warning when provider initialization fails' {
-            $moduleDir = Split-Path -Parent $script:ModulePath
-            $providerRoot = Join-Path $moduleDir 'providers'
-            $invalidDir = Join-Path $providerRoot 'invalid'
-            $state = @{
-                ProviderRoot    = $providerRoot
-                InvalidManifest = Join-Path $invalidDir 'invalid.Provider.psd1'
-                InvalidFallback = Join-Path $invalidDir 'Provider.psm1'
-                Directories     = @([pscustomobject]@{ FullName = $invalidDir; Name = 'invalid' })
-            }
-            $global:__GCliImportTestState = $state
+            $providerRoot = Join-Path $TestDrive 'gcli-invalid'
+            $invalidDir = Join-Path $providerRoot 'gcli-bad'
+            New-Item -ItemType Directory -Force -Path $invalidDir | Out-Null
+@'
+function New-GCliProvider { return $null }
+'@ | Set-Content -LiteralPath (Join-Path $invalidDir 'Provider.psm1') -Encoding utf8
 
-            Mock -CommandName Test-Path -ModuleName GCli -MockWith {
-                param($LiteralPath,[Microsoft.PowerShell.Commands.TestPathType]$PathType)
-                $state = $global:__GCliImportTestState
-                if ($LiteralPath -eq $state.ProviderRoot) { return $true }
-                if ($LiteralPath -eq $state.InvalidManifest) { return $false }
-                if ($LiteralPath -eq $state.InvalidFallback) { return $true }
-                return $false
-            }
-
-            Mock -CommandName Get-ChildItem -ModuleName GCli -MockWith {
-                param($Path,[switch]$Directory)
-                $state = $global:__GCliImportTestState
-                $state.Directories
-            }
-
-            Mock -CommandName Import-Module -ModuleName GCli -MockWith {
-                param($Name,[switch]$Force,[switch]$PassThru)
-                $state = $global:__GCliImportTestState
-                if ($Name -eq $state.InvalidFallback) { return [pscustomobject]@{ Name = 'InvalidProvider' } }
-                throw "Unexpected module path: $Name"
-            }
-
-            Mock -CommandName Get-Command -ModuleName GCli -MockWith {
-                param($Name,$Module,$ErrorAction)
-                if ($Module -eq 'InvalidProvider') { return { return $null } }
-                throw "Unexpected module $Module"
-            }
-
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $resolvedRoot
             Mock -CommandName Write-Warning -ModuleName GCli
 
-            try {
-                InModuleScope GCli {
-                    $script:Providers.Clear()
-                    Import-GCliProviderModules
-                    Assert-MockCalled -CommandName Write-Warning -ModuleName GCli -Times 1
-                    (Get-GCliProviders | Measure-Object).Count | Should -Be 0
-                }
-            } finally {
-                $global:__GCliImportTestState = $null
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $false
+                Import-GCliProviderModules
             }
+            Assert-MockCalled -CommandName Write-Warning -ModuleName GCli -Times 1
+            (Get-GCliProviders | Measure-Object).Count | Should -Be 0
+        }
+
+        It 'returns early when override root does not exist' {
+            $missingRoot = Join-Path $TestDrive 'does-not-exist'
+            Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $missingRoot
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $false
+                Import-GCliProviderModules
+                (Get-GCliProviders | Measure-Object).Count | Should -Be 0
+            }
+        }
+
+        It 'continues registering providers when one module throws' {
+            $providerRoot = Join-Path $TestDrive 'gcli-mixed'
+            $throwDir = Join-Path $providerRoot 'gcli-throw'
+            New-Item -ItemType Directory -Force -Path $throwDir | Out-Null
+@'
+function New-GCliProvider { throw "boom" }
+'@ | Set-Content -LiteralPath (Join-Path $throwDir 'Provider.psm1') -Encoding utf8
+
+            $goodDir = Join-Path $providerRoot 'gcli-good'
+            New-Item -ItemType Directory -Force -Path $goodDir | Out-Null
+            (New-GCliProviderModuleContent -Name 'Stable' -Manager 'vipm') |
+                Set-Content -LiteralPath (Join-Path $goodDir 'Provider.psm1') -Encoding utf8
+
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            Set-Item -Path Env:ICON_EDITOR_GCLI_PROVIDER_ROOT -Value $resolvedRoot
+            Mock -CommandName Write-Warning -ModuleName GCli
+
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $false
+                Import-GCliProviderModules
+            }
+            Assert-MockCalled -CommandName Write-Warning -ModuleName GCli -Times 1
+            (Get-GCliProviderByName -Name 'stable') | Should -Not -BeNullOrEmpty
         }
     }
 
