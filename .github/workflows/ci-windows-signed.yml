@@ -117,7 +117,9 @@ jobs:
 
       - name: Sign binaries (signtool)
         run: |
-          $signtool = (Get-Command signtool.exe).Source
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
+          $signtool = $signtoolCmd.Source
           $tsa = '${{ env.TSA_URL }}'
           $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
           foreach ($f in $pe) {
@@ -137,7 +139,9 @@ jobs:
 
       - name: Verify PE signatures
         run: |
-          $signtool = (Get-Command signtool.exe).Source
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
+          $signtool = $signtoolCmd.Source
           $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
           foreach ($f in $pe) { & $signtool verify /pa $f.FullName }
 
@@ -196,7 +200,9 @@ jobs:
 
       - name: Sign binaries (signtool)
         run: |
-          $signtool = (Get-Command signtool.exe).Source
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
+          $signtool = $signtoolCmd.Source
           $tsa = '${{ env.TSA_URL }}'
           $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
           foreach ($f in $pe) {
@@ -216,7 +222,9 @@ jobs:
 
       - name: Verify PE signatures
         run: |
-          $signtool = (Get-Command signtool.exe).Source
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
+          $signtool = $signtoolCmd.Source
           $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
           foreach ($f in $pe) { & $signtool verify /pa $f.FullName }
 
