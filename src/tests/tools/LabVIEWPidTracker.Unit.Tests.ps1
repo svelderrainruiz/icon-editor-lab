@@ -68,6 +68,15 @@ Describe 'LabVIEW PID tracker helpers' -Tag 'Unit','Tools','LabVIEWPidTracker' {
             $result[2][0] | Should -Be 'delta'
             $result[2][1] | Should -Be 'beta'
         }
+
+        It 'orders PSCustomObject properties case-sensitively' {
+            $input = [pscustomobject]@{}
+            $input | Add-Member -NotePropertyName 'bravo' -NotePropertyValue 2
+            $input | Add-Member -NotePropertyName 'Alpha' -NotePropertyValue 1
+            $input | Add-Member -NotePropertyName 'delta' -NotePropertyValue 3
+            $result = Resolve-LabVIEWPidContext -Context $input -Confirm:$false
+            ($result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name) | Should -Be @('Alpha','bravo','delta')
+        }
     }
 
     Context 'Tracker lifecycle' {
@@ -223,6 +232,119 @@ Describe 'LabVIEW PID tracker helpers' -Tag 'Unit','Tools','LabVIEWPidTracker' {
             $record = Get-Content $tracker -Raw | ConvertFrom-Json -Depth 6
             ($record.observations | Select-Object -Last 1).note | Should -Be 'still-running'
             $record.running | Should -BeTrue
+        }
+    }
+
+    Context 'Start-LabVIEWPidTracker edge cases' {
+        It 'recovers from invalid tracker JSON state' {
+            $tracker = Join-Path $TestDrive 'invalid-json' 'tracker.json'
+            New-Item -ItemType Directory -Path (Split-Path -Parent $tracker) -Force | Out-Null
+            Set-Content -Path $tracker -Value '{ invalid json'
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Date -MockWith { Get-Date '2025-05-01T00:00:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Name -and ($Name -contains 'LabVIEW') } -MockWith { @() }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Id } -MockWith { throw 'no pid' }
+            $result = Start-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests'
+            $result.Observation.note | Should -Be 'labview-not-running'
+        }
+
+        It 'sorts fresh LabVIEW processes by StartTime' {
+            $older = [pscustomobject]@{ Id = 111; ProcessName = 'LabVIEW'; StartTime = Get-Date '2025-02-01T00:00:05Z' }
+            $newer = [pscustomobject]@{ Id = 222; ProcessName = 'LabVIEW'; StartTime = Get-Date '2025-02-01T00:10:05Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Date -MockWith { Get-Date '2025-02-01T00:15:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Name -and ($Name -contains 'LabVIEW') } -MockWith {
+                @($newer,$older)
+            }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Id } -MockWith {
+                param($Id)
+                if ($Id -eq 111) { return $older }
+                if ($Id -eq 222) { return $newer }
+                throw 'missing'
+            }
+            $tracker = Join-Path $TestDrive 'sorted' 'tracker.json'
+            $result = Start-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests'
+            $result.Pid | Should -Be 111
+            $result.Observation.note | Should -Be 'selected-from-scan'
+        }
+
+        It 'continues when candidate sorting throws' {
+            $candidate = [pscustomobject]@{ Id = 303; ProcessName = 'LabVIEW'; StartTime = Get-Date '2025-03-01T00:00:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Date -MockWith { Get-Date '2025-03-01T00:01:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Name -and ($Name -contains 'LabVIEW') } -MockWith {
+                @($candidate,$candidate)
+            }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Id } -MockWith { $candidate }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Sort-Object -MockWith { throw 'sort fail' }
+            $tracker = Join-Path $TestDrive 'sort-fail' 'tracker.json'
+            { Start-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests' } | Should -Not -Throw
+        }
+
+        It 'records candidates-present when no PID is selected' {
+            $proc = [pscustomobject]@{ Id = 404; ProcessName = 'LabVIEW'; StartTime = Get-Date '2025-04-01T00:00:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Date -MockWith { Get-Date '2025-04-01T00:01:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Name -and ($Name -contains 'LabVIEW') } -MockWith { @($proc) }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Id } -MockWith { throw 'denied' }
+            $tracker = Join-Path $TestDrive 'candidates-present' 'tracker.json'
+            $result = Start-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests'
+            $result.Observation.note | Should -Be 'candidates-present'
+        }
+
+        It 'handles LabVIEW process discovery failures' {
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Date -MockWith { Get-Date '2025-06-01T00:00:00Z' }
+            Mock -ModuleName LabVIEWPidTracker -CommandName Get-Process -ParameterFilter { $null -ne $Name -and ($Name -contains 'LabVIEW') } -MockWith { throw 'down' }
+            $tracker = Join-Path $TestDrive 'labview-down' 'tracker.json'
+            $result = Start-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests'
+            $result.Observation.note | Should -Be 'labview-not-running'
+        }
+    }
+
+    Context 'Stop-LabVIEWPidTracker edge cases' {
+        It 'ignores invalid tracker JSON content' {
+            $tracker = Join-Path $TestDrive 'stop-invalid' 'tracker.json'
+            New-Item -ItemType Directory -Path (Split-Path -Parent $tracker) -Force | Out-Null
+            Set-Content -Path $tracker -Value '{ broken'
+            { Stop-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests' } | Should -Not -Throw
+        }
+
+        It 'handles non-integer pid stored in tracker state' {
+            $tracker = Join-Path $TestDrive 'stop-pid' 'tracker.json'
+            New-Item -ItemType Directory -Path (Split-Path -Parent $tracker) -Force | Out-Null
+            @"
+{ "pid": "not-int", "running": true, "observations": [] }
+"@ | Set-Content -Path $tracker
+            Stop-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests' | Out-Null
+            Test-Path $tracker | Should -BeTrue
+        }
+
+        It 'creates parent directories when writing tracker records' {
+            $tracker = Join-Path $TestDrive 'deep\sub\tracker.json'
+            Stop-LabVIEWPidTracker -TrackerPath $tracker -Source 'tests' | Out-Null
+            Test-Path (Split-Path -Parent $tracker) | Should -BeTrue
+        }
+    }
+
+    Context 'Module helper functions' {
+        It 'Test-ValidLabel accepts good labels' {
+            InModuleScope LabVIEWPidTracker {
+                Test-ValidLabel -Label 'Tracker_1-2.3'
+            }
+        }
+
+        It 'Test-ValidLabel rejects bad labels' {
+            InModuleScope LabVIEWPidTracker {
+                { Test-ValidLabel -Label 'bad label!' } | Should -Throw '*Invalid label*'
+            }
+        }
+
+        It 'Invoke-WithTimeout returns scriptblock result' {
+            InModuleScope LabVIEWPidTracker {
+                Invoke-WithTimeout -ScriptBlock { 5 } -TimeoutSec 5 | Should -Be 5
+            }
+        }
+
+        It 'Invoke-WithTimeout throws when timeout exceeded' {
+            InModuleScope LabVIEWPidTracker {
+                { Invoke-WithTimeout -ScriptBlock { Start-Sleep -Milliseconds 500 } -TimeoutSec 0 } | Should -Throw '*timed out*'
+            }
         }
     }
 }

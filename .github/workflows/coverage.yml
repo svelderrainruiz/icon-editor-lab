@@ -16,7 +16,7 @@ jobs:
     env:
       COVERAGE_MIN: "75"
       COVERAGE_ENFORCE: "true"
-      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1"
+      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1,src/tools/LabVIEWCli.psm1"
     steps:
       - uses: actions/checkout@v4
 
@@ -122,6 +122,7 @@ jobs:
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
           $coverageTargets = @(
             'src/tools/ConsoleUx.psm1',
+            'src/tools/LabVIEWCli.psm1',
             'src/tools/LabVIEWPidTracker.psm1',
             'src/tools/Once-Guard.psm1',
             'src/tools/Timing/Tick.psm1',
