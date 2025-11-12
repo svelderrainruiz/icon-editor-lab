@@ -80,9 +80,11 @@ foreach ($f in $files) {
   $sig = Get-AuthenticodeSignature -LiteralPath $f.FullName
   if ($sig.Status -ne 'Valid') {
     if ($SkipTimestamp) {
+      Write-Verbose ("Signing {0} without timestamp (ephemeral cert)." -f $f.FullName)
       $null = Set-AuthenticodeSignature -LiteralPath $f.FullName -Certificate $cert
     }
     else {
+      Write-Verbose ("Signing {0} with timestamp server." -f $f.FullName)
       $null = Set-AuthenticodeSignature -LiteralPath $f.FullName -Certificate $cert -TimestampServer 'http://timestamp.digicert.com'
     }
   }
