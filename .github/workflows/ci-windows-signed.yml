@@ -131,6 +131,10 @@ jobs:
           if ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {
             Write-Host "Repo is $env:GITHUB_REPOSITORY (fork). Using ephemeral dev cert for script signing."
             $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+            $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
+            Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
+            Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
+            Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
           }
           else {
             try {
@@ -230,6 +234,10 @@ jobs:
           if ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {
             Write-Host "Repo is $env:GITHUB_REPOSITORY (fork). Using ephemeral dev cert for script signing."
             $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+            $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
+            Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
+            Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
+            Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
           }
           else {
             try {
