@@ -96,6 +96,15 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
                 (Get-GCliProviders -Manager 'vipm').Name() | Should -Be 'Vipm'
             }
         }
+
+        It 'prefers provider Manager() output over explicit parameter' {
+            InModuleScope GCli {
+                $provider = New-TestGCliProvider -Name 'Custom' -Manager 'nipm'
+                Register-GCliProvider -Provider $provider -Manager 'vipm' -Confirm:$false
+                (Get-GCliProviders -Manager 'nipm').Name() | Should -Be 'Custom'
+                (Get-GCliProviders -Manager 'vipm' | Measure-Object).Count | Should -Be 0
+            }
+        }
     }
 
     Context 'Import-GCliProviderModules' {
@@ -215,6 +224,40 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
             }
         }
     }
+
+    Context 'Provider loading guard' {
+        It 'imports providers when cache is empty' {
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $false
+            }
+            Mock -CommandName Import-GCliProviderModules -ModuleName GCli -MockWith {
+                InModuleScope GCli {
+                    $provider = New-TestGCliProvider -Name 'Auto' -Binary (Join-Path $env:TEMP 'auto-gcli.exe')
+                    Register-GCliProvider -Provider $provider -Confirm:$false
+                    $script:ProvidersPopulated = $true
+                }
+            }
+            InModuleScope GCli {
+                (Get-GCliProviders | ForEach-Object { $_.Name() }) | Should -Contain 'Auto'
+            }
+            Assert-MockCalled -CommandName Import-GCliProviderModules -ModuleName GCli -Times 1
+        }
+
+        It 'skips import when providers already populated' {
+            InModuleScope GCli {
+                $script:Providers.Clear()
+                $script:ProvidersPopulated = $true
+            }
+            Mock -CommandName Import-GCliProviderModules -ModuleName GCli -MockWith {
+                throw 'Import should not occur'
+            }
+            InModuleScope GCli {
+                (Get-GCliProviders | Measure-Object).Count | Should -Be 0
+            }
+            Assert-MockCalled -CommandName Import-GCliProviderModules -ModuleName GCli -Times 0
+        }
+    }
     Context 'Get-GCliInvocation' {
         It 'builds command invocation for registered providers' {
             InModuleScope GCli {
@@ -263,6 +306,24 @@ Describe 'g-cli provider helpers' -Tag 'Unit','Tools','GCli' {
                 $invoke = Get-GCliInvocation -Operation 'deploy' -Manager 'nipm'
                 $invoke.Provider | Should -Be 'Nipm'
                 { Get-GCliInvocation -Operation 'build' -Manager 'nipm' } | Should -Throw '*No g-cli provider registered*'
+            }
+        }
+
+        It 'resolves provider by name and manager' {
+            InModuleScope GCli {
+                $vipmProvider = New-TestGCliProvider -Name 'VipmOnly' -Manager 'vipm'
+                Register-GCliProvider -Provider $vipmProvider -Confirm:$false
+                $invoke = Get-GCliInvocation -Operation 'build' -ProviderName 'VipmOnly' -Manager 'vipm'
+                $invoke.Provider | Should -Be 'VipmOnly'
+            }
+        }
+
+        It 'returns empty arguments when provider BuildArgs outputs null' {
+            InModuleScope GCli {
+                $provider = New-TestGCliProvider -Name 'NullArgs' -ArgsBuilder { param($op,$params) $null }
+                Register-GCliProvider -Provider $provider -Confirm:$false
+                $invoke = Get-GCliInvocation -Operation 'build'
+                $invoke.Arguments | Should -HaveCount 0
             }
         }
     }
