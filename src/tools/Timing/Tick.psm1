@@ -1,6 +1,8 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+$script:TickInstrumentationEnabled = $true
+
 function Start-TickCounter {
   param([int]$TickMilliseconds = 1)
   if ($TickMilliseconds -lt 1) { $TickMilliseconds = 1 }
@@ -12,13 +14,20 @@ function Start-TickCounter {
   return $counter
 }
 
+function Invoke-TickDelay {
+  param([int]$Milliseconds)
+  [System.Threading.Thread]::Sleep($Milliseconds)
+}
+
 function Wait-Tick {
   param(
     [pscustomobject]$Counter,
     [int]$Milliseconds = 1
   )
   if ($Milliseconds -lt 1) { $Milliseconds = 1 }
-  [System.Threading.Thread]::Sleep($Milliseconds)
+  if ($script:TickInstrumentationEnabled) {
+    Invoke-TickDelay -Milliseconds $Milliseconds
+  }
   if ($Counter) { $Counter.ticks += 1 }
   return $Counter
 }

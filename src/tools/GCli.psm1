@@ -4,6 +4,15 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $script:Providers = @{}
+$script:ProvidersPopulated = $false
+
+function Get-GCliProviderKey {
+    param(
+        [Parameter(Mandatory)][string]$Name,
+        [Parameter(Mandatory)][string]$Manager
+    )
+    return "$($Manager.ToLowerInvariant())::$($Name.ToLowerInvariant())"
+}
 
 <#
 .SYNOPSIS
@@ -12,12 +21,14 @@ Register-GCliProvider: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Register-GCliProvider {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param(
+        [Parameter(Mandatory)][object]$Provider,
+        [string]$Manager
+    )
 
     # ShouldProcess guard: honor -WhatIf / -Confirm
     if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
-    param([Parameter(Mandatory)][object]$Provider)
 
     foreach ($member in @('Name','ResolveBinaryPath','Supports','BuildArgs')) {
         if (-not ($Provider | Get-Member -Name $member -ErrorAction SilentlyContinue)) {
@@ -30,7 +41,21 @@ function Register-GCliProvider {
         throw 'Provider registration failed: Name() returned empty.'
     }
 
-    $script:Providers[$name.ToLowerInvariant()] = $Provider
+    $providerManager = $Manager
+    if ($Provider | Get-Member -Name Manager -ErrorAction SilentlyContinue) {
+        try {
+            $value = $Provider.Manager()
+            if (-not [string]::IsNullOrWhiteSpace($value)) { $providerManager = $value }
+        } catch {}
+    }
+    if ([string]::IsNullOrWhiteSpace($providerManager)) { $providerManager = 'vipm' }
+    $providerManager = $providerManager.ToLowerInvariant()
+
+    $key = Get-GCliProviderKey -Name $name -Manager $providerManager
+    $script:Providers[$key] = [pscustomobject]@{
+        Manager  = $providerManager
+        Provider = $Provider
+    }
 }
 
 <#
@@ -41,8 +66,15 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-GCliProviders {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param([string]$Manager)
 
-    return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
+    Ensure-GCliProvidersLoaded
+    $entries = $script:Providers.GetEnumerator()
+    if ($Manager) {
+        $managerKey = $Manager.ToLowerInvariant()
+        $entries = $entries | Where-Object { $_.Value.Manager -eq $managerKey }
+    }
+    return $entries | ForEach-Object { $_.Value.Provider }
 }
 
 <#
@@ -54,11 +86,25 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Get-GCliProviderByName {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
-    param([Parameter(Mandatory)][string]$Name)
+    param(
+        [Parameter(Mandatory)][string]$Name,
+        [string]$Manager
+    )
 
-    $key = $Name.ToLowerInvariant()
-    if ($script:Providers.ContainsKey($key)) {
-        return $script:Providers[$key]
+    Ensure-GCliProvidersLoaded
+    if ($Manager) {
+        $key = Get-GCliProviderKey -Name $Name -Manager $Manager
+        if ($script:Providers.ContainsKey($key)) {
+            return $script:Providers[$key].Provider
+        }
+        return $null
+    }
+
+    $nameKey = $Name.ToLowerInvariant()
+    foreach ($entry in $script:Providers.GetEnumerator()) {
+        if ($entry.Key -like "*::$nameKey") {
+            return $entry.Value.Provider
+        }
     }
     return $null
 }
@@ -72,7 +118,28 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Import-GCliProviderModules {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
-    $providerRoot = Join-Path $PSScriptRoot 'providers'
+    $providerOverride = $env:ICON_EDITOR_GCLI_PROVIDER_ROOT
+    $providerRoot = $null
+    if ($providerOverride) {
+        $providerRoot = $providerOverride
+    } else {
+        $rootPath = $PSScriptRoot
+        if (-not $rootPath) {
+            $maybePath = $null
+            if ($PSCommandPath) {
+                $maybePath = $PSCommandPath
+            } elseif ($MyInvocation -and $MyInvocation.MyCommand -and ($MyInvocation.MyCommand | Get-Member -Name Path -ErrorAction SilentlyContinue)) {
+                $maybePath = $MyInvocation.MyCommand.Path
+            }
+            if ($maybePath) {
+                $rootPath = Split-Path -Parent $maybePath
+            }
+        }
+        if (-not $rootPath) { return }
+        $providerRoot = Join-Path $rootPath 'providers'
+    }
+
+    if (-not $providerRoot) { return }
     if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
 
     $modules = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue
@@ -98,9 +165,13 @@ function Import-GCliProviderModules {
             Write-Warning ("Failed to import g-cli provider from {0}: {1}" -f $modulePath, $_.Exception.Message)
         }
     }
+    $script:ProvidersPopulated = $true
 }
 
-Import-GCliProviderModules
+function Ensure-GCliProvidersLoaded {
+    if ($script:Providers.Count -gt 0 -or $script:ProvidersPopulated) { return }
+    Import-GCliProviderModules
+}
 
 <#
 .SYNOPSIS
@@ -113,18 +184,20 @@ function Get-GCliInvocation {
     param(
         [Parameter(Mandatory)][string]$Operation,
         [hashtable]$Params,
-        [string]$ProviderName
+        [string]$ProviderName,
+        [string]$Manager
     )
 
+    Ensure-GCliProvidersLoaded
     $candidates = @()
     if ($ProviderName) {
-        $provider = Get-GCliProviderByName -Name $ProviderName
+        $provider = Get-GCliProviderByName -Name $ProviderName -Manager $Manager
         if (-not $provider) {
             throw "g-cli provider '$ProviderName' is not registered."
         }
         $candidates = @($provider)
     } else {
-        $candidates = Get-GCliProviders
+        $candidates = Get-GCliProviders -Manager $Manager
     }
 
     foreach ($provider in $candidates) {

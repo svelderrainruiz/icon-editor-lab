@@ -1,6 +1,5 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+#Requires -Version 7.0
+[CmdletBinding()]
 param(
     [string]$ReportPath,
     [string]$BaselineManifestPath,
@@ -8,6 +7,10 @@ param(
     [string]$OutputDir,
     [string]$ResourceOverlayRoot
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
 if (-not (Test-Path 'variable:Global:InvokeValidateLocalStubLog')) {
     $Global:InvokeValidateLocalStubLog = @()
 } elseif (-not $Global:InvokeValidateLocalStubLog) {

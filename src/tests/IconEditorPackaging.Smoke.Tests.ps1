@@ -308,13 +308,79 @@ Set-Content -LiteralPath $summaryPath -Value '{\"result\":\"ok\"}' -Encoding utf
 return [pscustomobject]@{ summaryPath = $summaryPath }
 '@
 
+$invokeDiffsStub = @'
+param(
+    [Parameter(Mandatory=$true)][string]$RequestsPath,
+    [Parameter(Mandatory=$true)][string]$CapturesRoot,
+    [Parameter(Mandatory=$true)][string]$SummaryPath,
+    [switch]$DryRun,
+    [int]$TimeoutSeconds = 0
+)
+if (-not (Test-Path -LiteralPath $CapturesRoot -PathType Container)) {
+    New-Item -ItemType Directory -Path $CapturesRoot -Force | Out-Null
+}
+$log = [pscustomobject]@{
+    requestsPath = $RequestsPath
+    capturesRoot = $CapturesRoot
+    summaryPath  = $SummaryPath
+    dryRun       = $DryRun.IsPresent
+    timeout      = $TimeoutSeconds
+}
+if ($env:PACKAGING_DIFF_LOG) {
+    $log | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $env:PACKAGING_DIFF_LOG -Encoding utf8
+}
+$summary = [pscustomobject]@{
+    counts = [pscustomobject]@{
+        total   = 1
+        same    = 0
+        different = 0
+        skipped = 0
+        dryRun  = [int]$DryRun.IsPresent
+        errors  = 0
+    }
+    requests = @(
+        [pscustomobject]@{
+            relPath  = 'resource/Stub.vi'
+            status   = if ($DryRun.IsPresent) { 'dry-run' } else { 'executed' }
+            message  = 'stub comparison'
+            artifacts= @([pscustomobject]@{ name = 'capture'; path = 'captures/stub.png' })
+        }
+    )
+}
+$summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $SummaryPath -Encoding utf8
+'@
+
 $vipmStub = @'
 param(
     [string]$RepoRoot,
     [string]$IconEditorRoot,
+    [string]$RepoSlug,
+    [int]$MinimumSupportedLVVersion = 2023,
+    [int]$PackageMinimumSupportedLVVersion = 2026,
+    [int]$PackageSupportedBitness = 64,
     [switch]$SkipSync,
-    [switch]$SkipBuild
+    [switch]$SkipVipcApply,
+    [switch]$SkipBuild,
+    [switch]$SkipRogueCheck,
+    [switch]$SkipClose,
+    [int]$Major = 1,
+    [int]$Minor = 4,
+    [int]$Patch = 1,
+    [int]$Build,
+    [string]$ResultsRoot,
+    [switch]$VerboseOutput
 )
+
+if (-not $RepoRoot) {
+    $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).ProviderPath
+}
+if (-not $IconEditorRoot) {
+    $IconEditorRoot = Join-Path $RepoRoot 'vendor\icon-editor'
+}
+if (-not (Test-Path -LiteralPath $IconEditorRoot -PathType Container)) {
+    New-Item -ItemType Directory -Path $IconEditorRoot -Force | Out-Null
+}
+
 $logPath = if ($env:VIPM_TEST_LOG) { $env:VIPM_TEST_LOG } else { Join-Path $env:TEMP 'vipm-test.log' }
 $entries = @(
     'detect',
@@ -329,6 +395,49 @@ $entries = @(
     'detect'
 )
 Set-Content -LiteralPath $logPath -Value $entries -Encoding utf8
+
+if (-not $SkipSync) {
+    $wrapperDir = Join-Path $IconEditorRoot 'tools'
+    if (-not (Test-Path -LiteralPath $wrapperDir -PathType Container)) {
+        New-Item -ItemType Directory -Path $wrapperDir -Force | Out-Null
+    }
+    $gcliWrapper = Join-Path $wrapperDir 'GCli.psm1'
+    $vipmWrapper = Join-Path $wrapperDir 'Vipm.psm1'
+@"
+# Stub GCli wrapper referencing GCli.psm1
+Import-Module (Join-Path $RepoRoot 'tools\GCli.psm1') -ErrorAction SilentlyContinue
+"@ | Set-Content -LiteralPath $gcliWrapper -Encoding utf8
+@"
+# Stub Vipm wrapper referencing Vipm.psm1
+Import-Module (Join-Path $RepoRoot 'tools\Vipm.psm1') -ErrorAction SilentlyContinue
+"@ | Set-Content -LiteralPath $vipmWrapper -Encoding utf8
+}
+
+if (-not $SkipBuild) {
+    if (-not $ResultsRoot) {
+        $ResultsRoot = Join-Path $RepoRoot 'tests\results\_agent\icon-editor\vipm-cli-build'
+    }
+    if (-not $Build) {
+        $Build = [int](Get-Date -Format 'yyMMdd')
+    }
+    $recordPath = $env:ICON_EDITOR_BUILD_RECORD
+    if ($recordPath) {
+        $payload = [pscustomobject]@{
+            IconEditorRoot = $IconEditorRoot
+            ResultsRoot    = $ResultsRoot
+            BuildToolchain = 'vipm'
+            MinimumSupportedLVVersion        = $MinimumSupportedLVVersion
+            PackageMinimumSupportedLVVersion = $PackageMinimumSupportedLVVersion
+            PackageSupportedBitness          = $PackageSupportedBitness
+            Major = $Major
+            Minor = $Minor
+            Patch = $Patch
+            Build = $Build
+        }
+        $payload | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $recordPath -Encoding utf8
+    }
+}
+
 return $logPath
 '@
 
@@ -339,6 +448,7 @@ return $logPath
         Install-PackagingScriptStub -TargetPath $script:prepareScript -Content $prepareStub
         Install-PackagingScriptStub -TargetPath $script:renderScript -Content $renderStub
         Install-PackagingScriptStub -TargetPath $script:simulateScript -Content $simulateStub
+        Install-PackagingScriptStub -TargetPath (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-FixtureViDiffs.ps1') -Content $invokeDiffsStub
         Install-PackagingScriptStub -TargetPath (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-VipmCliBuild.ps1') -Content $vipmStub
 
         $fixtureVipPath = Join-Path $TestDrive 'synthetic-icon-editor.vip'
@@ -915,6 +1025,99 @@ Add-Content -LiteralPath $env:VIPM_TEST_LOG -Value ('apply-{0}-{1}-{2}' -f $Supp
         }
     }
 
+    It 'Invoke-VipmCliBuild.ps1 installs vipm and g-cli wrappers during sync' -Tag 'VipmSequence' {
+        $repoRoot = Join-Path $TestDrive 'vipm-wrappers'
+        $iconRoot = Join-Path $repoRoot 'vendor/icon-editor'
+        $syncScript = Join-Path $repoRoot 'tools/icon-editor/Sync-IconEditorFork.ps1'
+
+        New-Item -ItemType Directory -Path (Join-Path $repoRoot 'tools/icon-editor'),$iconRoot -Force | Out-Null
+@'
+param()
+"synced" | Out-Null
+'@ | Set-Content -LiteralPath $syncScript -Encoding utf8
+
+        { & (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-VipmCliBuild.ps1') `
+            -RepoRoot $repoRoot `
+            -IconEditorRoot $iconRoot `
+            -SkipVipcApply `
+            -SkipBuild `
+            -SkipClose `
+            -SkipRogueCheck } | Should -Not -Throw
+
+        $wrapperDir = Join-Path $iconRoot 'tools'
+        $gcliWrapper = Join-Path $wrapperDir 'GCli.psm1'
+        $vipmWrapper = Join-Path $wrapperDir 'Vipm.psm1'
+
+        Test-Path -LiteralPath $gcliWrapper | Should -BeTrue
+        Test-Path -LiteralPath $vipmWrapper | Should -BeTrue
+        (Get-Content -LiteralPath $gcliWrapper -Raw) | Should -Match 'GCli\.psm1'
+        (Get-Content -LiteralPath $vipmWrapper -Raw) | Should -Match 'Vipm\.psm1'
+    }
+
+    It 'Invoke-VipmCliBuild.ps1 forwards vipm build arguments to Invoke-IconEditorBuild' -Tag 'VipmSequence' {
+        $repoRoot = Join-Path $TestDrive 'vipm-build'
+        $iconRoot = Join-Path $repoRoot 'vendor/icon-editor'
+        $syncScript = Join-Path $repoRoot 'tools/icon-editor/Sync-IconEditorFork.ps1'
+        $buildScript = Join-Path $repoRoot 'tools/icon-editor/Invoke-IconEditorBuild.ps1'
+        $recordPath = Join-Path $TestDrive 'vipm-build-record.json'
+
+        New-Item -ItemType Directory -Path (Split-Path -Parent $buildScript),$iconRoot -Force | Out-Null
+@'
+param()
+"noop" | Out-Null
+'@ | Set-Content -LiteralPath $syncScript -Encoding utf8
+
+        $env:ICON_EDITOR_BUILD_RECORD = $recordPath
+@"
+param(
+  [string]$IconEditorRoot,
+  [string]$ResultsRoot,
+  [string]$BuildToolchain,
+  [int]$MinimumSupportedLVVersion,
+  [int]$PackageMinimumSupportedLVVersion,
+  [int]$PackageSupportedBitness,
+  [int]$Major,
+  [int]$Minor,
+  [int]$Patch,
+  [int]$Build,
+  [switch]$Verbose
+)
+\$payload = [pscustomobject]@{
+  IconEditorRoot = \$IconEditorRoot
+  ResultsRoot    = \$ResultsRoot
+  BuildToolchain = \$BuildToolchain
+  MinimumSupportedLVVersion = \$MinimumSupportedLVVersion
+  PackageMinimumSupportedLVVersion = \$PackageMinimumSupportedLVVersion
+  PackageSupportedBitness = \$PackageSupportedBitness
+  Major = \$Major
+  Minor = \$Minor
+  Patch = \$Patch
+  Build = \$Build
+}
+\$recordPath = \$env:ICON_EDITOR_BUILD_RECORD
+if (-not \$recordPath) { throw 'Missing ICON_EDITOR_BUILD_RECORD env variable.' }
+\$payload | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath \$recordPath -Encoding utf8
+"@ | Set-Content -LiteralPath $buildScript -Encoding utf8
+
+        try {
+            { & (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-VipmCliBuild.ps1') `
+                -RepoRoot $repoRoot `
+                -IconEditorRoot $iconRoot `
+                -SkipVipcApply `
+                -SkipClose `
+                -SkipRogueCheck } | Should -Not -Throw
+        } finally {
+            Remove-Item Env:ICON_EDITOR_BUILD_RECORD -ErrorAction SilentlyContinue
+        }
+
+        Test-Path -LiteralPath $recordPath | Should -BeTrue
+        $record = Get-Content -LiteralPath $recordPath -Raw | ConvertFrom-Json
+        $record.BuildToolchain | Should -Be 'vipm'
+        $record.MinimumSupportedLVVersion | Should -Be 2023
+        $record.PackageMinimumSupportedLVVersion | Should -Be 2026
+        $record.PackageSupportedBitness | Should -Be 64
+    }
+
     It 'Simulate-IconEditorBuild.ps1 produces dry-run artifacts' {
         $resultsRoot = Join-Path $TestDrive 'simulate'
         $vipDiffDir = Join-Path $resultsRoot 'vip-diff'
@@ -939,6 +1142,60 @@ Add-Content -LiteralPath $env:VIPM_TEST_LOG -Value ('apply-{0}-{1}-{2}' -f $Supp
         Test-Path -LiteralPath $requestsPath | Should -BeTrue
         $requestJson = Get-Content -LiteralPath $requestsPath -Raw | ConvertFrom-Json -Depth 6
         $requestJson.count | Should -BeGreaterThan 0
+    }
+
+    Context 'Invoke-ValidateLocal SkipLVCompare integration' {
+        BeforeAll {
+            Restore-PackagingScriptStubs
+            $script:skipLvCompareLog = Join-Path $TestDrive 'skip-lvcompare-log.json'
+            $env:PACKAGING_DIFF_LOG = $script:skipLvCompareLog
+
+            Install-PackagingScriptStub -TargetPath $script:describeScript -Content $describeStub
+            Install-PackagingScriptStub -TargetPath $script:prepareScript -Content $prepareStub
+            Install-PackagingScriptStub -TargetPath $script:renderScript -Content $renderStub
+            Install-PackagingScriptStub -TargetPath $script:simulateScript -Content $simulateStub
+            Install-PackagingScriptStub -TargetPath (Join-Path $script:repoRoot 'tools/icon-editor/Invoke-FixtureViDiffs.ps1') -Content $invokeDiffsStub
+        }
+
+        AfterAll {
+            Restore-PackagingScriptStubs
+            Remove-Item Env:PACKAGING_DIFF_LOG -ErrorAction SilentlyContinue
+        }
+
+        It 'Invoke-ValidateLocal.ps1 performs dry-run compare when SkipLVCompare is set' -Tag 'SkipLVCompare' {
+            $resultsRoot = Join-Path $TestDrive 'validate-local-skip'
+            if (Test-Path -LiteralPath $resultsRoot) {
+                Remove-Item -LiteralPath $resultsRoot -Recurse -Force
+            }
+
+            { & $script:validateScript `
+                -FixturePath $script:fixtureVipPath `
+                -BaselineFixture $script:baselineVipPath `
+                -BaselineManifest $script:baselineManifestPath `
+                -ResultsRoot $resultsRoot `
+                -SkipLVCompare `
+                -SkipBootstrap `
+                -DryRun } | Should -Not -Throw
+
+            $requestsPath = Join-Path (Join-Path $resultsRoot 'vi-diff') 'vi-diff-requests.json'
+            $summaryPath = Join-Path (Join-Path $resultsRoot 'vi-diff-captures') 'vi-comparison-summary.json'
+            $reportPath = Join-Path (Join-Path $resultsRoot 'vi-diff-captures') 'vi-comparison-report.md'
+
+            Test-Path -LiteralPath $requestsPath | Should -BeTrue
+            Test-Path -LiteralPath $summaryPath | Should -BeTrue
+            Test-Path -LiteralPath $reportPath | Should -BeTrue
+
+            Test-Path -LiteralPath $script:skipLvCompareLog | Should -BeTrue
+            $log = Get-Content -LiteralPath $script:skipLvCompareLog -Raw | ConvertFrom-Json -Depth 6
+            $log.dryRun | Should -BeTrue
+            $log.requestsPath | Should -Match 'vi-diff-requests.json'
+            $log.capturesRoot | Should -Match 'vi-diff-captures'
+            $log.summaryPath | Should -Match 'vi-comparison-summary.json'
+
+            $reportContent = Get-Content -LiteralPath $reportPath -Raw
+            $reportContent | Should -Match '## VI Comparison Report'
+            $reportContent | Should -Match 'dry-run'
+        }
     }
 }
 

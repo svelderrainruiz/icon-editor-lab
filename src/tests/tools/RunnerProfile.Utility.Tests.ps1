@@ -30,7 +30,11 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
 
     BeforeEach {
         $script:envBackup = @{}
-        foreach ($name in @('RUNNER_LABELS','RUNNER_NAME','RUNNER_OS','RUNNER_ENVIRONMENT','RUNNER_ARCH','RUNNER_TRACKING_ID','ImageOS','ImageVersion')) {
+        foreach ($name in @(
+            'RUNNER_LABELS','RUNNER_NAME','RUNNER_OS','RUNNER_ENVIRONMENT','RUNNER_ARCH','RUNNER_TRACKING_ID',
+            'ImageOS','ImageVersion','GITHUB_REPOSITORY','GITHUB_RUN_ID','GITHUB_JOB','GITHUB_RUN_ATTEMPT',
+            'GH_TOKEN','GITHUB_TOKEN'
+        )) {
             $script:envBackup[$name] = [System.Environment]::GetEnvironmentVariable($name, 'Process')
         }
         InModuleScope RunnerProfile {
@@ -79,6 +83,202 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
         }
     }
 
+    Context 'Get-RunnerLabels caching and API fallback' {
+        It 'hydrates from API when env is empty and caches the result' {
+            $env:RUNNER_LABELS = ''
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-RunnerLabelsFromApi -MockWith { @('self-hosted','windows-2025') }
+                $first = Get-RunnerLabels -ForceRefresh
+                $second = Get-RunnerLabels
+                $first | Should -Contain 'self-hosted'
+                $second | Should -Be $first
+                Assert-MockCalled -ModuleName RunnerProfile -CommandName Get-RunnerLabelsFromApi -Times 1 -Exactly
+            }
+        }
+    }
+
+    Context 'Get-RunnerLabelsFromApi' {
+        It 'selects jobs matching runner name and attempt when API returns data' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '42'
+            $env:RUNNER_NAME = 'runner-a'
+            $env:GITHUB_JOB = 'coverage'
+            $env:GITHUB_RUN_ATTEMPT = '3'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('self-hosted','windows'); run_attempt=3; name='coverage'; status='completed' },
+                        [pscustomobject]@{ runner_name='runner-b'; labels=@('linux','x64'); run_attempt=1; name='coverage'; status='completed' }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'self-hosted'
+                $labels | Should -Contain 'windows'
+                $labels | Should -Not -Contain 'linux'
+            }
+        }
+
+        It 'returns empty when repository metadata is missing' {
+            InModuleScope RunnerProfile {
+                Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
+            }
+        }
+
+        It 'falls back to job name and latest non-queued run when runner name is absent' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '77'
+            $env:GITHUB_JOB = 'e2e'
+            $env:GITHUB_RUN_ATTEMPT = ''
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name=$null; name='build'; status='completed'; started_at=[datetime]'2025-11-11'; labels=@('build') },
+                        [pscustomobject]@{ runner_name=$null; name='e2e'; status='in_progress'; started_at=[datetime]'2025-11-12'; labels=@('e2e','windows') },
+                        [pscustomobject]@{ runner_name=$null; name='e2e'; status='completed'; started_at=[datetime]'2025-11-10'; labels=@('old') }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'e2e'
+                $labels | Should -Contain 'windows'
+                $labels | Should -Not -Contain 'old'
+            }
+        }
+
+        It 'returns empty when candidate job has no labels array' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '88'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @([pscustomobject]@{ runner_name='abc'; labels=$null; status='completed'; name='build' })
+                }
+                Get-RunnerLabelsFromApi | Should -BeNullOrEmpty
+            }
+        }
+
+        It 'uses run attempt metadata when multiple candidates match' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '99'
+            $env:RUNNER_NAME = 'runner-a'
+            $env:GITHUB_RUN_ATTEMPT = '2'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RunnerJobsApi -MockWith {
+                    @(
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('v1'); run_attempt=1; status='completed'; name='build' },
+                        [pscustomobject]@{ runner_name='runner-a'; labels=@('v2'); run_attempt=2; status='completed'; name='build' }
+                    )
+                }
+                $labels = Get-RunnerLabelsFromApi
+                $labels | Should -Contain 'v2'
+                $labels | Should -Not -Contain 'v1'
+            }
+        }
+    }
+
+    Context 'Invoke-RunnerJobsApi' {
+        It 'returns jobs from REST API when gh CLI is unavailable' {
+            $env:GH_TOKEN = 'gho_mock'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith { throw [System.Management.Automation.CommandNotFoundException]::new() }
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith {
+                    [pscustomobject]@{
+                        jobs = @(
+                            [pscustomobject]@{ runner_name='runner-a'; labels=@('ubuntu'); status='completed' }
+                        )
+                    }
+                }
+                $jobs = @(Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999')
+                ($jobs | Measure-Object).Count | Should -Be 1
+                $jobs[0].labels | Should -Contain 'ubuntu'
+            }
+        }
+
+        It 'returns empty when no tokens are present' {
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith { throw [System.Management.Automation.CommandNotFoundException]::new() }
+                Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '999' | Should -BeNullOrEmpty
+            }
+        }
+
+        It 'prefers gh CLI output when command is available' {
+            $env:GITHUB_REPOSITORY = 'contoso/icon-editor'
+            $env:GITHUB_RUN_ID = '555'
+            Remove-Item Env:GH_TOKEN -ErrorAction SilentlyContinue
+            Remove-Item Env:GITHUB_TOKEN -ErrorAction SilentlyContinue
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith { throw 'REST path should not execute' }
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            param([Parameter(ValueFromRemainingArguments=$true)][object[]]$Args)
+                            Set-Variable -Name LASTEXITCODE -Scope Global -Value 0
+                            '{"jobs":[{"runner_name":"gh-cli","labels":["macos","arm64"],"status":"completed"}]}'
+                        }
+                    }
+                }
+                $jobs = Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '555'
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'gh-cli'
+                $jobs[0].labels | Should -Contain 'macos'
+            }
+        }
+
+        It 'falls back to REST API when gh CLI exits with errors' {
+            $env:GH_TOKEN = 'gho_mock'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            $global:LASTEXITCODE = 1
+                            ''
+                        }
+                    }
+                }
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith {
+                    [pscustomobject]@{
+                        jobs = @([pscustomobject]@{ runner_name='rest-fallback'; labels=@('rest'); status='completed' })
+                    }
+                }
+                $jobs = Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '888'
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'rest-fallback'
+                $jobs[0].labels | Should -Contain 'rest'
+            }
+        }
+
+    }
+
+    Context 'Invoke-RunnerJobsApi CLI path' {
+        It 'parses gh cli output when available' {
+            $env:GH_TOKEN = 'gho_mock'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            param([Parameter(ValueFromRemainingArguments=$true)][object[]]$Args)
+                            Set-Variable -Name LASTEXITCODE -Scope Global -Value 0
+                            @'
+{
+  "jobs": [
+    {
+      "runner_name": "runner-cli",
+      "labels": ["self-hosted","cli"],
+      "status": "completed"
+    }
+  ]
+}
+'@
+                        }
+                    }
+                }
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith { throw 'REST path should not execute' }
+                $jobs = Invoke-RunnerJobsApi -Repository 'contoso/cli' -RunId '123'
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'runner-cli'
+                $jobs[0].labels | Should -Contain 'cli'
+            }
+        }
+    }
+
     Context 'Get-RunnerProfile' {
         It 'combines env fields and cached labels' {
             $env:RUNNER_LABELS = 'linux,windows'
@@ -97,5 +297,69 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
                 $profile.machine | Should -Not -BeNullOrEmpty
             }
         }
+
+        It 'reuses cached profile unless ForceRefresh is specified' {
+            $env:RUNNER_LABELS = 'alpha,beta'
+            $env:RUNNER_NAME = 'runner-1'
+            $env:RUNNER_OS = 'Windows'
+            InModuleScope RunnerProfile {
+                $first = Get-RunnerProfile -ForceRefresh
+                $env:RUNNER_LABELS = 'beta,gamma'
+                $cached = Get-RunnerProfile
+                $cached.labels | Should -Contain 'alpha'
+                $cached.name | Should -Be 'runner-1'
+                $fresh = Get-RunnerProfile -ForceRefresh
+                $fresh.labels | Should -Contain 'gamma'
+                $fresh.name | Should -Be 'runner-1'
+            }
+        }
+
+        It 'returns instrumentation-disabled profile when module toggle is off' {
+            InModuleScope RunnerProfile {
+                $original = $script:RunnerProfileInstrumentationEnabled
+                $script:RunnerProfileInstrumentationEnabled = $false
+                try {
+                    $profile = Get-RunnerProfile
+                    $profile.instrumentationDisabled | Should -BeTrue
+                    $profile.labels | Should -BeNullOrEmpty
+                }
+                finally {
+                    $script:RunnerProfileInstrumentationEnabled = $original
+                }
+            }
+        }
+
+        It 'respects the DisableInstrumentation switch' {
+            $profile = InModuleScope RunnerProfile { Get-RunnerProfile -DisableInstrumentation }
+            $profile.instrumentationDisabled | Should -BeTrue
+        }
+
+    }
+
+    Context 'Module helper functions' {
+        It 'Test-ValidLabel accepts good labels' {
+            InModuleScope RunnerProfile {
+                Test-ValidLabel -Label 'runner_profile-1'
+            }
+        }
+
+        It 'Test-ValidLabel rejects bad labels' {
+            InModuleScope RunnerProfile {
+                { Test-ValidLabel -Label 'bad label!' } | Should -Throw '*Invalid label*'
+            }
+        }
+
+        It 'Invoke-WithTimeout returns script block result' {
+            InModuleScope RunnerProfile {
+                Invoke-WithTimeout -ScriptBlock { 2 + 5 } -TimeoutSec 5 | Should -Be 7
+            }
+        }
+
+        It 'Invoke-WithTimeout throws when timeout exceeded' {
+            InModuleScope RunnerProfile {
+                { Invoke-WithTimeout -ScriptBlock { Start-Sleep -Milliseconds 500 } -TimeoutSec 0 } | Should -Throw '*timed out*'
+            }
+        }
+
     }
 }

@@ -12,12 +12,11 @@ Register-VipmProvider: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Register-VipmProvider {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param([Parameter(Mandatory)][object]$Provider)
 
     # ShouldProcess guard: honor -WhatIf / -Confirm
     if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
-    param([Parameter(Mandatory)][object]$Provider)
 
     foreach ($member in @('Name','ResolveBinaryPath','Supports','BuildArgs')) {
         if (-not ($Provider | Get-Member -Name $member -ErrorAction SilentlyContinue)) {
@@ -41,6 +40,7 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-VipmProviders {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+    param()
 
     return $script:Providers.GetEnumerator() | ForEach-Object { $_.Value }
 }
@@ -53,7 +53,6 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-VipmProviderByName {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
     param([Parameter(Mandatory)][string]$Name)
 
     $key = $Name.ToLowerInvariant()
@@ -72,7 +71,28 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 function Import-VipmProviderModules {
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
 
-    $providerRoot = Join-Path $PSScriptRoot 'providers'
+    $providerOverride = $env:ICON_EDITOR_VIPM_PROVIDER_ROOT
+    $providerRoot = $null
+    if ($providerOverride) {
+        $providerRoot = $providerOverride
+    } else {
+        $rootPath = $PSScriptRoot
+        if (-not $rootPath) {
+            $maybePath = $null
+            if ($PSCommandPath) {
+                $maybePath = $PSCommandPath
+            } elseif ($MyInvocation -and $MyInvocation.MyCommand -and ($MyInvocation.MyCommand | Get-Member -Name Path -ErrorAction SilentlyContinue)) {
+                $maybePath = $MyInvocation.MyCommand.Path
+            }
+            if ($maybePath) {
+                $rootPath = Split-Path -Parent $maybePath
+            }
+        }
+        if (-not $rootPath) { return }
+        $providerRoot = Join-Path $rootPath 'providers'
+    }
+
+    if (-not $providerRoot) { return }
     if (-not (Test-Path -LiteralPath $providerRoot -PathType Container)) { return }
 
     $providerDirs = Get-ChildItem -Path $providerRoot -Directory -ErrorAction SilentlyContinue |

@@ -16,7 +16,7 @@ jobs:
     env:
       COVERAGE_MIN: "75"
       COVERAGE_ENFORCE: "true"
-      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1"
+      CRITICAL_PATHS: "src/Core.psm1,tools/Build.ps1,src/tools/LabVIEWCli.psm1"
     steps:
       - uses: actions/checkout@v4
 
@@ -92,7 +92,13 @@ jobs:
             'src/tests/tools/LabVIEWPidTracker.Unit.Tests.ps1',
             'src/tests/tools/Once-Guard.Unit.Tests.ps1',
             'src/tests/tools/RunnerProfile.Utility.Tests.ps1',
-            'src/tests/tools/Timing.Tick.Unit.Tests.ps1'
+            'src/tests/tools/Timing.Tick.Unit.Tests.ps1',
+            'src/tests/tools/ConsoleWatch.Unit.Tests.ps1',
+            'src/tests/tools/Vipm.Unit.Tests.ps1',
+            'src/tests/tools/GCli.Unit.Tests.ps1',
+            'src/tests/tools/Tools.GetPesterVersion.Tests.ps1',
+            'src/tests/tools/LabVIEWLabVIEWCli.Unit.Tests.ps1',
+            'src/tests/tools/Dev-Dashboard.Unit.Tests.ps1'
           )
           $paths = @()
           foreach ($target in $safeTargets) {
@@ -117,9 +123,16 @@ jobs:
           $config.CodeCoverage.OutputPath  = 'artifacts/coverage/coverage.xml'
           $coverageTargets = @(
             'src/tools/ConsoleUx.psm1',
+            'src/tools/LabVIEWCli.psm1',
             'src/tools/LabVIEWPidTracker.psm1',
             'src/tools/Once-Guard.psm1',
-            'src/tools/Timing/Tick.psm1'
+            'src/tools/Timing/Tick.psm1',
+            'src/tools/RunnerProfile.psm1',
+            'src/tools/ConsoleWatch.psm1',
+            'src/tools/Vipm.psm1',
+            'src/tools/GCli.psm1',
+            'src/tools/LabVIEWLabVIEWCLI.psm1',
+            'src/tools/Get-PesterVersion.ps1'
           ) | Where-Object { Test-Path $_ }
           if ($coverageTargets.Count -gt 0) {
             $config.CodeCoverage.Path = $coverageTargets

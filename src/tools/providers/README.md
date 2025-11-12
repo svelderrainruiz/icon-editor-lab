@@ -7,6 +7,13 @@
 ## Overview
 Set-StrictMode -Version Latest
 
+### Naming Conventions
+
+- **labviewcli** – provider folders that expose the `labviewcli` command surface (PID tracker, CompareVI, etc.). Even if an upstream toggle eventually hops into g-cli, use this spelling when the command you’re wiring up is `labviewcli`.
+- **g-cli** – provider folders that expose the `g-cli` command surface (VIPM/NIPM tooling). These flows may launch LabVIEW indirectly, but we keep the hyphenated name to distinguish the entry point.
+
+Tests don’t need to know which layer ultimately starts LabVIEW; they only care which CLI command they’re exercising. This README mirrors the guidance in `docs/tooling-naming.md`.
+
 ## Usage
 TBD. Document basic usage and examples here.
 

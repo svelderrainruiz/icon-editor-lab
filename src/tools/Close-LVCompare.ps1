@@ -1,13 +1,27 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+#Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
+  [Parameter()][int]$TimeoutSec = 600,
+  [string]$LabVIEWExePath,
+  [string]$MinimumSupportedLVVersion,
+  [ValidateSet('32','64')]
+  [string]$SupportedBitness,
+  [string]$LVComparePath,
+  [string]$BaseVi,
+  [string]$HeadVi,
+  [string[]]$AdditionalArguments,
+  [int]$TimeoutSeconds = 60,
+  [switch]$KillOnTimeout,
+  [switch]$SkipDefaultFlags
 )
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
+
 <#
 .SYNOPSIS
   Runs LVCompare.exe against a pair of VIs using an explicit LabVIEW executable path (default: LabVIEW 2025 64-bit) and ensures the compare process exits.
@@ -59,37 +73,15 @@ param(
   Writes a PSCustomObject describing the invocation (`exitCode`, `lvComparePath`, `labVIEWPath`, `arguments`, `elapsedSeconds`).
   The PowerShell `$LASTEXITCODE` is set to the LVCompare process exit code (or 1 on error).
 #>
-[CmdletBinding()]
-param(
-  [string]$LabVIEWExePath,
-  [string]$MinimumSupportedLVVersion,
-  [ValidateSet('32','64')]
-  [string]$SupportedBitness,
-  [string]$LVComparePath,
-  [string]$BaseVi,
-  [string]$HeadVi,
-  [string[]]$AdditionalArguments,
-  [int]$TimeoutSeconds = 60,
-  [switch]$KillOnTimeout,
-  [switch]$SkipDefaultFlags
-)
-
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
 try { Import-Module (Join-Path (Split-Path -Parent $PSScriptRoot) 'tools' 'VendorTools.psm1') -Force } catch {}
 
 <#
 .SYNOPSIS
 Get-FirstValue: brief description (TODO: refine).
 .DESCRIPTION
-Auto-seeded to satisfy help synopsis presence. Update with real details.
+Returns the first non-empty string in the provided list.
 #>
 function Get-FirstValue {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
   param([string[]]$Values)
   foreach ($value in $Values) {
     if (-not [string]::IsNullOrWhiteSpace($value)) { return $value }
