@@ -1,17 +1,11 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+#Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
-#Requires -Version 7.0
-
-param(
-  [string]$Commit,
+  [Parameter()][int]$TimeoutSec = 600,
+  [Parameter(Mandatory=$true)][string]$Commit,
   [string]$RepoPath,
   [string]$RepoSlug = 'LabVIEW-Community-CI-CD/labview-icon-editor',
   [string]$Branch = 'develop',
@@ -28,6 +22,11 @@ param(
   [string]$LabVIEWExePath
 )
 
+# Move strict mode settings after parameters are defined so script parsing works when dot-sourced.
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
+
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $InformationPreference = 'Continue'
@@ -35,14 +34,42 @@ $InformationPreference = 'Continue'
 function Resolve-RepoRoot {
   param([string]$StartPath = (Get-Location).Path)
   try {
-    return (git -C $StartPath rev-parse --show-toplevel 2>$null).Trim()
+    $resolved = (git -C $StartPath rev-parse --show-toplevel 2>$null).Trim()
+    if (-not $resolved) { return $StartPath }
+    return $resolved
   } catch {
     return $StartPath
   }
 }
 
+function Get-ShortHash {
+  param([string]$Hash)
+  if ([string]::IsNullOrEmpty($Hash)) { return $Hash }
+  if ($Hash.Length -le 8) { return $Hash }
+  return $Hash.Substring(0,8)
+}
+
 $repoRoot = Resolve-RepoRoot
-$vendorModulePath = Join-Path $repoRoot 'tools/VendorTools.psm1'
+$toolsRoot = Join-Path $repoRoot 'tools'
+$toolsAltRoot = Join-Path $repoRoot 'src/tools'
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and -not (Test-Path -LiteralPath $toolsAltRoot -PathType Container)) {
+  throw "Unable to locate a 'tools' directory under '$toolsRoot' or '$toolsAltRoot'."
+}
+if (-not (Test-Path -LiteralPath $toolsRoot -PathType Container) -and (Test-Path -LiteralPath $toolsAltRoot -PathType Container)) {
+  $toolsRoot = $toolsAltRoot
+}
+
+$iconEditorToolsRoot = Join-Path $toolsRoot 'icon-editor'
+if (-not (Test-Path -LiteralPath $iconEditorToolsRoot -PathType Container)) {
+  $altIconRoot = Join-Path $toolsAltRoot 'icon-editor'
+  if (Test-Path -LiteralPath $altIconRoot -PathType Container) {
+    $iconEditorToolsRoot = $altIconRoot
+  } else {
+    throw "Icon editor tooling not found under '$iconEditorToolsRoot' or '$altIconRoot'."
+  }
+}
+
+$vendorModulePath = Join-Path $toolsRoot 'VendorTools.psm1'
 if (Test-Path -LiteralPath $vendorModulePath -PathType Leaf) {
   Import-Module $vendorModulePath -Force
 }
@@ -63,7 +90,7 @@ function Ensure-Repo {
     [string]$Branch,
     [switch]$SkipSync
   )
-  $syncScript = Join-Path $repoRoot 'tools/icon-editor/Sync-IconEditorFork.ps1'
+  $syncScript = Join-Path $iconEditorToolsRoot 'Sync-IconEditorFork.ps1'
   if (-not $TargetPath) {
     $TargetPath = Join-Path $repoRoot 'tmp/icon-editor/repo'
   }
@@ -144,7 +171,7 @@ $commitFull = Resolve-GitHash -Repo $repoResolved -Ref $Commit
 $parentFull = $null
 $parentFull = Resolve-GitHash -Repo $repoResolved -Ref "$Commit^" -Optional
 if (-not $parentFull) {
-  Write-Information ("Commit {0} has no parent (likely initial commit); skipping staging." -f $commitFull.Substring(0,8))
+  Write-Information ("Commit {0} has no parent (likely initial commit); skipping staging." -f (Get-ShortHash $commitFull))
   return [pscustomobject]@{
     commit         = $commitFull
     parent         = $null
@@ -155,10 +182,10 @@ if (-not $parentFull) {
   }
 }
 
-$overlayRoot = Join-Path $repoRoot ("tmp/icon-editor/overlays/{0}" -f $commitFull.Substring(0,8))
+$overlayRoot = Join-Path $repoRoot ("tmp/icon-editor/overlays/{0}" -f (Get-ShortHash $commitFull))
 Write-Information ("==> Preparing overlay at {0}" -f $overlayRoot)
 
-$prepareOverlay = Join-Path $repoRoot 'tools/icon-editor/Prepare-OverlayFromRepo.ps1'
+$prepareOverlay = Join-Path $iconEditorToolsRoot 'Prepare-OverlayFromRepo.ps1'
 $prepareParams = @{
   RepoPath   = $repoResolved
   BaseRef    = $parentFull
@@ -169,7 +196,7 @@ $prepareParams = @{
 
 $overlaySummary = & $prepareOverlay @prepareParams
 if ($overlaySummary.files.Count -eq 0) {
-  Write-Information ("No VI changes detected for commit {0}; skipping snapshot staging." -f $commitFull.Substring(0,8))
+  Write-Information ("No VI changes detected for commit {0}; skipping snapshot staging." -f (Get-ShortHash $commitFull))
   return [pscustomobject]@{
     commit         = $commitFull
     parent         = $parentFull
@@ -180,9 +207,9 @@ if ($overlaySummary.files.Count -eq 0) {
   }
 }
 
-$stageScript = Join-Path $repoRoot 'tools/icon-editor/Stage-IconEditorSnapshot.ps1'
+$stageScript = Join-Path $iconEditorToolsRoot 'Stage-IconEditorSnapshot.ps1'
 $workspace = if ($WorkspaceRoot) { $WorkspaceRoot } else { Join-Path $repoRoot 'tests/results/_agent/icon-editor/snapshots' }
-$stageNameResolved = if ($StageName) { $StageName } else { "commit-{0}" -f $commitFull.Substring(0,8) }
+$stageNameResolved = if ($StageName) { $StageName } else { "commit-{0}" -f (Get-ShortHash $commitFull) }
 
 $effectiveFiles = @()
 if ($overlaySummary.files) {
@@ -218,7 +245,7 @@ if ($ExcludePaths -and $ExcludePaths.Count -gt 0 -and $effectiveFiles.Count -gt 
 }
 
 if ($effectiveFiles.Count -eq 0) {
-  Write-Information ("Filtered commit {0}; no VI files selected for comparison." -f $commitFull.Substring(0,8))
+  Write-Information ("Filtered commit {0}; no VI files selected for comparison." -f (Get-ShortHash $commitFull))
   return [pscustomobject]@{
     commit         = $commitFull
     parent         = $parentFull
@@ -244,7 +271,19 @@ if ($SkipBootstrapForValidate.IsPresent) { $stageParams['SkipBootstrapForValidat
 $stageSummary = & $stageScript @stageParams
 
 # Also attempt raw commit-to-commit VI comparisons to produce captures even when the VIP baseline lacks a file.
-$compareScript = if ($HeadlessCompareScript) { $HeadlessCompareScript } else { Join-Path $repoRoot 'tools/Run-HeadlessCompare.ps1' }
+if ($HeadlessCompareScript) {
+  $compareScript = $HeadlessCompareScript
+} else {
+  $compareCandidates = @(
+    (Join-Path $toolsRoot 'Run-HeadlessCompare.ps1')
+    (Join-Path $toolsAltRoot 'Run-HeadlessCompare.ps1')
+  ) | Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) }
+  if ($compareCandidates) {
+    $compareScript = ($compareCandidates | Select-Object -First 1)
+  } else {
+    $compareScript = Join-Path $toolsRoot 'Run-HeadlessCompare.ps1'
+  }
+}
 if (-not (Test-Path -LiteralPath $compareScript -PathType Leaf)) {
   Write-Warning ("Headless compare script not found at '{0}'; skipping raw comparisons." -f $compareScript)
 } else {

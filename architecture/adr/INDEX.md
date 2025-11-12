@@ -5,7 +5,7 @@ Date: 2025-11-11
 Decision Owners: Architecture Council
 | ADR | Title | Status | Date | Owner | Evidence (RTM Rows) |
 |---|---|---|---|---|---|
-| 001 | VI Comparison Report | Proposed | 2025-11-10 | Arch Lead, Lab Lead | RQ-0001, RQ-0002-RQ-0003, RQ-0007 |
+| 001 | VI Comparison Report | Proposed | 2025-11-10 | Arch Lead, Lab Lead | RQ-0001, RQ-0002-RQ-0003, RQ-0007-RQ-0008 |
 | 002 | VI History Report | Proposed | 2025-11-10 | CM Lead, Lab Lead | RQ-0003–RQ-0006 |
 | 003 | Development mode toggle | Proposed | 2025-11-10 | Arch Lead, QA Lead | RQ-0001, RQ-0002, RQ-0004 |
 | 004 | LUnit tests | Proposed | 2025-11-10 | QA Lead, Lab Lead | RQ-0002–RQ-0003, RQ-0005–RQ-0006 |
