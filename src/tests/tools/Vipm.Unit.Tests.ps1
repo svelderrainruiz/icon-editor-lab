@@ -156,7 +156,7 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
             Import-Module -Name $script:ModulePath -Force
             $provider = New-TestVipmProvider -Name 'Viz' -Supports { $false }
             Register-VipmProvider -Provider $provider
-            { Get-VipmInvocation -Operation 'deploy' } | Should -Throw
+            { Get-VipmInvocation -Operation 'deploy' } | Should -Throw '*Viz*'
         }
     }
 
@@ -176,11 +176,16 @@ Describe 'VIPM tooling helpers' -Tag 'Unit','Tools','Vipm' {
                 Set-Content -LiteralPath (Join-Path $fallbackDir 'Provider.psm1') -Encoding utf8
 
             $resolvedRoot = (Resolve-Path $providerRoot).Path
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
+
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
 
             $names = Get-VipmProviders | ForEach-Object { $_.Name() }
             $names | Should -Contain 'Alpha'
@@ -202,12 +207,11 @@ function New-VipmProvider {
 '@ | Set-Content -LiteralPath (Join-Path $invalidDir 'Provider.psm1') -Encoding utf8
 
             $resolvedRoot = (Resolve-Path $providerRoot).Path
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
-
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
             Mock -CommandName Write-Warning -ModuleName Vipm
             InModuleScope Vipm {
                 $script:Providers.Clear()
@@ -219,12 +223,47 @@ function New-VipmProvider {
 
         It 'returns early when override root does not exist' {
             $missingRoot = Join-Path $TestDrive 'no-such-dir'
-            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $missingRoot
             if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
                 Remove-Module Vipm -Force -ErrorAction SilentlyContinue
             }
             Import-Module -Name $script:ModulePath -Force
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $missingRoot
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
             (Get-VipmProviders | Measure-Object).Count | Should -Be 0
+        }
+
+        It 'continues registering providers when one module throws' {
+            $providerRoot = Join-Path $TestDrive 'vipm-mixed'
+            $throwDir = Join-Path $providerRoot 'vipm-throw'
+            New-Item -ItemType Directory -Force -Path $throwDir | Out-Null
+            @'
+function New-VipmProvider {
+    throw 'boom'
+}
+'@ | Set-Content -LiteralPath (Join-Path $throwDir 'Provider.psm1') -Encoding utf8
+
+            $goodDir = Join-Path $providerRoot 'vipm-stable'
+            New-Item -ItemType Directory -Force -Path $goodDir | Out-Null
+            (New-VipmProviderModuleContent -Name 'Stable' -Binary 'C:\stable\vipm.exe') |
+                Set-Content -LiteralPath (Join-Path $goodDir 'Provider.psm1') -Encoding utf8
+
+            $resolvedRoot = (Resolve-Path $providerRoot).Path
+            if (Get-Module -Name Vipm -ErrorAction SilentlyContinue) {
+                Remove-Module Vipm -Force -ErrorAction SilentlyContinue
+            }
+            Import-Module -Name $script:ModulePath -Force
+            Set-Item -Path Env:ICON_EDITOR_VIPM_PROVIDER_ROOT -Value $resolvedRoot
+
+            Mock -CommandName Write-Warning -ModuleName Vipm
+            InModuleScope Vipm {
+                $script:Providers.Clear()
+                Import-VipmProviderModules
+            }
+            Assert-MockCalled -CommandName Write-Warning -ModuleName Vipm -Times 1
+            (Get-VipmProviderByName -Name 'stable') | Should -Not -BeNullOrEmpty
         }
     }
 
