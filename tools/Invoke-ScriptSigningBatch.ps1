@@ -176,7 +176,11 @@ $summary = if ($UseTimestamp) {
 
 Write-Host $summary
 if ($SummaryPath) {
-  try { Add-Content -LiteralPath $SummaryPath -Value "- $summary" -ErrorAction Stop } catch { Write-Warning "Failed to write summary to $SummaryPath: $($_.Exception.Message)" }
+  try {
+    Add-Content -LiteralPath $SummaryPath -Value "- $summary" -ErrorAction Stop
+  } catch {
+    Write-Warning ("Failed to write summary to {0}: {1}" -f $SummaryPath,$_.Exception.Message)
+  }
 }
 
 if ($fail -gt 0) {
