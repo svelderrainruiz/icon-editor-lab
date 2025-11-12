@@ -11,6 +11,7 @@ $ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
 if (-not (Test-Path -LiteralPath $SearchRoot -PathType Container)) {
   throw "Search root not found: $SearchRoot"
 }
+Write-Host "Signing scripts under: $SearchRoot"
 $includeMatchers = @(
   $Include | ForEach-Object {
     if ($_ -and $_.Trim()) {
@@ -32,7 +33,9 @@ function Get-CodeSigningCert {
   return $c
 }
 $cert = Get-CodeSigningCert -Thumbprint $Thumbprint
-$files = @(Get-ChildItem -LiteralPath $SearchRoot -Recurse -File | Where-Object {
+$candidates = @(Get-ChildItem -LiteralPath $SearchRoot -Recurse -File)
+Write-Host ("Discovered {0} candidate file(s) before filtering." -f $candidates.Count)
+$files = @($candidates | Where-Object {
   $rel = $_.FullName.Substring($SearchRoot.Length).TrimStart('\','/')
   if ($ExcludeDirs | Where-Object { $rel -like ("{0}\*" -f $_) }) {
     return $false
