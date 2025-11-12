@@ -154,7 +154,6 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           Set-StrictMode -Version Latest
-          # Create and trust ephemeral cert
           $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
           $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
           Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
@@ -162,44 +161,13 @@ jobs:
           Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
 
           $thumb = $cert.Thumbprint
-          $files = Get-ChildItem unsigned -Recurse -File -Include *.ps1,*.psm1 -ErrorAction SilentlyContinue | Select-Object -First ([int]$env:MAX_SIGN_FILES)
-          if (-not $files) { Write-Host 'No scripts to sign.'; exit 0 }
-
-          function Invoke-SignWithTimeout {
-            param([string]$Path,[string]$Thumb,[int]$TimeoutSec)
-            $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $sb = { param($p,$t) $c = Get-ChildItem "Cert:\CurrentUser\My\$t"; Set-AuthenticodeSignature -FilePath $p -Certificate $c -HashAlgorithm SHA256 | Out-Null }
-            if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
-              $job = Start-ThreadJob -ScriptBlock $sb -ArgumentList $Path,$Thumb
-            } else {
-              $job = Start-Job -ScriptBlock $sb -ArgumentList $Path,$Thumb
-            }
-            try {
-              if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
-                try { Stop-Job $job -Force } catch {}
-                try { Receive-Job $job -ErrorAction SilentlyContinue | Out-Null } catch {}
-                return @{ status='timeout'; ms=$sw.ElapsedMilliseconds }
-              }
-              try {
-                Receive-Job $job -ErrorAction Stop | Out-Null
-                return @{ status='ok'; ms=$sw.ElapsedMilliseconds }
-              } catch {
-                return @{ status='error'; error=$_.Exception.Message; ms=$sw.ElapsedMilliseconds }
-              }
-            } finally {
-              $sw.Stop()
-              try { Remove-Job $job -Force -ErrorAction SilentlyContinue } catch {}
-            }
-          }
-
-          $i=0; $fail=0; $timeout=[int]$env:TS_TIMEOUT_SEC
-          foreach ($f in $files) {
-            $i++
-            Write-Host ("[{0}/{1}] Signing {2}" -f $i,$files.Count,$f.FullName)
-            $res = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout
-            switch ($res.status) { 'ok' { Write-Host ("  ✔ ok ({0} ms)" -f $res.ms) } 'timeout' { Write-Warning ("  ⏱ timeout after {0} ms" -f $res.ms); $fail++ } 'error' { Write-Warning ("  ⚠ error: {0}" -f $res.error); $fail++ } }
-          }
-          if ($fail -gt 0) { throw "$fail script(s) failed to sign (fork path)." }
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -Mode 'fork' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
 
       - name: Sign scripts (Authenticode) - upstream (timestamp + timeout + fallback)
         if: ${{ github.repository == 'LabVIEW-Community-CI-CD/icon-editor-lab' && steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
@@ -211,7 +179,6 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           Set-StrictMode -Version Latest
-          # Load cert from PFX
           try {
             $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
             $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new("$env:RUNNER_TEMP\codesign.pfx", '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}', $flags)
@@ -222,48 +189,16 @@ jobs:
           }
           $thumb = $cert.Thumbprint
           $tsa   = if ([string]::IsNullOrWhiteSpace($env:TSA_URL)) { 'https://timestamp.digicert.com' } else { $env:TSA_URL }
-          $files = Get-ChildItem unsigned -Recurse -File -Include *.ps1,*.psm1 -ErrorAction SilentlyContinue | Select-Object -First ([int]$env:MAX_SIGN_FILES)
-          if (-not $files) { Write-Host 'No scripts to sign.'; exit 0 }
 
-          function Invoke-SignWithTimeout {
-            param([string]$Path,[string]$Thumb,[int]$TimeoutSec,[string]$TimestampUrl,[bool]$UseTs)
-            $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $sb = { param($p,$t,$tsa,$useTS) $c = Get-ChildItem "Cert:\CurrentUser\My\$t"; if ($useTS -and $tsa) { Set-AuthenticodeSignature -FilePath $p -Certificate $c -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null } else { Set-AuthenticodeSignature -FilePath $p -Certificate $c -HashAlgorithm SHA256 | Out-Null } }
-            if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
-              $job = Start-ThreadJob -ScriptBlock $sb -ArgumentList $Path,$Thumb,$TimestampUrl,$UseTs
-            } else {
-              $job = Start-Job -ScriptBlock $sb -ArgumentList $Path,$Thumb,$TimestampUrl,$UseTs
-            }
-            try {
-              if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
-                try { Stop-Job $job -Force } catch {}
-                try { Receive-Job $job -ErrorAction SilentlyContinue | Out-Null } catch {}
-                return @{ status='timeout'; ms=$sw.ElapsedMilliseconds }
-              }
-              try {
-                Receive-Job $job -ErrorAction Stop | Out-Null
-                return @{ status='ok'; ms=$sw.ElapsedMilliseconds }
-              } catch {
-                return @{ status='error'; error=$_.Exception.Message; ms=$sw.ElapsedMilliseconds }
-              }
-            } finally {
-              $sw.Stop()
-              try { Remove-Job $job -Force -ErrorAction SilentlyContinue } catch {}
-            }
-          }
-
-          $i=0; $fail=0; $timeout=[int]$env:TS_TIMEOUT_SEC
-          foreach ($f in $files) {
-            $i++
-            Write-Host ("[{0}/{1}] Signing {2} with TSA {3}" -f $i,$files.Count,$f.FullName,$tsa)
-            $res = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout -TimestampUrl $tsa -UseTs:$true
-            switch ($res.status) {
-              'ok'      { Write-Host ("  ✔ ok ({0} ms)" -f $res.ms) }
-              'timeout' { Write-Warning ("  ⏱ TSA timeout after {0} ms; retrying WITHOUT timestamp" -f $res.ms); $res2 = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout -UseTs:$false; if ($res2.status -eq 'ok') { Write-Host ("  ✔ ok (no timestamp) ({0} ms)" -f $res2.ms) } else { $fail++ ; Write-Error "  ✖ failed (no timestamp): $($res2.error)" } }
-              'error'   { Write-Warning ("  ⚠ TSA error: {0}; retrying WITHOUT timestamp" -f $res.error); $res2 = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout -UseTs:$false; if ($res2.status -eq 'ok') { Write-Host ("  ✔ ok (no timestamp) ({0} ms)" -f $res2.ms) } else { $fail++ ; Write-Error "  ✖ failed (no timestamp): $($res2.error)" } }
-            }
-          }
-          if ($fail -gt 0) { throw "$fail script(s) failed to sign." }
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -UseTimestamp `
+            -TimestampServer $tsa `
+            -Mode 'trusted' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
 
       - name: Verify PE signatures
         if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
@@ -374,44 +309,13 @@ jobs:
           Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
 
           $thumb = $cert.Thumbprint
-          $files = Get-ChildItem unsigned -Recurse -File -Include *.ps1,*.psm1 -ErrorAction SilentlyContinue | Select-Object -First ([int]$env:MAX_SIGN_FILES)
-          if (-not $files) { Write-Host 'No scripts to sign.'; exit 0 }
-
-          function Invoke-SignWithTimeout {
-            param([string]$Path,[string]$Thumb,[int]$TimeoutSec)
-            $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $sb = { param($p,$t) $c = Get-ChildItem "Cert:\CurrentUser\My\$t"; Set-AuthenticodeSignature -FilePath $p -Certificate $c -HashAlgorithm SHA256 | Out-Null }
-            if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
-              $job = Start-ThreadJob -ScriptBlock $sb -ArgumentList $Path,$Thumb
-            } else {
-              $job = Start-Job -ScriptBlock $sb -ArgumentList $Path,$Thumb
-            }
-            try {
-              if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
-                try { Stop-Job $job -Force } catch {}
-                try { Receive-Job $job -ErrorAction SilentlyContinue | Out-Null } catch {}
-                return @{ status='timeout'; ms=$sw.ElapsedMilliseconds }
-              }
-              try {
-                Receive-Job $job -ErrorAction Stop | Out-Null
-                return @{ status='ok'; ms=$sw.ElapsedMilliseconds }
-              } catch {
-                return @{ status='error'; error=$_.Exception.Message; ms=$sw.ElapsedMilliseconds }
-              }
-            } finally {
-              $sw.Stop()
-              try { Remove-Job $job -Force -ErrorAction SilentlyContinue } catch {}
-            }
-          }
-
-          $i=0; $fail=0; $timeout=[int]$env:TS_TIMEOUT_SEC
-          foreach ($f in $files) {
-            $i++
-            Write-Host ("[{0}/{1}] Signing {2}" -f $i,$files.Count,$f.FullName)
-            $res = Invoke-SignWithTimeout -Path $f.FullName -Thumb $thumb -TimeoutSec $timeout
-            switch ($res.status) { 'ok' { Write-Host ("  ✓ ok ({0} ms)" -f $res.ms) } 'timeout' { Write-Warning ("  ⏱ timeout after {0} ms" -f $res.ms); $fail++ } 'error' { Write-Warning ("  ⚠ error: {0}" -f $res.error); $fail++ } }
-          }
-          if ($fail -gt 0) { throw "$fail script(s) failed to sign (fork path)." }
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -Mode 'fork' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
 
       - name: Sign scripts (Authenticode) - prod (timestamp + timeout + fallback)
         if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
@@ -422,7 +326,6 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           Set-StrictMode -Version Latest
-          # Load cert from PFX (trusted path only; secrets are required earlier)
           try {
             $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
             $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new("$env:RUNNER_TEMP\codesign.pfx", '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}', $flags)
@@ -433,48 +336,16 @@ jobs:
           }
           $thumb = $cert.Thumbprint
           $tsa   = if ([string]::IsNullOrWhiteSpace($env:TSA_URL)) { 'https://timestamp.digicert.com' } else { $env:TSA_URL }
-          $files = Get-ChildItem unsigned -Recurse -File -Include *.ps1,*.psm1 -ErrorAction SilentlyContinue | Select-Object -First ([int]$env:MAX_SIGN_FILES)
-          if (-not $files) { Write-Host 'No scripts to sign.'; exit 0 }
 
-          function Invoke-SignWithTimeout {
-            param([string]$Path,[string]$Thumb,[int]$TimeoutSec,[string]$TimestampUrl,[bool]$UseTs)
-            $sw = [System.Diagnostics.Stopwatch]::StartNew()
-            $sb = { param($p,$t,$tsa,$useTS) $c = Get-ChildItem "Cert:\CurrentUser\My\$t"; if ($useTS -and $tsa) { Set-AuthenticodeSignature -FilePath $p -Certificate $c -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null } else { Set-AuthenticodeSignature -FilePath $p -Certificate $c -HashAlgorithm SHA256 | Out-Null } }
-            if (Get-Command Start-ThreadJob -ErrorAction SilentlyContinue) {
-              $job = Start-ThreadJob -ScriptBlock $sb -ArgumentList $Path,$Thumb,$TimestampUrl,$UseTs
-            } else {
-              $job = Start-Job -ScriptBlock $sb -ArgumentList $Path,$Thumb,$TimestampUrl,$UseTs
-            }
-            try {
-              if (-not (Wait-Job $job -Timeout $TimeoutSec)) {
-                try { Stop-Job $job -Force } catch {}
-                try { Receive-Job $job -ErrorAction SilentlyContinue | Out-Null } catch {}
-                return @{ status='timeout'; ms=$sw.ElapsedMilliseconds }
-              }
-              try {
-                Receive-Job $job -ErrorAction Stop | Out-Null
-                return @{ status='ok'; ms=$sw.ElapsedMilliseconds }
-              } catch {
-                return @{ status='error'; error=$_.Exception.Message; ms=$sw.ElapsedMilliseconds }
-              }
-            } finally {
-              $sw.Stop()
-              try { Remove-Job $job -Force -ErrorAction SilentlyContinue } catch {}
-            }
-          }
-
-          $i=0; $fail=0; $timeout=[int]$env:TS_TIMEOUT_SEC
-          foreach ($s in $files) {
-            $i++
-            Write-Host ("[{0}/{1}] Signing {2} with TSA {3}" -f $i,$files.Count,$s.FullName,$tsa)
-            $res = Invoke-SignWithTimeout -Path $s.FullName -Thumb $thumb -TimeoutSec $timeout -TimestampUrl $tsa -UseTs:$true
-            switch ($res.status) {
-              'ok'      { Write-Host ("  ✔ ok ({0} ms)" -f $res.ms) }
-              'timeout' { Write-Warning ("  ⏱ TSA timeout after {0} ms; retrying WITHOUT timestamp" -f $res.ms); $res2 = Invoke-SignWithTimeout -Path $s.FullName -Thumb $thumb -TimeoutSec $timeout -UseTs:$false; if ($res2.status -eq 'ok') { Write-Host ("  ✔ ok (no timestamp) ({0} ms)" -f $res2.ms) } else { $fail++ ; Write-Error "  ✖ failed (no timestamp): $($res2.error)" } }
-              'error'   { Write-Warning ("  ⚠ TSA error: {0}; retrying WITHOUT timestamp" -f $res.error); $res2 = Invoke-SignWithTimeout -Path $s.FullName -Thumb $thumb -TimeoutSec $timeout -UseTs:$false; if ($res2.status -eq 'ok') { Write-Host ("  ✔ ok (no timestamp) ({0} ms)" -f $res2.ms) } else { $fail++ ; Write-Error "  ✖ failed (no timestamp): $($res2.error)" } }
-            }
-          }
-          if ($fail -gt 0) { throw "$fail script(s) failed to sign." }
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -UseTimestamp `
+            -TimestampServer $tsa `
+            -Mode 'trusted' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
 
       - name: Verify PE signatures
         if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
