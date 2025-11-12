@@ -50,8 +50,9 @@ jobs:
           } | Select-Object -First 1
           $skipTimestamp = $false
           if (-not $cert) {
-            Write-Warning 'No code-signing certificate detected; generating an ephemeral one for this run.'
+            Write-Host 'No code-signing certificate detected (expected when SIGNING_CERT_B64 is unset); generating an ephemeral certificate for this run.'
             $cert = New-SelfSignedCertificate -Type CodeSigning -Subject 'CN=IconEditorLab Dev Signing' -CertStoreLocation 'Cert:\CurrentUser\My'
+            Write-Host ("Ephemeral cert thumbprint: {0}" -f $cert.Thumbprint)
             $tmp = Join-Path $env:TEMP "icon-editor-lab-devsigning.cer"
             Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
             Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
