@@ -8,6 +8,19 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
+if (-not (Test-Path -LiteralPath $SearchRoot -PathType Container)) {
+  throw "Search root not found: $SearchRoot"
+}
+$includeMatchers = @(
+  $Include | ForEach-Object {
+    if ($_ -and $_.Trim()) {
+      [System.Management.Automation.WildcardPattern]::new($_.Trim(),'IgnoreCase')
+    }
+  }
+)
+if ($includeMatchers.Count -eq 0) {
+  $includeMatchers = @([System.Management.Automation.WildcardPattern]::new('*','IgnoreCase'))
+}
 function Get-CodeSigningCert {
   param([string]$Thumbprint)
   if ($Thumbprint) {
@@ -19,9 +32,15 @@ function Get-CodeSigningCert {
   return $c
 }
 $cert = Get-CodeSigningCert -Thumbprint $Thumbprint
-$files = @(Get-ChildItem -Path (Join-Path $SearchRoot '*') -Recurse -File -Include $Include | Where-Object {
+$files = @(Get-ChildItem -LiteralPath $SearchRoot -Recurse -File | Where-Object {
   $rel = $_.FullName.Substring($SearchRoot.Length).TrimStart('\','/')
-  -not ($ExcludeDirs | ForEach-Object { $rel -like ("{0}\*" -f $_) })
+  if ($ExcludeDirs | Where-Object { $rel -like ("{0}\*" -f $_) }) {
+    return $false
+  }
+  foreach ($matcher in $includeMatchers) {
+    if ($matcher.IsMatch($_.Name)) { return $true }
+  }
+  return $false
 })
 foreach ($f in $files) {
   $sig = Get-AuthenticodeSignature -LiteralPath $f.FullName
