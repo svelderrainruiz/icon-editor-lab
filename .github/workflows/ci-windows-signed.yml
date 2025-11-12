@@ -36,7 +36,11 @@ jobs:
           if (-not (Test-Path '${{ env.SIGN_ROOT }}')) {
             New-Item -ItemType Directory -Path '${{ env.SIGN_ROOT }}' | Out-Null
           }
-          Write-Host 'TODO: replace this placeholder with the real build/packaging commands that emit artifacts under ${{ env.SIGN_ROOT }}.'
+          $samplePs1 = Join-Path '${{ env.SIGN_ROOT }}' 'Sample-Signed.ps1'
+          "Write-Output 'Sample payload for signing test.'" | Set-Content -Path $samplePs1 -Encoding UTF8
+          $sampleExe = Join-Path '${{ env.SIGN_ROOT }}' 'sample.exe'
+          Set-Content -Path $sampleExe -Value ([byte[]](1..16)) -Encoding Byte
+          Write-Host 'Generated placeholder artifacts under ${{ env.SIGN_ROOT }}. Replace this block with actual build steps.'
 
       - name: Self-sign outputs for PRs (ephemeral cert)
         if: ${{ github.event_name == 'pull_request' }}
