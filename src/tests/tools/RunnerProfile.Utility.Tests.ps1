@@ -222,6 +222,29 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
             }
         }
 
+        It 'falls back to REST API when gh CLI exits with errors' {
+            $env:GH_TOKEN = 'gho_mock'
+            InModuleScope RunnerProfile {
+                Mock -ModuleName RunnerProfile -CommandName Get-Command -MockWith {
+                    [pscustomobject]@{
+                        Source = {
+                            $global:LASTEXITCODE = 1
+                            ''
+                        }
+                    }
+                }
+                Mock -ModuleName RunnerProfile -CommandName Invoke-RestMethod -MockWith {
+                    [pscustomobject]@{
+                        jobs = @([pscustomobject]@{ runner_name='rest-fallback'; labels=@('rest'); status='completed' })
+                    }
+                }
+                $jobs = Invoke-RunnerJobsApi -Repository 'contoso/icon-editor' -RunId '888'
+                $jobs | Should -Not -BeNullOrEmpty
+                $jobs[0].runner_name | Should -Be 'rest-fallback'
+                $jobs[0].labels | Should -Contain 'rest'
+            }
+        }
+
     }
 
     Context 'Get-RunnerProfile' {
