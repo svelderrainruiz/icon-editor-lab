@@ -125,6 +125,26 @@ Describe 'ConsoleWatch helpers' -Tag 'Unit','Tools','ConsoleWatch' {
             $state.Pre | Should -HaveCount 1
             $state.Targets | Should -Contain 'pwsh'
         }
+
+        It 'returns disabled sentinel when instrumentation flag is off' {
+            $outDir = Join-Path $TestDrive 'disabled-watch'
+            InModuleScope ConsoleWatch { $script:ConsoleWatchInstrumentationEnabled = $false }
+            try {
+                $id = Start-ConsoleWatch -OutDir $outDir -Targets @('pwsh') -DisableInstrumentation:$false
+                $id | Should -Be 'ConsoleWatch_disabled'
+                Test-Path $outDir | Should -BeFalse
+            }
+            finally {
+                InModuleScope ConsoleWatch { $script:ConsoleWatchInstrumentationEnabled = $true }
+            }
+        }
+
+        It 'respects DisableInstrumentation switch' {
+            $outDir = Join-Path $TestDrive 'disabled-switch'
+            $result = Start-ConsoleWatch -OutDir $outDir -Targets @('pwsh') -DisableInstrumentation
+            $result | Should -Be 'ConsoleWatch_disabled'
+            Test-Path (Join-Path $outDir 'console-spawns.ndjson') | Should -BeFalse
+        }
     }
 
     Context 'Stop-ConsoleWatch' {
@@ -181,6 +201,15 @@ Describe 'ConsoleWatch helpers' -Tag 'Unit','Tools','ConsoleWatch' {
             $summary.counts.pwsh | Should -Be 1
             $summary.last[0].pid | Should -Be 222
             Remove-Variable -Name ConsoleWatchSnapshotDir,ConsoleWatchSnapshotPre,ConsoleWatchSnapshotId -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'produces disabled summary when sentinel id is supplied' {
+            $outDir = Join-Path $TestDrive 'disabled-summary'
+            New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+            $summary = Stop-ConsoleWatch -Id 'ConsoleWatch_disabled' -OutDir $outDir -Phase 'pre'
+            $summary.disabled | Should -BeTrue
+            $summary.counts.Keys.Count | Should -Be 0
+            Test-Path (Join-Path $outDir 'console-watch-summary.json') | Should -BeTrue
         }
     }
 }
