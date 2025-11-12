@@ -1,13 +1,25 @@
+#Requires -Version 7.0
+[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
+param(
+  [string]$LabVIEWExePath,
+  [string]$MinimumSupportedLVVersion,
+  [ValidateSet('32','64')]
+  [string]$SupportedBitness,
+  [string]$LabVIEWCliPath,
+  [string]$Provider = 'auto',
+  [switch]$Preview
+)
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 $PSModuleAutoLoadingPreference = 'None'
+
 <#
 .SYNOPSIS
   Gracefully closes a running LabVIEW instance using the provider-agnostic CLI abstraction.
 
 .DESCRIPTION
-  Routes the CloseLabVIEW operation through tools/LabVIEWCli.psm1, which selects an available provider
-  (LabVIEWCLI.exe today, g-cli in the future) and normalises arguments. Optional parameters mirror
+  Routes the CloseLabVIEW operation through tools/LabVIEWCli.psm1, which drives the `labviewcli` provider today
+  and will also support `g-cli` soon, normalising arguments for each. Optional parameters mirror
   historic behaviour and map onto canonical parameters.
 
 .PARAMETER LabVIEWExePath
@@ -29,19 +41,6 @@ $PSModuleAutoLoadingPreference = 'None'
 .PARAMETER Preview
   When set, shows the resolved provider and command without executing it.
 #>
-[CmdletBinding()]
-param(
-  [string]$LabVIEWExePath,
-  [string]$MinimumSupportedLVVersion,
-  [ValidateSet('32','64')]
-  [string]$SupportedBitness,
-  [string]$LabVIEWCliPath,
-  [string]$Provider = 'auto',
-  [switch]$Preview
-)
-
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
 
 Import-Module (Join-Path $PSScriptRoot 'LabVIEWCli.psm1') -Force
 
@@ -88,26 +87,11 @@ try {
   }
 }
 
-<#
-.SYNOPSIS
-Test-ValidLabel: brief description (TODO: refine).
-.DESCRIPTION
-Auto-seeded to satisfy help synopsis presence. Update with real details.
-#>
 function Test-ValidLabel {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
   param([Parameter(Mandatory)][string]$Label)
   if ($Label -notmatch '^[A-Za-z0-9._-]{1,64}$') { throw "Invalid label: $Label" }
 }
 
-<#
-.SYNOPSIS
-Invoke-WithTimeout: brief description (TODO: refine).
-.DESCRIPTION
-Auto-seeded to satisfy help synopsis presence. Update with real details.
-#>
 function Invoke-WithTimeout {
   [CmdletBinding()]
   param(
