@@ -1,0 +1,162 @@
+name: Handshake Watchdog
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+    inputs:
+      ttl_minutes:
+        description: Minutes before flagging an Ubuntu payload as stalled.
+        required: false
+        default: "90"
+      label_name:
+        description: Issue label to use for watchdog tracking.
+        required: false
+        default: handshake-watchdog
+      notify_handles:
+        description: Space-separated @handles to mention when the watchdog fires.
+        required: false
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compute watchdog configuration
+        id: config
+        run: |
+          ttl="${{ vars.HANDSHAKE_WATCHDOG_TTL }}"
+          if [[ -z "$ttl" ]]; then ttl="90"; fi
+          if [[ -f "$GITHUB_EVENT_PATH" ]]; then
+            event_ttl="$(jq -r '.inputs.ttl_minutes // empty' "$GITHUB_EVENT_PATH" 2>/dev/null || true)"
+            if [[ -n "$event_ttl" ]]; then ttl="$event_ttl"; fi
+            event_label="$(jq -r '.inputs.label_name // empty' "$GITHUB_EVENT_PATH" 2>/dev/null || true)"
+            event_notify="$(jq -r '.inputs.notify_handles // empty' "$GITHUB_EVENT_PATH" 2>/dev/null || true)"
+          fi
+          label="${event_label:-${{ vars.HANDSHAKE_WATCHDOG_LABEL }}}"
+          if [[ -z "$label" ]]; then label="handshake-watchdog"; fi
+          notify="${event_notify:-${{ vars.HANDSHAKE_WATCHDOG_NOTIFY }}}"
+          echo "TTL_MINUTES=$ttl" >> "$GITHUB_ENV"
+          echo "LABEL_NAME=$label" >> "$GITHUB_ENV"
+          echo "NOTIFY_HANDLES=$notify" >> "$GITHUB_ENV"
+          {
+            echo "ttl_minutes=$ttl"
+            echo "label_name=$label"
+            echo "notify_handles=$notify"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Fetch latest handshake pointer artifact
+        id: fetch-pointer
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p pointer-artifact
+          repo="${GITHUB_REPOSITORY}"
+          artifact_id="$(gh api "repos/${repo}/actions/artifacts" --paginate -F per_page=100 --jq '[.artifacts[] | select(.name | startswith("handshake-pointer-"))] | sort_by(.created_at) | reverse | .[0].id')"
+          if [[ -z "$artifact_id" || "$artifact_id" == "null" ]]; then
+            echo "No handshake pointer artifacts found."
+            exit 0
+          fi
+          gh api "repos/${repo}/actions/artifacts/${artifact_id}/zip" > pointer-artifact/pointer.zip
+          unzip -q pointer-artifact/pointer.zip -d pointer-artifact/unpacked
+          pointer_path="$(find pointer-artifact/unpacked -name 'pointer.json' | head -n 1)"
+          if [[ -z "$pointer_path" ]]; then
+            echo "Pointer artifact missing pointer.json"
+            exit 1
+          fi
+          echo "pointer_path=$pointer_path" >> "$GITHUB_OUTPUT"
+
+      - name: Analyze handshake pointer
+        if: steps.fetch-pointer.outputs.pointer_path != ''
+        id: analyze
+        run: |
+          python3 scripts/handshake_watchdog.py \
+            --pointer "${{ steps.fetch-pointer.outputs.pointer_path }}" \
+            --ttl-minutes "${{ env.TTL_MINUTES }}" \
+            --summary pointer-artifact/status.json
+
+      - name: Ensure watchdog issue
+        if: steps.analyze.outputs.needs_attention == 'true'
+        uses: actions/github-script@v7
+        env:
+          LABEL_NAME: ${{ env.LABEL_NAME }}
+          NOTIFY_HANDLES: ${{ env.NOTIFY_HANDLES }}
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = JSON.parse(fs.readFileSync('pointer-artifact/status.json', 'utf8'));
+            const title = 'Local CI handshake watchdog';
+            const label = process.env.LABEL_NAME || 'handshake-watchdog';
+            const notify = process.env.NOTIFY_HANDLES || '';
+            const repo = context.repo;
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              { ...repo, state: 'open', labels: label }
+            );
+            let target = issues.find(issue => issue.title === title);
+            if (!target) {
+              const created = await github.rest.issues.create({
+                ...repo,
+                title,
+                body: 'Tracking stalled local CI handshakes.',
+                labels: [label]
+              });
+              target = created.data;
+            }
+            const body = [
+              `⚠️ Handshake stalled for stamp \`${summary.ubuntu_stamp}\`.`,
+              '',
+              `Status: \`${summary.status}\``,
+              `Reason: ${summary.reason}`,
+              `Ubuntu age: ${summary.ubuntu_age_minutes?.toFixed?.(1) ?? 'unknown'} minutes`,
+              summary.windows_runner ? `Windows runner: ${summary.windows_runner}` : 'Windows runner: pending',
+              summary.windows_run_root ? `Windows run root: ${summary.windows_run_root}` : null,
+              `Checked at: ${summary.checked_at}`,
+              notify ? `Pinging ${notify}` : null
+            ].filter(Boolean).join('\n');
+            await github.rest.issues.createComment({
+              ...repo,
+              issue_number: target.number,
+              body
+            });
+
+      - name: Close watchdog issue when healthy
+        if: steps.analyze.outputs.needs_attention != 'true'
+        uses: actions/github-script@v7
+        env:
+          LABEL_NAME: ${{ env.LABEL_NAME }}
+        with:
+          script: |
+            const fs = require('fs');
+            const summaryPath = 'pointer-artifact/status.json';
+            if (!fs.existsSync(summaryPath)) {
+              return;
+            }
+            const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+            const title = 'Local CI handshake watchdog';
+            const label = process.env.LABEL_NAME || 'handshake-watchdog';
+            const repo = context.repo;
+            const issues = await github.paginate(
+              github.rest.issues.listForRepo,
+              { ...repo, state: 'open', labels: label }
+            );
+            const target = issues.find(issue => issue.title === title);
+            if (!target) {
+              return;
+            }
+            await github.rest.issues.createComment({
+              ...repo,
+              issue_number: target.number,
+              body: `✅ Latest handshake stamp \`${summary.ubuntu_stamp}\` is healthy (status: ${summary.status}).`
+            });
+            await github.rest.issues.update({
+              ...repo,
+              issue_number: target.number,
+              state: 'closed'
+            });

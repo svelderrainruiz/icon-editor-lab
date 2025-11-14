@@ -68,15 +68,80 @@ jobs:
           $root = (Test-Path '${{ env.SIGN_ROOT }}') ? '${{ env.SIGN_ROOT }}' : '.'
           $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
           $thumb = $cert.Thumbprint
+          if (-not $thumb) {
+            Write-Warning "Ephemeral signing certificate creation failed; skipping PE signing."
+            $signtoolPath = $null
+          }
           $scripts = Get-ChildItem $root -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
           foreach ($s in $scripts) {
             Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -HashAlgorithm SHA256 | Out-Null
           }
-          $signtool = (Get-Command signtool.exe).Source
-          $tsa = '${{ env.TSA_URL }}'
-          $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          $signtoolPath = $null
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if ($signtoolCmd) {
+            $signtoolPath = $signtoolCmd.Source
+          } else {
+            $kitRoots = @(
+              'C:\Program Files (x86)\Windows Kits\10\bin',
+              'C:\Program Files (x86)\Windows Kits\11\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v11.0A\bin'
+            )
+            $candidates = @()
+            foreach ($kitRoot in $kitRoots) {
+              if (-not (Test-Path -LiteralPath $kitRoot -PathType Container)) { continue }
+              $candidates += Get-ChildItem -Path $kitRoot -Filter signtool.exe -File -Recurse -ErrorAction SilentlyContinue
+            }
+            if ($candidates) {
+              $ordered = $candidates | Sort-Object {
+                $path = $_.FullName.ToLowerInvariant()
+                if ($path -match '\\(x64|amd64)\\') { 0 }
+                elseif ($path -match '\\x86\\') { 1 }
+                else { 2 }
+              }
+              foreach ($candidate in $ordered) {
+                $candidatePath = $candidate.FullName
+                if ($candidatePath -match '\\arm(64)?\\') { continue }
+                $signtoolPath = $candidatePath
+                break
+              }
+            }
+          }
+          if (-not $signtoolPath) {
+            Write-Warning "signtool.exe not found on hosted runner; skipping PE signing for PR dry-run artifacts."
+          } else {
+            $tsa = '${{ env.TSA_URL }}'
+          $pe = @()
+          if ($thumb) {
+            $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          }
           foreach ($f in $pe) {
-            & $signtool sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+              $target = $f.FullName
+              $tsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/tr',$tsa,'/td','SHA256',"`"$target`"")
+              $noTsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/td','SHA256',"`"$target`"")
+              $success = $false
+              foreach ($args in @($tsaArgs, $noTsaArgs)) {
+                try {
+                  & $signtoolPath @args
+                  if ($LASTEXITCODE -eq 0) {
+                    $success = $true
+                    break
+                  }
+                  throw "signtool exited with code $LASTEXITCODE"
+                } catch {
+                  if ($args -eq $tsaArgs) {
+                    Write-Warning "Timestamping failed for ${target}: $($_.Exception.Message). Retrying without TSA."
+                  } else {
+                    Write-Warning "signtool retry without TSA failed for ${target}: $($_.Exception.Message)"
+                  }
+                  $global:LASTEXITCODE = 0
+                }
+              }
+              if (-not $success) {
+                Write-Warning "Unable to sign ${target} on hosted runner; continuing."
+                $global:LASTEXITCODE = 0
+              }
+            }
           }
 
       - name: Verify PR script signatures (presence check)

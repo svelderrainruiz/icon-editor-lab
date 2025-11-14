@@ -13,7 +13,7 @@ COPY src/CompareVi.Shared/CompareVi.Shared.csproj src/CompareVi.Shared/
 COPY src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj src/CompareVi.Tools.Cli/
 RUN dotnet restore src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS tools
 
 ARG NODE_VERSION
 ARG ACTIONLINT_VERSION
@@ -22,22 +22,32 @@ ENV DEBIAN_FRONTEND=noninteractive \
     NODE_VERSION=${NODE_VERSION} \
     ACTIONLINT_VERSION=${ACTIONLINT_VERSION}
 
-COPY --from=restore /root/.nuget /root/.nuget
-
-RUN apt-get update \
- && apt-get install -y --no-install-recommends \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    git \
-    gnupg \
-    jq \
-    python3 \
-    python3-pip \
-    unzip \
-    xz-utils \
- && rm -rf /var/lib/apt/lists/* \
- && ln -s /usr/bin/python3 /usr/local/bin/python
+# Base OS packages and shared tooling
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        git \
+        gnupg \
+        jq \
+        python3 \
+        python3-pip \
+        unzip \
+        xz-utils; \
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+      | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null; \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+      > /etc/apt/sources.list.d/github-cli.list; \
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor \
+      | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null; \
+    echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main" \
+      > /etc/apt/sources.list.d/microsoft-prod.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends gh powershell; \
+    rm -rf /var/lib/apt/lists/*; \
+    ln -s /usr/bin/python3 /usr/local/bin/python
 
 # Install Node.js (pinned) from official binaries
 RUN set -eux; \
@@ -49,34 +59,14 @@ RUN set -eux; \
     ln -sf /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/npx /usr/local/bin/npx; \
     rm -f /tmp/node.tar.xz
 
-# Install GitHub CLI
-RUN set -eux; \
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-      | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null; \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
-      > /etc/apt/sources.list.d/github-cli.list; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends gh; \
-    rm -rf /var/lib/apt/lists/*
-
-# Install PowerShell 7 (Microsoft repo)
-RUN set -eux; \
-    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor \
-      | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null; \
-    echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main" \
-      > /etc/apt/sources.list.d/microsoft-prod.list; \
-    apt-get update; \
-    apt-get install -y --no-install-recommends powershell; \
-    rm -rf /var/lib/apt/lists/*
+# Python ruamel.yaml for workflow drift checks
+RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip \
+    && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
 
 # Global npm tooling for markdown linting
 RUN npm install -g markdownlint-cli2@0.14.0 markdownlint-cli@0.31.1 \
  && ln -sf /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/markdownlint /usr/local/bin/markdownlint \
  && ln -sf /usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin/markdownlint-cli2 /usr/local/bin/markdownlint-cli2
-
-# Python ruamel.yaml for workflow drift checks
-RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip \
-    && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
 
 # Install actionlint (pinned)
 RUN set -eux; \
@@ -91,9 +81,18 @@ RUN set -eux; \
     rm -f /tmp/actionlint.tar.gz; \
     actionlint -version
 
+COPY tools/local-ci/Test-ToolingIntent.ps1 /opt/local-ci/Test-ToolingIntent.ps1
+COPY tools/local-ci/Schedule-ViStage.ps1 /opt/local-ci/Schedule-ViStage.ps1
+COPY tests/Pester.runsettings.psd1 /opt/local-ci/Pester.runsettings.psd1
+COPY local-ci/ubuntu/config.yaml /opt/local-ci/config.yaml
+COPY --from=restore /root/.nuget /root/.nuget
 ENV PATH="/usr/local/lib/nodejs/node-v${NODE_VERSION}-linux-x64/bin:${PATH}"
-
 WORKDIR /work
 RUN useradd -m -u 1000 dev || true
 USER 1000:1000
 CMD ["bash"]
+
+FROM tools AS ubuntu-runner
+COPY tools/local-ci/run-handshake.sh /usr/local/bin/localci-run-handshake
+ENTRYPOINT ["localci-run-handshake"]
+CMD ["--help"]
