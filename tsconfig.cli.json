@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node16",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": false,
+    "sourceMap": false
+  },
+  "include": [
+    "src/tools/actions/**/*.ts",
+    "src/tools/cli/**/*.ts",
+    "src/tools/generate-action-outputs.ts",
+    "src/tools/schemas/**/*.ts",
+    "src/tools/shims/**/*.ts",
+    "src/tools/test-discovery.ts",
+    "src/tools/watchers/**/*.ts"
+  ],
+  "exclude": [
+    "src/tools/vscode/**"
+  ]
+}

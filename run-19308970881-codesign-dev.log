@@ -1,0 +1,124 @@
+codesign-dev	Set up job	∩╗┐2025-11-12T19:12:33.7271822Z Current runner version: '2.329.0'
+codesign-dev	Set up job	2025-11-12T19:12:33.7335800Z ##[group]Runner Image Provisioner
+codesign-dev	Set up job	2025-11-12T19:12:33.7337054Z Hosted Compute Agent
+codesign-dev	Set up job	2025-11-12T19:12:33.7337873Z Version: 20251016.436
+codesign-dev	Set up job	2025-11-12T19:12:33.7338801Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+codesign-dev	Set up job	2025-11-12T19:12:33.7339838Z Build Date: 2025-10-15T20:44:12Z
+codesign-dev	Set up job	2025-11-12T19:12:33.7340793Z ##[endgroup]
+codesign-dev	Set up job	2025-11-12T19:12:33.7341558Z ##[group]Operating System
+codesign-dev	Set up job	2025-11-12T19:12:33.7342542Z Microsoft Windows Server 2025
+codesign-dev	Set up job	2025-11-12T19:12:33.7343402Z 10.0.26100
+codesign-dev	Set up job	2025-11-12T19:12:33.7344126Z Datacenter
+codesign-dev	Set up job	2025-11-12T19:12:33.7344828Z ##[endgroup]
+codesign-dev	Set up job	2025-11-12T19:12:33.7345643Z ##[group]Runner Image
+codesign-dev	Set up job	2025-11-12T19:12:33.7346598Z Image: windows-2025
+codesign-dev	Set up job	2025-11-12T19:12:33.7347599Z Version: 20251102.77.1
+codesign-dev	Set up job	2025-11-12T19:12:33.7349463Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+codesign-dev	Set up job	2025-11-12T19:12:33.7352098Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+codesign-dev	Set up job	2025-11-12T19:12:33.7354384Z ##[endgroup]
+codesign-dev	Set up job	2025-11-12T19:12:33.7355973Z ##[group]GITHUB_TOKEN Permissions
+codesign-dev	Set up job	2025-11-12T19:12:33.7359200Z Contents: read
+codesign-dev	Set up job	2025-11-12T19:12:33.7360013Z Metadata: read
+codesign-dev	Set up job	2025-11-12T19:12:33.7360728Z ##[endgroup]
+codesign-dev	Set up job	2025-11-12T19:12:33.7364119Z Secret source: Actions
+codesign-dev	Set up job	2025-11-12T19:12:33.7365528Z Prepare workflow directory
+codesign-dev	Set up job	2025-11-12T19:12:33.7931857Z Prepare all required actions
+codesign-dev	Set up job	2025-11-12T19:12:33.7972104Z Getting action download info
+codesign-dev	Set up job	2025-11-12T19:12:34.0408332Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+codesign-dev	Set up job	2025-11-12T19:12:34.4182841Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+codesign-dev	Set up job	2025-11-12T19:12:34.7413763Z Complete job name: codesign-dev
+codesign-dev	Download unsigned artifacts	∩╗┐2025-11-12T19:12:34.9115908Z ##[group]Run actions/download-artifact@v4
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9117547Z with:
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9118125Z   name: unsigned
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9118675Z   path: unsigned
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9119201Z   merge-multiple: false
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9119761Z   repository: svelderrainruiz/icon-editor-lab
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9120389Z   run-id: 19308970881
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9121030Z env:
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9121533Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9122142Z   SIGN_ROOT: out
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9122639Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:34.9123134Z ##[endgroup]
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.2191111Z Downloading single artifact
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.3602522Z Preparing to download the following artifacts:
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.3604796Z - unsigned (ID: 4547500295, Size: 329, Expected Digest: sha256:9d3fabf8953dcf24c406f6cde954907e3dabb9cc78089eb9d0a9d9ce19a897bf)
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.4459311Z Redirecting to blob download url: https://productionresultssa11.blob.core.windows.net/actions-results/e0c93cf9-e9a2-46f1-bcd8-40ad860c2f4c/workflow-job-run-7f934074-8c9b-5fb8-a9d3-32e0d9f423c7/artifacts/ceffe727ab2fa2c7c3322ee4a1aa0c2d2a4664836c2133df93dd15055bb617be.zip
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.4463531Z Starting download of artifact to: D:\a\icon-editor-lab\icon-editor-lab\unsigned
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5414958Z (node:5000) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5417640Z (Use `node --trace-deprecation ...` to show where the warning was created)
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5485415Z SHA256 digest of downloaded artifact is 9d3fabf8953dcf24c406f6cde954907e3dabb9cc78089eb9d0a9d9ce19a897bf
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5487127Z Artifact download completed successfully.
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5487916Z Total of 1 artifact(s) downloaded
+codesign-dev	Download unsigned artifacts	2025-11-12T19:12:35.5497167Z Download artifact has finished successfully
+codesign-dev	Require code-signing secrets	∩╗┐2025-11-12T19:12:35.5919049Z ##[group]Run if ([string]::IsNullOrWhiteSpace('***
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.5962674Z [36;1mif ([string]::IsNullOrWhiteSpace('***[0m
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.5963609Z [36;1m') -or [string]::IsNullOrWhiteSpace('***[0m
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.5966620Z [36;1m')) {[0m
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.5967566Z [36;1m  throw 'Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-dev.'[0m
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.5968660Z [36;1m}[0m
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6736640Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6737624Z env:
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6738152Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6738837Z   SIGN_ROOT: out
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6739348Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Require code-signing secrets	2025-11-12T19:12:35.6739885Z ##[endgroup]
+codesign-dev	Decode PFX (temp file)	∩╗┐2025-11-12T19:12:42.7692889Z ##[group]Run [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7757059Z [36;1m[IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***[0m
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7758899Z [36;1m'))[0m
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7827047Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7828317Z env:
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7829186Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7830178Z   SIGN_ROOT: out
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7830929Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Decode PFX (temp file)	2025-11-12T19:12:42.7831717Z ##[endgroup]
+codesign-dev	Sign binaries (signtool)	∩╗┐2025-11-12T19:12:43.2432558Z ##[group]Run $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2433311Z [36;1m$signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2433866Z [36;1mif (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2434312Z [36;1m$signtool = $signtoolCmd.Source[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2434645Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2435115Z [36;1m$pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2435560Z [36;1mforeach ($f in $pe) {[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2436071Z [36;1m  & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '***[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2436716Z [36;1m' /tr $tsa /td SHA256 $f.FullName[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2436952Z [36;1m}[0m
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2499230Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2499685Z env:
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2499925Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2500212Z   SIGN_ROOT: out
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2500410Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:43.2500622Z ##[endgroup]
+codesign-dev	Sign binaries (signtool)	2025-11-12T19:12:44.2769308Z signtool.exe not found; skipping PE signing.
+codesign-dev	Sign scripts (Authenticode)	∩╗┐2025-11-12T19:12:44.3545230Z ##[group]Run $bytes = [Convert]::FromBase64String('***
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3564488Z [36;1m$bytes = [Convert]::FromBase64String('***[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3564775Z [36;1m')[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3565174Z [36;1m$cert  = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new([0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3565597Z [36;1m  $bytes,[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3565814Z [36;1m  '***[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3565985Z [36;1m',[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3566374Z [36;1m  [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable)[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3566858Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3567312Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3567736Z [36;1mforeach ($s in $scripts) {[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3568252Z [36;1m  Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3568790Z [36;1m}[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3635370Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3635739Z env:
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3635961Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3636218Z   SIGN_ROOT: out
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3636403Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:44.3636590Z ##[endgroup]
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.0719556Z [31;1mParentContainsErrorRecordException: [0mD:\a\_temp\ac2d3dee-d1c3-4d8f-b976-147dbfb3c0c2.ps1:4[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.0723052Z [31;1m[0m[36;1mLine |[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.0723963Z [31;1m[0m[36;1m[36;1m   4 | [0m [36;1m$cert  = [System.Security.Cryptography.X509Certificates.X509Certifica[0m ΓÇª[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.0725038Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.0726196Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mException calling ".ctor" with "3" argument(s): "The specified network password is not correct."[0m
+codesign-dev	Sign scripts (Authenticode)	2025-11-12T19:12:45.1236492Z ##[error]Process completed with exit code 1.
+codesign-dev	Cleanup PFX	∩╗┐2025-11-12T19:12:45.1417666Z ##[group]Run Remove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1418363Z [36;1mRemove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue[0m
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1481350Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1481877Z env:
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1482083Z   TSA_URL: http://timestamp.digicert.com
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1482323Z   SIGN_ROOT: out
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1482502Z   EXPECTED_THUMBPRINT: 
+codesign-dev	Cleanup PFX	2025-11-12T19:12:45.1482687Z ##[endgroup]
+codesign-dev	Complete job	∩╗┐2025-11-12T19:12:45.5412843Z Cleaning up orphan processes

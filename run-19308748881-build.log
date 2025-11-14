@@ -1,0 +1,293 @@
+build	Set up job	∩╗┐2025-11-12T19:03:43.0851602Z Current runner version: '2.329.0'
+build	Set up job	2025-11-12T19:03:43.1651640Z ##[group]Runner Image Provisioner
+build	Set up job	2025-11-12T19:03:43.1652923Z Hosted Compute Agent
+build	Set up job	2025-11-12T19:03:43.1653843Z Version: 20251016.436
+build	Set up job	2025-11-12T19:03:43.1654742Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+build	Set up job	2025-11-12T19:03:43.1655900Z Build Date: 2025-10-15T20:44:12Z
+build	Set up job	2025-11-12T19:03:43.1656777Z ##[endgroup]
+build	Set up job	2025-11-12T19:03:43.1657580Z ##[group]Operating System
+build	Set up job	2025-11-12T19:03:43.1658498Z Microsoft Windows Server 2025
+build	Set up job	2025-11-12T19:03:43.1659482Z 10.0.26100
+build	Set up job	2025-11-12T19:03:43.1660233Z Datacenter
+build	Set up job	2025-11-12T19:03:43.1660953Z ##[endgroup]
+build	Set up job	2025-11-12T19:03:43.1661723Z ##[group]Runner Image
+build	Set up job	2025-11-12T19:03:43.1662530Z Image: windows-2025
+build	Set up job	2025-11-12T19:03:43.1663413Z Version: 20251102.77.1
+build	Set up job	2025-11-12T19:03:43.1665080Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+build	Set up job	2025-11-12T19:03:43.1667589Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+build	Set up job	2025-11-12T19:03:43.1670132Z ##[endgroup]
+build	Set up job	2025-11-12T19:03:43.1671783Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2025-11-12T19:03:43.1674431Z Contents: read
+build	Set up job	2025-11-12T19:03:43.1675262Z Metadata: read
+build	Set up job	2025-11-12T19:03:43.1676025Z ##[endgroup]
+build	Set up job	2025-11-12T19:03:43.1679313Z Secret source: Actions
+build	Set up job	2025-11-12T19:03:43.1680607Z Prepare workflow directory
+build	Set up job	2025-11-12T19:03:43.2209736Z Prepare all required actions
+build	Set up job	2025-11-12T19:03:43.2269575Z Getting action download info
+build	Set up job	2025-11-12T19:03:43.4884287Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+build	Set up job	2025-11-12T19:03:43.6209484Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build	Set up job	2025-11-12T19:03:44.0651833Z Complete job name: build
+build	Checkout	∩╗┐2025-11-12T19:03:44.2405834Z ##[group]Run actions/checkout@v4
+build	Checkout	2025-11-12T19:03:44.2407245Z with:
+build	Checkout	2025-11-12T19:03:44.2407936Z   fetch-depth: 0
+build	Checkout	2025-11-12T19:03:44.2408758Z   repository: svelderrainruiz/icon-editor-lab
+build	Checkout	2025-11-12T19:03:44.2410034Z   token: ***
+build	Checkout	2025-11-12T19:03:44.2410997Z   ssh-strict: true
+build	Checkout	2025-11-12T19:03:44.2411740Z   ssh-user: git
+build	Checkout	2025-11-12T19:03:44.2412483Z   persist-credentials: true
+build	Checkout	2025-11-12T19:03:44.2413305Z   clean: true
+build	Checkout	2025-11-12T19:03:44.2414049Z   sparse-checkout-cone-mode: true
+build	Checkout	2025-11-12T19:03:44.2414930Z   fetch-tags: false
+build	Checkout	2025-11-12T19:03:44.2415664Z   show-progress: true
+build	Checkout	2025-11-12T19:03:44.2416420Z   lfs: false
+build	Checkout	2025-11-12T19:03:44.2417081Z   submodules: false
+build	Checkout	2025-11-12T19:03:44.2417817Z   set-safe-directory: true
+build	Checkout	2025-11-12T19:03:44.2419005Z env:
+build	Checkout	2025-11-12T19:03:44.2419766Z   TSA_URL: http://timestamp.digicert.com
+build	Checkout	2025-11-12T19:03:44.2420730Z   SIGN_ROOT: out
+build	Checkout	2025-11-12T19:03:44.2421420Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:44.4187167Z Syncing repository: svelderrainruiz/icon-editor-lab
+build	Checkout	2025-11-12T19:03:44.4189775Z ##[group]Getting Git version info
+build	Checkout	2025-11-12T19:03:44.4190949Z Working directory is 'D:\a\icon-editor-lab\icon-editor-lab'
+build	Checkout	2025-11-12T19:03:44.5287901Z [command]"C:\Program Files\Git\bin\git.exe" version
+build	Checkout	2025-11-12T19:03:45.0738755Z git version 2.51.2.windows.1
+build	Checkout	2025-11-12T19:03:45.0807168Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:45.0830416Z Temporarily overriding HOME='D:\a\_temp\d7038325-5141-477a-91f6-2e8f5fafd918' before making global git config changes
+build	Checkout	2025-11-12T19:03:45.0832240Z Adding repository directory to the temporary git global config as a safe directory
+build	Checkout	2025-11-12T19:03:45.0843724Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\icon-editor-lab\icon-editor-lab
+build	Checkout	2025-11-12T19:03:45.1471815Z Deleting the contents of 'D:\a\icon-editor-lab\icon-editor-lab'
+build	Checkout	2025-11-12T19:03:45.1478291Z ##[group]Initializing the repository
+build	Checkout	2025-11-12T19:03:45.1488481Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\icon-editor-lab\icon-editor-lab
+build	Checkout	2025-11-12T19:03:45.2704890Z Initialized empty Git repository in D:/a/icon-editor-lab/icon-editor-lab/.git/
+build	Checkout	2025-11-12T19:03:45.2763589Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/svelderrainruiz/icon-editor-lab
+build	Checkout	2025-11-12T19:03:45.3390632Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:45.3391256Z ##[group]Disabling automatic garbage collection
+build	Checkout	2025-11-12T19:03:45.3401276Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+build	Checkout	2025-11-12T19:03:45.3724840Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:45.3725931Z ##[group]Setting up auth
+build	Checkout	2025-11-12T19:03:45.3748175Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+build	Checkout	2025-11-12T19:03:45.4092387Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+build	Checkout	2025-11-12T19:03:47.2681268Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Checkout	2025-11-12T19:03:47.2986462Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+build	Checkout	2025-11-12T19:03:47.8118026Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+build	Checkout	2025-11-12T19:03:47.8423736Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:47.8424528Z ##[group]Fetching the repository
+build	Checkout	2025-11-12T19:03:47.8439676Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+build	Checkout	2025-11-12T19:03:49.9307888Z From https://github.com/svelderrainruiz/icon-editor-lab
+build	Checkout	2025-11-12T19:03:49.9308729Z  * [new branch]      chore/ci-coverage-lychee-rtm-adr -> origin/chore/ci-coverage-lychee-rtm-adr
+build	Checkout	2025-11-12T19:03:49.9311262Z  * [new branch]      codex/add-testing-documentation-and-scripts -> origin/codex/add-testing-documentation-and-scripts
+build	Checkout	2025-11-12T19:03:49.9312051Z  * [new branch]      dependabot/github_actions/github/codeql-action-4 -> origin/dependabot/github_actions/github/codeql-action-4
+build	Checkout	2025-11-12T19:03:49.9312600Z  * [new branch]      develop                 -> origin/develop
+build	Checkout	2025-11-12T19:03:49.9313024Z  * [new branch]      feat/ci-coverage-hygiene-v1 -> origin/feat/ci-coverage-hygiene-v1
+build	Checkout	2025-11-12T19:03:49.9313473Z  * [new branch]      feat/ci-gates-rtm-adr   -> origin/feat/ci-gates-rtm-adr
+build	Checkout	2025-11-12T19:03:49.9313863Z  * [new branch]      feat/ci-hardening-rc    -> origin/feat/ci-hardening-rc
+build	Checkout	2025-11-12T19:03:49.9314269Z  * [new branch]      feat/cli-naming-standard -> origin/feat/cli-naming-standard
+build	Checkout	2025-11-12T19:03:49.9314820Z  * [new branch]      feat/close-labview-coverage -> origin/feat/close-labview-coverage
+build	Checkout	2025-11-12T19:03:49.9315306Z  * [new branch]      feat/close-lvcompare-coverage -> origin/feat/close-lvcompare-coverage
+build	Checkout	2025-11-12T19:03:49.9315832Z  * [new branch]      feat/consolewatch-coverage-burst -> origin/feat/consolewatch-coverage-burst
+build	Checkout	2025-11-12T19:03:49.9316314Z  * [new branch]      feat/gcli-coverage-burst -> origin/feat/gcli-coverage-burst
+build	Checkout	2025-11-12T19:03:49.9316773Z  * [new branch]      feat/gcli-coverage-refinement -> origin/feat/gcli-coverage-refinement
+build	Checkout	2025-11-12T19:03:49.9317279Z  * [new branch]      feat/invoke-vi-diffs-coverage -> origin/feat/invoke-vi-diffs-coverage
+build	Checkout	2025-11-12T19:03:49.9317792Z  * [new branch]      feat/labview-gcli-coverage -> origin/feat/labview-gcli-coverage
+build	Checkout	2025-11-12T19:03:49.9318271Z  * [new branch]      feat/labviewcli-coverage-burst -> origin/feat/labviewcli-coverage-burst
+build	Checkout	2025-11-12T19:03:49.9318752Z  * [new branch]      feat/lvcli-pid-coverage-v2 -> origin/feat/lvcli-pid-coverage-v2
+build	Checkout	2025-11-12T19:03:49.9319259Z  * [new branch]      feat/lvcli-suppression-coverage -> origin/feat/lvcli-suppression-coverage
+build	Checkout	2025-11-12T19:03:49.9319733Z  * [new branch]      feat/lvcompare-coverage -> origin/feat/lvcompare-coverage
+build	Checkout	2025-11-12T19:03:49.9320172Z  * [new branch]      feat/lvcompare-coverage-2 -> origin/feat/lvcompare-coverage-2
+build	Checkout	2025-11-12T19:03:49.9321276Z  * [new branch]      feat/lvcompare-prepare-coverage -> origin/feat/lvcompare-prepare-coverage
+build	Checkout	2025-11-12T19:03:49.9321803Z  * [new branch]      feat/lvcompare-report-coverage -> origin/feat/lvcompare-report-coverage
+build	Checkout	2025-11-12T19:03:49.9322708Z  * [new branch]      feat/pester-expansion-v1 -> origin/feat/pester-expansion-v1
+build	Checkout	2025-11-12T19:03:49.9323187Z  * [new branch]      feat/release-pipeline   -> origin/feat/release-pipeline
+build	Checkout	2025-11-12T19:03:49.9323674Z  * [new branch]      feat/runnerprofile-coverage-burst -> origin/feat/runnerprofile-coverage-burst
+build	Checkout	2025-11-12T19:03:49.9324197Z  * [new branch]      feat/stage-snapshot-coverage -> origin/feat/stage-snapshot-coverage
+build	Checkout	2025-11-12T19:03:49.9324635Z  * [new branch]      feat/tools-coverage-v1  -> origin/feat/tools-coverage-v1
+build	Checkout	2025-11-12T19:03:49.9325044Z  * [new branch]      feat/tools-coverage-v10 -> origin/feat/tools-coverage-v10
+build	Checkout	2025-11-12T19:03:49.9325438Z  * [new branch]      feat/tools-coverage-v11 -> origin/feat/tools-coverage-v11
+build	Checkout	2025-11-12T19:03:49.9325836Z  * [new branch]      feat/tools-coverage-v12 -> origin/feat/tools-coverage-v12
+build	Checkout	2025-11-12T19:03:49.9326224Z  * [new branch]      feat/tools-coverage-v13 -> origin/feat/tools-coverage-v13
+build	Checkout	2025-11-12T19:03:49.9326619Z  * [new branch]      feat/tools-coverage-v14 -> origin/feat/tools-coverage-v14
+build	Checkout	2025-11-12T19:03:49.9327025Z  * [new branch]      feat/tools-coverage-v15 -> origin/feat/tools-coverage-v15
+build	Checkout	2025-11-12T19:03:49.9327459Z  * [new branch]      feat/tools-coverage-v3  -> origin/feat/tools-coverage-v3
+build	Checkout	2025-11-12T19:03:49.9327856Z  * [new branch]      feat/tools-coverage-v4  -> origin/feat/tools-coverage-v4
+build	Checkout	2025-11-12T19:03:49.9328241Z  * [new branch]      feat/tools-coverage-v5  -> origin/feat/tools-coverage-v5
+build	Checkout	2025-11-12T19:03:49.9329155Z  * [new branch]      feat/tools-coverage-v6  -> origin/feat/tools-coverage-v6
+build	Checkout	2025-11-12T19:03:49.9329548Z  * [new branch]      feat/tools-coverage-v7  -> origin/feat/tools-coverage-v7
+build	Checkout	2025-11-12T19:03:49.9329947Z  * [new branch]      feat/tools-coverage-v8  -> origin/feat/tools-coverage-v8
+build	Checkout	2025-11-12T19:03:49.9330329Z  * [new branch]      feat/tools-coverage-v9  -> origin/feat/tools-coverage-v9
+build	Checkout	2025-11-12T19:03:49.9330737Z  * [new branch]      feat/vi-comparison-report -> origin/feat/vi-comparison-report
+build	Checkout	2025-11-12T19:03:49.9331167Z  * [new branch]      feat/vipm-coverage-burst -> origin/feat/vipm-coverage-burst
+build	Checkout	2025-11-12T19:03:49.9331693Z  * [new branch]      feature/ci-seed-coverage-lychee-adr-rtm -> origin/feature/ci-seed-coverage-lychee-adr-rtm
+build	Checkout	2025-11-12T19:03:49.9332136Z  * [new tag]         v1                      -> v1
+build	Checkout	2025-11-12T19:03:49.9332388Z  * [new tag]         v10                     -> v10
+build	Checkout	2025-11-12T19:03:49.9332630Z  * [new tag]         v11                     -> v11
+build	Checkout	2025-11-12T19:03:49.9332876Z  * [new tag]         v12                     -> v12
+build	Checkout	2025-11-12T19:03:49.9333116Z  * [new tag]         v13                     -> v13
+build	Checkout	2025-11-12T19:03:49.9333362Z  * [new tag]         v14                     -> v14
+build	Checkout	2025-11-12T19:03:49.9721343Z  * [new tag]         v15                     -> v15
+build	Checkout	2025-11-12T19:03:49.9721868Z  * [new tag]         v2                      -> v2
+build	Checkout	2025-11-12T19:03:49.9722338Z  * [new tag]         v3                      -> v3
+build	Checkout	2025-11-12T19:03:49.9722767Z  * [new tag]         v4                      -> v4
+build	Checkout	2025-11-12T19:03:49.9723210Z  * [new tag]         v5                      -> v5
+build	Checkout	2025-11-12T19:03:49.9723655Z  * [new tag]         v6                      -> v6
+build	Checkout	2025-11-12T19:03:49.9724073Z  * [new tag]         v7                      -> v7
+build	Checkout	2025-11-12T19:03:49.9724509Z  * [new tag]         v8                      -> v8
+build	Checkout	2025-11-12T19:03:49.9724931Z  * [new tag]         v9                      -> v9
+build	Checkout	2025-11-12T19:03:50.0095212Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/develop
+build	Checkout	2025-11-12T19:03:50.0963562Z   origin/develop
+build	Checkout	2025-11-12T19:03:50.1005869Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/develop
+build	Checkout	2025-11-12T19:03:50.1340436Z 1b49a229f07a2e5dec799f12e0845bf2727b328e
+build	Checkout	2025-11-12T19:03:50.1376781Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:50.1377359Z ##[group]Determining the checkout info
+build	Checkout	2025-11-12T19:03:50.1378945Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:50.1389639Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+build	Checkout	2025-11-12T19:03:50.1912084Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+build	Checkout	2025-11-12T19:03:50.2198472Z ##[group]Checking out the ref
+build	Checkout	2025-11-12T19:03:50.2198955Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B develop refs/remotes/origin/develop
+build	Checkout	2025-11-12T19:03:57.3348804Z Updating files:   5% (55/1001)
+build	Checkout	2025-11-12T19:03:57.3372968Z Updating files:   6% (61/1001)
+build	Checkout	2025-11-12T19:03:57.3399495Z Updating files:   7% (71/1001)
+build	Checkout	2025-11-12T19:03:57.3432102Z Updating files:   8% (81/1001)
+build	Checkout	2025-11-12T19:03:57.3455532Z Updating files:   9% (91/1001)
+build	Checkout	2025-11-12T19:03:57.3477579Z Updating files:  10% (101/1001)
+build	Checkout	2025-11-12T19:03:57.3502193Z Updating files:  11% (111/1001)
+build	Checkout	2025-11-12T19:03:57.3539277Z Updating files:  12% (121/1001)
+build	Checkout	2025-11-12T19:03:57.3565029Z Updating files:  13% (131/1001)
+build	Checkout	2025-11-12T19:03:57.3596684Z Updating files:  14% (141/1001)
+build	Checkout	2025-11-12T19:03:57.3621196Z Updating files:  15% (151/1001)
+build	Checkout	2025-11-12T19:03:57.3641968Z Updating files:  16% (161/1001)
+build	Checkout	2025-11-12T19:03:57.3664456Z Updating files:  17% (171/1001)
+build	Checkout	2025-11-12T19:03:57.3687103Z Updating files:  18% (181/1001)
+build	Checkout	2025-11-12T19:03:57.3717115Z Updating files:  19% (191/1001)
+build	Checkout	2025-11-12T19:03:57.3740013Z Updating files:  20% (201/1001)
+build	Checkout	2025-11-12T19:03:57.3766885Z Updating files:  21% (211/1001)
+build	Checkout	2025-11-12T19:03:57.3788356Z Updating files:  22% (221/1001)
+build	Checkout	2025-11-12T19:03:57.3812395Z Updating files:  23% (231/1001)
+build	Checkout	2025-11-12T19:03:57.3833708Z Updating files:  24% (241/1001)
+build	Checkout	2025-11-12T19:03:57.3864599Z Updating files:  25% (251/1001)
+build	Checkout	2025-11-12T19:03:57.3885236Z Updating files:  26% (261/1001)
+build	Checkout	2025-11-12T19:03:57.3917859Z Updating files:  27% (271/1001)
+build	Checkout	2025-11-12T19:03:57.3942479Z Updating files:  28% (281/1001)
+build	Checkout	2025-11-12T19:03:57.3964553Z Updating files:  29% (291/1001)
+build	Checkout	2025-11-12T19:03:57.3987068Z Updating files:  30% (301/1001)
+build	Checkout	2025-11-12T19:03:57.4011453Z Updating files:  31% (311/1001)
+build	Checkout	2025-11-12T19:03:57.4034960Z Updating files:  32% (321/1001)
+build	Checkout	2025-11-12T19:03:57.4063123Z Updating files:  33% (331/1001)
+build	Checkout	2025-11-12T19:03:57.4083470Z Updating files:  34% (341/1001)
+build	Checkout	2025-11-12T19:03:57.4104402Z Updating files:  35% (351/1001)
+build	Checkout	2025-11-12T19:03:57.4129573Z Updating files:  36% (361/1001)
+build	Checkout	2025-11-12T19:03:57.4156319Z Updating files:  37% (371/1001)
+build	Checkout	2025-11-12T19:03:57.4180532Z Updating files:  38% (381/1001)
+build	Checkout	2025-11-12T19:03:57.4209094Z Updating files:  39% (391/1001)
+build	Checkout	2025-11-12T19:03:57.4233352Z Updating files:  40% (401/1001)
+build	Checkout	2025-11-12T19:03:57.4254870Z Updating files:  41% (411/1001)
+build	Checkout	2025-11-12T19:03:57.4278044Z Updating files:  42% (421/1001)
+build	Checkout	2025-11-12T19:03:57.4301715Z Updating files:  43% (431/1001)
+build	Checkout	2025-11-12T19:03:57.4323791Z Updating files:  44% (441/1001)
+build	Checkout	2025-11-12T19:03:57.4348037Z Updating files:  45% (451/1001)
+build	Checkout	2025-11-12T19:03:57.4376505Z Updating files:  46% (461/1001)
+build	Checkout	2025-11-12T19:03:57.4399584Z Updating files:  47% (471/1001)
+build	Checkout	2025-11-12T19:03:57.4424027Z Updating files:  48% (481/1001)
+build	Checkout	2025-11-12T19:03:57.4450839Z Updating files:  49% (491/1001)
+build	Checkout	2025-11-12T19:03:57.4473753Z Updating files:  50% (501/1001)
+build	Checkout	2025-11-12T19:03:57.4495150Z Updating files:  51% (511/1001)
+build	Checkout	2025-11-12T19:03:57.4520047Z Updating files:  52% (521/1001)
+build	Checkout	2025-11-12T19:03:57.4542647Z Updating files:  53% (531/1001)
+build	Checkout	2025-11-12T19:03:57.4569491Z Updating files:  54% (541/1001)
+build	Checkout	2025-11-12T19:03:57.4590571Z Updating files:  55% (551/1001)
+build	Checkout	2025-11-12T19:03:57.4612462Z Updating files:  56% (561/1001)
+build	Checkout	2025-11-12T19:03:57.4635576Z Updating files:  57% (571/1001)
+build	Checkout	2025-11-12T19:03:57.4658444Z Updating files:  58% (581/1001)
+build	Checkout	2025-11-12T19:03:57.4679732Z Updating files:  59% (591/1001)
+build	Checkout	2025-11-12T19:03:57.4701847Z Updating files:  60% (601/1001)
+build	Checkout	2025-11-12T19:03:57.4726092Z Updating files:  61% (611/1001)
+build	Checkout	2025-11-12T19:03:57.4750823Z Updating files:  62% (621/1001)
+build	Checkout	2025-11-12T19:03:57.4772723Z Updating files:  63% (631/1001)
+build	Checkout	2025-11-12T19:03:57.4795944Z Updating files:  64% (641/1001)
+build	Checkout	2025-11-12T19:03:57.4816836Z Updating files:  65% (651/1001)
+build	Checkout	2025-11-12T19:03:57.4840800Z Updating files:  66% (661/1001)
+build	Checkout	2025-11-12T19:03:57.4863345Z Updating files:  67% (671/1001)
+build	Checkout	2025-11-12T19:03:57.4884920Z Updating files:  68% (681/1001)
+build	Checkout	2025-11-12T19:03:57.4908343Z Updating files:  69% (691/1001)
+build	Checkout	2025-11-12T19:03:57.4931013Z Updating files:  70% (701/1001)
+build	Checkout	2025-11-12T19:03:57.4952752Z Updating files:  71% (711/1001)
+build	Checkout	2025-11-12T19:03:57.4976858Z Updating files:  72% (721/1001)
+build	Checkout	2025-11-12T19:03:57.5004624Z Updating files:  73% (731/1001)
+build	Checkout	2025-11-12T19:03:57.5030869Z Updating files:  74% (741/1001)
+build	Checkout	2025-11-12T19:03:57.5054393Z Updating files:  75% (751/1001)
+build	Checkout	2025-11-12T19:03:57.5077321Z Updating files:  76% (761/1001)
+build	Checkout	2025-11-12T19:03:57.5100488Z Updating files:  77% (771/1001)
+build	Checkout	2025-11-12T19:03:57.5125194Z Updating files:  78% (781/1001)
+build	Checkout	2025-11-12T19:03:57.5152045Z Updating files:  79% (791/1001)
+build	Checkout	2025-11-12T19:03:57.5177204Z Updating files:  80% (801/1001)
+build	Checkout	2025-11-12T19:03:57.5200741Z Updating files:  81% (811/1001)
+build	Checkout	2025-11-12T19:03:57.5224072Z Updating files:  82% (821/1001)
+build	Checkout	2025-11-12T19:03:57.5255478Z Updating files:  83% (831/1001)
+build	Checkout	2025-11-12T19:03:57.5283499Z Updating files:  84% (841/1001)
+build	Checkout	2025-11-12T19:03:57.5311632Z Updating files:  85% (851/1001)
+build	Checkout	2025-11-12T19:03:57.5341759Z Updating files:  86% (861/1001)
+build	Checkout	2025-11-12T19:03:57.5371222Z Updating files:  87% (871/1001)
+build	Checkout	2025-11-12T19:03:57.5392499Z Updating files:  88% (881/1001)
+build	Checkout	2025-11-12T19:03:57.5420642Z Updating files:  89% (891/1001)
+build	Checkout	2025-11-12T19:03:57.5452551Z Updating files:  90% (901/1001)
+build	Checkout	2025-11-12T19:03:57.5476146Z Updating files:  91% (911/1001)
+build	Checkout	2025-11-12T19:03:57.5500024Z Updating files:  92% (921/1001)
+build	Checkout	2025-11-12T19:03:57.5528121Z Updating files:  93% (931/1001)
+build	Checkout	2025-11-12T19:03:57.5551414Z Updating files:  94% (941/1001)
+build	Checkout	2025-11-12T19:03:57.5577270Z Updating files:  95% (951/1001)
+build	Checkout	2025-11-12T19:03:57.5612666Z Updating files:  96% (961/1001)
+build	Checkout	2025-11-12T19:03:57.5649734Z Updating files:  97% (971/1001)
+build	Checkout	2025-11-12T19:03:57.5675115Z Updating files:  98% (981/1001)
+build	Checkout	2025-11-12T19:03:57.5699531Z Updating files:  99% (991/1001)
+build	Checkout	2025-11-12T19:03:57.5700406Z Updating files: 100% (1001/1001)
+build	Checkout	2025-11-12T19:03:57.5700867Z Updating files: 100% (1001/1001), done.
+build	Checkout	2025-11-12T19:03:57.6224535Z branch 'develop' set up to track 'origin/develop'.
+build	Checkout	2025-11-12T19:03:57.6226291Z Switched to a new branch 'develop'
+build	Checkout	2025-11-12T19:03:58.4712356Z ##[endgroup]
+build	Checkout	2025-11-12T19:03:58.5938728Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+build	Checkout	2025-11-12T19:03:58.6217002Z 1b49a229f07a2e5dec799f12e0845bf2727b328e
+build	Build	∩╗┐2025-11-12T19:03:58.6617796Z ##[group]Run if (-not (Test-Path 'out')) {
+build	Build	2025-11-12T19:03:58.6618218Z [36;1mif (-not (Test-Path 'out')) {[0m
+build	Build	2025-11-12T19:03:58.6618575Z [36;1m  New-Item -ItemType Directory -Path 'out' | Out-Null[0m
+build	Build	2025-11-12T19:03:58.6618856Z [36;1m}[0m
+build	Build	2025-11-12T19:03:58.6619277Z [36;1mWrite-Host 'TODO: replace this placeholder with the real build/packaging commands that emit artifacts under out.'[0m
+build	Build	2025-11-12T19:03:58.8667192Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+build	Build	2025-11-12T19:03:58.8667575Z env:
+build	Build	2025-11-12T19:03:58.8667807Z   TSA_URL: http://timestamp.digicert.com
+build	Build	2025-11-12T19:03:58.8668070Z   SIGN_ROOT: out
+build	Build	2025-11-12T19:03:58.8668253Z ##[endgroup]
+build	Build	2025-11-12T19:04:09.3240854Z TODO: replace this placeholder with the real build/packaging commands that emit artifacts under out.
+build	Upload unsigned artifacts for trusted runs	∩╗┐2025-11-12T19:04:09.7113666Z ##[group]Run actions/upload-artifact@v4
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7113975Z with:
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7114131Z   name: unsigned
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7114413Z   path: out/**/*.exe
+build	Upload unsigned artifacts for trusted runs	out/**/*.dll
+build	Upload unsigned artifacts for trusted runs	out/**/*.msi
+build	Upload unsigned artifacts for trusted runs	out/**/*.ps1
+build	Upload unsigned artifacts for trusted runs	out/**/*.psm1
+build	Upload unsigned artifacts for trusted runs	
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7115359Z   if-no-files-found: error
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7115567Z   compression-level: 6
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7115737Z   overwrite: false
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7115913Z   include-hidden-files: false
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7116101Z env:
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7116280Z   TSA_URL: http://timestamp.digicert.com
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7116506Z   SIGN_ROOT: out
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.7116674Z ##[endgroup]
+build	Upload unsigned artifacts for trusted runs	2025-11-12T19:04:09.9944701Z ##[error]No files were found with the provided path: out/**/*.exe
+build	Upload unsigned artifacts for trusted runs	out/**/*.dll
+build	Upload unsigned artifacts for trusted runs	out/**/*.msi
+build	Upload unsigned artifacts for trusted runs	out/**/*.ps1
+build	Upload unsigned artifacts for trusted runs	out/**/*.psm1. No artifacts will be uploaded.
+build	Post Checkout	∩╗┐2025-11-12T19:04:10.0211206Z Post job cleanup.
+build	Post Checkout	2025-11-12T19:04:10.2530716Z [command]"C:\Program Files\Git\bin\git.exe" version
+build	Post Checkout	2025-11-12T19:04:10.2875974Z git version 2.51.2.windows.1
+build	Post Checkout	2025-11-12T19:04:10.2967645Z Temporarily overriding HOME='D:\a\_temp\c2a29b40-ef34-488c-84f9-47e7d7ab62e1' before making global git config changes
+build	Post Checkout	2025-11-12T19:04:10.2968724Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Checkout	2025-11-12T19:04:10.2984178Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\icon-editor-lab\icon-editor-lab
+build	Post Checkout	2025-11-12T19:04:10.3335955Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+build	Post Checkout	2025-11-12T19:04:10.3722216Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+build	Post Checkout	2025-11-12T19:04:10.8894309Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Checkout	2025-11-12T19:04:10.9140701Z http.https://github.com/.extraheader
+build	Post Checkout	2025-11-12T19:04:10.9189070Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+build	Post Checkout	2025-11-12T19:04:10.9478908Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+build	Complete job	∩╗┐2025-11-12T19:04:11.4733990Z Cleaning up orphan processes
