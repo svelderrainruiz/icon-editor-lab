@@ -33,8 +33,74 @@ jobs:
           bash local-ci/ubuntu/invoke-local-ci.sh \
             --skip 25-docker \
             --skip 28-docs \
-            --skip 30-tests \
-            --skip 35-coverage
+            --skip 30-tests
+
+      - name: Capture Ubuntu coverage summary
+        if: ${{ always() }}
+        run: |
+          coverage_xml="out/coverage/coverage.xml"
+          summary="$GITHUB_STEP_SUMMARY"
+          if [[ ! -f "$coverage_xml" ]]; then
+            echo "Coverage file $coverage_xml not found; skipping summary."
+            if [[ -n "$summary" ]]; then
+              {
+                echo "### Ubuntu Coverage"
+                echo ""
+                echo "- coverage.xml: not produced"
+              } >> "$summary"
+            fi
+            exit 0
+          fi
+          python3 - <<'PY' "$coverage_xml" "$summary"
+            import sys
+            import xml.etree.ElementTree as ET
+
+            coverage_xml, summary_path = sys.argv[1:3]
+            tree = ET.parse(coverage_xml)
+            root = tree.getroot()
+            rate_attr = root.get("line-rate")
+            pct = 0.0
+            if rate_attr is not None:
+                try:
+                    pct = round(float(rate_attr) * 100, 2)
+                except ValueError:
+                    pass
+            covered = root.get("lines-covered") or "<unknown>"
+            total = root.get("lines-valid") or "<unknown>"
+            classes = root.findall(".//class")
+            flagged = []
+            for cls in classes:
+                try:
+                    rate = float(cls.get("line-rate", "0"))
+                except ValueError:
+                    rate = 0.0
+                if rate < 1.0:
+                    flagged.append(cls.get("filename") or cls.get("name") or "<unnamed>")
+
+            banner = [
+                "### Ubuntu Coverage",
+                "",
+                f"- Line rate: {pct}%",
+                f"- Covered lines: {covered}/{total}",
+            ]
+            if flagged:
+                banner.append(f"- Files < 100% coverage: {', '.join(flagged)}")
+
+            if summary_path:
+                with open(summary_path, "a", encoding="utf-8") as handle:
+                    handle.write("\n".join(banner))
+                    handle.write("\n")
+            else:
+                print("\n".join(banner))
+          PY
+
+      - name: Upload Ubuntu coverage
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-coverage
+          path: out/coverage/coverage.xml
+          if-no-files-found: warn
 
       - name: Capture Ubuntu artifact metadata
         id: capture-meta
@@ -70,6 +136,64 @@ jobs:
             print(f"Discovered Ubuntu run stamp {timestamp}")
           PY
 
+      - name: Write GitHub handshake pointer
+        run: |
+          pointer_path="${HANDSHAKE_POINTER}"
+          mkdir -p "$(dirname "$pointer_path")"
+          python3 - <<'PY' "$pointer_path"
+            import json
+            import os
+            import sys
+            import time
+            from datetime import datetime, timezone
+
+            pointer_path = sys.argv[1]
+            stamp = os.environ.get("HANDSHAKE_STAMP", "")
+            artifact = os.environ.get("HANDSHAKE_ARTIFACT", "")
+            manifest_rel = os.environ.get("HANDSHAKE_MANIFEST_REL", "")
+            manifest_abs = os.environ.get("HANDSHAKE_MANIFEST_ABS", "")
+            pointer_file = os.environ.get("UBUNTU_POINTER_PATH", "")
+            sequence = int(time.time())
+            now = datetime.now(timezone.utc).isoformat()
+            payload = {
+                "schema": "handshake/v1",
+                "sequence": sequence,
+                "status": "ubuntu-ready",
+                "last_updated": now,
+                "ubuntu": {
+                    "stamp": stamp,
+                    "artifact": artifact,
+                    "manifest_rel": manifest_rel or None,
+                    "manifest_abs": manifest_abs or None,
+                    "pointer": pointer_file or None,
+                    "updated_at": now,
+                },
+                "windows": {
+                    "status": "pending",
+                    "updated_at": None,
+                },
+            }
+            os.makedirs(os.path.dirname(pointer_path), exist_ok=True)
+            with open(pointer_path, "w", encoding="utf-8") as handle:
+                json.dump(payload, handle, indent=2)
+                handle.write("\n")
+          PY
+        env:
+          HANDSHAKE_POINTER: handshake/pointer.json
+          HANDSHAKE_STAMP: ${{ steps.capture-meta.outputs.stamp }}
+          HANDSHAKE_ARTIFACT: ${{ steps.capture-meta.outputs.artifact_name }}
+          HANDSHAKE_MANIFEST_REL: ${{ steps.capture-meta.outputs.manifest_rel }}
+          HANDSHAKE_MANIFEST_ABS: ${{ steps.capture-meta.outputs.manifest_abs }}
+          UBUNTU_POINTER_PATH: out/local-ci-ubuntu/latest.json
+
+      - name: Upload handshake pointer (control plane)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: handshake-pointer-${{ steps.capture-meta.outputs.stamp }}
+          path: handshake/pointer.json
+          if-no-files-found: error
+
       - name: Append Ubuntu handshake summary
         if: ${{ always() }}
         run: |
@@ -92,6 +216,7 @@ jobs:
           path: |
             out/local-ci-ubuntu/${{ steps.capture-meta.outputs.stamp }}
             out/local-ci-ubuntu/latest.json
+            handshake/pointer.json
 
   windows-consumer:
     needs: ubuntu-handshake
@@ -113,6 +238,12 @@ jobs:
           name: ${{ needs.ubuntu-handshake.outputs.artifact_name }}
           path: ubuntu-handshake
 
+      - name: Download handshake pointer (control plane)
+        uses: actions/download-artifact@v4
+        with:
+          name: handshake-pointer-${{ needs.ubuntu-handshake.outputs.stamp }}
+          path: handshake
+
       - name: Restore Ubuntu payload into workspace
         run: |
           $downloadRoot = Join-Path $PWD 'ubuntu-handshake'
@@ -125,6 +256,16 @@ jobs:
             New-Item -ItemType Directory -Path $destOut -Force | Out-Null
           }
           Copy-Item -Path (Join-Path $sourceOut '*') -Destination $destOut -Recurse -Force
+          $handshakeSource = Join-Path $downloadRoot 'handshake'
+          $handshakeDest = Join-Path $PWD 'handshake'
+          if (-not (Test-Path -LiteralPath $handshakeDest)) {
+            New-Item -ItemType Directory -Path $handshakeDest -Force | Out-Null
+          }
+          if (Test-Path -LiteralPath $handshakeSource -PathType Container) {
+            Copy-Item -Path (Join-Path $handshakeSource '*') -Destination $handshakeDest -Recurse -Force
+          } elseif (-not (Test-Path -LiteralPath (Join-Path $handshakeDest 'pointer.json'))) {
+            Write-Warning "Handshake pointer not found under $handshakeSource"
+          }
           $stamp = '${{ needs.ubuntu-handshake.outputs.stamp }}'
           if (-not $stamp) {
             throw 'Ubuntu handshake stamp not provided.'
@@ -166,6 +307,56 @@ jobs:
           } else {
             Add-Content -LiteralPath $summaryPath -Value "- Windows Run Root: <not produced>`n"
           }
+
+      - name: Update GitHub handshake pointer
+        if: ${{ always() }}
+        run: |
+          $pointerPath = Join-Path $PWD 'handshake' 'pointer.json'
+          if (-not (Test-Path -LiteralPath $pointerPath -PathType Leaf)) {
+            Write-Warning "Handshake pointer missing at $pointerPath"
+            return
+          }
+          $raw = Get-Content -LiteralPath $pointerPath -Raw -ErrorAction Stop
+          $pointer = if ($raw) { $raw | ConvertFrom-Json } else { @{} }
+          if (-not $pointer.sequence) {
+            $pointer | Add-Member -NotePropertyName sequence -NotePropertyValue 0
+          }
+          $pointer.sequence = [int]$pointer.sequence + 1
+          $now = [DateTime]::UtcNow.ToString('o')
+          $pointer.last_updated = $now
+          if (-not $pointer.windows) {
+            $pointer | Add-Member -NotePropertyName windows -NotePropertyValue (@{})
+          }
+          $windowsRun = $env:LOCALCI_WINDOWS_RUN
+          if ([string]::IsNullOrWhiteSpace($windowsRun)) {
+            $pointer.status = 'ubuntu-ready'
+            $pointer.windows.status = 'pending'
+            $pointer.windows.run_root = $null
+            $pointer.windows.stamp = $null
+          } else {
+            $pointer.status = 'windows-ack'
+            $pointer.windows.status = 'imported'
+            $pointer.windows.run_root = $windowsRun
+            try {
+              $pointer.windows.stamp = Split-Path -Path $windowsRun -Leaf
+            } catch { $pointer.windows.stamp = $windowsRun }
+          }
+          $pointer.windows.runner = $env:COMPUTERNAME
+          $pointer.windows.updated_at = $now
+          if (-not $pointer.windows.job) {
+            $pointer.windows | Add-Member -NotePropertyName job -NotePropertyValue '' 
+          }
+          $pointer.windows.job = "${{ github.run_id }}"
+          $pointer | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $pointerPath -Encoding utf8
+
+      - name: Upload handshake pointer (control plane, updated)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: handshake-pointer-${{ needs.ubuntu-handshake.outputs.stamp }}
+          path: handshake/pointer.json
+          overwrite: true
+          if-no-files-found: warn
 
       - name: Upload Windows handshake artifacts
         if: ${{ always() }}

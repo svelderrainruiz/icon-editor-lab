@@ -55,6 +55,26 @@ Each orchestrator:
 4. **Cross-OS handshake** – ensure stage 40 packages the artifacts expected by Windows (vi-comparison payloads, publish markers) and that it records the run metadata Windows needs (package path, SHA, tag list).
 5. **Documentation & tasks** – update VS Code tasks / scripts to call the orchestrators, and document any new env vars or log locations so contributors can reproduce the pipeline.
 
+## Self-Hosted Windows Runner Baseline
+
+The “golden” Windows box that drives stage 25/30/37/40 must look the same as the GitHub Actions self-hosted runner we recommend to downstream forks. Keeping the hardware and software baselines in sync avoids LabVIEW drift, removes PSGallery dependence during runs, and ensures Stage 40 can reach the certificate store without interactive prompts.
+
+### Hardware profile
+- **Chassis**: Windows 11 Pro/Enterprise 23H2 or Windows Server 2022 Standard (64-bit) with virtualization enabled but Hyper-V features disabled during LabVIEW sessions. Keep Secure Boot on and turn off hibernation so scheduled runs are predictable.
+- **CPU**: ≥8 physical cores / 16 threads (recent Intel i7/i9 or Ryzen 7/9). LabVIEW CLI and VICompare both spike CPU usage when multiple bitness plans are active; fewer cores drag VI opens and force longer gating windows.
+- **Memory**: ≥32 GiB RAM (64 GiB preferred) so LabVIEW 2021 + LabVIEW 2025 preview + VIPM can co-exist with pwsh/Node/Python tooling without paging.
+- **Storage**: ≥1 TB NVMe SSD dedicated to builds. Reserve at least 200 GiB free for `out/local-ci/<stamp>`, cached VIPCs, and crash dumps. Put the repository under an NTFS volume with long-path support and leave Windows Defender exclusions for `out/` and `%TEMP%\LabVIEW`.
+- **Networking**: Wired gigabit with outbound 443 access to GitHub, Digicert TSA, PSGallery, and NI download mirrors. Maintain clock sync (w32tm) so timestamp enforcement stays valid.
+
+### Software stack
+- **PowerShell**: Install PowerShell 7.4.x (x64) system-wide and ensure `pwsh.exe` is first in `PATH`. Preconfigure the execution policy to `RemoteSigned` and trust PSGallery so Stage 10 never prompts for consent.
+- **LabVIEW**: Install LabVIEW 2021 64-bit plus LabVIEW CLI (`C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe` and `%ProgramFiles(x86)%\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe`) to satisfy the default `labview-2021-x64` profile. Stage 37’s VICompare helpers also probe `C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe`; keep that preview build patched even if it only feeds compare capture experiments. Register G‑CLI in `PATH` so `g-cli` resolves without a fully qualified path.
+- **VIPM**: Install JKI VIPM 2023.1 or newer with CLI support and sign in with a license that can import `.vipc` files. Configure the app once with the service account so Stage 45 can run headless.
+- **Pester/Test tooling**: Pre-install Pester 6.x (`Install-Module Pester -Scope CurrentUser -RequiredVersion 6.0.0`) and the supporting modules (ThreadJob) because PSGallery downloads are frequently throttled on corporate firewalls. Verify `Invoke-Pester -Configuration (New-PesterConfiguration)` succeeds before the runner claims jobs.
+- **Runtime dependencies**: Keep .NET Desktop Runtime 7.x, the Visual C++ 2015–2022 redistributable, Node.js 20 LTS, and Python 3.11+ on the path so Markdown renderers, coverage summarizers, and CLI shims work the same as the hosted Ubuntu stages.
+- **Code-signing certificates**: Import the real signing certificate(s) into the service account’s `CurrentUser\My` store and grant the runner identity permission to use the private key. Stage 40’s harness looks for certificates via `scripts/Test-Signing.ps1`, so document the thumbprint in the runner secrets (e.g., `LOCALCI_SIGN_CERT_THUMBPRINT`) and maintain a backup `.pfx` in a secure vault. Add the Digicert RFC‑3161 TSA endpoint to the outbound allow list.
+- **Accounts & automation**: Run the GitHub Actions service (`actions-runner`) under a dedicated local admin account with `Log on as a service`, and pre-create `C:\local-ci` / `C:\ProgramData\local-ci` so runs do not compete with Desktop redirection. Configure Windows Update’s maintenance window outside CI hours and snapshot the machine after every LabVIEW patch cycle.
+
 ## Sequence & Bitness Layer
 
 Both orchestrators treat a “sequence” as an ordered list of stage definitions that are grouped per operating system. Each stage can fan out further across LabVIEW bitness variants, so a single logical stage (for example, “Enable DevMode”) might run twice: once for 32-bit and once for 64-bit.
@@ -219,6 +239,20 @@ Fork owners who maintain self-hosted Windows runners should mirror the same hand
 4. Invoke `local-ci/windows/Invoke-LocalCI.ps1` (full run or stage subsets) and optionally publish `out/local-ci/<stamp>` for troubleshooting.
 
 Use `local-ci/scripts/New-HandshakeWorkflow.ps1 -TargetRepoRoot C:\path\to\fork` to scaffold `.github/workflows/local-ci-handshake.yml` into any downstream repo. Pass `-WindowsRunsOn '[self-hosted, windows]'` (including brackets) to preconfigure the Windows job for a self-hosted label.
+
+### GitHub Control Plane (versioned handshake)
+
+Relying on shared directories (`out/local-ci-ubuntu/`) assumes the Windows runner is always online to poll for new payloads. When that assumption fails, runs pile up silently. To make the handshake explicit:
+
+- **Authoritative pointers** – After Ubuntu finishes, publish a small pointer file (`handshake/<stamp>.json`) as part of the workflow artifact or release. Include the git SHA, stamp, artifact download URL, and a monotonically increasing sequence number. Commit an aggregate `handshake/index.json` (or create/update an issue comment) listing the latest stamp. Consumers read the pointer via the GitHub API instead of scraping the filesystem.
+- **Current implementation** – `local-ci-handshake.yml` now writes `handshake/pointer.json` (schema `handshake/v1`) during the Ubuntu job, uploads it as its own artifact (`handshake-pointer-<stamp>`), and later re-uploads the same artifact from the Windows job after stamping the `windows` block. Any consumer (local runner, VS Code task, scheduled job) can call `actions/download-artifact` for `handshake-pointer-*` to decide which payload to hydrate without downloading the full `out/local-ci-ubuntu` tree first.
+- **Claims and leases** – When a Windows runner begins importing a stamp, write a claim record back to GitHub (e.g., `handshake/<stamp>.claim.json` or an issue comment) with the runner name and lease expiry. Other runners honor the lease before attempting the same stamp, and a watchdog expires stale leases after N minutes.
+- **Status propagation** – Once Stage 37 republishes VICompare outputs, upload a `vi-publish.json` artifact and update the pointer with `windows_publish_asset_id`. Ubuntu stage 45 rehydrates the payload by following the asset reference; if the pointer lacks a publish block, it can fail fast rather than waiting for watcher side effects.
+- **Error contracts** – Both orchestrators should treat missing or stale pointers as fatal (surface `::error:: Handshake <stamp> not available`). This keeps CI runs honest: Ubuntu cannot declare success unless it records the pointer, and Windows cannot finish unless it pushes the publish metadata.
+- **Versioning** – Store a `schema` field in every pointer (`handshake/v1`), so new metadata can be added without breaking older consumers. Version bumps become intentional PRs that modify both pipelines simultaneously.
+- **Watchdog workflow** – `.github/workflows/handshake-watchdog.yml` runs hourly (or on demand), downloads the freshest `handshake-pointer-*` artifact via the Actions API, and feeds it to `scripts/handshake_watchdog.py`. When a payload sits in `ubuntu-ready` longer than the configured TTL (default 90 min, override via workflow dispatch inputs or repo vars such as `HANDSHAKE_WATCHDOG_TTL`/`HANDSHAKE_WATCHDOG_LABEL`/`HANDSHAKE_WATCHDOG_NOTIFY`), the watchdog comments on/opens the “Local CI handshake watchdog” issue so operators know a lease expired (and optionally pings custom handles). Once a Windows run replies, the watchdog closes the issue again, giving us an auditable heartbeat for the control plane.
+
+By promoting the rendezvous into GitHub artifacts/issues, we remove the “local box must be waiting” assumption and gain an auditable log of who imported which payload. The local runner still writes under `out/`, but its control flow is driven by GitHub metadata that any machine (or human) can inspect.
 
 Windows signing stage (40) environment overrides:
 - `LOCALCI_SIGN_TS_URL` – RFC‑3161 timestamp server URL (default Digicert). Propagated to the signing harness.
