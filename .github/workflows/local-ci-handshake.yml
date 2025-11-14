@@ -160,24 +160,10 @@ jobs:
             out/local-ci-ubuntu/latest.json
             handshake/pointer.json
 
-  windows-runner-coverage:
+  windows-consumer:
     name: Validate Windows runner coverage
+    needs: ubuntu-handshake
     runs-on: ubuntu-latest
-    env:
-      WINDOWS_RUNNER_LABELS: ${{ vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]' }}
-    steps:
-      - name: Checkout workflow helpers
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            scripts/workflows
-          sparse-checkout-cone-mode: true
-
-      - name: Ensure matching self-hosted runner is online
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          python3 scripts/workflows/check_windows_runner_coverage.py
     concurrency:
       group: windows-consumer-${{ github.ref }}
       cancel-in-progress: true
@@ -190,6 +176,20 @@ jobs:
       LOCALCI_ENV_PARITY_MODE: warn
       WINDOWS_RUNNER_LABELS: ${{ vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]' }}
     steps:
+      - name: Checkout workflow helpers
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/workflows
+          sparse-checkout-cone-mode: true
+
+      - name: Ensure matching self-hosted runner is online
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          python3 scripts/workflows/check_windows_runner_coverage.py
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
