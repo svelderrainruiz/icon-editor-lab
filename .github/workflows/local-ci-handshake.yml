@@ -181,6 +181,7 @@ jobs:
           path: handshake
 
       - name: Restore Ubuntu payload into workspace
+        id: restore-ubuntu
         run: |
           $downloadRoot = Join-Path $PWD 'ubuntu-handshake'
           $sourceOut = Join-Path $downloadRoot 'out' 'local-ci-ubuntu'
@@ -211,9 +212,12 @@ jobs:
             throw "Ubuntu manifest not found at $manifestPath"
           }
           "LOCALCI_IMPORT_UBUNTU_RUN=$manifestPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "manifest_path=$manifestPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
           Write-Host "Staged Ubuntu manifest at $manifestPath"
 
       - name: Run Windows local CI (handshake stages)
+        env:
+          LOCALCI_IMPORT_UBUNTU_RUN: ${{ steps.restore-ubuntu.outputs.manifest_path }}
         run: |
           ./local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 10,37
 
