@@ -72,11 +72,34 @@ jobs:
           foreach ($s in $scripts) {
             Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -HashAlgorithm SHA256 | Out-Null
           }
-          $signtool = (Get-Command signtool.exe).Source
-          $tsa = '${{ env.TSA_URL }}'
-          $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
-          foreach ($f in $pe) {
-            & $signtool sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+          $signtoolPath = $null
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if ($signtoolCmd) {
+            $signtoolPath = $signtoolCmd.Source
+          } else {
+            $kitRoots = @(
+              'C:\Program Files (x86)\Windows Kits\10\bin',
+              'C:\Program Files (x86)\Windows Kits\11\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v11.0A\bin'
+            )
+            foreach ($kitRoot in $kitRoots) {
+              if (-not (Test-Path -LiteralPath $kitRoot -PathType Container)) { continue }
+              $candidate = Get-ChildItem -Path $kitRoot -Filter signtool.exe -File -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+              if ($candidate) {
+                $signtoolPath = $candidate.FullName
+                break
+              }
+            }
+          }
+          if (-not $signtoolPath) {
+            Write-Warning "signtool.exe not found on hosted runner; skipping PE signing for PR dry-run artifacts."
+          } else {
+            $tsa = '${{ env.TSA_URL }}'
+            $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+            foreach ($f in $pe) {
+              & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+            }
           }
 
       - name: Verify PR script signatures (presence check)
