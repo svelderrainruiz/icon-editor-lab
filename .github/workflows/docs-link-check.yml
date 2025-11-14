@@ -34,3 +34,4 @@ jobs:
         with:
           name: lychee-report
           path: ./.lychee/**/*
+          if-no-files-found: warn
