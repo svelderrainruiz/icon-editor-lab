@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 jobs:
   ubuntu-handshake:
@@ -128,8 +129,29 @@ jobs:
             out/local-ci-ubuntu/latest.json
             handshake/pointer.json
 
+  windows-runner-coverage:
+    name: Validate Windows runner coverage
+    runs-on: ubuntu-latest
+    env:
+      WINDOWS_RUNNER_LABELS: ${{ vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]' }}
+    steps:
+      - name: Checkout workflow helpers
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/workflows
+          sparse-checkout-cone-mode: true
+
+      - name: Ensure matching self-hosted runner is online
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/workflows/check_windows_runner_coverage.py
+
   windows-consumer:
-    needs: ubuntu-handshake
+    needs:
+      - ubuntu-handshake
+      - windows-runner-coverage
     # Allow repo/org vars (LOCALCI_WINDOWS_RUNS_ON) to override label set.
     runs-on: ${{ fromJson(vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]') }}
     defaults:
