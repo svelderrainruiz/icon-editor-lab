@@ -10,7 +10,6 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
     { $content | ConvertFrom-Json -ErrorAction Stop | Out-Null } | Should -Not -Throw
     { $content | Test-Json -SchemaFile $schema -ErrorAction Stop | Out-Null } | Should -Not -Throw
   }
-}
 
   It 'rejects labels longer than 64 chars' {
     $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
@@ -41,3 +40,4 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
     } | ConvertTo-Json -Depth 5
     { $cfg | Test-Json -SchemaFile $schema -ErrorAction Stop | Out-Null } | Should -Throw
   }
+}

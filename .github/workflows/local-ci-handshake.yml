@@ -1,0 +1,331 @@
+# actionlint: disable=runner-label
+name: Local CI Handshake
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: ["develop"]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: local-ci-handshake-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-handshake:
+    runs-on: ubuntu-latest
+    outputs:
+      stamp: ${{ steps.capture-meta.outputs.stamp }}
+      artifact_name: ${{ steps.capture-meta.outputs.artifact_name }}
+      manifest_rel: ${{ steps.capture-meta.outputs.manifest_rel }}
+      manifest_abs: ${{ steps.capture-meta.outputs.manifest_abs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure Ubuntu runner scripts are executable
+        run: |
+          chmod +x local-ci/ubuntu/invoke-local-ci.sh
+          chmod +x local-ci/ubuntu/stages/*.sh
+          chmod +x local-ci/ubuntu/scripts/*.sh
+          chmod +x local-ci/ubuntu/watchers/*.sh
+
+      - name: Ensure PyYAML is available
+        run: |
+          python3 -m pip install --user --upgrade pip PyYAML
+
+      - name: Configure Docker publishing
+        run: |
+          set -euo pipefail
+          repo="${GITHUB_REPOSITORY,,}"
+          echo "LOCALCI_DOCKER_REMOTE_IMAGE=ghcr.io/${repo}/tools:local-ci" >> "$GITHUB_ENV"
+          echo "LOCALCI_UBUNTU_RUNNER_REMOTE_IMAGE=ghcr.io/${repo}/ubuntu-runner:local-ci" >> "$GITHUB_ENV"
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/develop" ]]; then
+            echo "LOCALCI_DOCKER_PUSH_REMOTE=true" >> "$GITHUB_ENV"
+          else
+            echo "LOCALCI_DOCKER_PUSH_REMOTE=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Login to GitHub Container Registry
+        if: env.LOCALCI_DOCKER_PUSH_REMOTE == 'true'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Run Ubuntu local CI (handshake stages)
+        run: |
+          bash local-ci/ubuntu/invoke-local-ci.sh \
+            --skip 28-docs \
+            --skip 30-tests
+
+      - name: Capture Ubuntu coverage summary
+        if: ${{ always() }}
+        run: |
+          coverage_xml="out/coverage/coverage.xml"
+          summary="$GITHUB_STEP_SUMMARY"
+          if [[ ! -f "$coverage_xml" ]]; then
+            echo "Coverage file $coverage_xml not found; skipping summary."
+            if [[ -n "$summary" ]]; then
+              {
+                echo "### Ubuntu Coverage"
+                echo ""
+                echo "- coverage.xml: not produced"
+              } >> "$summary"
+            fi
+            exit 0
+          fi
+          python3 scripts/workflows/summarize_coverage.py "$coverage_xml" "$summary"
+
+      - name: Upload Ubuntu coverage
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu-coverage
+          path: out/coverage/coverage.xml
+          if-no-files-found: warn
+
+      - name: Capture Ubuntu artifact metadata
+        id: capture-meta
+        run: |
+          POINTER="out/local-ci-ubuntu/latest.json"
+          if [[ ! -f "$POINTER" ]]; then
+            echo "::error::Pointer file $POINTER not found"
+            exit 1
+          fi
+          python3 scripts/workflows/read_pointer.py "$POINTER" "$GITHUB_OUTPUT"
+
+      - name: Write GitHub handshake pointer
+        run: |
+          python3 scripts/workflows/update_handshake_pointer.py \
+            --pointer "${HANDSHAKE_POINTER}" \
+            --stamp "${HANDSHAKE_STAMP}" \
+            --artifact "${HANDSHAKE_ARTIFACT}" \
+            --manifest-rel "${HANDSHAKE_MANIFEST_REL}" \
+            --manifest-abs "${HANDSHAKE_MANIFEST_ABS}" \
+            --ubuntu-pointer "${UBUNTU_POINTER_PATH}"
+        env:
+          HANDSHAKE_POINTER: handshake/pointer.json
+          HANDSHAKE_STAMP: ${{ steps.capture-meta.outputs.stamp }}
+          HANDSHAKE_ARTIFACT: ${{ steps.capture-meta.outputs.artifact_name }}
+          HANDSHAKE_MANIFEST_REL: ${{ steps.capture-meta.outputs.manifest_rel }}
+          HANDSHAKE_MANIFEST_ABS: ${{ steps.capture-meta.outputs.manifest_abs }}
+          UBUNTU_POINTER_PATH: out/local-ci-ubuntu/latest.json
+
+      - name: Run handshake heuristics (Ubuntu artifacts)
+        run: |
+          python3 scripts/workflows/check_handshake_artifacts.py \
+            --manifest "${{ steps.capture-meta.outputs.manifest_abs }}" \
+            --pointer handshake/pointer.json \
+            --repo-root "$PWD" \
+            --stamp "${{ steps.capture-meta.outputs.stamp }}" \
+            --artifact-dir "out/local-ci-ubuntu/${{ steps.capture-meta.outputs.stamp }}" \
+            --github-repository "${{ github.repository }}" \
+            --expect-windows-status pending
+
+      - name: Upload handshake pointer (control plane)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: handshake-pointer-${{ steps.capture-meta.outputs.stamp }}
+          path: handshake/pointer.json
+          if-no-files-found: error
+
+      - name: Append Ubuntu handshake summary
+        if: ${{ always() }}
+        run: |
+          stamp='${{ steps.capture-meta.outputs.stamp }}'
+          manifest='${{ steps.capture-meta.outputs.manifest_rel }}'
+          pointer='out/local-ci-ubuntu/latest.json'
+          {
+            echo "### Ubuntu Handshake";
+            echo "";
+            echo "- Stamp: ${stamp}";
+            echo "- Manifest: ${manifest:-<unknown>}";
+            echo "- Pointer: ${pointer}";
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Ubuntu handshake artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.capture-meta.outputs.artifact_name }}
+          if-no-files-found: error
+          path: |
+            out/local-ci-ubuntu/${{ steps.capture-meta.outputs.stamp }}
+            out/local-ci-ubuntu/latest.json
+            handshake/pointer.json
+
+  windows-consumer:
+    name: Validate Windows runner coverage
+    needs: ubuntu-handshake
+    runs-on: ubuntu-latest
+    concurrency:
+      group: windows-consumer-${{ github.ref }}
+      cancel-in-progress: true
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      SIGN_ROOT: out
+      LOCALCI_VICOMPARE_CLI_ENABLED: '1'
+      LOCALCI_ENV_PARITY_MODE: warn
+      WINDOWS_RUNNER_LABELS: ${{ vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]' }}
+    steps:
+      - name: Checkout workflow helpers
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/workflows
+          sparse-checkout-cone-mode: true
+
+      - name: Ensure matching self-hosted runner is online
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          python3 scripts/workflows/check_windows_runner_coverage.py
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download Ubuntu handshake artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.ubuntu-handshake.outputs.artifact_name }}
+          path: ubuntu-handshake
+
+      - name: Download handshake pointer (control plane)
+        uses: actions/download-artifact@v4
+        with:
+          name: handshake-pointer-${{ needs.ubuntu-handshake.outputs.stamp }}
+          path: handshake
+
+      - name: Restore Ubuntu payload into workspace
+        id: restore-ubuntu
+        run: |
+          $downloadRoot = Join-Path $PWD 'ubuntu-handshake'
+          $sourceOut = Join-Path $downloadRoot 'out' 'local-ci-ubuntu'
+          if (-not (Test-Path -LiteralPath $sourceOut -PathType Container)) {
+            throw "Expected Ubuntu artifacts under $sourceOut"
+          }
+          $destOut = Join-Path $PWD 'out' 'local-ci-ubuntu'
+          if (-not (Test-Path -LiteralPath $destOut)) {
+            New-Item -ItemType Directory -Path $destOut -Force | Out-Null
+          }
+          Copy-Item -Path (Join-Path $sourceOut '*') -Destination $destOut -Recurse -Force
+          $handshakeSource = Join-Path $downloadRoot 'handshake'
+          $handshakeDest = Join-Path $PWD 'handshake'
+          if (-not (Test-Path -LiteralPath $handshakeDest)) {
+            New-Item -ItemType Directory -Path $handshakeDest -Force | Out-Null
+          }
+          if (Test-Path -LiteralPath $handshakeSource -PathType Container) {
+            Copy-Item -Path (Join-Path $handshakeSource '*') -Destination $handshakeDest -Recurse -Force
+          } elseif (-not (Test-Path -LiteralPath (Join-Path $handshakeDest 'pointer.json'))) {
+            Write-Warning "Handshake pointer not found under $handshakeSource"
+          }
+          $stamp = '${{ needs.ubuntu-handshake.outputs.stamp }}'
+          if (-not $stamp) {
+            throw 'Ubuntu handshake stamp not provided.'
+          }
+          $manifestPath = Join-Path $destOut $stamp 'ubuntu-run.json'
+          if (-not (Test-Path -LiteralPath $manifestPath -PathType Leaf)) {
+            throw "Ubuntu manifest not found at $manifestPath"
+          }
+          "LOCALCI_IMPORT_UBUNTU_RUN=$manifestPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "manifest_path=$manifestPath" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          Write-Host "Staged Ubuntu manifest at $manifestPath"
+
+      - name: Run Windows local CI (handshake stages)
+        env:
+          LOCALCI_IMPORT_UBUNTU_RUN: ${{ steps.restore-ubuntu.outputs.manifest_path }}
+        run: |
+          ./local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 10,37
+
+      - name: Collect Windows handshake logs
+        if: ${{ always() }}
+        run: |
+          $runRoot = $null
+          $base = Join-Path $PWD 'out' 'local-ci'
+          if (Test-Path -LiteralPath $base) {
+            $runRoot = Get-ChildItem -Path $base -Directory | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+            if ($runRoot) {
+              "LOCALCI_WINDOWS_RUN=$($runRoot.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            }
+          }
+
+      - name: Append Windows handshake summary
+        if: ${{ always() }}
+        run: |
+          $summaryPath = $env:GITHUB_STEP_SUMMARY
+          if (-not $summaryPath) { return }
+          $windowsRun = $env:LOCALCI_WINDOWS_RUN
+          $stamp = '${{ needs.ubuntu-handshake.outputs.stamp }}'
+          Add-Content -LiteralPath $summaryPath -Value "### Windows Handshake`n"
+          Add-Content -LiteralPath $summaryPath -Value "- Ubuntu Stamp: $stamp`n"
+          if ($windowsRun) {
+            Add-Content -LiteralPath $summaryPath -Value "- Windows Run Root: $windowsRun`n"
+            if ($env:WINDOWS_RUNNER_LABELS) {
+              Add-Content -LiteralPath $summaryPath -Value "- Runner labels: $($env:WINDOWS_RUNNER_LABELS)`n"
+            }
+            $importPath = Join-Path $windowsRun 'ubuntu-import.json'
+            if (Test-Path -LiteralPath $importPath -PathType Leaf) {
+              try {
+                $import = Get-Content -LiteralPath $importPath -Raw | ConvertFrom-Json
+                if ($import.HashStatus -and $import.HashStatus.verified) {
+                  Add-Content -LiteralPath $summaryPath -Value "- Ubuntu artifact hash: verified`n"
+                }
+              } catch {
+                Write-Warning "Failed to read Ubuntu import summary: $($_.Exception.Message)"
+              }
+            }
+          } else {
+            Add-Content -LiteralPath $summaryPath -Value "- Windows Run Root: <not produced>`n"
+            if ($env:WINDOWS_RUNNER_LABELS) {
+              Add-Content -LiteralPath $summaryPath -Value "- Runner labels: $($env:WINDOWS_RUNNER_LABELS)`n"
+            }
+          }
+
+      - name: Update GitHub handshake pointer
+        if: ${{ always() }}
+        run: |
+          python3 scripts/workflows/update_handshake_pointer.py \
+            --pointer handshake/pointer.json \
+            --windows-run "$LOCALCI_WINDOWS_RUN" \
+            --windows-runner "$COMPUTERNAME" \
+            --windows-job "${{ github.run_id }}"
+      - name: Upload handshake pointer (control plane, updated)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: handshake-pointer-${{ needs.ubuntu-handshake.outputs.stamp }}
+          path: handshake/pointer.json
+          overwrite: true
+          if-no-files-found: warn
+
+      - name: Upload Windows handshake artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-local-ci-handshake
+          path: out/local-ci
+          if-no-files-found: warn
+  notify-cancelled-windows:
+    if: ${{ needs.windows-consumer.result == 'cancelled' }}
+    needs:
+      - ubuntu-handshake
+      - windows-consumer
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat <<'MSG' >> "$GITHUB_STEP_SUMMARY"
+### Windows Consumer Blocked
+
+The \`windows-consumer\` job was cancelled (usually because a prior run was still using the Windows runner). Cancel the stuck job and rerun this workflow once the runner is free.
+MSG

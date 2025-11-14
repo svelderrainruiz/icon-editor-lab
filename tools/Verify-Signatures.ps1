@@ -1,12 +1,12 @@
 # Verify-Signatures.ps1
-Set-StrictMode -Version Latest
-$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
 [CmdletBinding()]
 param(
   [Parameter()][string]$SearchRoot = (Get-Location).Path,
   [Parameter()][string[]]$Include = @("*.ps1","*.psm1"),
   [Parameter()][string[]]$ExcludeDirs = @(".git",".github",".venv","node_modules")
 )
+Set-StrictMode -Version Latest
+$ErrorActionPreference='Stop'; $PSModuleAutoLoadingPreference='None'
 $files = Get-ChildItem -LiteralPath $SearchRoot -Recurse -File -Include $Include | Where-Object {
   $rel = $_.FullName.Substring($SearchRoot.Length).TrimStart('\','/')
   -not ($ExcludeDirs | ForEach-Object { $rel -like ("{0}\*" -f $_) })

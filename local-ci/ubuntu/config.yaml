@@ -1,0 +1,18 @@
+sign_root: out
+pester_tags:
+  - smoke
+  - linux
+  - tools
+  - scripts
+skip_stages: []
+docs_stage:
+  check_links: true
+  markdownlint: true
+coverage:
+  enabled: true
+  min_percent: 75
+vi_compare:
+  enabled: true
+  dry_run: true
+  requests_template: ""
+  windows_publish_root: out/vi-comparison/windows

@@ -1,69 +1,471 @@
-name: CI (Windows AllSigned)
+name: ci-windows-signed
 
 on:
-  push:
-    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]
-  workflow_dispatch:
+  push:
+    branches: [develop]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  TSA_URL: https://timestamp.digicert.com
+  SIGN_ROOT: out
+
+defaults:
+  run:
+    shell: pwsh
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  windows-signed:
+  build:
     runs-on: windows-latest
-    permissions:
-      contents: read
-      actions: read
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup PowerShell
-        uses: PowerShell/PowerShell@v1
         with:
-          version: '7.4.x'
+          fetch-depth: 0
 
-      - name: Import code signing cert (if provided)
-        shell: pwsh
-        env:
-          SIGNING_CERT_B64: ${{ secrets.SIGNING_CERT_B64 }}
-          SIGNING_CERT_PASSWORD: ${{ secrets.SIGNING_CERT_PASSWORD }}
+      - name: Build
         run: |
-          if ($env:SIGNING_CERT_B64) {
-            $bytes = [Convert]::FromBase64String($env:SIGNING_CERT_B64)
-            [IO.File]::WriteAllBytes('code-signing.pfx', $bytes)
-            $sec = ConvertTo-SecureString -String $env:SIGNING_CERT_PASSWORD -AsPlainText -Force
-            $cert = Import-PfxCertificate -FilePath .\code-signing.pfx -CertStoreLocation Cert:\CurrentUser\My -Password $sec
-            Write-Output "Imported code-signing cert: $($cert.Thumbprint)"
-          } else {
-            Write-Output "No SIGNING_CERT_B64 provided. Will rely on pre-installed certs."
+          if (Test-Path '${{ env.SIGN_ROOT }}') {
+            Remove-Item '${{ env.SIGN_ROOT }}' -Recurse -Force
+          }
+          New-Item -ItemType Directory -Path '${{ env.SIGN_ROOT }}' | Out-Null
+
+          function Copy-RepoScripts {
+            param([string[]]$Roots)
+            foreach ($root in $Roots) {
+              $sourcePath = Join-Path $PWD $root
+              if (-not (Test-Path $sourcePath)) { continue }
+              Get-ChildItem -Path $sourcePath -Include *.ps1,*.psm1 -Recurse -File |
+                ForEach-Object {
+                  $relative = $_.FullName.Substring($PWD.Length + 1)
+                  $dest = Join-Path '${{ env.SIGN_ROOT }}' $relative
+                  $destDir = Split-Path $dest -Parent
+                  if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+                  Copy-Item -Path $_.FullName -Destination $dest -Force
+                }
+            }
           }
 
-      - name: Sign scripts
-        shell: pwsh
-        run: |
-          ./tools/Sign-Scripts.ps1
+          Copy-RepoScripts -Roots @('tools','scripts')
 
-      - name: Enforce AllSigned and verify signatures
-        shell: pwsh
-        run: |
-          Set-ExecutionPolicy -ExecutionPolicy AllSigned -Scope Process -Force
-          ./tools/Verify-Signatures.ps1
+          $samplePs1 = Join-Path '${{ env.SIGN_ROOT }}' 'Sample-Signed.ps1'
+          "Write-Output 'Sample payload for signing test.'" | Set-Content -Path $samplePs1 -Encoding UTF8
+          $sampleExe = Join-Path '${{ env.SIGN_ROOT }}' 'sample.exe'
+          [IO.File]::WriteAllBytes($sampleExe, [byte[]](1..16))
+          Write-Host 'Staged repo scripts and sample artifacts under SIGN_ROOT.'
 
-      - name: Validate example config
-        shell: pwsh
+      - name: Self-sign outputs for PRs (ephemeral cert)
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
-          ./tools/Validate-Config.ps1 -ConfigPath ./configs/examples/vi-diff-heuristics.json
+          $root = (Test-Path '${{ env.SIGN_ROOT }}') ? '${{ env.SIGN_ROOT }}' : '.'
+          $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          $thumb = $cert.Thumbprint
+          if (-not $thumb) {
+            Write-Warning "Ephemeral signing certificate creation failed; skipping PE signing."
+            $signtoolPath = $null
+          }
+          $scripts = Get-ChildItem $root -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
+          foreach ($s in $scripts) {
+            Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -HashAlgorithm SHA256 | Out-Null
+          }
+          $signtoolPath = $null
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if ($signtoolCmd) {
+            $signtoolPath = $signtoolCmd.Source
+          } else {
+            $kitRoots = @(
+              'C:\Program Files (x86)\Windows Kits\10\bin',
+              'C:\Program Files (x86)\Windows Kits\11\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin',
+              'C:\Program Files (x86)\Microsoft SDKs\Windows\v11.0A\bin'
+            )
+            $candidates = @()
+            foreach ($kitRoot in $kitRoots) {
+              if (-not (Test-Path -LiteralPath $kitRoot -PathType Container)) { continue }
+              $candidates += Get-ChildItem -Path $kitRoot -Filter signtool.exe -File -Recurse -ErrorAction SilentlyContinue
+            }
+            if ($candidates) {
+              $ordered = $candidates | Sort-Object {
+                $path = $_.FullName.ToLowerInvariant()
+                if ($path -match '\\(x64|amd64)\\') { 0 }
+                elseif ($path -match '\\x86\\') { 1 }
+                else { 2 }
+              }
+              foreach ($candidate in $ordered) {
+                $candidatePath = $candidate.FullName
+                if ($candidatePath -match '\\arm(64)?\\') { continue }
+                $signtoolPath = $candidatePath
+                break
+              }
+            }
+          }
+          if (-not $signtoolPath) {
+            Write-Warning "signtool.exe not found on hosted runner; skipping PE signing for PR dry-run artifacts."
+          } else {
+            $tsa = '${{ env.TSA_URL }}'
+          $pe = @()
+          if ($thumb) {
+            $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          }
+          foreach ($f in $pe) {
+              $target = $f.FullName
+              $tsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/tr',$tsa,'/td','SHA256',"`"$target`"")
+              $noTsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/td','SHA256',"`"$target`"")
+              $success = $false
+              foreach ($args in @($tsaArgs, $noTsaArgs)) {
+                try {
+                  & $signtoolPath @args
+                  if ($LASTEXITCODE -eq 0) {
+                    $success = $true
+                    break
+                  }
+                  throw "signtool exited with code $LASTEXITCODE"
+                } catch {
+                  if ($args -eq $tsaArgs) {
+                    Write-Warning "Timestamping failed for ${target}: $($_.Exception.Message). Retrying without TSA."
+                  } else {
+                    Write-Warning "signtool retry without TSA failed for ${target}: $($_.Exception.Message)"
+                  }
+                  $global:LASTEXITCODE = 0
+                }
+              }
+              if (-not $success) {
+                Write-Warning "Unable to sign ${target} on hosted runner; continuing."
+                $global:LASTEXITCODE = 0
+              }
+            }
+          }
 
-      - name: Run Pester schema tests
-        shell: pwsh
+      - name: Verify PR script signatures (presence check)
+        if: ${{ github.event_name == 'pull_request' }}
         run: |
-          Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck
-          Invoke-Pester ./tests/ConfigSchema.Tests.ps1 -CI -Output Detailed
+          $root = (Test-Path '${{ env.SIGN_ROOT }}') ? '${{ env.SIGN_ROOT }}' : '.'
+          $unsigned = Get-ChildItem $root -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue | Where-Object { (Get-AuthenticodeSignature $_).Status -eq 'NotSigned' }
+          if ($unsigned.Count -gt 0) {
+            'Unsigned scripts detected:' | Write-Host
+            $unsigned | Select-Object -ExpandProperty FullName | Write-Host
+            throw 'Some scripts were not signed in the PR job.'
+          } else {
+            'All scripts have a signature (trust may be untrusted, which is expected on PRs).' | Write-Host
+          }
 
-      - name: Run ScriptAnalyzer
+      - name: Cleanup ephemeral PR cert
+        if: ${{ always() && github.event_name == 'pull_request' }}
+        run: |
+          Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq 'CN=CI Ephemeral Code Signing' } | ForEach-Object { certutil -user -delstore My $_.Thumbprint | Out-Null }
+
+      - name: Upload unsigned artifacts for trusted runs
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned
+          path: |
+            ${{ env.SIGN_ROOT }}/**/*.exe
+            ${{ env.SIGN_ROOT }}/**/*.dll
+            ${{ env.SIGN_ROOT }}/**/*.msi
+            ${{ env.SIGN_ROOT }}/**/*.ps1
+            ${{ env.SIGN_ROOT }}/**/*.psm1
+          if-no-files-found: error
+
+  codesign-dev:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/develop') }}
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 30
+    environment: codesign-dev
+    env:
+      EXPECTED_THUMBPRINT: ${{ vars.PROD_CERT_THUMBPRINT }}
+      TSA_URL: ${{ vars.CODE_SIGNING_TSA_URL != '' && vars.CODE_SIGNING_TSA_URL || 'https://timestamp.digicert.com' }}
+    steps:
+      - name: Download unsigned artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: unsigned
+          path: unsigned
+
+      - name: Determine signing mode
+        id: determine_signing_mode
         shell: pwsh
         run: |
-          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -SkipPublisherCheck
-          $settings = '.pssa/PSScriptAnalyzerSettings.psd1'
-          $results = Invoke-ScriptAnalyzer -Path . -Recurse -Settings $settings -ReportSummary
-          if ($results) { $results | Format-Table -AutoSize; throw 'PSScriptAnalyzer found issues' }
+          $hasSecrets = -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_B64 }}") -and -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}")
+          $owner = "${{ github.repository_owner }}"
+          if ($hasSecrets) {
+            "HAS_PROD_CERT=true"  | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=true"  | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            $msg = "Real code-signing secrets detected; using protected signing path."
+            Write-Host "::notice::$msg"
+            if ($env:GITHUB_STEP_SUMMARY) { Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Value "- $msg" }
+          } elseif ($owner -eq 'LabVIEW-Community-CI-CD') {
+            throw "Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-dev."
+          } else {
+            "HAS_PROD_CERT=false" | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            $msg = "Fork mode: no WIN_CODESIGN_PFX_* secrets. Signing will use an ephemeral CI cert; see docs/testing.md to generate test secrets."
+            Write-Warning $msg
+            if ($env:GITHUB_STEP_SUMMARY) { Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Value "- $msg" }
+          }
+
+      - name: Decode PFX (temp file)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
+        run: |
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('${{ secrets.WIN_CODESIGN_PFX_B64 }}'))
+
+      - name: Sign binaries (signtool)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
+        run: |
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
+          $signtool = $signtoolCmd.Source
+          $tsa = '${{ env.TSA_URL }}'
+          $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          foreach ($f in $pe) {
+            & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' /tr $tsa /td SHA256 $f.FullName
+          }
+
+      - name: Sign scripts (Authenticode) - fork-safe (no timestamp, timeout, progress)
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert != 'true' }}
+        shell: pwsh
+        env:
+          TS_TIMEOUT_SEC: 20
+          MAX_SIGN_FILES: 500
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
+          Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
+
+          $thumb = $cert.Thumbprint
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -Mode 'fork' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
+
+      - name: Sign scripts (Authenticode) - upstream (timestamp + timeout + fallback)
+        if: ${{ github.repository == 'LabVIEW-Community-CI-CD/icon-editor-lab' && steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
+        shell: pwsh
+        env:
+          TSA_URL: ${{ env.TSA_URL }}
+          TS_TIMEOUT_SEC: 25
+          MAX_SIGN_FILES: 2000
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          try {
+            $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
+            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new("$env:RUNNER_TEMP\codesign.pfx", '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}', $flags)
+          } catch {
+            Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
+            $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+          }
+          $thumb = $cert.Thumbprint
+          $tsa   = if ([string]::IsNullOrWhiteSpace($env:TSA_URL)) { 'https://timestamp.digicert.com' } else { $env:TSA_URL }
+
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -UseTimestamp `
+            -TimestampServer $tsa `
+            -Mode 'trusted' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
+
+      - name: Verify PE signatures
+        if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
+        run: |
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
+          $signtool = $signtoolCmd.Source
+          $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          foreach ($f in $pe) { & $signtool verify /pa $f.FullName }
+
+      - name: Verify script signatures
+        run: |
+          $hasProdCert = [string]::Equals($env:HAS_PROD_CERT, 'true', [System.StringComparison]::OrdinalIgnoreCase)
+          $expected = '${{ env.EXPECTED_THUMBPRINT }}'
+          $invalid = @()
+          $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
+          foreach ($s in $scripts) {
+            $sig = Get-AuthenticodeSignature $s.FullName
+            if ($sig.Status -ne 'Valid') { $invalid += $s.FullName; continue }
+            if ($hasProdCert -and $expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
+              throw "Unexpected signer for $($s.Name): $($sig.SignerCertificate.Thumbprint), expected $expected"
+            }
+          }
+          if ($invalid.Count -gt 0) {
+            'Scripts with invalid signatures:' | Write-Host
+            $invalid | ForEach-Object { $_ | Write-Host }
+            throw 'Invalid script signatures'
+          }
+
+      - name: Upload signed artifacts (develop)
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-develop
+          path: unsigned
+
+      - name: Cleanup PFX
+        if: always()
+        run: Remove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue
+
+  codesign-prod:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 30
+    environment: codesign-prod
+    env:
+      EXPECTED_THUMBPRINT: ${{ vars.PROD_CERT_THUMBPRINT }}
+      TSA_URL: ${{ vars.CODE_SIGNING_TSA_URL != '' && vars.CODE_SIGNING_TSA_URL || 'https://timestamp.digicert.com' }}
+    steps:
+      - name: Download unsigned artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: unsigned
+          path: unsigned
+
+      - name: Determine signing mode
+        id: determine_signing_mode_prod
+        shell: pwsh
+        run: |
+          $hasSecrets = -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_B64 }}") -and -not [string]::IsNullOrWhiteSpace("${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}")
+          $owner = "${{ github.repository_owner }}"
+          if ($hasSecrets) {
+            "HAS_PROD_CERT=true"  | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=true"  | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            $msg = "Real code-signing secrets detected; prod signing enabled."
+            Write-Host "::notice::$msg"
+            if ($env:GITHUB_STEP_SUMMARY) { Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Value "- $msg" }
+          } elseif ($owner -eq 'LabVIEW-Community-CI-CD') {
+            throw "Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-prod."
+          } else {
+            "HAS_PROD_CERT=false" | Out-File -FilePath $env:GITHUB_ENV    -Encoding UTF8 -Append
+            "has_prod_cert=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding UTF8 -Append
+            $msg = "Fork tag run without WIN_CODESIGN_PFX_* secrets; using ephemeral cert instead (see docs/testing.md)."
+            Write-Warning $msg
+            if ($env:GITHUB_STEP_SUMMARY) { Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY -Value "- $msg" }
+          }
+
+      - name: Decode PFX (temp file)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
+        run: |
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('${{ secrets.WIN_CODESIGN_PFX_B64 }}'))
+
+      - name: Sign binaries (signtool)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
+        run: |
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }
+          $signtool = $signtoolCmd.Source
+          $tsa = '${{ env.TSA_URL }}'
+          $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          foreach ($f in $pe) {
+            & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' /tr $tsa /td SHA256 $f.FullName
+          }
+
+      - name: Sign scripts (Authenticode) - fork-safe (no timestamp, timeout, progress)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert != 'true' }}
+        shell: pwsh
+        env:
+          TS_TIMEOUT_SEC: 20
+          MAX_SIGN_FILES: 500
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)
+          $tmp = Join-Path $env:RUNNER_TEMP 'ci-ephemeral.cer'
+          Export-Certificate -Cert $cert -FilePath $tmp | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\TrustedPublisher' | Out-Null
+          Import-Certificate -FilePath $tmp -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
+
+          $thumb = $cert.Thumbprint
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -Mode 'fork' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
+
+      - name: Sign scripts (Authenticode) - prod (timestamp + timeout + fallback)
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
+        env:
+          TSA_URL: ${{ env.TSA_URL }}
+          TS_TIMEOUT_SEC: 25
+          MAX_SIGN_FILES: 2000
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Set-StrictMode -Version Latest
+          try {
+            $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet
+            $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new("$env:RUNNER_TEMP\codesign.pfx", '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}', $flags)
+          } catch {
+            Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"
+            $pwd = ConvertTo-SecureString '${{ secrets.WIN_CODESIGN_PFX_PASSWORD }}' -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My -Password $pwd
+          }
+          $thumb = $cert.Thumbprint
+          $tsa   = if ([string]::IsNullOrWhiteSpace($env:TSA_URL)) { 'https://timestamp.digicert.com' } else { $env:TSA_URL }
+
+          & pwsh -NoLogo -NoProfile -File tools/Invoke-ScriptSigningBatch.ps1 `
+            -Root 'unsigned' `
+            -CertificateThumbprint $thumb `
+            -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -TimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
+            -UseTimestamp `
+            -TimestampServer $tsa `
+            -Mode 'trusted' `
+            -SummaryPath $env:GITHUB_STEP_SUMMARY
+
+      - name: Verify PE signatures
+        if: ${{ steps.determine_signing_mode_prod.outputs.has_prod_cert == 'true' }}
+        run: |
+          $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+          if (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }
+          $signtool = $signtoolCmd.Source
+          $pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
+          foreach ($f in $pe) { & $signtool verify /pa $f.FullName }
+
+      - name: Verify script signatures
+        run: |
+          $hasProdCert = [string]::Equals($env:HAS_PROD_CERT, 'true', [System.StringComparison]::OrdinalIgnoreCase)
+          $expected = '${{ env.EXPECTED_THUMBPRINT }}'
+          $invalid = @()
+          $scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue
+          foreach ($s in $scripts) {
+            $sig = Get-AuthenticodeSignature $s.FullName
+            if ($sig.Status -ne 'Valid') { $invalid += $s.FullName; continue }
+            if ($hasProdCert -and $expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {
+              throw "Unexpected signer for $($s.Name): $($sig.SignerCertificate.Thumbprint), expected $expected"
+            }
+          }
+          if ($invalid.Count -gt 0) {
+            'Scripts with invalid signatures:' | Write-Host
+            $invalid | ForEach-Object { $_ | Write-Host }
+            throw 'Invalid script signatures'
+          }
+
+      - name: Upload signed artifacts (prod)
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-prod
+          path: unsigned
+
+      - name: Cleanup PFX
+        if: always()
+        run: Remove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue

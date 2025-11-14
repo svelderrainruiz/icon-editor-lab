@@ -1,6 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
 <#!
 .SYNOPSIS
   Follow a metrics snapshots NDJSON file produced by -MetricsSnapshotPath and pretty-print selected fields.
@@ -20,11 +17,15 @@ $PSModuleAutoLoadingPreference = 'None'
 .EXAMPLE
   pwsh -File ./tools/Tail-Snapshots.ps1 -Path snapshots.ndjson -PercentileKeys p50,p90,p99
 #>
-[CmdletBinding()]param(
+[CmdletBinding()]
+param(
   [Parameter(Mandatory)][string]$Path,
   [double]$IntervalSeconds = 1.5,
   [string]$PercentileKeys
 )
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw "Snapshot file not found: $Path" }

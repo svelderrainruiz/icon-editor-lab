@@ -21,7 +21,7 @@ ensuring the following relative paths exist:
 
 - `tools/**` – PowerShell modules and scripts
 - `configs/**` – dev-mode/VI Analyzer policy files
-- `vendor/icon-editor/**` – LabVIEW project + fixture assets
+- `vendor/labview-icon-editor/**` – LabVIEW project + fixture assets
 - `docs/LVCOMPARE_LAB_PLAN.md` (and related operational docs)
 
 Advantages:
@@ -35,7 +35,7 @@ Advantages:
 Reference this repository directly inside `compare-vi-cli-action`, e.g.:
 
 ```bash
-git submodule add https://github.com/svelderrainruiz/icon-editor-lab vendor/icon-editor-lab
+git submodule add https://github.com/svelderrainruiz/icon-editor-lab vendor/labview-icon-editor-lab
 ```
 
 Ensure build scripts add the submodule path to `$env:PSModulePath` (or use
@@ -54,3 +54,23 @@ but adds extra clone time and requires submodule syncs.
 
 Track the currently deployed artifact/submodule commit in the downstream repo so
 we can reason about upgrades and breaking changes.
+
+## 3. Downstream local-CI handshake (self-hosted)
+
+Fork owners who run their own Windows pipeline should reproduce the Ubuntu→Windows handshake that upstream enforces:
+
+1. Run `local-ci/ubuntu/invoke-local-ci.sh` in CI to generate `out/local-ci-ubuntu/<stamp>` and `latest.json`.
+2. Upload that directory as an artifact (`ubuntu-local-ci-<stamp>` is the convention used in `.github/workflows/local-ci-handshake.yml`).
+3. Before the Windows job executes, download the artifact, copy it back to `out/local-ci-ubuntu/<stamp>` inside the workspace, and set `LOCALCI_IMPORT_UBUNTU_RUN` to the restored `ubuntu-run.json`.
+4. Invoke `local-ci/windows/Invoke-LocalCI.ps1` (all stages or targeted ones) so Stage 10 automatically imports the Ubuntu payload before VI compare logic runs.
+
+You can scaffold the workflow into any fork with:
+
+```powershell
+pwsh -File local-ci/scripts/New-HandshakeWorkflow.ps1 `
+  -TargetRepoRoot C:\src\my-fork `
+  -WindowsRunsOn '[self-hosted, windows]'
+```
+
+That script copies `.github/workflows/local-ci-handshake.yml` into the target repo and, when `-WindowsRunsOn` is supplied, rewrites the Windows job to use your self-hosted label.
+

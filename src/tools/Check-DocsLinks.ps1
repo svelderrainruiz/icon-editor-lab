@@ -104,6 +104,7 @@ $missing = @(); $badHttp = @()
 
 foreach ($f in $md) {
   $text = Get-Content -LiteralPath $f.FullName -Raw
+  if (-not $text) { continue }
   # crude link extraction: [label](target)
   $matches = [regex]::Matches($text, '\[[^\]]+\]\(([^)]+)\)')
   foreach ($m in $matches) {
