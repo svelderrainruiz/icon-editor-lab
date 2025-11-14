@@ -7,6 +7,7 @@ import json
 import os
 import sys
 import urllib.request
+from urllib.error import HTTPError, URLError
 from typing import Iterable, List, Sequence
 
 
@@ -47,7 +48,9 @@ def request_runners(repo: str, token: str, api_url: str) -> List[dict]:
                 data = json.load(response)
                 runners.extend(data.get("runners", []))
                 link_header = response.headers.get("Link")
-        except Exception as exc:  # noqa: BLE001
+        except HTTPError:
+            raise
+        except URLError as exc:
             emit_error(f"Failed to query runner inventory: {exc}")
         next_url = None
         if link_header:
@@ -78,7 +81,12 @@ def format_inventory(runners: Iterable[dict]) -> Sequence[str]:
     return lines
 
 
-def write_summary(required_labels: Sequence[str], matches: Sequence[str], inventory: Sequence[str]) -> None:
+def write_summary(
+    required_labels: Sequence[str],
+    matches: Sequence[str],
+    inventory: Sequence[str],
+    note: str | None = None,
+) -> None:
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if not summary_path:
         return
@@ -91,6 +99,8 @@ def write_summary(required_labels: Sequence[str], matches: Sequence[str], invent
         lines.append(f"- Matching online runners: {', '.join(sorted(matches))}")
     else:
         lines.append("- Matching online runners: <none>")
+    if note:
+        lines.append(f"- Note: {note}")
     if inventory:
         lines.append("")
         lines.append("Runner inventory snapshot:")
@@ -111,7 +121,18 @@ def main() -> None:
         emit_error("GITHUB_REPOSITORY is missing.")
     api_url = os.environ.get("GITHUB_API_URL", "https://api.github.com").rstrip("/")
 
-    runners = request_runners(repo, token, api_url)
+    try:
+        runners = request_runners(repo, token, api_url)
+    except HTTPError as exc:
+        if exc.code == 403:
+            note = (
+                "Runner inventory API returned 403 (insufficient privileges); "
+                "skipping coverage enforcement."
+            )
+            print(f"::warning::{note}")
+            write_summary(labels, [], [], note)
+            return
+        emit_error(f"Failed to query runner inventory: HTTP {exc.code}")
     matches: List[str] = []
     for runner in runners:
         if runner.get("status") != "online":
