@@ -109,7 +109,12 @@ jobs:
             $tsa = '${{ env.TSA_URL }}'
             $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
             foreach ($f in $pe) {
-              & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+              try {
+                & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+              } catch {
+                Write-Warning "Timestamping failed for $($f.FullName): $($_.Exception.Message). Retrying without TSA."
+                & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /td SHA256 $f.FullName
+              }
             }
           }
 
