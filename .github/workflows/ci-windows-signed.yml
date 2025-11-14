@@ -107,13 +107,31 @@ jobs:
             Write-Warning "signtool.exe not found on hosted runner; skipping PE signing for PR dry-run artifacts."
           } else {
             $tsa = '${{ env.TSA_URL }}'
+            function Invoke-SignTool {
+              param(
+                [string]$Path,
+                [string[]]$Args
+              )
+              & $Path @Args
+              if ($LASTEXITCODE -ne 0) {
+                $msg = "signtool exited with code $LASTEXITCODE for $($Args[-1])"
+                throw $msg
+              }
+            }
             $pe = Get-ChildItem $root -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue
             foreach ($f in $pe) {
+              $target = $f.FullName
+              $tsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/tr',$tsa,'/td','SHA256',$target)
               try {
-                & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /tr $tsa /td SHA256 $f.FullName
+                Invoke-SignTool -Path $signtoolPath -Args $tsaArgs
               } catch {
-                Write-Warning "Timestamping failed for $($f.FullName): $($_.Exception.Message). Retrying without TSA."
-                & $signtoolPath sign /fd SHA256 /sm /sha1 $thumb /td SHA256 $f.FullName
+                Write-Warning "Timestamping failed for $target: $($_.Exception.Message). Retrying without TSA."
+                $noTsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/td','SHA256',$target)
+                try {
+                  Invoke-SignTool -Path $signtoolPath -Args $noTsaArgs
+                } catch {
+                  Write-Warning "signtool retry without TSA failed for $target: $($_.Exception.Message)"
+                }
               }
             }
           }
