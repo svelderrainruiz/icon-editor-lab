@@ -1,0 +1,37 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251112T225154616",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "startedAt": "2025-11-12T22:51:54.6152385-08:00",
+  "status": "failed",
+  "error": "A positional parameter cannot be found that accepts argument 'System.Object[]'.",
+  "completedAt": "2025-11-12T22:52:06.6132898-08:00",
+  "durationSeconds": 12.0,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-12T22:51:54.6355076-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-12T22:51:54.6598309-08:00",
+      "durationSeconds": 0.02
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-12T22:51:54.6713448-08:00",
+      "status": "failed",
+      "error": "A positional parameter cannot be found that accepts argument 'System.Object[]'.",
+      "endedAt": "2025-11-12T22:52:06.6108304-08:00",
+      "durationSeconds": 11.94
+    }
+  ]
+}

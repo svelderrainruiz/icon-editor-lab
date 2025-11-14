@@ -1,0 +1,13 @@
+{
+  "schema": "labview-cli/session@v1",
+  "label": "stage-25",
+  "startedAt": "2025-11-14T01:02:02.8065818+00:00",
+  "stoppedAt": "2025-11-14T01:03:21.1890177+00:00",
+  "durationSeconds": 78.382,
+  "paths": {
+    "sessionRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-170202\\labview-cli\\stage-25-20251113170202796",
+    "resultsRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-170202\\labview-cli\\stage-25-20251113170202796\\tests\\results",
+    "noticeDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-170202\\labview-cli\\stage-25-20251113170202796\\notice"
+  },
+  "artifacts": {}
+}

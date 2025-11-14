@@ -1,0 +1,34 @@
+{
+  "name": "local-ci-statusbar",
+  "displayName": "Local CI Status Bar",
+  "description": "Adds status bar buttons to run Local CI dev-mode tasks (enable/disable/toggle).",
+  "version": "0.0.1",
+  "publisher": "workspace",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:localci.enableDevMode",
+    "onCommand:localci.disableDevMode",
+    "onCommand:localci.toggleDevMode"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "localci.enableDevMode",
+        "title": "Local CI: Enable Dev Mode"
+      },
+      {
+        "command": "localci.disableDevMode",
+        "title": "Local CI: Disable Dev Mode"
+      },
+      {
+        "command": "localci.toggleDevMode",
+        "title": "Local CI: Toggle Dev Mode"
+      }
+    ]
+  }
+}
+

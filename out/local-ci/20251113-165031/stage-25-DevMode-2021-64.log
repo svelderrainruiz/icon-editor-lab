@@ -1,0 +1,34 @@
+**********************
+PowerShell transcript start
+Start time: 20251113165031
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File C:\codex\home\runner\work\icon-editor-lab\local-ci\windows\Invoke-LocalCI.ps1 -ConfigPath C:\Users\svelderr\AppData\Local\Temp\icon-editor-lab\profile.debug.5a9ba368a5fb470ab24fde5862ccebbe.psd1 -OnlyStages 25
+Process ID: 23208
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] Targeting LabVIEW plan entry 2021-64 (Version=2021, Bitness=64)
+[25-DevMode] LabVIEW CLI session root: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-165031\labview-cli\stage-25-20251113165031652
+[25-DevMode] LabVIEW CLI session metadata: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-165031\labview-cli\stage-25-20251113165031652\session.json
+[25-DevMode] DevModeDisableAtEnd=True; deferring disable to Stage 55 (DevModeCleanup).
+[25-DevMode] Auto-vendoring icon editor workspace...
+Resolve-Path: C:\codex\home\runner\work\icon-editor-lab\local-ci\windows\scripts\Sync-IconEditorVendor.ps1:18:17
+Line |
+  18 |  .       return (Resolve-Path -LiteralPath $Path -ErrorAction Stop).Path
+     |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find path 'C:\codex\home\runner\work\icon-editor-lab vendor icon-editor' because it does not exist.
+WARNING: [25-DevMode] Icon editor vendor checkout not found (expected under C:\codex\home\runner\work\icon-editor-lab vendor icon-editor); skipping dev-mode stage.
+**********************
+PowerShell transcript end
+End time: 20251113165032
+**********************

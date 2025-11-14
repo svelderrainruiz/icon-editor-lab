@@ -1,0 +1,30 @@
+**********************
+PowerShell transcript start
+Start time: 20251113134141
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci\windows\Invoke-LocalCI.ps1
+Process ID: 40464
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] LabVIEW CLI session root: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\labview-cli\stage-25-20251113134141666
+[25-DevMode] LabVIEW CLI session metadata: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\labview-cli\stage-25-20251113134141666\session.json
+[25-DevMode] Ensuring no rogue LabVIEW instances are running before enabling dev mode...
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+
+PS>TerminatingError(): "[25-DevMode][DMO200] Enable-DevMode.ps1 exited with code 1. See stage log and rogue details under C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\devmode\rogue. Latest rogue log: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\devmode\rogue\rogue-lv-close-labview-20251113T134243392.json"
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 25-DevMode failed: [25-DevMode][DMO200] Enable-DevMode.ps1 exited with code 1. See stage log and rogue details under C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\devmode\rogue. Latest rogue log: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-134139\devmode\rogue\rogue-lv-close-labview-20251113T134243392.json"
+**********************
+PowerShell transcript end
+End time: 20251113134244
+**********************

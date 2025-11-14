@@ -1,0 +1,17 @@
+﻿2025-11-12T19:24:52.6479802Z ##[group]Run $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+2025-11-12T19:24:52.6480534Z [36;1m$signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:52.6481080Z [36;1mif (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }[0m
+2025-11-12T19:24:52.6481503Z [36;1m$signtool = $signtoolCmd.Source[0m
+2025-11-12T19:24:52.6481824Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:24:52.6482272Z [36;1m$pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:52.6482717Z [36;1mforeach ($f in $pe) {[0m
+2025-11-12T19:24:52.6483391Z [36;1m  & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '***[0m
+2025-11-12T19:24:52.6483769Z [36;1m' /tr $tsa /td SHA256 $f.FullName[0m
+2025-11-12T19:24:52.6483994Z [36;1m}[0m
+2025-11-12T19:24:52.6555926Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:52.6556402Z env:
+2025-11-12T19:24:52.6556620Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:52.6556888Z   SIGN_ROOT: out
+2025-11-12T19:24:52.6557084Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:52.6557270Z ##[endgroup]
+2025-11-12T19:24:53.6232373Z signtool.exe not found; skipping PE signing.

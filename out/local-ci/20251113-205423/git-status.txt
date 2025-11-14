@@ -1,0 +1,117 @@
+ M .github/workflows/local-ci-handshake.yml
+ M .vscode/tasks.json
+ M docs/local-ci-runner.md
+ M local-ci/ubuntu/config.yaml
+ M local-ci/windows/scripts/Import-UbuntuRun.psm1
+ M scripts/Test-Signing.ps1
+ M src/AGENTS.md
+ M src/Invoke-PesterTests.ps1
+ M src/configs/vi-analyzer/missing-in-project.viancfg
+ M src/docs/LVCOMPARE_LAB_PLAN.md
+ M src/docs/VI_COMPARE_SMOKE.md
+ M src/docs/requirements/Icon-Editor-Lab_RTM.csv
+ M src/tests/IconEditorDevMode.Stability.Tests.ps1
+ M src/tests/IconEditorDevMode.Tests.ps1
+ M src/tests/IconEditorPackaging.Smoke.Tests.ps1
+ M src/tests/Invoke-VIAnalyzer.Tests.ps1
+ M src/tests/Prepare-LabVIEWHost.Tests.ps1
+ M src/tests/Stage-IconEditorSnapshot.Tests.ps1
+ M src/tests/tools/Tools.Loader.ps1
+ M src/tests/tools/Tools.ShouldProcess.Help.Tests.ps1
+ M src/tools/Detect-RogueLV.ps1
+ M src/tools/Force-CloseLabVIEW.ps1
+ M src/tools/LabVIEWCli.psm1
+ M src/tools/README.md
+ M src/tools/_docs/Assert-DevModeState.ps1.md
+ M src/tools/_docs/Disable-DevMode.ps1.md
+ M src/tools/_docs/Enable-DevMode.ps1.md
+ M src/tools/_docs/Find-VIComparisonCandidates.ps1.md
+ M src/tools/_docs/IconEditorDevMode.psm1.md
+ M src/tools/_docs/IconEditorPackage.psm1.md
+ M src/tools/_docs/Inspect-MissingProjectItems.ps1.md
+ M src/tools/_docs/Invoke-IconEditorBuild.ps1.md
+ M src/tools/_docs/Invoke-VIAnalyzer.ps1.md
+ M src/tools/_docs/Invoke-VipmCliBuild.ps1.md
+ M src/tools/_docs/Prepare-VipViDiffRequests.ps1.md
+ M src/tools/_docs/Reset-IconEditorWorkspace.ps1.md
+ M src/tools/_docs/Run-MipLunit-2021x64.ps1.md
+ M src/tools/_docs/Run-MipLunit-2023x64.ps1.md
+ M src/tools/_docs/Run-VICompareSample.ps1.md
+ M src/tools/_docs/Simulate-IconEditorBuild.ps1.md
+ M src/tools/_docs/Stage-IconEditorSnapshot.ps1.md
+ M src/tools/_docs/Sync-IconEditorFork.ps1.md
+ M src/tools/_docs/Update-IconEditorFixtureReport.ps1.md
+ M src/tools/_docs/bootstrap.ps1.md
+ M src/tools/_docs/render-ci-composite.ps1.md
+ M src/tools/compare/Find-VIComparisonCandidates.ps1
+ M src/tools/icon-editor/Disable-DevMode.ps1
+ M src/tools/icon-editor/Enable-DevMode.ps1
+ M src/tools/icon-editor/IconEditorDevMode.psm1
+ M src/tools/icon-editor/Invoke-MissingInProjectSuite.ps1
+ M src/tools/icon-editor/Invoke-VIAnalyzer.ps1
+ M src/tools/icon-editor/Invoke-ValidateLocal.ps1
+ M src/tools/icon-editor/Prepare-LabVIEWHost.ps1
+ M src/tools/icon-editor/Prepare-VipViDiffRequests.ps1
+ M src/tools/icon-editor/Run-MipLunit-2021x64.ps1
+ M src/tools/icon-editor/Run-MipLunit-2023x64.ps1
+ M src/tools/icon-editor/Simulate-IconEditorBuild.ps1
+ M src/tools/icon-editor/Stage-IconEditorSnapshot.ps1
+ M src/tools/icon-editor/Sync-IconEditorFork.ps1
+ M src/tools/icon-editor/VipmDependencyHelpers.psm1
+ M src/tools/priority/validate-semver.mjs
+ M src/tools/workflows/render-ci-composite.ps1
+ M tools/Invoke-ScriptSigningBatch.ps1
+?? -
+?? .markdownlint.jsonc
+?? .vscode/extensions.json
+?? .vscode/launch.json
+?? Directory.Build.props
+?? icon-editor-lab.sln
+?? local-ci-handshake-starter-kit.zip
+?? local-ci-handshake-starter-kit/
+?? local-ci/out/
+?? local-ci/windows/scripts/Provision-LocalRunner.ps1
+?? logs-19309030616.zip
+?? logs-19309030616/
+?? logs-19309097331.zip
+?? logs-19309097331/
+?? logs-19309189887.zip
+?? logs-19309189887/
+?? logs-19309288834.zip
+?? logs-19309288834/
+?? logs-19309378735.zip
+?? logs-19309378735/
+?? out/
+?? package-lock.json
+?? package.json
+?? run-19307500270.zip
+?? run-19308748881-build.log
+?? run-19308784941-build.log
+?? run-19308841472-codesign-dev-full.log
+?? run-19308841472-codesign-dev.log
+?? run-19308900335-codesign-dev.log
+?? run-19308970881-codesign-dev.log
+?? run-19309030616-codesign-dev.log
+?? run_local_ci_windows.cmd
+?? scripts/__pycache__/
+?? src/CompareVi.Shared/
+?? src/CompareVi.Tools.Cli/
+?? src/tests/Detect-RogueLV.Tests.ps1
+?? src/tests/IconEditorRogueCheck.Tests.ps1
+?? src/tools/dev/
+?? src/tools/priority/show-router.mjs
+?? temp.ps1
+?? temp_dev_mode.ps1
+?? temp_head.txt
+?? temp_tail.txt
+?? tests/local-ci/
+?? tests/out/
+?? tests/results/
+?? tests/scripts/
+?? tests/tools/
+?? tools/Verify-SemverBundle.ps1
+?? tools/templates/
+?? tsconfig.cli.json
+?? vendor/
+?? vscode/
+?? wf.yml

@@ -1,0 +1,259 @@
+{
+  "schema": "icon-editor/vi-analyzer@v1",
+  "label": "Test error out",
+  "configPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+  "configSourcePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\src\\configs\\vi-analyzer\\missing-in-project.viancfg",
+  "reportPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-20251113-004909\\vi-analyzer-report.txt",
+  "reportFormat": "ASCII",
+  "resultsPath": "",
+  "runDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-20251113-004909",
+  "outputRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer",
+  "cliPath": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+  "exitCode": 3,
+  "labviewVersion": 2021,
+  "bitness": 64,
+  "timestamp": "2025-11-13T00:51:33.0010413-08:00",
+  "brokenViCount": 0,
+  "brokenViNames": [],
+  "failureCount": 0,
+  "brokenVis": [],
+  "failures": [],
+  "analyzerExitCode": 3,
+  "testFailureExitCode": 3,
+  "versionMismatchCount": 0,
+  "versionMismatches": [],
+  "stdout": "LabVIEWCLI started logging in file:  C:\\Users\\svelderr\\AppData\\Local\\Temp\\lvtemporary_220912.log\r\nUsing LabVIEW: \"C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.exe\"\r\nLabVIEW launched successfully.\r\nConnection established with LabVIEW at port number 3365.\r\n\r\n",
+  "stderr": "Operation output: \r\nVI Analyzer completed.\r\n595 tests passed.\r\n29 tests failed.\r\n0 tests skipped.\r\n0 VIs were unloadable.\r\n0 tests were unloadable.\r\n0 tests were unrunable.\r\n0 tests produced error.\r\n\r\nPlease find the full report at \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-20251113-004909\\vi-analyzer-report.txt\".\r\nRunVIAnalyzer operation failed.\r\n\r\n",
+  "cliLogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-20251113-004909\\vi-analyzer-cli.log",
+  "failedTestsByVi": [
+    {
+      "viName": "Test Missing VIs.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing VIs.vi",
+      "tests": [
+        {
+          "test": "Auto Error Handling Enabled",
+          "details": "This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.",
+          "vi": "Test Missing VIs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing VIs.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "Test Missing VIs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing VIs.vi"
+        }
+      ]
+    },
+    {
+      "viName": "Test Missing PPLs.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi",
+      "tests": [
+        {
+          "test": "Auto Error Handling Enabled",
+          "details": "This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.",
+          "vi": "Test Missing PPLs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi"
+        },
+        {
+          "test": "Spell Check",
+          "details": "This VI has the following misspellings:  \"PPLs\" (name) \"PPLs\" (description)",
+          "vi": "Test Missing PPLs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi"
+        },
+        {
+          "test": "Comment Usage",
+          "details": "This block diagram contains fewer than 1 comment.",
+          "vi": "Test Missing PPLs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This String wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "Test Missing PPLs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "Test Missing PPLs.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing PPLs.vi"
+        }
+      ]
+    },
+    {
+      "viName": "MissingInProject.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi",
+      "tests": [
+        {
+          "test": "Control Alignment",
+          "details": "The controls on this VI's front panel are not arranged in a manner similar to their locations on the connector pane (right).  A VI is more self-documenting when its front panel arrangement matches that of its connector pane.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "VI Documentation",
+          "details": "This VI has no VI Description.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "Spell Check",
+          "details": "This VI contains the misspelled word \"MissingInProject\" in its name.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "Comment Usage",
+          "details": "This block diagram contains fewer than 1 comment.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "Wire Crossings",
+          "details": "This wire has 6 crossing(s)  which is more than the user specified maximum (5). The test was configured with 3 maximum fixed number of crossings and 2 maximum number of crossings per sink.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This Path wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "MissingInProject.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProject.vi"
+        }
+      ]
+    },
+    {
+      "viName": "MissingInProjectCLI.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi",
+      "tests": [
+        {
+          "test": "Diagram Size",
+          "details": "The Block Diagram width (1027 pixels) exceeds the user-specified maximum (1024 pixels).",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Auto Error Handling Enabled",
+          "details": "This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Spell Check",
+          "details": "This VI contains the misspelled word \"MissingInProjectCLI\" in its name.",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Comment Usage",
+          "details": "This block diagram contains fewer than 1 comment.",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Error Cluster Wired",
+          "details": "The error output of this Invoke Node is not wired.  In order to facilitate effective error handling, you should usually wire the error output on block diagram objects.",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This I32 wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This Boolean wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "MissingInProjectCLI.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\MissingInProjectCLI.vi"
+        }
+      ]
+    },
+    {
+      "viName": "Test Missing Classes.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Classes.vi",
+      "tests": [
+        {
+          "test": "Auto Error Handling Enabled",
+          "details": "This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.",
+          "vi": "Test Missing Classes.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Classes.vi"
+        },
+        {
+          "test": "Comment Usage",
+          "details": "This block diagram contains fewer than 1 comment.",
+          "vi": "Test Missing Classes.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Classes.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This String wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "Test Missing Classes.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Classes.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "Test Missing Classes.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Classes.vi"
+        }
+      ]
+    },
+    {
+      "viName": "Test Missing Libraries.vi",
+      "viPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Libraries.vi",
+      "tests": [
+        {
+          "test": "Auto Error Handling Enabled",
+          "details": "This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.",
+          "vi": "Test Missing Libraries.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Libraries.vi"
+        },
+        {
+          "test": "Comment Usage",
+          "details": "This block diagram contains fewer than 1 comment.",
+          "vi": "Test Missing Libraries.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Libraries.vi"
+        },
+        {
+          "test": "Wire Bends",
+          "details": "This String wire has a segment that is less than the user-specified minimum pixel length (3).",
+          "vi": "Test Missing Libraries.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Libraries.vi"
+        },
+        {
+          "test": "Enabled Debugging",
+          "details": "This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI.",
+          "vi": "Test Missing Libraries.vi",
+          "path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project\\Test Missing Libraries.vi"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "failedTests": 29,
+    "testsNotRunnable": 0,
+    "testsErrorOut": 0,
+    "totalTests": 624,
+    "visNotLoadable": 0,
+    "passedTests": 595,
+    "visAnalyzed": 6,
+    "skippedTests": 0,
+    "testsNotLoadable": 0
+  },
+  "summaryPrinted": true,
+  "devModeLikelyDisabled": true
+}

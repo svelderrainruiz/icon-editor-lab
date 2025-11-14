@@ -78,6 +78,7 @@ exit 0
     $result = & $script:scriptPath `
       -ConfigPath $configPath `
       -OutputRoot $outputRoot `
+      -LabVIEWVersion 2024 `
       -LabVIEWCLIPath $stubLauncher `
       -CaptureResultsFile `
       -PassThru
@@ -147,6 +148,7 @@ exit 0
     $result = & $script:scriptPath `
       -ConfigPath $configPath `
       -OutputRoot $outputRoot `
+      -LabVIEWVersion 2024 `
       -ReportSaveType 'HTML' `
       -CaptureResultsFile `
       -LabVIEWCLIPath $optionsLauncher `
@@ -161,6 +163,51 @@ exit 0
     (Get-Content -LiteralPath $cliLog -Raw) | Should -Match '-ReportInclude FAILED'
     Test-Path -LiteralPath $result.resultsPath -PathType Leaf | Should -BeTrue
     (Get-Content -LiteralPath $result.resultsPath -Raw).Trim() | Should -Be 'RSL BODY'
+  }
+
+  It 'retries without ResultsPath when CLI rejects the argument' {
+    $configPath = Join-Path $TestDrive 'task-retry.viancfg'
+    Set-Content -LiteralPath $configPath -Value '<VIAnalyzer></VIAnalyzer>' -Encoding utf8
+
+    $stubScript = Join-Path $TestDrive 'labviewcli-retry.ps1'
+    $stubContent = @'
+$reportPath = $null
+$requestedResults = $false
+for ($i = 0; $i -lt $args.Length; $i++) {
+  switch ($args[$i]) {
+    '-ReportPath' { $reportPath = $args[++$i]; continue }
+    '-ResultsPath' { $requestedResults = $true; $null = $args[++$i]; continue }
+    default { continue }
+  }
+}
+if ($requestedResults) {
+  [Console]::Error.WriteLine('Error Code : -350051')
+  [Console]::Error.WriteLine('Error Message : LabVIEW CLI: (Hex 0xFFFAA89D) The CLI for LabVIEW failed to run the operation because the command contains illegal arguments. -ResultsPath')
+  exit -350051
+}
+if (-not $reportPath) { throw 'ReportPath missing' }
+Set-Content -LiteralPath $reportPath -Value 'Fallback Report' -Encoding utf8
+exit 0
+'@
+    Set-Content -LiteralPath $stubScript -Value $stubContent -Encoding utf8
+    $launcher = Join-Path $TestDrive 'labviewcli-retry.cmd'
+    Set-Content -LiteralPath $launcher -Value "@echo off`npwsh -NoLogo -NoProfile -File ""$stubScript"" %*" -Encoding ascii
+
+    $outputRoot = Join-Path $TestDrive 'results-retry'
+    $result = & $script:scriptPath `
+      -ConfigPath $configPath `
+      -OutputRoot $outputRoot `
+      -LabVIEWVersion 2024 `
+      -LabVIEWCLIPath $launcher `
+      -CaptureResultsFile `
+      -PassThru
+
+    $result | Should -Not -BeNullOrEmpty
+    $result.resultsPath | Should -BeNullOrEmpty
+    Test-Path -LiteralPath $result.reportPath -PathType Leaf | Should -BeTrue
+    Test-Path -LiteralPath (Join-Path $result.runDir 'vi-analyzer-results.rsl') | Should -BeFalse
+    $cliLog = Get-Content -LiteralPath (Join-Path $result.runDir 'vi-analyzer-cli.log') -Raw
+    $cliLog | Should -Match 'automatic .rsl capture is disabled'
   }
 
   It 'captures version mismatch errors from the report' {

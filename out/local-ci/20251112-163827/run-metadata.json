@@ -1,0 +1,69 @@
+{
+  "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "SignRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out",
+  "RunRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827",
+  "Timestamp": "20251112-163827",
+  "GitCommit": "unknown",
+  "GitBranch": "unknown",
+  "Host": "USAUSLT-Z7DLW6G",
+  "OS": "Microsoft Windows NT 10.0.22631.0",
+  "PowerShell": "7.5.3",
+  "Stages": [
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-10-Prep.log",
+      "DurationMs": 212,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "Prep",
+      "Id": 10
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-20-Build.log",
+      "DurationMs": 238,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "Build",
+      "Id": 20
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-30-Tests.log",
+      "DurationMs": 2630,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "Tests",
+      "Id": 30
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-35-VIAnalyzer.log",
+      "DurationMs": 125,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "VIAnalyzer",
+      "Id": 35
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-36-LUnit.log",
+      "DurationMs": 127,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "LUnit",
+      "Id": 36
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-45-VIPM.log",
+      "DurationMs": 126,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "VIPM",
+      "Id": 45
+    },
+    {
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-163827\\stage-50-Pack.log",
+      "DurationMs": 644,
+      "Error": null,
+      "Status": "Succeeded",
+      "Label": "Pack",
+      "Id": 50
+    }
+  ]
+}

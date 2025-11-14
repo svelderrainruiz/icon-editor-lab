@@ -1,0 +1,44 @@
+**********************
+PowerShell transcript start
+Start time: 20251113134821
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 51706
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Sign root : /mnt/c/codex/home/runner/work/icon-editor-lab/out
+Run root  : /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820
+Wrote git status to /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/git-status.txt
+LOCALCI_IMPORT_UBUNTU_RUN not set; skipping Ubuntu import handshake.
+[10-Prep] Verifying environment profile 'labview-2021-x64'
+[EnvParity] Validating profile 'LabVIEW 2021 (64-bit)'
+WARNING: [EnvParity] Optional directory missing: Shared National Instruments data directory
+Exception: /mnt/c/codex/home/runner/work/icon-editor-lab/local-ci/windows/scripts/Test-EnvironmentParity.ps1:137
+Exception: /mnt/c/codex/home/runner/work/icon-editor-lab/local-ci/windows/scripts/Test-EnvironmentParity.ps1:137
+Line |
+Line |
+ 137 |      throw $message
+ 137 |      throw $message
+     |      ~~~~~~~~~~~~~~
+     |      ~~~~~~~~~~~~~~
+     | [EnvParity] Environment parity check failed:  - Missing file: LabVIEW
+     | [EnvParity] Environment parity check failed:  - Missing file: LabVIEW
+     | 2021 (64-bit) executable  - Missing file: LabVIEW CLI executable  -
+     | 2021 (64-bit) executable  - Missing file: LabVIEW CLI executable  -
+     | Command not found: g-cli
+     | Command not found: g-cli
+**********************
+PowerShell transcript end
+End time: 20251113134850
+**********************

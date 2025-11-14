@@ -442,7 +442,7 @@ if (-not $fixtureResolved -or -not (Test-Path -LiteralPath $fixtureResolved -Pat
 $iconEditorRootResolved = if ($IconEditorRoot) {
   Resolve-OptionalPath -Path $IconEditorRoot -BasePath $repoRoot
 } else {
-  Join-Path $repoRoot 'vendor/icon-editor'
+  Join-Path $repoRoot 'vendor/labview-icon-editor'
 }
 if (-not (Test-Path -LiteralPath $iconEditorRootResolved -PathType Container)) {
   throw "Icon editor root not found at '$iconEditorRootResolved'."

@@ -1,0 +1,8 @@
+﻿2025-11-12T19:28:10.1993750Z ##[group]Run Remove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue
+2025-11-12T19:28:10.1994449Z [36;1mRemove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue[0m
+2025-11-12T19:28:10.2054511Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:28:10.2054820Z env:
+2025-11-12T19:28:10.2055010Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:28:10.2055260Z   SIGN_ROOT: out
+2025-11-12T19:28:10.2055437Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:28:10.2055621Z ##[endgroup]

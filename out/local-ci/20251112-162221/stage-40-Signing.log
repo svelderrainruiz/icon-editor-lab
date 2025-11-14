@@ -1,0 +1,29 @@
+**********************
+PowerShell transcript start
+Start time: 20251112162221
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 40
+Process ID: 35128
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[signing] Preflight TSA connectivity: URL=https://timestamp.digicert.com, TimeoutSec=25, Mode=warn
+WARNING: [signing] Preflight FAILED (TCP connect).
+Invoking signing harness for artifacts under C:\codex\home\runner\work\icon-editor-lab\out
+PS>TerminatingError(Test-Signing.ps1): "Cannot process argument transformation on parameter 'MaxFiles'. Cannot convert value "C:\codex\home\runner\work\icon-editor-lab\out" to type "System.Int32". Error: "The input string 'C:\codex\home\runner\work\icon-editor-lab\out' was not in a correct format.""
+>> TerminatingError(40-Signing.ps1): "Cannot process argument transformation on parameter 'MaxFiles'. Cannot convert value "C:\codex\home\runner\work\icon-editor-lab\out" to type "System.Int32". Error: "The input string 'C:\codex\home\runner\work\icon-editor-lab\out' was not in a correct format.""
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 40-Signing failed: Cannot process argument transformation on parameter 'MaxFiles'. Cannot convert value "C:\codex\home\runner\work\icon-editor-lab\out" to type "System.Int32". Error: "The input string 'C:\codex\home\runner\work\icon-editor-lab\out' was not in a correct format.""
+**********************
+PowerShell transcript end
+End time: 20251112162221
+**********************

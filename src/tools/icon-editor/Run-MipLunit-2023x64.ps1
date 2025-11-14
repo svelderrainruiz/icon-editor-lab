@@ -10,7 +10,7 @@
   compact integration summary JSON capturing key artifact paths and statuses.
 
 .PARAMETER ProjectPath
-  Path to the icon-editor .lvproj used for LUnit. Defaults to vendor/icon-editor/lv_icon_editor.lvproj.
+  Path to the icon-editor .lvproj used for LUnit. Defaults to vendor/labview-icon-editor/lv_icon_editor.lvproj.
 
 .PARAMETER AnalyzerConfigPath
   Path to the VI Analyzer config for the MissingInProject suite.
@@ -26,7 +26,7 @@
 #>
 [CmdletBinding()]
 param(
-  [string]$ProjectPath = 'vendor/icon-editor/lv_icon_editor.lvproj',
+  [string]$ProjectPath = 'vendor/labview-icon-editor/lv_icon_editor.lvproj',
   [string]$AnalyzerConfigPath = 'configs/vi-analyzer/missing-in-project.viancfg',
   [string]$ResultsPath = 'tests/results',
   [switch]$AutoCloseWrongLV,
@@ -383,3 +383,4 @@ function Invoke-WithTimeout {
   }
   Receive-Job $job -ErrorAction Stop
 }
+

@@ -1,0 +1,59 @@
+{
+  "schema": "rogue-lv-detection/v1",
+  "generatedAt": "2025-11-13T08:16:50.3050436-08:00",
+  "lookbackSeconds": 900,
+  "noticeDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_lvcompare_notice",
+  "live": {
+    "lvcompare": [],
+    "labview": [
+      39764
+    ]
+  },
+  "liveDetails": {
+    "lvcompare": [],
+    "labview": [
+      {
+        "pid": 39764,
+        "name": "LabVIEW.exe",
+        "commandLine": "\"C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.exe\" \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\Tooling\\deployment\\Create_LV_INI_Token.vi\" \"-unattended\" \"--\" \"-p:59346\"",
+        "executablePath": "C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.exe",
+        "creationDate": null,
+        "creationDateRaw": "2025-11-13T08:16:36.896293-08:00",
+        "creationDateError": "Exception calling \"ToDateTime\" with \"1\" argument(s): \"Specified argument was out of the range of valid values. (Parameter 'dmtfDate')\"",
+        "error": null
+      }
+    ]
+  },
+  "noticed": {
+    "lvcompare": [],
+    "labview": []
+  },
+  "rogue": {
+    "lvcompare": [],
+    "labview": [
+      39764
+    ]
+  },
+  "attempt": {
+    "index": 1,
+    "total": 1
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "generatedAt": "2025-11-13T08:16:50.3050436-08:00",
+      "live": {
+        "lvcompare": [],
+        "labview": [
+          39764
+        ]
+      },
+      "rogue": {
+        "lvcompare": [],
+        "labview": [
+          39764
+        ]
+      }
+    }
+  ]
+}

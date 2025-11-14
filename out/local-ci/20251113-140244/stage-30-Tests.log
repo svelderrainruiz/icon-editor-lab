@@ -1,0 +1,78 @@
+**********************
+PowerShell transcript start
+Start time: 20251113140427
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 12636
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 14 files.
+Discovery found 44 tests in 592ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 10 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 75ms (46ms|29ms)
+  [+] contains at least one PowerShell script
+ 11ms (10ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 19ms (17ms|2ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1'
+Describing Invoke-LabVIEWPrelaunchGuard
+ Context single running PID reported from settle
+PS>TerminatingError(Should): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input."
+>> TerminatingError(Should): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input."
+   [-] force closes the PID when AllowForceClose is set
+ 187ms (181ms|6ms)
+    at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:34
+    ParameterBindingException: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input.
+PS>TerminatingError(Should): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input."
+>> TerminatingError(Should): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input."
+   [-] skips force close when AllowForceClose is not set
+ 106ms (103ms|2ms)
+    at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:52
+    ParameterBindingException: The input object cannot be bound to any parameters for the command either because the command does not take pipeline input or the input and its properties do not match any of the parameters that take pipeline input.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 7ms (4ms|3ms)
+  [+] contains at least one PowerShell file
+ 10ms (9ms|1ms)
+  [+] parses tools\IconEditorDevMode.Tests.ps1
+ 7ms (5ms|2ms)
+  [+] parses tools\Run-DevMode-Debug.ps1
+ 4ms (3ms|1ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 6ms (4ms|2ms)
+Tests completed in 2.26s
+Tests Passed: 8, 
+Failed: 2, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 34
+**********************
+PowerShell transcript end
+End time: 20251113140432
+**********************

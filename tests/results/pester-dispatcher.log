@@ -1,0 +1,83 @@
+**********************
+PowerShell transcript start
+Start time: 20251113164647
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File src/Invoke-PesterTests.ps1 -Tag icon-editor
+Process ID: 4644
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Pester v5.7.1
+
+Starting discovery in 15 files.
+Discovery found 52 tests in 551ms.
+Filter 'Tag' set to ('icon-editor').
+Filters selected 9 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1'
+Describing Invoke-LabVIEWPrelaunchGuard
+ Context single running PID reported from settle
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 1234 prior to settle retry.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] force closes the PID when AllowForceClose is set
+ 540ms (508ms|33ms)
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 4321 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] skips force close when AllowForceClose is not set
+ 109ms (107ms|2ms)
+ Context fast settle with force-close retry
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 2468 prior to settle retry.
+   [+] uses fast timeout before force closing and succeeds on retry
+ 163ms (158ms|5ms)
+ Context prepare script arguments
+   [+] passes the Editor Packed Library build spec to PrepareIESource
+ 516ms (513ms|3ms)
+ Context version and bitness parameters
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 9876 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] passes versions and bitness to Close-IconEditorLabVIEW when settle fails
+ 119ms (117ms|2ms)
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 2468 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] skips Close-IconEditorLabVIEW when bitness is not provided
+ 124ms (124ms|1ms)
+ Context build package operation
+PS>TerminatingError(): "Icon editor dev-mode policy not found at 'C:\Users\svelderr\AppData\Local\Temp\79ddd7e9-63d4-45ea-9b2d-763ba88e53c4\repo-buildpkg\configs\icon-editor\dev-mode-targets.json'."
+>> TerminatingError(): "Icon editor dev-mode policy not found at 'C:\Users\svelderr\AppData\Local\Temp\79ddd7e9-63d4-45ea-9b2d-763ba88e53c4\repo-buildpkg\configs\icon-editor\dev-mode-targets.json'."
+   [+] targets LabVIEW 2023 (32-bit) by default
+ 271ms (267ms|3ms)
+   [+] respects explicit bitness selection when requesting 64-bit only
+ 262ms (261ms|1ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1'
+Describing Prepare_LabVIEW_source.ps1
+  [+] places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec
+ 14ms (7ms|7ms)
+Tests completed in 5.14s
+Tests Passed: 9, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 43
+**********************
+PowerShell transcript end
+End time: 20251113164653
+**********************

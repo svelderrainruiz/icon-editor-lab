@@ -18,7 +18,7 @@ Stages:
 | Name | Type | Default | Notes |
 |---|---|---|---|
 | `RepoRoot` | string | Resolved via `Resolve-IconEditorRepoRoot` | Optional explicit repo root. |
-| `IconEditorRoot` | string | Derived from repo root | Path to `vendor/icon-editor`. |
+| `IconEditorRoot` | string | Derived from repo root | Path to `vendor/labview-icon-editor`. |
 | `Versions` | int[] | Policy-driven default | LabVIEW versions to toggle (e.g., `@(2023,2025)`). |
 | `Bitness` | int[] | Policy-driven default | Target bitness (`@(64)` by default). |
 | `Operation` | string | `BuildPackage` | Label recorded in telemetry (Compare, Reliability, etc.). |
@@ -36,3 +36,4 @@ Stages:
 - `tools/icon-editor/Disable-DevMode.ps1`
 - `tools/icon-editor/Test-DevModeStability.ps1`
 - `docs/LABVIEW_GATING.md`
+

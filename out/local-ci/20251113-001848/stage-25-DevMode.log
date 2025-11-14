@@ -1,0 +1,40 @@
+**********************
+PowerShell transcript start
+Start time: 20251113001857
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File C:\codex\home\runner\work\icon-editor-lab\local-ci\windows\Invoke-LocalCI.ps1 -ConfigPath local-ci/windows/profile.psd1 -OnlyStages 25
+Process ID: 26988
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+[25-DevMode] pwsh arguments:
+  -NoLogo
+  -NoProfile
+  -File
+  C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\Enable-DevMode.ps1
+  -Operation
+  MissingInProject
+  -Versions
+  2021
+  -Bitness
+  64
+  -RepoRoot
+  C:\codex\home\runner\work\icon-editor-lab
+  -IconEditorRoot
+  C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor
+
+**********************
+PowerShell transcript end
+End time: 20251113002108
+**********************

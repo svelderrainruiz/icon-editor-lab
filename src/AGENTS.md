@@ -9,15 +9,26 @@
 ## First Actions
 
 1. `pwsh -File Invoke-PesterTests.ps1` (core suites) or targeted `-TestsPath` runs (Enable/Disable dev mode, telemetry, stability, VI Analyzer).
-2. If tests need the imported bundle, run `pwsh -File tools/Get-IconEditorLabTooling.ps1` (defaults to `vendor/icon-editor-lab/bundle/`).
+2. If tests need the imported bundle, run `pwsh -File tools/Get-IconEditorLabTooling.ps1` (defaults to `vendor/labview-icon-editor-lab/bundle/`).
 3. Review `docs/MIGRATION.md` + `docs/CONSUMPTION.md` for current expectations.
+
+## Local CI Handshake (Ubuntu ↔ Windows)
+
+- Single-command path (from Windows PowerShell):  
+  `pwsh -File local-ci/scripts/Invoke-FullHandshake.ps1`  
+  Runs Ubuntu local CI inside WSL, launches the Windows import/LabVIEW stages, then re-enters WSL to re-render stage 45 with the published artifacts. Flags: `-SkipUbuntu`, `-SkipWindows`, `-SkipRender`, `-VerboseLogging`.
+- Manual/watcher path:  
+  1. From WSL: `./local-ci/ubuntu/invoke-local-ci.sh` → writes `_READY`.  
+  2. On Windows: `pwsh -File local-ci/windows/watchers/Watch-UbuntuRuns.ps1` → claims runs (creates `windows.claimed`), runs LabVIEW, writes `<run>/windows/vi-compare.publish.json`, `_PUBLISHED.json`, removes `_READY`.  
+  3. Back on WSL: `bash local-ci/ubuntu/watchers/watch-windows-vi-publish.sh` (or VS Code task) → consumes the per-run publish, reruns stage 45, and emits `_DONE`.
+- Sentinels worth checking: `_READY` (Ubuntu finished), `windows.claimed` (which machine picked it up), `windows/_PUBLISHED.json` (stage 37 done), `_DONE` (Ubuntu render done). Delete these markers if you need to re-run a stage.
 
 ## Bundle Workflow
 
 | Step | Command | Notes |
 | --- | --- | --- |
 | Export | `pwsh -File tools/Export-LabTooling.ps1 -Destination artifacts/icon-editor-lab-tooling.zip -Force` | Run before tagging a release. |
-| Import (consumer) | `pwsh -File tools/Get-IconEditorLabTooling.ps1 -BundlePath <zip>` | Extracts to `vendor/icon-editor-lab/bundle/`. |
+| Import (consumer) | `pwsh -File tools/Get-IconEditorLabTooling.ps1 -BundlePath <zip>` | Extracts to `vendor/labview-icon-editor-lab/bundle/`. |
 | Resolver | `Resolve-IconEditorLabPath.ps1` | Returns bundle root; scripts should prefer this path. |
 
 ## Scenario Checklist
@@ -62,3 +73,4 @@
 - Note which scenarios/runs are complete vs pending (link to artifacts).
 - Record outstanding CI failures or rogue PID findings.
 - Ensure `ICON_EDITOR_LAB_ROOT` is set in the environment when running scripts from the bundle (or note if you fell back to legacy paths).
+

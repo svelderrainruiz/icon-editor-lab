@@ -1,0 +1,38 @@
+**********************
+PowerShell transcript start
+Start time: 20251112210855
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 35
+Process ID: 37432
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[35-VIAnalyzer] Running analyzer for config C:\codex\home\runner\work\icon-editor-lab\src\configs\vi-analyzer\missing-in-project.viancfg
+[vi-analyzer]
+[vi-analyzer]
+[vi-analyzer]   --- notes ---
+[vi-analyzer]   LabVIEW CLI rejected -ResultsPath; automatic .rsl capture is disa
+bled for this run.
+Exception: C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\Invoke
+-VIAnalyzer.ps1:662:5
+Line |
+ 662 |      throw $message
+     |      ~~~~~~~~~~~~~~
+     | VI Analyzer reported failed tests (exit code 3). Run stopped.
+     | MissingInProjectCLI.vi failures were detected, which usually means
+     | development mode is disabled. Re-run tools/icon-editor/Enable-DevMode.ps1
+     | for the target LabVIEW version and retry.
+**********************
+PowerShell transcript end
+End time: 20251112210949
+**********************

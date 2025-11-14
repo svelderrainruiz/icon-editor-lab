@@ -1,0 +1,1 @@
+Windows polls for _READY; Ubuntu polls for summary. Both are idempotent.

@@ -1,0 +1,25 @@
+Command: "C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe" -PortNumber 3365 -LabVIEWPath C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe -OperationName RunVIAnalyzer -ConfigPath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project -ReportPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251113-001439\vi-analyzer-report.txt -ReportSaveType ASCII
+
+--- stdout ---
+LabVIEWCLI started logging in file:  C:\Users\svelderr\AppData\Local\Temp\lvtemporary_235953.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe"
+LabVIEW launched successfully.
+Connection established with LabVIEW at port number 3365.
+
+
+
+--- stderr ---
+Operation output: 
+VI Analyzer completed.
+595 tests passed.
+29 tests failed.
+0 tests skipped.
+0 VIs were unloadable.
+0 tests were unloadable.
+0 tests were unrunable.
+0 tests produced error.
+
+Please find the full report at "C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251113-001439\vi-analyzer-report.txt".
+RunVIAnalyzer operation failed.
+
+

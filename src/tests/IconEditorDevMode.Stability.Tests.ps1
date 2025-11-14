@@ -155,7 +155,7 @@ exit $exitCode
             )
 
             $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
-            $iconEditorRoot = Join-Path $repoRoot 'vendor/icon-editor'
+            $iconEditorRoot = Join-Path $repoRoot 'vendor/labview-icon-editor'
             $toolsIconRoot = Join-Path $repoRoot 'tools/icon-editor'
             $resultsRoot = Join-Path $repoRoot 'tests/results'
             $configsRoot = Join-Path $repoRoot 'configs/vi-analyzer'
@@ -553,3 +553,4 @@ exit 0
         }
     }
 }
+

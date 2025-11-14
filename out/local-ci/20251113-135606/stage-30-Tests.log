@@ -1,0 +1,106 @@
+**********************
+PowerShell transcript start
+Start time: 20251113135650
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 39276
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 14 files.
+Discovery found 44 tests in 607ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 10 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 82ms (50ms|31ms)
+  [+] contains at least one PowerShell script
+ 12ms (11ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 20ms (18ms|2ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1'
+Describing Invoke-LabVIEWPrelaunchGuard
+ Context single running PID reported from settle
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 1234 prior to settle retry.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+>> TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+PS>TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+>> TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+>> TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+   [-] force closes the PID when AllowForceClose is set
+ 426ms (420ms|6ms)
+    at { Invoke-LabVIEWPrelaunchGuard -RepoRoot $repoRoot -Stage 'unit-test' -RunRoot $testRunRoot -AllowForceClose } | Should -Not -Throw, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:34
+    at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:34
+    Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+        +       throw "Pre-launch settle failed for stage '$Stage'."
+        +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 4321 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+>> TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+PS>TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+>> TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+>> TerminatingError(): "Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+    +       throw "Pre-launch settle failed for stage '$Stage'."
+    +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~."
+   [-] skips force close when AllowForceClose is not set
+ 156ms (154ms|2ms)
+    at { Invoke-LabVIEWPrelaunchGuard -RepoRoot $repoRoot -Stage 'unit-test' -RunRoot $testRunRoot } | Should -Not -Throw, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:50
+    at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1:50
+    Expected no exception to be thrown, but an exception "Pre-launch settle failed for stage 'unit-test'." was thrown from C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\IconEditorDevMode.psm1:1431 char:7
+        +       throw "Pre-launch settle failed for stage '$Stage'."
+        +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 9ms (5ms|4ms)
+  [+] contains at least one PowerShell file
+ 11ms (10ms|1ms)
+  [+] parses tools\IconEditorDevMode.Tests.ps1
+ 30ms (7ms|23ms)
+  [+] parses tools\Run-DevMode-Debug.ps1
+ 9ms (6ms|3ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 8ms (5ms|2ms)
+Tests completed in 2.75s
+Tests Passed: 8, 
+Failed: 2, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 34
+**********************
+PowerShell transcript end
+End time: 20251113135656
+**********************

@@ -1,0 +1,47 @@
+**********************
+PowerShell transcript start
+Start time: 20251113090629
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 29956
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] LabVIEW CLI session root: C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251113-090628\labview-cli\stage-25-20251113090629899
+[25-DevMode] Ensuring no rogue LabVIEW instances are running before enabling dev mode...
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+17:07:16.436 [DEBUG] Exiting G-CLI with exit code 0
+Success: Process completed.
+Unzipping vi.lib/LabVIEW Icon API from LabVIEW 2021 (64-bit).
+Removing localhost.library path from ini file.
+WARNING: enable-prepare-2021-64: terminating rogue LabVIEW PIDs 3664.
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 QuitLabVIEW
+Closing LabVIEW in 1000ms
+Close LabVIEW 2021 (64-bit)
+Icon editor development mode enabled.
+State file: C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\icon-editor\dev-mode-state.json
+Updated at : 11/13/2025 9:07:18 AM
+Verification: LabVIEW 2021 (64-bit): contains icon-editor path
+
+Active       : True
+UpdatedAt    : 11/13/2025 9:07:18 AM
+Source       : Enable-IconEditorDevelopmentMode:MissingInProject
+Path         : C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\icon-editor\dev-mode-state.json
+Verification : @{RepoRoot=C:\codex\home\runner\work\icon-editor-lab;
+               IconEditorRoot=C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor; Active=True;
+               Entries=System.Collections.Generic.List`1[System.Object]}
+**********************
+PowerShell transcript end
+End time: 20251113090741
+**********************

@@ -1,0 +1,13 @@
+{
+  "TimestampUtc": "2025-11-14T00:18:42.3154651Z",
+  "SignRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out",
+  "TimestampServer": "https://timestamp.digicert.com",
+  "TimeoutSeconds": 25,
+  "Preflight": {
+    "Attempted": true,
+    "Mode": "warn",
+    "Status": "failed"
+  },
+  "Result": "Succeeded",
+  "Transcript": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-signing-logs\\signing-20251113-161834.log"
+}

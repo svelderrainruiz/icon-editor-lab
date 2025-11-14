@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="6" errors="0" failures="0" not-run="7" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-11-12" time="16:17:49">
+  <environment user-domain="NI" os-version="10.0.22631" clr-version="9.0.8" machine-name="USAUSLT-Z7DLW6G" cwd="C:\codex\home\runner\work\icon-editor-lab" user="svelderr" nunit-version="2.5.8.0" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="1.0002" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1" executed="True" result="Success" success="True" time="0.6469" asserts="0" description="C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Scripts folder syntax" executed="True" result="Success" success="True" time="0.1958" asserts="0" description="Scripts folder syntax">
+            <results>
+              <test-case description="has a scripts directory" name="Scripts folder syntax.has a scripts directory" time="0.1082" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="contains at least one PowerShell script" name="Scripts folder syntax.contains at least one PowerShell script" time="0.014" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="Scripts folder syntax.parses &lt;Relative&gt;" executed="True" result="Success" success="True" time="0.0206" asserts="0" description="parses &lt;Relative&gt;">
+                <results>
+                  <test-case description="parses scripts\ScriptsSyntax.Tests.ps1" name="Scripts folder syntax.parses scripts\ScriptsSyntax.Tests.ps1" time="0.0206" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1" executed="True" result="Success" success="True" time="0.2078" asserts="0" description="C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Tools folder script syntax" executed="True" result="Success" success="True" time="0.0698" asserts="0" description="Tools folder script syntax">
+            <results>
+              <test-case description="has a tools directory" name="Tools folder script syntax.has a tools directory" time="0.0102" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="contains at least one PowerShell file" name="Tools folder script syntax.contains at least one PowerShell file" time="0.0166" asserts="0" success="True" result="Success" executed="True" />
+              <test-suite type="ParameterizedTest" name="Tools folder script syntax.parses &lt;Relative&gt;" executed="True" result="Success" success="True" time="0.0257" asserts="0" description="parses &lt;Relative&gt;">
+                <results>
+                  <test-case description="parses tools\ToolsSyntax.Tests.ps1" name="Tools folder script syntax.parses tools\ToolsSyntax.Tests.ps1" time="0.0257" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

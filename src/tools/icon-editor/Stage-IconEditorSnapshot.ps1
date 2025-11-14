@@ -183,7 +183,7 @@ $devModulePath = Join-Path $iconEditorToolsRoot 'IconEditorDevMode.psm1'
 
 $sourceResolved = Resolve-PathOptional -Path $SourcePath -BasePath $repoRoot
 if (-not $sourceResolved) {
-  $sourceResolved = Resolve-PathOptional -Path (Join-Path $repoRoot 'vendor/icon-editor') -BasePath $repoRoot
+  $sourceResolved = Resolve-PathOptional -Path (Join-Path $repoRoot 'vendor/labview-icon-editor') -BasePath $repoRoot
 }
 if (-not (Test-Path -LiteralPath $sourceResolved -PathType Container)) {
   throw "Icon editor source path not found at '$sourceResolved'."
@@ -418,3 +418,4 @@ function Invoke-WithTimeout {
   }
   Receive-Job $job -ErrorAction Stop
 }
+

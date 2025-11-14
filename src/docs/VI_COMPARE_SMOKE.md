@@ -14,7 +14,7 @@ lab repo.
 ## Steps
 
 Default base/head VIs use the MissingInProject helper VIs under
-`vendor/icon-editor/.github/actions/missing-in-project/`. Override `-BaseVI` and
+`vendor/labview-icon-editor/.github/actions/missing-in-project/`. Override `-BaseVI` and
 `-HeadVI` if you want to diff other files.
 
 ```powershell
@@ -38,3 +38,21 @@ in lab notes/PRs to prove the compare lane is healthy.
 
 Pass `-DryRun` to the script if you only want to see the computed harness
 command before executing it.
+
+## Local CI Automation (Ubuntu)
+
+The Ubuntu and Windows local CI flows now cooperate:
+
+1. Ubuntu stage 45 still knows how to create a dry-run payload (so the run never fails just because Windows hasn’t executed), but it first checks `out/vi-comparison/windows/<windows_stamp>/publish.json` for a publish summary that references the current Ubuntu run. When present, it copies the real LabVIEWCLI artifacts into `out/local-ci-ubuntu/<stamp>/vi-comparison/` and re-renders the Markdown + HTML reports.
+2. Windows stage 37 (`local-ci/windows/stages/37-VICompare.ps1`) copies the imported Ubuntu payload into `out/vi-comparison/windows/<windows_stamp>`, runs LabVIEWCLI/TestStand (or a stub), and writes `publish.json` with `schema = 'vi-compare/publish@v1'`. That file captures which Ubuntu run the artifacts came from, so Ubuntu can pick the correct folder automatically.
+3. `local-ci/ubuntu/config.yaml` now exposes:
+   ```yaml
+   vi_compare:
+     enabled: true
+     dry_run: true
+     requests_template: ""          # optional path to custom vi-diff-requests.json
+     windows_publish_root: out/vi-comparison/windows
+   ```
+
+This means you can quickly validate the LabVIEW CLI behavior on Windows (raw HTML, JSON, session-index) and then let Ubuntu re-render the reports (with all the dependency isolation it already had). If Windows hasn’t produced a publish summary yet, the stage falls back to the dry-run payload so the local CI run is still deterministic.
+

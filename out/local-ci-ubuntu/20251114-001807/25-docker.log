@@ -1,0 +1,100 @@
+Performing GHCR preflight check...
+curl: (22) The requested URL returned error: 405
+Attempting to pull remote cache image 'ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci'
+Remote image ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci not available; proceeding without cache.
+Building Docker image 'icon-editor-lab/tools:local-ci' from /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/docker/Dockerfile.tools
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.tools
+#1 transferring dockerfile: 4.00kB 0.0s done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.5s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+#3 resolve docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:8.0
+#4 ...
+
+#5 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0
+#5 DONE 0.2s
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:8.0
+#4 DONE 0.2s
+
+#6 [internal] load .dockerignore
+#6 transferring context:
+#6 transferring context: 2B 0.2s done
+#6 DONE 0.2s
+
+#7 [tools 1/9] FROM mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637
+#7 resolve mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637 0.0s done
+#7 DONE 0.0s
+
+#8 [restore 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75
+#8 resolve mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 283B 0.3s done
+#9 DONE 0.3s
+
+#10 [tools 4/9] RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip     && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
+#10 CACHED
+
+#11 [restore 6/6] RUN dotnet restore src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
+#11 CACHED
+
+#12 [tools 8/9] WORKDIR /work
+#12 CACHED
+
+#13 [restore 2/6] WORKDIR /tmp/restore
+#13 CACHED
+
+#14 [tools 2/9] RUN set -eux;     apt-get update;     apt-get install -y --no-install-recommends         apt-transport-https         ca-certificates         curl         git         gnupg         jq         python3         python3-pip         unzip         xz-utils;     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg       | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null;     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"       > /etc/apt/sources.list.d/github-cli.list;     curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor       | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null;     echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main"       > /etc/apt/sources.list.d/microsoft-prod.list;     apt-get update;     apt-get install -y --no-install-recommends gh powershell;     rm -rf /var/lib/apt/lists/*;     ln -s /usr/bin/python3 /usr/local/bin/python
+#14 CACHED
+
+#15 [tools 3/9] RUN set -eux;     curl -fsSL "https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz" -o /tmp/node.tar.xz;     mkdir -p /usr/local/lib/nodejs;     tar -xJf /tmp/node.tar.xz -C /usr/local/lib/nodejs;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/node /usr/local/bin/node;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npm /usr/local/bin/npm;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npx /usr/local/bin/npx;     rm -f /tmp/node.tar.xz
+#15 CACHED
+
+#16 [restore 3/6] COPY Directory.Build.props ./
+#16 CACHED
+
+#17 [tools 5/9] RUN npm install -g markdownlint-cli2@0.14.0 markdownlint-cli@0.31.1  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint /usr/local/bin/markdownlint  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint-cli2 /usr/local/bin/markdownlint-cli2
+#17 CACHED
+
+#18 [tools 7/9] COPY --from=restore /root/.nuget /root/.nuget
+#18 CACHED
+
+#19 [restore 4/6] COPY src/CompareVi.Shared/CompareVi.Shared.csproj src/CompareVi.Shared/
+#19 CACHED
+
+#20 [tools 6/9] RUN set -eux;     arch="$(uname -m)";     case "$arch" in       x86_64) ACTION_ARCH=linux_amd64 ;;       aarch64) ACTION_ARCH=linux_arm64 ;;       *) echo "Unsupported arch: $arch"; exit 1 ;;     esac;     curl -fsSL -o /tmp/actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_${ACTION_ARCH}.tar.gz";     tar -C /usr/local/bin -xzf /tmp/actionlint.tar.gz actionlint;     rm -f /tmp/actionlint.tar.gz;     actionlint -version
+#20 CACHED
+
+#21 [restore 5/6] COPY src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj src/CompareVi.Tools.Cli/
+#21 CACHED
+
+#22 [tools 9/9] RUN useradd -m -u 1000 dev || true
+#22 CACHED
+
+#23 exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:05d791012fa950a1f1922f8d73f0e3690985a96b3bd5cdbf43b082ce27e5fa6d done
+#23 exporting config sha256:dba15a770db1e77ed1dd469bdf992b629d85835787b2c84d480221c970318895 done
+#23 exporting attestation manifest sha256:ce90124df59a77eef6dbb1a7eb5b5c48d16c1eb3788f9be231cb91d8c332fd44 0.0s done
+#23 exporting manifest list sha256:17f39813669dae9ad23d56f24815e4bc40f14c5cf436dc1e83f4fc1e26f73e29 0.0s done
+#23 naming to docker.io/icon-editor-lab/tools:local-ci done
+#23 unpacking to docker.io/icon-editor-lab/tools:local-ci 0.0s done
+#23 DONE 0.1s
+Validating tool image 'icon-editor-lab/tools:local-ci' can execute core CLIs
+v20.18.0
+
+[32;1mMajor [0m[32;1m Minor [0m[32;1m Patch [0m[32;1m PreReleaseLabel[0m[32;1m BuildLabel[0m
+[32;1m----- [0m [32;1m----- [0m [32;1m----- [0m [32;1m---------------[0m [32;1m----------[0m
+7      5      4                      
+
+Python 3.11.2

@@ -1,0 +1,36 @@
+**********************
+PowerShell transcript start
+Start time: 20251113001058
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 32014
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" -- "LabVIEW" "Localhost.LibraryPaths" "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor"
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor"
+Write-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Write-Error: Please check the parameters and ensure the command is valid.
+Exception: Dev-mode script
+Exception: Dev-mode script
+'/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+'/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-
+source/Prepare_LabVIEW_source.ps1' exited with code 1. Executing the following
+source/Prepare_LabVIEW_source.ps1' exited with code 1. Executing the following

@@ -1,0 +1,37 @@
+# Dev-mode Script Log
+timestamp: 2025-11-13T08:07:58.1614162-08:00
+stage: enable-prepare-2021-64
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\prepare-labview-source\Prepare_LabVIEW_source.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 64 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor -LabVIEW_Project lv_icon_editor -Build_Spec Editor Packed Library
+exitCode: 0
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor"
+16:07:40.070 [0m[36m[DEBUG] [0mG CLI Started - Verbose Mode
+16:07:40.070 [0m[36m[DEBUG] [0mVersion 3.0.1
+16:07:40.070 [0m[36m[DEBUG] [0mG CLI Arguments: "C:\Program Files\G-CLI\bin\g-cli.exe" "--lv-ver" "2021" "--arch" "64" "-v" "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\Tooling\PrepareIESource.vi" "--" "LabVIEW" "Localhost.LibraryPaths" "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor"
+16:07:40.070 [0m[36m[DEBUG] [0mArguments passed to LabVIEW: "LabVIEW Localhost.LibraryPaths C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\lv_icon_editor.lvproj Editor Packed Library C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor"
+16:07:40.075 [0m[36m[DEBUG] [0mDetected LabVIEW versions:
+2020 SP1 f1, 64bit (C:\Program Files\National Instruments\LabVIEW 2020\)
+2021 SP1 f6, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2021\)
+2021 SP1 f6, 64bit (C:\Program Files\National Instruments\LabVIEW 2021\)
+2023 Q3 Patch 7, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2023\)
+2023 Q3 Patch 6, 64bit (C:\Program Files\National Instruments\LabVIEW 2023\)
+2025 Q1 Patch 2, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2025\)
+2025 Q3 Patch 2, 64bit (C:\Program Files\National Instruments\LabVIEW 2025\)
+2026 Q1, 64bit (C:\Program Files\National Instruments\LabVIEW 2026\)
+
+16:07:42.163 [0m[36m[DEBUG] [0mLaunching: C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\Tooling\\PrepareIESource.vi -unattended -- -p:52172"
+16:07:42.210 [0m[36m[DEBUG] [0mProcess launched with PID 4484
+16:07:56.971 [0m[36m[DEBUG] [0mComms reader stopped.
+16:07:57.077 [0m[36m[DEBUG] [0mSignal Handler Stopped.
+16:07:57.077 [0m[36m[DEBUG] [0mAction loop stopped.
+16:07:57.077 [0m[36m[DEBUG] [0mWaiting on monitoring thread to complete
+16:07:58.070 [0m[36m[DEBUG] [0mMonitoring complete and kill not requested.
+16:07:58.070 [0m[36m[DEBUG] [0mStopping LabVIEW monitoring due to stop command from application
+16:07:58.070 [0m[36m[DEBUG] [0mMonitoring thread completed
+16:07:58.072 [0m[36m[DEBUG] [0mExiting G-CLI with exit code 0
+Success: Process completed.
+Unzipping vi.lib/LabVIEW Icon API from LabVIEW 2021 (64-bit).
+Removing localhost.library path from ini file.
+

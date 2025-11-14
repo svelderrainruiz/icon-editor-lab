@@ -114,7 +114,7 @@ Expand-Archive -Path $nestedVip.FullName -DestinationPath $nestedExtract -Force
 
 $resourceRoot = $ResourceOverlayRoot
 if (-not $resourceRoot) {
-  $resourceRoot = Join-Path $repoRoot 'vendor/icon-editor/resource'
+  $resourceRoot = Join-Path $repoRoot 'vendor/labview-icon-editor/resource'
 }
 if (-not $SkipResourceOverlay.IsPresent -and $resourceRoot -and (Test-Path -LiteralPath $resourceRoot -PathType Container)) {
   $resourceDest = Join-Path $nestedExtract 'File Group 0\National Instruments\LabVIEW Icon Editor\resource'
@@ -154,7 +154,7 @@ if (-not $SkipResourceOverlay.IsPresent -and $resourceRoot -and (Test-Path -Lite
 } elseif ($SkipResourceOverlay.IsPresent) {
   Write-Host '::notice::Skipping resource overlay by request.'
 } else {
-  Write-Host '::notice::vendor/icon-editor/resource not found; skipping resource overlay.'
+  Write-Host '::notice::vendor/labview-icon-editor/resource not found; skipping resource overlay.'
 }
 
 $installRoot = Join-Path $nestedExtract 'File Group 0\National Instruments\LabVIEW Icon Editor\install'

@@ -1,0 +1,175 @@
+[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1h[?1h[?1[coverage] Rewriting Cobertura summary to ensure deterministic handoff
+[coverage] Computed coverage = 100% (min=75%)
+[?1h[?1h[?1h[?1h[?1h[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1l[?1h[?1h[?1h[?1h[?1h[?1h[?1h[?1h[?1h[?1l[?1h[?1l[95mPester v5.7.1[0m
+[95m
+[95mStarting discovery in 15 files.[0m
+[95mDiscovery found 52 tests in 932ms.[0m
+[95mFilter 'Tag' set to ('smoke', 'linux', 'tools', 'scripts').[0m
+[95mFilters selected 22 tests to run.[0m
+[95mStarting code coverage.[0m
+[95mCode Coverage preparation finished after 1982 ms.[0m
+[95mRunning tests.[0m
+[95m
+[95mRunning tests from '/mnt/c/codex/home/runner/work/icon-editor-lab/tests/ConfigSchema.Tests.ps1'[0m
+[92mDescribing Config schema validation[0m
+[32m  [+] validates the example config against the schema[0m[90m 196ms (172ms|24ms)[0m
+[32m  [+] rejects labels longer than 64 chars[0m[90m 55ms (55ms|1ms)[0m
+[32m  [+] rejects path traversal in inputs[0m[90m 34ms (33ms|1ms)[0m
+[32m  [+] rejects dangerous metacharacters in inputs[0m[90m 26ms (26ms|1ms)[0m
+[95m
+[95mRunning tests from '/mnt/c/codex/home/runner/work/icon-editor-lab/tests/scripts/ScriptsSyntax.Tests.ps1'[0m
+[92mDescribing Scripts folder syntax[0m
+[32m  [+] has a scripts directory[0m[90m 43ms (41ms|2ms)[0m
+[32m  [+] contains at least one PowerShell script[0m[90m 117ms (116ms|1ms)[0m
+[32m  [+] parses scripts/ScriptsSyntax.Tests.ps1[0m[90m 13ms (11ms|2ms)[0m
+[95m
+[95mRunning tests from '/mnt/c/codex/home/runner/work/icon-editor-lab/tests/tools/IconEditorDevMode.Tests.ps1'[0m
+[92mDescribing Invoke-LabVIEWPrelaunchGuard[0m
+[96m Context single running PID reported from settle[0m
+[33;1mWARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.[0m
+[33;1mWARNING: unit-test: forcibly terminated LabVIEW PIDs 1234 prior to settle retry.[0m
+[32m   [+] force closes the PID when AllowForceClose is set[0m[90m 369ms (362ms|7ms)[0m
+[33;1mWARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.[0m
+[33;1mWARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 4321 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.[0m
+[32m   [+] skips force close when AllowForceClose is not set[0m[90m 94ms (91ms|2ms)[0m
+[96m Context fast settle with force-close retry[0m
+[33;1mWARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.[0m
+[33;1mWARNING: unit-test: forcibly terminated LabVIEW PIDs 2468 prior to settle retry.[0m
+[32m   [+] uses fast timeout before force closing and succeeds on retry[0m[90m 109ms (105ms|4ms)[0m
+[96m Context prepare script arguments[0m
+[32m   [+] passes the Editor Packed Library build spec to PrepareIESource[0m[90m 195ms (193ms|2ms)[0m
+[96m Context version and bitness parameters[0m
+[33;1mWARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.[0m
+[33;1mWARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 9876 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.[0m
+[32m   [+] passes versions and bitness to Close-IconEditorLabVIEW when settle fails[0m[90m 64ms (62ms|2ms)[0m
+[33;1mWARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.[0m
+[33;1mWARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 2468 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.[0m
+[32m   [+] skips Close-IconEditorLabVIEW when bitness is not provided[0m[90m 35ms (35ms|1ms)[0m
+[96m Context build package operation[0m
+[32m   [+] targets LabVIEW 2023 (32-bit) by default[0m[90m 90ms (87ms|2ms)[0m
+[32m   [+] respects explicit bitness selection when requesting 64-bit only[0m[90m 61ms (54ms|7ms)[0m
+[95m
+[95mRunning tests from '/mnt/c/codex/home/runner/work/icon-editor-lab/tests/tools/PrepareLabVIEWSource.Tests.ps1'[0m
+[92mDescribing Prepare_LabVIEW_source.ps1[0m
+[91m  [-] places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec[0m[90m 15ms (13ms|3ms)[0m
+[91m   Expected regular expression 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath' to match '# Example usage:
+[91m   # .\Prepare_LabVIEW_source.ps1 -MinimumSupportedLVVersion "2021" -SupportedBitness "64" -RelativePath "C:\labview icon editor" -LabVIEW_Project "lv_icon_editor" -Build_Spec "Editor Packed Library"
+[91m   
+[91m   param(
+[91m       [Parameter(Mandatory = $true)]
+[91m       [string]$MinimumSupportedLVVersion,
+[91m   
+[91m       [Parameter(Mandatory = $true)]
+[91m       [ValidateSet("32", "64", IgnoreCase = $true)]
+[91m       [string]$SupportedBitness,
+[91m   
+[91m       [Parameter(Mandatory = $true)]
+[91m       [ValidateScript({ Test-Path $_ })]
+[91m       [string]$RelativePath,
+[91m   
+[91m       [Parameter(Mandatory = $true)]
+[91m       [string]$LabVIEW_Project,
+[91m   
+[91m       [Parameter(Mandatory = $true)]
+[91m       [string]$Build_Spec
+[91m   )
+[91m   
+[91m   # Ensure paths with spaces are enclosed in double quotes
+[91m   $escapedRelativePath = "`"$RelativePath`""
+[91m   $escapedLabVIEWProjectPath = "`"$RelativePath\$LabVIEW_Project.lvproj`""
+[91m   $escapedBuildSpec = "`"$Build_Spec`""
+[91m   
+[91m   # Construct the command
+[91m   $script = @"
+[91m   g-cli --lv-ver $MinimumSupportedLVVersion --arch $SupportedBitness -v `"$RelativePath\Tooling\PrepareIESource.vi`" -- LabVIEW Localhost.LibraryPaths `"$RelativePath\$LabVIEW_Project.lvproj`" $Build_Spec
+[91m   "@
+[91m   
+[91m   Write-Output "Executing the following command:"
+[91m   Write-Output $script
+[91m   
+[91m   try {
+[91m       # Execute the command and check for errors
+[91m       Invoke-Expression $script
+[91m   
+[91m       # Check the exit code
+[91m       if ($LASTEXITCODE -eq 0) {
+[91m           Write-Host "Success: Process completed."
+[91m           Write-Host "Unzipping vi.lib/LabVIEW Icon API from LabVIEW $MinimumSupportedLVVersion ($SupportedBitness-bit)."
+[91m           Write-Host "Removing localhost.library path from ini file."
+[91m       } else {
+[91m           throw "Error: Command execution failed with exit code $LASTEXITCODE."
+[91m       }
+[91m   } catch {
+[91m       Write-Error "An error occurred during execution: $_"
+[91m       Write-Error "Please check the parameters and ensure the command is valid."
+[91m       exit 1
+[91m   }
+[91m   ', but it did not match.
+[91m   at $script:prepareScriptContent | Should -Match 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath', /mnt/c/codex/home/runner/work/icon-editor-lab/tests/tools/PrepareLabVIEWSource.Tests.ps1:15
+[91m   at <ScriptBlock>, /mnt/c/codex/home/runner/work/icon-editor-lab/tests/tools/PrepareLabVIEWSource.Tests.ps1:15[0m
+[95m
+[95mRunning tests from '/mnt/c/codex/home/runner/work/icon-editor-lab/tests/tools/ToolsSyntax.Tests.ps1'[0m
+[92mDescribing Tools folder script syntax[0m
+[32m  [+] has a tools directory[0m[90m 68ms (67ms|1ms)[0m
+[32m  [+] contains at least one PowerShell file[0m[90m 202ms (202ms|1ms)[0m
+[32m  [+] parses tools/IconEditorDevMode.Tests.ps1[0m[90m 21ms (21ms|1ms)[0m
+[32m  [+] parses tools/PrepareLabVIEWSource.Tests.ps1[0m[90m 12ms (12ms|1ms)[0m
+[32m  [+] parses tools/Run-DevMode-Debug.ps1[0m[90m 8ms (7ms|1ms)[0m
+[32m  [+] parses tools/ToolsSyntax.Tests.ps1[0m[90m 6ms (5ms|0ms)[0m
+[97mTests completed in 3.2s[0m
+[97mTests Passed: 21, [0m[91mFailed: 1, [0m[90mSkipped: 0, [0m[90mInconclusive: 0, [0m[37m[0m[37mNotRun: 30[0m
+[95mProcessing code coverage result.[0m
+[95mCode Coverage result processed in 169 ms.[0m
+[91mCovered 0% / 75%. 45 analyzed Commands in 1 File.[0m
+[91mMissed commands:[0m
+[97m
+[97mFile                  Class Function                Line Command
+[97m----                  ----- --------                ---- -------
+[97mRun-DevMode-Debug.ps1                                  5 '25'
+[97mRun-DevMode-Debug.ps1                                  9 Set-StrictMode -Versio…
+[97mRun-DevMode-Debug.ps1                                 10 $ErrorActionPreference…
+[97mRun-DevMode-Debug.ps1                                 12 $repoRoot = (Resolve-P…
+[97mRun-DevMode-Debug.ps1                                 12 Resolve-Path '.'
+[97mRun-DevMode-Debug.ps1                                 13 $runner = Join-Path $r…
+[97mRun-DevMode-Debug.ps1                                 14 if (-not (Test-Path -L…
+[97mRun-DevMode-Debug.ps1                                 14 Test-Path -LiteralPath…
+[97mRun-DevMode-Debug.ps1                                 15 throw "Local CI runner…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   19 $modulePath = Join-Pat…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   20 if (-not (Test-Path -L…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   20 Test-Path -LiteralPath…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   20 return $null
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   22 Import-Module $moduleP…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   23 return (Get-IconEditor…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   23 Get-IconEditorDevModeS…
+[97mRun-DevMode-Debug.ps1       Get-DevModeCurrentState   24 return $null
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    32 $source = Get-Content …
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    34 $updated = [System.Tex…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    39 $tmpDir = Join-Path $e…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    40 if (-not (Test-Path -L…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    40 Test-Path -LiteralPath…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    40 [void](New-Item -ItemT…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    40 New-Item -ItemType Dir…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    41 $dest = Join-Path $tmp…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    41 "profile.debug.{0}.psd…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    41 [Guid]::NewGuid().ToSt…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    42 $updated
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    42 Set-Content -LiteralPa…
+[97mRun-DevMode-Debug.ps1       New-DebugConfigOverlay    43 return $dest
+[97mRun-DevMode-Debug.ps1                                 46 $env:LOCALCI_DEBUG_DEV…
+[97mRun-DevMode-Debug.ps1                                 47 Write-Host "[Run-DevMo…
+[97mRun-DevMode-Debug.ps1                                 50 if ($Action -eq 'Toggl…
+[97mRun-DevMode-Debug.ps1                                 52 $state = Get-DevModeCu…
+[97mRun-DevMode-Debug.ps1                                 53 $isActive = $false
+[97mRun-DevMode-Debug.ps1                                 54 if ($state -and $state…
+[97mRun-DevMode-Debug.ps1                                 54 $isActive = [bool]$sta…
+[97mRun-DevMode-Debug.ps1                                 55 if ($isActive) { 'Disa…
+[97mRun-DevMode-Debug.ps1                                 55 'Disable'
+[97mRun-DevMode-Debug.ps1                                 55 'Enable'
+[97mRun-DevMode-Debug.ps1                                 57 $nextAction = $Action
+[97mRun-DevMode-Debug.ps1                                 59 Write-Host ("==> Stage…
+[97mRun-DevMode-Debug.ps1                                 59 "==> Stage 25 - DevMod…
+[97mRun-DevMode-Debug.ps1                                 61 $overlayPath = New-Deb…
+[97mRun-DevMode-Debug.ps1                                 63 & pwsh -NoLogo -NoProf…
+[97m
+[97m[0m
+[?1h

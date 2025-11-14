@@ -1,0 +1,60 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251113T004914251",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "startedAt": "2025-11-13T00:49:14.2489191-08:00",
+  "status": "succeeded",
+  "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+  "updatedAt": "2025-11-13T00:50:03.8785877-08:00",
+  "verification": {
+    "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+    "IconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+    "Active": true,
+    "Entries": [
+      {
+        "Version": 2021,
+        "Bitness": 64,
+        "LabVIEWExePath": "C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": "\"c:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\"",
+        "TokenValueEmpty": false,
+        "ContainsIconEditorPath": true
+      }
+    ]
+  },
+  "verificationSummary": {
+    "presentCount": 1,
+    "containsIconEditorCount": 1,
+    "active": true
+  },
+  "completedAt": "2025-11-13T00:50:18.0437415-08:00",
+  "durationSeconds": 63.79,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-13T00:49:14.2782947-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-13T00:49:14.3087930-08:00",
+      "durationSeconds": 0.03
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-13T00:49:14.3250640-08:00",
+      "status": "ok",
+      "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+      "endedAt": "2025-11-13T00:50:18.0116480-08:00",
+      "durationSeconds": 63.69
+    }
+  ]
+}

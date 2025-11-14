@@ -19,7 +19,7 @@ Automate VIPM CLI builds for the Icon Editor package: sync repo content, apply V
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
 | `RepoRoot` | string | Auto-resolved | Root of the Icon Editor repo. |
-| `IconEditorRoot` | string | `vendor/icon-editor` | Working directory for VIPM CLI. |
+| `IconEditorRoot` | string | `vendor/labview-icon-editor` | Working directory for VIPM CLI. |
 | `RepoSlug` | string | `LabVIEW-Community-CI-CD/labview-icon-editor` | Repo to sync into `IconEditorRoot`. |
 | `MinimumSupportedLVVersion` | int | `2023` | Dev-mode/g-cli minimum (32 + 64 bit). |
 | `PackageMinimumSupportedLVVersion` | int | `2026` | Minimum version embedded in the VIP. |
@@ -38,3 +38,4 @@ Automate VIPM CLI builds for the Icon Editor package: sync repo content, apply V
 - `tools/icon-editor/Invoke-IconEditorBuild.ps1`
 - `tools/icon-editor/Invoke-IconEditorVipPackaging.ps1`
 - `docs/ICON_EDITOR_LAB_MIGRATION.md`
+

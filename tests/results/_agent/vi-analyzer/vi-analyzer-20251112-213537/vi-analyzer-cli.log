@@ -1,0 +1,27 @@
+Command: "C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe" -PortNumber 3363 -LabVIEWPath C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe -OperationName RunVIAnalyzer -ConfigPath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project -ReportPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-213537\vi-analyzer-report.txt -ReportSaveType ASCII
+
+--- stdout ---
+LabVIEWCLI started logging in file:  C:\Users\svelderr\AppData\Local\Temp\lvtemporary_430941.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe"
+Connection established with LabVIEW at port number 3363.
+
+
+
+--- stderr ---
+Operation output: 
+VI Analyzer completed.
+600 tests passed.
+24 tests failed.
+0 tests skipped.
+0 VIs were unloadable.
+0 tests were unloadable.
+0 tests were unrunable.
+0 tests produced error.
+
+Please find the full report at "C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-213537\vi-analyzer-report.txt".
+RunVIAnalyzer operation failed.
+
+
+
+--- notes ---
+LabVIEW CLI rejected -ResultsPath; automatic .rsl capture is disabled for this run.

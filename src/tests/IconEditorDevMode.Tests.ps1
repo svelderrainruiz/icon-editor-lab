@@ -363,3 +363,75 @@ exit 1
     }
   }
 }
+
+Describe 'Invoke-IconEditorRogueCheck logging' -Tag 'IconEditor','DevMode','Rogue' {
+  BeforeAll {
+    $script:modulePath = Join-Path (Resolve-Path (Join-Path $PSScriptRoot '..')).Path 'tools' 'icon-editor' 'IconEditorDevMode.psm1'
+    Import-Module $script:modulePath -Force
+
+    function script:New-RogueStubRepo {
+      param([Parameter(Mandatory)][string]$Name)
+      $repoRoot = Join-Path $TestDrive $Name
+      $toolsDir = Join-Path $repoRoot 'tools'
+      New-Item -ItemType Directory -Path $toolsDir -Force | Out-Null
+      $detectPath = Join-Path $toolsDir 'Detect-RogueLV.ps1'
+@'
+[CmdletBinding()]
+param(
+  [string]$ResultsDir,
+  [string]$OutputPath,
+  [int]$LookBackSeconds,
+  [switch]$FailOnRogue,
+  [switch]$AutoClose,
+  [switch]$AppendToStepSummary,
+  [switch]$Quiet,
+  [int]$RetryCount,
+  [int]$RetryDelaySeconds
+)
+if ($OutputPath) {
+  $dir = Split-Path -Parent $OutputPath
+  if ($dir -and -not (Test-Path -LiteralPath $dir -PathType Container)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+  @{ schema = 'stub'; resultsDir = $ResultsDir } | ConvertTo-Json | Set-Content -LiteralPath $OutputPath -Encoding utf8
+}
+if ($FailOnRogue) { exit 3 } else { exit 0 }
+'@ | Set-Content -LiteralPath $detectPath -Encoding utf8
+      return $repoRoot
+    }
+  }
+
+  AfterEach {
+    Remove-Item Env:LOCALCI_DEV_MODE_LOGROOT -ErrorAction SilentlyContinue
+  }
+
+  It 'returns detection artifacts under tests/results when the detector succeeds' {
+    $repo = New-RogueStubRepo -Name 'rogue-success'
+    $result = Invoke-IconEditorRogueCheck -RepoRoot $repo -Stage 'enable-devmode-pre'
+    $result | Should -Not -BeNullOrEmpty
+    $result.ExitCode | Should -Be 0
+    $defaultDir = Join-Path $repo 'tests' 'results' '_agent' 'icon-editor' 'rogue-lv'
+    Test-Path -LiteralPath $defaultDir -PathType Container | Should -BeTrue
+    Test-Path -LiteralPath $result.Path -PathType Leaf | Should -BeTrue
+    ($result.Path -like (Join-Path $defaultDir 'rogue-lv-enable-devmode-pre-*')) | Should -BeTrue
+    $payload = Get-Content -LiteralPath $result.Path -Raw | ConvertFrom-Json
+    $payload.resultsDir | Should -Be (Join-Path $repo 'tests' 'results')
+  }
+
+  It 'throws and surfaces the latest rogue log when FailOnRogue is set' {
+    $repo = New-RogueStubRepo -Name 'rogue-fail'
+    $action = { Invoke-IconEditorRogueCheck -RepoRoot $repo -Stage 'enable-devmode-pre' -FailOnRogue }
+    $action | Should -Throw '*rogue-lv-enable-devmode-pre*'
+    $defaultDir = Join-Path $repo 'tests' 'results' '_agent' 'icon-editor' 'rogue-lv'
+    (Get-ChildItem -LiteralPath $defaultDir -Filter 'rogue-lv-enable-devmode-pre-*').Count | Should -BeGreaterThan 0
+  }
+
+  It 'honours LOCALCI_DEV_MODE_LOGROOT when writing rogue logs' {
+    $repo = New-RogueStubRepo -Name 'rogue-custom'
+    $customRoot = Join-Path $TestDrive 'custom-devmode-logs'
+    $env:LOCALCI_DEV_MODE_LOGROOT = $customRoot
+    $result = Invoke-IconEditorRogueCheck -RepoRoot $repo -Stage 'enable-devmode-pre'
+    $customRogueDir = Join-Path $customRoot 'rogue'
+    Test-Path -LiteralPath $customRogueDir -PathType Container | Should -BeTrue
+    Test-Path -LiteralPath $result.Path -PathType Leaf | Should -BeTrue
+    ($result.Path -like (Join-Path $customRogueDir 'rogue-lv-enable-devmode-pre-*')) | Should -BeTrue
+  }
+}

@@ -1,0 +1,13 @@
+﻿2025-11-12T19:28:08.8549482Z ##[group]Run $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+2025-11-12T19:28:08.8550499Z [36;1m$signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue[0m
+2025-11-12T19:28:08.8551446Z [36;1mif (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE verify.'; return }[0m
+2025-11-12T19:28:08.8552249Z [36;1m$signtool = $signtoolCmd.Source[0m
+2025-11-12T19:28:08.8552967Z [36;1m$pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:28:08.8553842Z [36;1mforeach ($f in $pe) { & $signtool verify /pa $f.FullName }[0m
+2025-11-12T19:28:08.8630821Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:28:08.8631137Z env:
+2025-11-12T19:28:08.8631339Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:28:08.8631590Z   SIGN_ROOT: out
+2025-11-12T19:28:08.8631760Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:28:08.8631941Z ##[endgroup]
+2025-11-12T19:28:09.3244376Z signtool.exe not found; skipping PE verify.

@@ -1,0 +1,11 @@
+{
+  "requests": [
+    {
+      "relPath": "src/VIs/demo.vi",
+      "category": "sample",
+      "name": "demo.vi"
+    }
+  ],
+  "schema": "icon-editor/vi-diff-requests@v1",
+  "count": 1
+}

@@ -1,0 +1,53 @@
+{
+  "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "SignRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out",
+  "RunRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751",
+  "Timestamp": "20251112-143751",
+  "GitCommit": "31dd0d28c926c322f24547d6488a53eb9ed5238d",
+  "GitBranch": "develop",
+  "Host": "USAUSLT-Z7DLW6G",
+  "OS": "Microsoft Windows NT 10.0.22631.0",
+  "PowerShell": "7.5.3",
+  "Stages": [
+    {
+      "DurationMs": 300,
+      "Error": null,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751\\stage-10-Prep.log",
+      "Status": "Succeeded",
+      "Id": 10,
+      "Label": "Prep"
+    },
+    {
+      "DurationMs": 256,
+      "Error": null,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751\\stage-20-Build.log",
+      "Status": "Succeeded",
+      "Id": 20,
+      "Label": "Build"
+    },
+    {
+      "DurationMs": 3653,
+      "Error": null,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751\\stage-30-Tests.log",
+      "Status": "Succeeded",
+      "Id": 30,
+      "Label": "Tests"
+    },
+    {
+      "DurationMs": 6419,
+      "Error": null,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751\\stage-40-Signing.log",
+      "Status": "Succeeded",
+      "Id": 40,
+      "Label": "Signing"
+    },
+    {
+      "DurationMs": 1306,
+      "Error": null,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-143751\\stage-50-Pack.log",
+      "Status": "Succeeded",
+      "Id": 50,
+      "Label": "Pack"
+    }
+  ]
+}

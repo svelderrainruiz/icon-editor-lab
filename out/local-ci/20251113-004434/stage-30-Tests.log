@@ -1,0 +1,234 @@
+**********************
+PowerShell transcript start
+Start time: 20251113004533
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 1540
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 10 files.
+Discovery found 22 tests in 701ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 7 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 157ms (105ms|52ms)
+  [+] contains at least one PowerShell script
+ 21ms (20ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 38ms (31ms|8ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 17ms (8ms|10ms)
+  [+] contains at least one PowerShell file
+ 13ms (10ms|2ms)
+PS>TerminatingError(): "Expected $null or empty, because syntax errors prevent automation from dot-sourcing tools\Run-DevMode-Debug.ps1., but got @(At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:55 char:60
++   $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
++                                                            ~~~
+The string is missing the terminator: '., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Array index expression is missing or not valid., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Missing ')' in method call., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~~~~~~~~~
+Unexpected token '^\']*\'',
+    "DevModeAction           = '$DevModeAction'"
+  )
+  $tmpDir = Join-Path $env:TEMP 'icon-editor-lab'
+  if (-not (Test-Path -LiteralPath $tmpDir -PathType Container)) { [void](New-Item -ItemType Directory -Path $tmpDir -Force) }
+  $dest = Join-Path $tmpDir ("profile.debug.{0}.psd1" -f ([Guid]::NewGuid().ToString('N')))
+  $updated | Set-Content -LiteralPath $dest -Encoding UTF8
+  return $dest
+}
+
+$env:LOCALCI_DEBUG_DEV_MODE = '1'
+Write-Host "[Run-DevMode-Debug] LOCALCI_DEBUG_DEV_MODE=1" -ForegroundColor Cyan
+
+# Decide desired action
+if ($Action -eq 'Toggle') {
+  # Toggle DevModeAction based on current state
+  $state = Get-DevModeCurrentState
+  $isActive = $false
+  if ($state -and $state.PSObject.Properties['Active']) { $isActive = [bool]$state.Active }
+  $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
+} else {
+  $nextAction = $Action
+}
+Write-Host ("==> Stage 25 - DevMode ({0})" -f $nextAction) -ForegroundColor Cyan
+
+$overlayPath = New-DebugConfigOverlay -BaseConfigPath $ConfigPath -DevModeAction $nextAction
+
+& pwsh -NoLogo -NoProfile -File $runner -ConfigPath $overlayPath -OnlyStages $OnlyStages
+' in expression or statement., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:27 char:33
++ function New-DebugConfigOverlay {
++                                 ~
+Missing closing '}' in statement block or type definition.)."
+>> TerminatingError(): "Expected $null or empty, because syntax errors prevent automation from dot-sourcing tools\Run-DevMode-Debug.ps1., but got @(At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:55 char:60
++   $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
++                                                            ~~~
+The string is missing the terminator: '., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Array index expression is missing or not valid., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Missing ')' in method call., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~~~~~~~~~
+Unexpected token '^\']*\'',
+    "DevModeAction           = '$DevModeAction'"
+  )
+  $tmpDir = Join-Path $env:TEMP 'icon-editor-lab'
+  if (-not (Test-Path -LiteralPath $tmpDir -PathType Container)) { [void](New-Item -ItemType Directory -Path $tmpDir -Force) }
+  $dest = Join-Path $tmpDir ("profile.debug.{0}.psd1" -f ([Guid]::NewGuid().ToString('N')))
+  $updated | Set-Content -LiteralPath $dest -Encoding UTF8
+  return $dest
+}
+
+$env:LOCALCI_DEBUG_DEV_MODE = '1'
+Write-Host "[Run-DevMode-Debug] LOCALCI_DEBUG_DEV_MODE=1" -ForegroundColor Cyan
+
+# Decide desired action
+if ($Action -eq 'Toggle') {
+  # Toggle DevModeAction based on current state
+  $state = Get-DevModeCurrentState
+  $isActive = $false
+  if ($state -and $state.PSObject.Properties['Active']) { $isActive = [bool]$state.Active }
+  $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
+} else {
+  $nextAction = $Action
+}
+Write-Host ("==> Stage 25 - DevMode ({0})" -f $nextAction) -ForegroundColor Cyan
+
+$overlayPath = New-DebugConfigOverlay -BaseConfigPath $ConfigPath -DevModeAction $nextAction
+
+& pwsh -NoLogo -NoProfile -File $runner -ConfigPath $overlayPath -OnlyStages $OnlyStages
+' in expression or statement., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:27 char:33
++ function New-DebugConfigOverlay {
++                                 ~
+Missing closing '}' in statement block or type definition.)."
+>> TerminatingError(): "Expected $null or empty, because syntax errors prevent automation from dot-sourcing tools\Run-DevMode-Debug.ps1., but got @(At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:55 char:60
++   $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
++                                                            ~~~
+The string is missing the terminator: '., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Array index expression is missing or not valid., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~
+Missing ')' in method call., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
++     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
++                                      ~~~~~~~~~
+Unexpected token '^\']*\'',
+    "DevModeAction           = '$DevModeAction'"
+  )
+  $tmpDir = Join-Path $env:TEMP 'icon-editor-lab'
+  if (-not (Test-Path -LiteralPath $tmpDir -PathType Container)) { [void](New-Item -ItemType Directory -Path $tmpDir -Force) }
+  $dest = Join-Path $tmpDir ("profile.debug.{0}.psd1" -f ([Guid]::NewGuid().ToString('N')))
+  $updated | Set-Content -LiteralPath $dest -Encoding UTF8
+  return $dest
+}
+
+$env:LOCALCI_DEBUG_DEV_MODE = '1'
+Write-Host "[Run-DevMode-Debug] LOCALCI_DEBUG_DEV_MODE=1" -ForegroundColor Cyan
+
+# Decide desired action
+if ($Action -eq 'Toggle') {
+  # Toggle DevModeAction based on current state
+  $state = Get-DevModeCurrentState
+  $isActive = $false
+  if ($state -and $state.PSObject.Properties['Active']) { $isActive = [bool]$state.Active }
+  $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
+} else {
+  $nextAction = $Action
+}
+Write-Host ("==> Stage 25 - DevMode ({0})" -f $nextAction) -ForegroundColor Cyan
+
+$overlayPath = New-DebugConfigOverlay -BaseConfigPath $ConfigPath -DevModeAction $nextAction
+
+& pwsh -NoLogo -NoProfile -File $runner -ConfigPath $overlayPath -OnlyStages $OnlyStages
+' in expression or statement., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:27 char:33
++ function New-DebugConfigOverlay {
++                                 ~
+Missing closing '}' in statement block or type definition.)."
+  [-] parses tools\Run-DevMode-Debug.ps1
+ 112ms (110ms|2ms)
+   at $errors | Should -BeNullOrEmpty -Because "syntax errors prevent automation from dot-sourcing $Relative.", C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1:39
+   at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1:39
+   Expected $null or empty, because syntax errors prevent automation from dot-sourcing tools\Run-DevMode-Debug.ps1., but got @(At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:55 char:60
+   +   $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
+   +                                                            ~~~
+   The string is missing the terminator: '., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
+   +     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
+   +                                      ~
+   Array index expression is missing or not valid., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
+   +     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
+   +                                      ~
+   Missing ')' in method call., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:36 char:38
+   +     '(?im)^\s*DevModeAction\s*=\s*\'[^\']*\'',
+   +                                      ~~~~~~~~~
+   Unexpected token '^\']*\'',
+       "DevModeAction           = '$DevModeAction'"
+     )
+     $tmpDir = Join-Path $env:TEMP 'icon-editor-lab'
+     if (-not (Test-Path -LiteralPath $tmpDir -PathType Container)) { [void](New-Item -ItemType Directory -Path $tmpDir -Force) }
+     $dest = Join-Path $tmpDir ("profile.debug.{0}.psd1" -f ([Guid]::NewGuid().ToString('N')))
+     $updated | Set-Content -LiteralPath $dest -Encoding UTF8
+     return $dest
+   }
+   $env:LOCALCI_DEBUG_DEV_MODE = '1'
+   Write-Host "[Run-DevMode-Debug] LOCALCI_DEBUG_DEV_MODE=1" -ForegroundColor Cyan
+   # Decide desired action
+   if ($Action -eq 'Toggle') {
+     # Toggle DevModeAction based on current state
+     $state = Get-DevModeCurrentState
+     $isActive = $false
+     if ($state -and $state.PSObject.Properties['Active']) { $isActive = [bool]$state.Active }
+     $nextAction = if ($isActive) { 'Disable' } else { 'Enable' }
+   } else {
+     $nextAction = $Action
+   }
+   Write-Host ("==> Stage 25 - DevMode ({0})" -f $nextAction) -ForegroundColor Cyan
+   $overlayPath = New-DebugConfigOverlay -BaseConfigPath $ConfigPath -DevModeAction $nextAction
+   & pwsh -NoLogo -NoProfile -File $runner -ConfigPath $overlayPath -OnlyStages $OnlyStages
+   ' in expression or statement., At C:\codex\home\runner\work\icon-editor-lab\tests\tools\Run-DevMode-Debug.ps1:27 char:33
+   + function New-DebugConfigOverlay {
+   +                                 ~
+   Missing closing '}' in statement block or type definition.).
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 5ms (3ms|2ms)
+Tests completed in 2.49s
+Tests Passed: 6, 
+Failed: 1, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 15
+**********************
+PowerShell transcript end
+End time: 20251113004539
+**********************

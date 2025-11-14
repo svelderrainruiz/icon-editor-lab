@@ -1,0 +1,97 @@
+Performing GHCR preflight check...
+curl: (22) The requested URL returned error: 405
+Attempting to pull remote cache image 'ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci'
+Remote image ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci not available; proceeding without cache.
+Building Docker image 'icon-editor-lab/tools:local-ci' from /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/docker/Dockerfile.tools
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.tools
+#1 transferring dockerfile: 4.22kB 0.0s done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.5s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+#3 resolve docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0
+#4 DONE 0.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 0.1s
+#5 transferring context: 2B 0.1s done
+#5 DONE 0.1s
+
+#6 [restore 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75
+#6 resolve mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 283B 0.2s done
+#7 DONE 0.2s
+
+#8 [restore 2/6] WORKDIR /tmp/restore
+#8 CACHED
+
+#9 [base 10/11] WORKDIR /work
+#9 CACHED
+
+#10 [base  6/11] RUN set -eux;     curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor       | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null;     echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main"       > /etc/apt/sources.list.d/microsoft-prod.list;     apt-get update;     apt-get install -y --no-install-recommends powershell;     rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [base  8/11] RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip     && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
+#11 CACHED
+
+#12 [base  9/11] RUN set -eux;     arch="$(uname -m)";     case "$arch" in       x86_64) ACTION_ARCH=linux_amd64 ;;       aarch64) ACTION_ARCH=linux_arm64 ;;       *) echo "Unsupported arch: $arch"; exit 1 ;;     esac;     curl -fsSL -o /tmp/actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_${ACTION_ARCH}.tar.gz";     tar -C /usr/local/bin -xzf /tmp/actionlint.tar.gz actionlint;     rm -f /tmp/actionlint.tar.gz;     actionlint -version
+#12 CACHED
+
+#13 [base  7/11] RUN npm install -g markdownlint-cli2@0.14.0 markdownlint-cli@0.31.1  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint /usr/local/bin/markdownlint  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint-cli2 /usr/local/bin/markdownlint-cli2
+#13 CACHED
+
+#14 [restore 6/6] RUN dotnet restore src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
+#14 CACHED
+
+#15 [restore 3/6] COPY Directory.Build.props ./
+#15 CACHED
+
+#16 [base  5/11] RUN set -eux;     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg       | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null;     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"       > /etc/apt/sources.list.d/github-cli.list;     apt-get update;     apt-get install -y --no-install-recommends gh;     rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [base  2/11] COPY --from=restore /root/.nuget /root/.nuget
+#17 CACHED
+
+#18 [restore 4/6] COPY src/CompareVi.Shared/CompareVi.Shared.csproj src/CompareVi.Shared/
+#18 CACHED
+
+#19 [restore 5/6] COPY src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj src/CompareVi.Tools.Cli/
+#19 CACHED
+
+#20 [base  4/11] RUN set -eux;     curl -fsSL "https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz" -o /tmp/node.tar.xz;     mkdir -p /usr/local/lib/nodejs;     tar -xJf /tmp/node.tar.xz -C /usr/local/lib/nodejs;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/node /usr/local/bin/node;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npm /usr/local/bin/npm;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npx /usr/local/bin/npx;     rm -f /tmp/node.tar.xz
+#20 CACHED
+
+#21 [base  3/11] RUN apt-get update  && apt-get install -y --no-install-recommends     apt-transport-https     ca-certificates     curl     git     gnupg     jq     python3     python3-pip     unzip     xz-utils  && rm -rf /var/lib/apt/lists/*  && ln -s /usr/bin/python3 /usr/local/bin/python
+#21 CACHED
+
+#22 [base 11/11] RUN useradd -m -u 1000 dev || true
+#22 CACHED
+
+#23 exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:9ccc00c97c1b4a33337fd552d59794f04752f35686a031803c5978bd0ffb4371 done
+#23 exporting config sha256:1fc61f01d023f1e2734ed3a9b5fdf0c6753e237e73d9d41a3cbceccb4ee11237 done
+#23 exporting attestation manifest sha256:6f3ce19c1c00feb25b7b14cbe468c2405c54706e4a85d20b988229103e9a7ece
+#23 exporting attestation manifest sha256:6f3ce19c1c00feb25b7b14cbe468c2405c54706e4a85d20b988229103e9a7ece 0.0s done
+#23 exporting manifest list sha256:897a23d05b94fa7cacec5824785eeea058351796b973176e675f8b57e0a2e9cf 0.0s done
+#23 naming to docker.io/icon-editor-lab/tools:local-ci done
+#23 unpacking to docker.io/icon-editor-lab/tools:local-ci 0.0s done
+#23 DONE 0.1s
+Validating tool image 'icon-editor-lab/tools:local-ci' can execute core CLIs
+v20.18.0
+
+[32;1mMajor [0m[32;1m Minor [0m[32;1m Patch [0m[32;1m PreReleaseLabel[0m[32;1m BuildLabel[0m
+[32;1m----- [0m [32;1m----- [0m [32;1m----- [0m [32;1m---------------[0m [32;1m----------[0m
+7      5      4                      
+
+Python 3.11.2

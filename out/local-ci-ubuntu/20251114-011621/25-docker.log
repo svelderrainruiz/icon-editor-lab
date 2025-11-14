@@ -1,0 +1,216 @@
+Performing GHCR preflight check...
+curl: (22) The requested URL returned error: 405
+Attempting to pull remote cache image 'ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci'
+Remote image ghcr.io/svelderrainruiz/icon-editor-lab/tools:local-ci not available; proceeding without cache.
+Building Docker image 'icon-editor-lab/tools:local-ci' from /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/docker/Dockerfile.tools
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.tools
+#1 transferring dockerfile: 4.43kB 0.1s done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 ...
+
+#3 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.9s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+#4 resolve docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6 0.0s done
+#4 CACHED
+
+#5 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:8.0
+#5 ...
+
+#6 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0
+#6 DONE 0.3s
+
+#5 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:8.0
+#5 DONE 0.3s
+
+#7 [internal] load .dockerignore
+#7 transferring context:
+#7 transferring context: 2B 0.2s done
+#7 DONE 0.2s
+
+#8 [restore 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75
+#8 resolve mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75 0.0s done
+#8 DONE 0.0s
+
+#9 [tools  1/13] FROM mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637
+#9 resolve mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637 0.0s done
+#9 DONE 0.0s
+
+#10 [internal] load build context
+#10 transferring context: 2.78kB 0.4s done
+#10 DONE 0.4s
+
+#11 [restore 4/6] COPY src/CompareVi.Shared/CompareVi.Shared.csproj src/CompareVi.Shared/
+#11 CACHED
+
+#12 [restore 5/6] COPY src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj src/CompareVi.Tools.Cli/
+#12 CACHED
+
+#13 [restore 3/6] COPY Directory.Build.props ./
+#13 CACHED
+
+#14 [restore 2/6] WORKDIR /tmp/restore
+#14 CACHED
+
+#15 [restore 6/6] RUN dotnet restore src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
+#15 CACHED
+
+#16 [tools  3/13] RUN set -eux;     curl -fsSL "https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz" -o /tmp/node.tar.xz;     mkdir -p /usr/local/lib/nodejs;     tar -xJf /tmp/node.tar.xz -C /usr/local/lib/nodejs;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/node /usr/local/bin/node;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npm /usr/local/bin/npm;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npx /usr/local/bin/npx;     rm -f /tmp/node.tar.xz
+#16 CACHED
+
+#17 [tools  5/13] RUN npm install -g markdownlint-cli2@0.14.0 markdownlint-cli@0.31.1  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint /usr/local/bin/markdownlint  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint-cli2 /usr/local/bin/markdownlint-cli2
+#17 CACHED
+
+#18 [tools  6/13] RUN set -eux;     arch="$(uname -m)";     case "$arch" in       x86_64) ACTION_ARCH=linux_amd64 ;;       aarch64) ACTION_ARCH=linux_arm64 ;;       *) echo "Unsupported arch: $arch"; exit 1 ;;     esac;     curl -fsSL -o /tmp/actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_${ACTION_ARCH}.tar.gz";     tar -C /usr/local/bin -xzf /tmp/actionlint.tar.gz actionlint;     rm -f /tmp/actionlint.tar.gz;     actionlint -version
+#18 CACHED
+
+#19 [tools  2/13] RUN set -eux;     apt-get update;     apt-get install -y --no-install-recommends         apt-transport-https         ca-certificates         curl         git         gnupg         jq         python3         python3-pip         unzip         xz-utils;     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg       | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null;     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"       > /etc/apt/sources.list.d/github-cli.list;     curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor       | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null;     echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main"       > /etc/apt/sources.list.d/microsoft-prod.list;     apt-get update;     apt-get install -y --no-install-recommends gh powershell;     rm -rf /var/lib/apt/lists/*;     ln -s /usr/bin/python3 /usr/local/bin/python
+#19 CACHED
+
+#20 [tools  4/13] RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip     && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
+#20 CACHED
+
+#21 [tools  7/13] COPY tools/local-ci/Test-ToolingIntent.ps1 /opt/local-ci/Test-ToolingIntent.ps1
+#21 CACHED
+
+#22 [tools  8/13] COPY tools/local-ci/Schedule-ViStage.ps1 /opt/local-ci/Schedule-ViStage.ps1
+#22 DONE 0.0s
+
+#23 [tools  9/13] COPY tests/Pester.runsettings.psd1 /opt/local-ci/Pester.runsettings.psd1
+#23 DONE 0.0s
+
+#24 [tools 10/13] COPY local-ci/ubuntu/config.yaml /opt/local-ci/config.yaml
+#24 DONE 0.0s
+
+#25 [tools 11/13] COPY --from=restore /root/.nuget /root/.nuget
+#25 DONE 0.0s
+
+#26 [tools 12/13] WORKDIR /work
+#26 DONE 0.0s
+
+#27 [tools 13/13] RUN useradd -m -u 1000 dev || true
+#27 DONE 0.4s
+
+#28 [ubuntu-runner 1/1] COPY tools/local-ci/run-handshake.sh /usr/local/bin/localci-run-handshake
+#28 DONE 0.0s
+
+#29 exporting to image
+#29 exporting layers
+#29 exporting layers 0.3s done
+#29 exporting manifest sha256:b6daa1764c4caf847b59c6692742c488a5ca83d0ecc642f1869956dbb811cc03 0.0s done
+#29 exporting config sha256:f72fa6c4246bd0a05c651144ada835d04fe54d3291d093ec4d0cde0709122a99 0.0s done
+#29 exporting attestation manifest sha256:2334b4962df061d46b8b9725d63a9ccfe9c73867e4fdb77de143fdea8ae524fc 0.0s done
+#29 exporting manifest list sha256:a7ad42724a4487abf5ba6d709f8ef290c5169814e88cc2611573ca9319a5b192 0.0s done
+#29 naming to docker.io/icon-editor-lab/tools:local-ci done
+#29 unpacking to docker.io/icon-editor-lab/tools:local-ci 0.1s done
+#29 DONE 0.5s
+Building Ubuntu runner image 'icon-editor-lab/ubuntu-runner:local-ci' from /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/docker/Dockerfile.tools
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.tools
+#1 transferring dockerfile: 4.43kB 0.0s done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 0.3s
+
+#3 docker-image://docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
+#3 resolve docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6 0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for mcr.microsoft.com/dotnet/sdk:8.0
+#4 DONE 0.1s
+
+#5 [internal] load metadata for mcr.microsoft.com/dotnet/runtime:8.0
+#5 DONE 0.1s
+
+#6 [internal] load .dockerignore
+#6 transferring context: 0.1s
+#6 transferring context: 2B 0.1s done
+#6 DONE 0.1s
+
+#7 [tools  1/13] FROM mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637
+#7 resolve mcr.microsoft.com/dotnet/runtime:8.0@sha256:40e24d28590d355e21a9923a9304a38da1a255d32edf7a5b3d54ec43b3e20637 0.0s done
+#7 DONE 0.0s
+
+#8 [restore 1/6] FROM mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75
+#8 resolve mcr.microsoft.com/dotnet/sdk:8.0@sha256:a87db299d259cec53210df406cd5e51f900a0c6d938fe56d5f392629c0505d75 0.0s done
+#8 DONE 0.0s
+
+#9 [internal] load build context
+#9 transferring context: 689B 0.4s done
+#9 DONE 0.4s
+
+#10 [tools  3/13] RUN set -eux;     curl -fsSL "https://nodejs.org/dist/v20.18.0/node-v20.18.0-linux-x64.tar.xz" -o /tmp/node.tar.xz;     mkdir -p /usr/local/lib/nodejs;     tar -xJf /tmp/node.tar.xz -C /usr/local/lib/nodejs;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/node /usr/local/bin/node;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npm /usr/local/bin/npm;     ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/npx /usr/local/bin/npx;     rm -f /tmp/node.tar.xz
+#10 CACHED
+
+#11 [tools  6/13] RUN set -eux;     arch="$(uname -m)";     case "$arch" in       x86_64) ACTION_ARCH=linux_amd64 ;;       aarch64) ACTION_ARCH=linux_arm64 ;;       *) echo "Unsupported arch: $arch"; exit 1 ;;     esac;     curl -fsSL -o /tmp/actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_${ACTION_ARCH}.tar.gz";     tar -C /usr/local/bin -xzf /tmp/actionlint.tar.gz actionlint;     rm -f /tmp/actionlint.tar.gz;     actionlint -version
+#11 CACHED
+
+#12 [restore 3/6] COPY Directory.Build.props ./
+#12 CACHED
+
+#13 [tools 10/13] COPY local-ci/ubuntu/config.yaml /opt/local-ci/config.yaml
+#13 CACHED
+
+#14 [tools  2/13] RUN set -eux;     apt-get update;     apt-get install -y --no-install-recommends         apt-transport-https         ca-certificates         curl         git         gnupg         jq         python3         python3-pip         unzip         xz-utils;     curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg       | tee /usr/share/keyrings/githubcli-archive-keyring.gpg >/dev/null;     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"       > /etc/apt/sources.list.d/github-cli.list;     curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor       | tee /etc/apt/trusted.gpg.d/microsoft.gpg >/dev/null;     echo "deb [arch=amd64] https://packages.microsoft.com/debian/12/prod bookworm main"       > /etc/apt/sources.list.d/microsoft-prod.list;     apt-get update;     apt-get install -y --no-install-recommends gh powershell;     rm -rf /var/lib/apt/lists/*;     ln -s /usr/bin/python3 /usr/local/bin/python
+#14 CACHED
+
+#15 [tools  9/13] COPY tests/Pester.runsettings.psd1 /opt/local-ci/Pester.runsettings.psd1
+#15 CACHED
+
+#16 [restore 2/6] WORKDIR /tmp/restore
+#16 CACHED
+
+#17 [restore 4/6] COPY src/CompareVi.Shared/CompareVi.Shared.csproj src/CompareVi.Shared/
+#17 CACHED
+
+#18 [tools  7/13] COPY tools/local-ci/Test-ToolingIntent.ps1 /opt/local-ci/Test-ToolingIntent.ps1
+#18 CACHED
+
+#19 [tools 13/13] RUN useradd -m -u 1000 dev || true
+#19 CACHED
+
+#20 [tools  4/13] RUN python3 -m pip install --break-system-packages --no-cache-dir --upgrade pip     && python3 -m pip install --break-system-packages --no-cache-dir ruamel.yaml
+#20 CACHED
+
+#21 [restore 6/6] RUN dotnet restore src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
+#21 CACHED
+
+#22 [restore 5/6] COPY src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj src/CompareVi.Tools.Cli/
+#22 CACHED
+
+#23 [tools  8/13] COPY tools/local-ci/Schedule-ViStage.ps1 /opt/local-ci/Schedule-ViStage.ps1
+#23 CACHED
+
+#24 [tools 11/13] COPY --from=restore /root/.nuget /root/.nuget
+#24 CACHED
+
+#25 [tools 12/13] WORKDIR /work
+#25 CACHED
+
+#26 [tools  5/13] RUN npm install -g markdownlint-cli2@0.14.0 markdownlint-cli@0.31.1  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint /usr/local/bin/markdownlint  && ln -sf /usr/local/lib/nodejs/node-v20.18.0-linux-x64/bin/markdownlint-cli2 /usr/local/bin/markdownlint-cli2
+#26 CACHED
+
+#27 [ubuntu-runner 1/1] COPY tools/local-ci/run-handshake.sh /usr/local/bin/localci-run-handshake
+#27 CACHED
+
+#28 exporting to image
+#28 exporting layers done
+#28 exporting manifest sha256:b6daa1764c4caf847b59c6692742c488a5ca83d0ecc642f1869956dbb811cc03 done
+#28 exporting config sha256:f72fa6c4246bd0a05c651144ada835d04fe54d3291d093ec4d0cde0709122a99 done
+#28 exporting attestation manifest sha256:7bc301309757985df26f5c765a9fbb809fada7038ef1d08e9ba7760b100d8a51 0.0s done
+#28 exporting manifest list sha256:1e213ff0c1cef797403a198ce8bf2e76fc5945f4b82738ca3ffe7defb3421de2 0.0s done
+#28 naming to docker.io/icon-editor-lab/ubuntu-runner:local-ci done
+#28 unpacking to docker.io/icon-editor-lab/ubuntu-runner:local-ci 0.0s done
+#28 DONE 0.1s
+Validating tool image 'icon-editor-lab/tools:local-ci' can execute core CLIs
+[ubuntu-runner] local-ci scripts not found under /work/local-ci/ubuntu

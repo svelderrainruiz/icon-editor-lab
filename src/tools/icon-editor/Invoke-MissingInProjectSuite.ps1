@@ -1,13 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
 #Requires -Version 7.0
 <#
 .SYNOPSIS
@@ -64,8 +54,12 @@ LabVIEW version to use for the analyzer gate (defaults to 2021).
 .PARAMETER ViAnalyzerBitness
 LabVIEW bitness for the analyzer gate (defaults to 64-bit).
 #>
-[CmdletBinding()]
+[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
+  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
+  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
+  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
+  [Parameter()][int]$TimeoutSec = 600,
   [string]$Label,
   [string]$ResultsPath = 'tests/results',
   [switch]$SkipNegative = $true,
@@ -85,6 +79,9 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+Import-Module Microsoft.PowerShell.Management -ErrorAction Stop -SkipEditionCheck
+Import-Module Microsoft.PowerShell.Utility -ErrorAction Stop -SkipEditionCheck
+$PSModuleAutoLoadingPreference = 'None'
 
 function Resolve-RepoRoot {
   param([string]$StartPath = (Get-Location).Path)
@@ -93,6 +90,20 @@ function Resolve-RepoRoot {
     if ($root) { return (Resolve-Path -LiteralPath $root.Trim()).Path }
   } catch {}
   return (Resolve-Path -LiteralPath $StartPath).Path
+}
+
+function Resolve-TestSuitePath {
+  param(
+    [Parameter(Mandatory)][string[]]$Directories,
+    [Parameter(Mandatory)][string]$FileName
+  )
+  foreach ($directory in $Directories) {
+    $candidate = Join-Path $directory $FileName
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      return $candidate
+    }
+  }
+  return $null
 }
 
 $trueValues = @('1','true','yes','on')
@@ -300,14 +311,20 @@ $viAnalyzerRetryInfo = [ordered]@{
   recovery  = $null
 }
 
-$compareTestsPath = Join-Path $repoRoot 'tests' 'IconEditorMissingInProject.CompareOnly.Tests.ps1'
-$fullTestsPath    = Join-Path $repoRoot 'tests' 'IconEditorMissingInProject.DevMode.Tests.ps1'
+$testSuiteDirectories = @(
+  (Join-Path $repoRoot 'tests'),
+  (Join-Path $repoRoot 'src' 'tests')
+)
 $selectedTestsPath = switch ($TestSuite) {
-  'full' { $fullTestsPath }
-  default { $compareTestsPath }
+  'full' {
+    Resolve-TestSuitePath -Directories $testSuiteDirectories -FileName 'IconEditorMissingInProject.DevMode.Tests.ps1'
+  }
+  default {
+    Resolve-TestSuitePath -Directories $testSuiteDirectories -FileName 'IconEditorMissingInProject.CompareOnly.Tests.ps1'
+  }
 }
-if (-not (Test-Path -LiteralPath $selectedTestsPath -PathType Leaf)) {
-  throw "Unable to locate MissingInProject test suite at '$selectedTestsPath'."
+if (-not $selectedTestsPath) {
+  throw ("Unable to locate the '{0}' MissingInProject test suite in: {1}" -f $TestSuite, ($testSuiteDirectories -join ', '))
 }
 
 $resultsResolved = if ([System.IO.Path]::IsPathRooted($ResultsPath)) {
@@ -402,9 +419,13 @@ if (-not $SkipViAnalyzer.IsPresent) {
   }
 }
 if ($viAnalyzerConfigResolved) {
-  $viAnalyzerScriptPath = Join-Path $repoRoot 'tools' 'icon-editor' 'Invoke-VIAnalyzer.ps1'
-  if (-not (Test-Path -LiteralPath $viAnalyzerScriptPath -PathType Leaf)) {
-    throw "Invoke-VIAnalyzer.ps1 not found at '$viAnalyzerScriptPath'."
+  $viAnalyzerDirectories = @(
+    (Join-Path $repoRoot 'tools' 'icon-editor'),
+    (Join-Path $repoRoot 'src' 'tools' 'icon-editor')
+  )
+  $viAnalyzerScriptPath = Resolve-TestSuitePath -Directories $viAnalyzerDirectories -FileName 'Invoke-VIAnalyzer.ps1'
+  if (-not $viAnalyzerScriptPath) {
+    throw ("Invoke-VIAnalyzer.ps1 not found under: {0}" -f ($viAnalyzerDirectories -join ', '))
   }
   $viAnalyzerOutputRoot = Join-Path $resultsResolved 'vi-analyzer'
   $viAnalyzerArgs = @{

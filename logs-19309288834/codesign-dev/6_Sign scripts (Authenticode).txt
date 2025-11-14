@@ -1,0 +1,35 @@
+﻿2025-11-12T19:24:53.6930306Z ##[group]Run try {
+2025-11-12T19:24:53.6930665Z [36;1mtry {[0m
+2025-11-12T19:24:53.6931092Z [36;1m  $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `[0m
+2025-11-12T19:24:53.6931849Z [36;1m         -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `[0m
+2025-11-12T19:24:53.6932573Z [36;1m         -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet[0m
+2025-11-12T19:24:53.6933504Z [36;1m  $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new([0m
+2025-11-12T19:24:53.6933949Z [36;1m    "$env:RUNNER_TEMP\codesign.pfx",[0m
+2025-11-12T19:24:53.6934505Z [36;1m    '***[0m
+2025-11-12T19:24:53.6934674Z [36;1m',[0m
+2025-11-12T19:24:53.6934830Z [36;1m    $flags)[0m
+2025-11-12T19:24:53.6935001Z [36;1m} catch {[0m
+2025-11-12T19:24:53.6935400Z [36;1m  Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"[0m
+2025-11-12T19:24:53.6936163Z [36;1m  $pwd = ConvertTo-SecureString '***[0m
+2025-11-12T19:24:53.6936423Z [36;1m' -AsPlainText -Force[0m
+2025-11-12T19:24:53.6937064Z [36;1m  $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My***
+2025-11-12T19:24:53.6937527Z [36;1m}[0m
+2025-11-12T19:24:53.6937726Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:24:53.6939002Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:53.6939430Z [36;1mforeach ($s in $scripts) {[0m
+2025-11-12T19:24:53.6939949Z [36;1m  Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null[0m
+2025-11-12T19:24:53.6940456Z [36;1m}[0m
+2025-11-12T19:24:53.7011960Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:53.7012497Z env:
+2025-11-12T19:24:53.7012753Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:53.7013044Z   SIGN_ROOT: out
+2025-11-12T19:24:53.7013229Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:53.7013420Z ##[endgroup]
+2025-11-12T19:24:54.1683830Z [33;1mWARNING: Direct PFX load failed; attempting store import fallback. Error: Exception calling ".ctor" with "3" argument(s): "The specified network password is not correct."[0m
+2025-11-12T19:24:55.0897068Z [31;1mImport-PfxCertificate: [0mD:\a\_temp\7c108960-f1c8-4cba-805e-3ea3ae9026b9.ps1:15[0m
+2025-11-12T19:24:55.0898711Z [31;1m[0m[36;1mLine |[0m
+2025-11-12T19:24:55.0900031Z [31;1m[0m[36;1m[36;1m  15 | [0m   $cert = [36;1mImport-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.[0m …[0m
+2025-11-12T19:24:55.0901104Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2025-11-12T19:24:55.0902410Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mThe PFX file you are trying to import requires either a different password or membership in an Active Directory[0m
+2025-11-12T19:24:55.0903564Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mprincipal to which it is protected.[0m
+2025-11-12T19:24:55.1516527Z ##[error]Process completed with exit code 1.

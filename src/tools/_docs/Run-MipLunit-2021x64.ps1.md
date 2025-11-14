@@ -13,7 +13,7 @@ Scenario 6b orchestrator: run the legacy MissingInProject + LUnit lane using Lab
 ### Parameters
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `ProjectPath` | string | `vendor/icon-editor/lv_icon_editor.lvproj` | Project file for the LUnit helper. |
+| `ProjectPath` | string | `vendor/labview-icon-editor/lv_icon_editor.lvproj` | Project file for the LUnit helper. |
 | `AnalyzerConfigPath` | string | `configs/vi-analyzer/missing-in-project.viancfg` | Passed to the analyzer gate. |
 | `ResultsPath` | string | `tests/results` | Root for analyzer/LUnit artifacts and integration summaries. |
 | `AutoCloseWrongLV` | switch | Off | Close non-2021 LabVIEW instances when rogue preflight runs. |
@@ -29,3 +29,4 @@ Scenario 6b orchestrator: run the legacy MissingInProject + LUnit lane using Lab
 - `tools/icon-editor/Run-MipLunit-2023x64.ps1`
 - `tools/icon-editor/Invoke-MissingInProjectSuite.ps1`
 - `docs/LABVIEW_GATING.md`
+

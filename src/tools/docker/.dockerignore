@@ -1,0 +1,16 @@
+# Keep the build context lean; Dockerfile only needs solution metadata and tools.
+.git
+.gitignore
+.vscode
+out/
+logs-*/
+logs-*.zip
+handshake/
+run-*.log
+run-*.zip
+temp*.ps1
+temp_*.ps1
+temp_head.txt
+temp_tail.txt
+*.zip
+local-ci-ubuntu/

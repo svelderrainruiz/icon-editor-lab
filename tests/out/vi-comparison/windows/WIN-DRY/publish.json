@@ -1,0 +1,12 @@
+{
+  "windowsRun": "WIN-DRY",
+  "schema": "vi-compare/publish@v1",
+  "paths": {
+    "runRoot": {
+      "root": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-DRY",
+      "requests": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-DRY/vi-diff-requests.json",
+      "summary": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-DRY/vi-comparison-summary.json"
+    }
+  },
+  "ubuntuPayload": "TEST-RUN-DRY"
+}

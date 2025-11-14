@@ -1,0 +1,27 @@
+**********************
+PowerShell transcript start
+Start time: 20251112142738
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 21820
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Hashing artifacts under C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142723\pack-root
+
+Creating archive C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142723\signed-artifacts.zip
+Packaged artifacts to C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142723\signed-artifacts.zip
+**********************
+PowerShell transcript end
+End time: 20251112142739
+**********************

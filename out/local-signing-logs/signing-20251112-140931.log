@@ -1,0 +1,70 @@
+**********************
+PowerShell transcript start
+Start time: 20251112140931
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -File scripts/Test-Signing.ps1 -MaxFiles 50 -TimeoutSeconds 5
+Process ID: 33760
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+
+== Running mode: fork-local ==
+
+
+== Running mode: trusted-local ==
+
+
+== Running harness Pester suite (tags: tools, scripts) ==
+Invoking Pester with tags: tools, scripts
+Pester v5.7.1
+
+Starting discovery in 6 files.
+Discovery found 13 tests in 239ms.
+Filter 'Tag' set to ('tools', 'scripts').
+Filters selected 6 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+PS>TerminatingError(): "The variable '$scriptsRoot' cannot be retrieved because it has not been set."
+  [-] has a scripts directory
+ 59ms (30ms|29ms)
+   RuntimeException: The variable '$scriptsRoot' cannot be retrieved because it has not been set.
+   at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1:8
+PS>TerminatingError(): "The variable '$scriptsRoot' cannot be retrieved because it has not been set."
+  [-] contains at least one PowerShell script
+ 5ms (3ms|1ms)
+   RuntimeException: The variable '$scriptsRoot' cannot be retrieved because it has not been set.
+   at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1:12
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 52ms (48ms|4ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 14ms (10ms|3ms)
+  [+] contains at least one PowerShell file
+ 37ms (36ms|1ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 4ms (3ms|1ms)
+Tests completed in 1.14s
+Tests Passed: 4, 
+Failed: 2, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 7
+**********************
+PowerShell transcript end
+End time: 20251112140938
+**********************

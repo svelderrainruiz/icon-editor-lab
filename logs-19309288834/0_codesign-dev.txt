@@ -1,0 +1,134 @@
+﻿2025-11-12T19:24:44.5672033Z Current runner version: '2.329.0'
+2025-11-12T19:24:44.5702813Z ##[group]Runner Image Provisioner
+2025-11-12T19:24:44.5703606Z Hosted Compute Agent
+2025-11-12T19:24:44.5704152Z Version: 20251016.436
+2025-11-12T19:24:44.5704739Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-12T19:24:44.5705416Z Build Date: 2025-10-15T20:44:12Z
+2025-11-12T19:24:44.5705984Z ##[endgroup]
+2025-11-12T19:24:44.5706460Z ##[group]Operating System
+2025-11-12T19:24:44.5707003Z Microsoft Windows Server 2025
+2025-11-12T19:24:44.5707561Z 10.0.26100
+2025-11-12T19:24:44.5707967Z Datacenter
+2025-11-12T19:24:44.5708398Z ##[endgroup]
+2025-11-12T19:24:44.5708907Z ##[group]Runner Image
+2025-11-12T19:24:44.5709405Z Image: windows-2025
+2025-11-12T19:24:44.5709866Z Version: 20251102.77.1
+2025-11-12T19:24:44.5710891Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+2025-11-12T19:24:44.5712591Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+2025-11-12T19:24:44.5714881Z ##[endgroup]
+2025-11-12T19:24:44.5716457Z ##[group]GITHUB_TOKEN Permissions
+2025-11-12T19:24:44.5719752Z Contents: read
+2025-11-12T19:24:44.5720566Z Metadata: read
+2025-11-12T19:24:44.5721309Z ##[endgroup]
+2025-11-12T19:24:44.5724859Z Secret source: Actions
+2025-11-12T19:24:44.5726104Z Prepare workflow directory
+2025-11-12T19:24:44.6367414Z Prepare all required actions
+2025-11-12T19:24:44.6406966Z Getting action download info
+2025-11-12T19:24:44.8462299Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2025-11-12T19:24:45.2898321Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-11-12T19:24:45.6019735Z Complete job name: codesign-dev
+2025-11-12T19:24:45.7417940Z ##[group]Run actions/download-artifact@v4
+2025-11-12T19:24:45.7419173Z with:
+2025-11-12T19:24:45.7419558Z   name: unsigned
+2025-11-12T19:24:45.7419962Z   path: unsigned
+2025-11-12T19:24:45.7420400Z   merge-multiple: false
+2025-11-12T19:24:45.7420903Z   repository: svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:45.7421443Z   run-id: 19309288834
+2025-11-12T19:24:45.7422033Z env:
+2025-11-12T19:24:45.7422470Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:45.7423007Z   SIGN_ROOT: out
+2025-11-12T19:24:45.7423411Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:45.7423828Z ##[endgroup]
+2025-11-12T19:24:46.0399698Z Downloading single artifact
+2025-11-12T19:24:46.1634403Z Preparing to download the following artifacts:
+2025-11-12T19:24:46.1637793Z - unsigned (ID: 4547632631, Size: 329, Expected Digest: sha256:f9d70e8094c451de6caf41540b6032ec998cc36dce3d3fca3d5b8eea24335b3f)
+2025-11-12T19:24:46.2509347Z Redirecting to blob download url: https://productionresultssa3.blob.core.windows.net/actions-results/ede4a50d-204e-4809-91dc-a157dcd74964/workflow-job-run-3d463a1e-e555-58cc-b71f-b34c3e913e74/artifacts/ceffe727ab2fa2c7c3322ee4a1aa0c2d2a4664836c2133df93dd15055bb617be.zip
+2025-11-12T19:24:46.2514862Z Starting download of artifact to: D:\a\icon-editor-lab\icon-editor-lab\unsigned
+2025-11-12T19:24:46.2976064Z (node:8660) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2025-11-12T19:24:46.2982038Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-11-12T19:24:46.3061676Z SHA256 digest of downloaded artifact is f9d70e8094c451de6caf41540b6032ec998cc36dce3d3fca3d5b8eea24335b3f
+2025-11-12T19:24:46.3064423Z Artifact download completed successfully.
+2025-11-12T19:24:46.3065796Z Total of 1 artifact(s) downloaded
+2025-11-12T19:24:46.3073541Z Download artifact has finished successfully
+2025-11-12T19:24:46.3567795Z ##[group]Run if ([string]::IsNullOrWhiteSpace('***
+2025-11-12T19:24:46.3652040Z [36;1mif ([string]::IsNullOrWhiteSpace('***[0m
+2025-11-12T19:24:46.3654172Z [36;1m') -or [string]::IsNullOrWhiteSpace('***[0m
+2025-11-12T19:24:46.3658843Z [36;1m')) {[0m
+2025-11-12T19:24:46.3660350Z [36;1m  throw 'Missing WIN_CODESIGN_PFX_B64 or WIN_CODESIGN_PFX_PASSWORD in environment codesign-dev.'[0m
+2025-11-12T19:24:46.3662048Z [36;1m}[0m
+2025-11-12T19:24:46.4298865Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:46.4300453Z env:
+2025-11-12T19:24:46.4301448Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:46.4302682Z   SIGN_ROOT: out
+2025-11-12T19:24:46.4303631Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:46.4304632Z ##[endgroup]
+2025-11-12T19:24:52.1757509Z ##[group]Run [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***
+2025-11-12T19:24:52.1783453Z [36;1m[IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***[0m
+2025-11-12T19:24:52.1783957Z [36;1m'))[0m
+2025-11-12T19:24:52.1857158Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:52.1857572Z env:
+2025-11-12T19:24:52.1857863Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:52.1858461Z   SIGN_ROOT: out
+2025-11-12T19:24:52.1858712Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:52.1858940Z ##[endgroup]
+2025-11-12T19:24:52.6479838Z ##[group]Run $signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue
+2025-11-12T19:24:52.6480542Z [36;1m$signtoolCmd = Get-Command signtool.exe -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:52.6481085Z [36;1mif (-not $signtoolCmd) { Write-Host 'signtool.exe not found; skipping PE signing.'; return }[0m
+2025-11-12T19:24:52.6481506Z [36;1m$signtool = $signtoolCmd.Source[0m
+2025-11-12T19:24:52.6481827Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:24:52.6482282Z [36;1m$pe = Get-ChildItem unsigned -Include *.exe,*.dll,*.msi -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:52.6482721Z [36;1mforeach ($f in $pe) {[0m
+2025-11-12T19:24:52.6483394Z [36;1m  & $signtool sign /fd SHA256 /f "$env:RUNNER_TEMP\\codesign.pfx" /p '***[0m
+2025-11-12T19:24:52.6483773Z [36;1m' /tr $tsa /td SHA256 $f.FullName[0m
+2025-11-12T19:24:52.6483997Z [36;1m}[0m
+2025-11-12T19:24:52.6556023Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:52.6556406Z env:
+2025-11-12T19:24:52.6556624Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:52.6556892Z   SIGN_ROOT: out
+2025-11-12T19:24:52.6557088Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:52.6557273Z ##[endgroup]
+2025-11-12T19:24:53.6232429Z signtool.exe not found; skipping PE signing.
+2025-11-12T19:24:53.6930334Z ##[group]Run try {
+2025-11-12T19:24:53.6930668Z [36;1mtry {[0m
+2025-11-12T19:24:53.6931096Z [36;1m  $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `[0m
+2025-11-12T19:24:53.6931852Z [36;1m         -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `[0m
+2025-11-12T19:24:53.6932576Z [36;1m         -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet[0m
+2025-11-12T19:24:53.6933508Z [36;1m  $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new([0m
+2025-11-12T19:24:53.6933953Z [36;1m    "$env:RUNNER_TEMP\codesign.pfx",[0m
+2025-11-12T19:24:53.6934508Z [36;1m    '***[0m
+2025-11-12T19:24:53.6934676Z [36;1m',[0m
+2025-11-12T19:24:53.6934839Z [36;1m    $flags)[0m
+2025-11-12T19:24:53.6935003Z [36;1m} catch {[0m
+2025-11-12T19:24:53.6935456Z [36;1m  Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"[0m
+2025-11-12T19:24:53.6936166Z [36;1m  $pwd = ConvertTo-SecureString '***[0m
+2025-11-12T19:24:53.6936425Z [36;1m' -AsPlainText -Force[0m
+2025-11-12T19:24:53.6937068Z [36;1m  $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My***
+2025-11-12T19:24:53.6937530Z [36;1m}[0m
+2025-11-12T19:24:53.6937729Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:24:53.6939007Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:53.6939433Z [36;1mforeach ($s in $scripts) {[0m
+2025-11-12T19:24:53.6939953Z [36;1m  Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null[0m
+2025-11-12T19:24:53.6940459Z [36;1m}[0m
+2025-11-12T19:24:53.7011984Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:53.7012505Z env:
+2025-11-12T19:24:53.7012785Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:53.7013047Z   SIGN_ROOT: out
+2025-11-12T19:24:53.7013231Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:53.7013422Z ##[endgroup]
+2025-11-12T19:24:54.1683882Z [33;1mWARNING: Direct PFX load failed; attempting store import fallback. Error: Exception calling ".ctor" with "3" argument(s): "The specified network password is not correct."[0m
+2025-11-12T19:24:55.0897114Z [31;1mImport-PfxCertificate: [0mD:\a\_temp\7c108960-f1c8-4cba-805e-3ea3ae9026b9.ps1:15[0m
+2025-11-12T19:24:55.0898722Z [31;1m[0m[36;1mLine |[0m
+2025-11-12T19:24:55.0900046Z [31;1m[0m[36;1m[36;1m  15 | [0m   $cert = [36;1mImport-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.[0m …[0m
+2025-11-12T19:24:55.0901115Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2025-11-12T19:24:55.0902457Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mThe PFX file you are trying to import requires either a different password or membership in an Active Directory[0m
+2025-11-12T19:24:55.0903570Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m[31;1m[36;1m     | [31;1mprincipal to which it is protected.[0m
+2025-11-12T19:24:55.1516553Z ##[error]Process completed with exit code 1.
+2025-11-12T19:24:55.1696034Z ##[group]Run Remove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue
+2025-11-12T19:24:55.1696736Z [36;1mRemove-Item "$env:RUNNER_TEMP\\codesign.pfx" -Force -ErrorAction SilentlyContinue[0m
+2025-11-12T19:24:55.1767441Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:55.1767784Z env:
+2025-11-12T19:24:55.1767998Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:55.1768259Z   SIGN_ROOT: out
+2025-11-12T19:24:55.1768444Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:55.1768633Z ##[endgroup]
+2025-11-12T19:24:55.5520987Z Cleaning up orphan processes

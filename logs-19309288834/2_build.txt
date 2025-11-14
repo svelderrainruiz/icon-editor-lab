@@ -1,0 +1,303 @@
+﻿2025-11-12T19:24:14.0338158Z Current runner version: '2.329.0'
+2025-11-12T19:24:14.0375417Z ##[group]Runner Image Provisioner
+2025-11-12T19:24:14.0376570Z Hosted Compute Agent
+2025-11-12T19:24:14.0377480Z Version: 20251016.436
+2025-11-12T19:24:14.0378467Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-12T19:24:14.0379616Z Build Date: 2025-10-15T20:44:12Z
+2025-11-12T19:24:14.0380571Z ##[endgroup]
+2025-11-12T19:24:14.0381303Z ##[group]Operating System
+2025-11-12T19:24:14.0382183Z Microsoft Windows Server 2025
+2025-11-12T19:24:14.0383067Z 10.0.26100
+2025-11-12T19:24:14.0383812Z Datacenter
+2025-11-12T19:24:14.0384511Z ##[endgroup]
+2025-11-12T19:24:14.0385342Z ##[group]Runner Image
+2025-11-12T19:24:14.0386155Z Image: windows-2025
+2025-11-12T19:24:14.0386862Z Version: 20251102.77.1
+2025-11-12T19:24:14.0388583Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+2025-11-12T19:24:14.0392177Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+2025-11-12T19:24:14.0393995Z ##[endgroup]
+2025-11-12T19:24:14.0395656Z ##[group]GITHUB_TOKEN Permissions
+2025-11-12T19:24:14.0398069Z Contents: read
+2025-11-12T19:24:14.0398883Z Metadata: read
+2025-11-12T19:24:14.0399569Z ##[endgroup]
+2025-11-12T19:24:14.0402931Z Secret source: Actions
+2025-11-12T19:24:14.0403948Z Prepare workflow directory
+2025-11-12T19:24:14.0933497Z Prepare all required actions
+2025-11-12T19:24:14.0971868Z Getting action download info
+2025-11-12T19:24:14.4075376Z Download action repository 'actions/checkout@v4' (SHA:08eba0b27e820071cde6df949e0beb9ba4906955)
+2025-11-12T19:24:14.5429347Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-11-12T19:24:14.8790184Z Complete job name: build
+2025-11-12T19:24:15.1217320Z ##[group]Run actions/checkout@v4
+2025-11-12T19:24:15.1219089Z with:
+2025-11-12T19:24:15.1219558Z   fetch-depth: 0
+2025-11-12T19:24:15.1220100Z   repository: svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:15.1221044Z   token: ***
+2025-11-12T19:24:15.1221486Z   ssh-strict: true
+2025-11-12T19:24:15.1221936Z   ssh-user: git
+2025-11-12T19:24:15.1222411Z   persist-credentials: true
+2025-11-12T19:24:15.1222920Z   clean: true
+2025-11-12T19:24:15.1223390Z   sparse-checkout-cone-mode: true
+2025-11-12T19:24:15.1223968Z   fetch-tags: false
+2025-11-12T19:24:15.1224445Z   show-progress: true
+2025-11-12T19:24:15.1224920Z   lfs: false
+2025-11-12T19:24:15.1225341Z   submodules: false
+2025-11-12T19:24:15.1225824Z   set-safe-directory: true
+2025-11-12T19:24:15.1226640Z env:
+2025-11-12T19:24:15.1227119Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:15.1227757Z   SIGN_ROOT: out
+2025-11-12T19:24:15.1228250Z ##[endgroup]
+2025-11-12T19:24:15.3145034Z Syncing repository: svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:15.3147665Z ##[group]Getting Git version info
+2025-11-12T19:24:15.3148683Z Working directory is 'D:\a\icon-editor-lab\icon-editor-lab'
+2025-11-12T19:24:15.4195818Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-11-12T19:24:15.9057493Z git version 2.51.2.windows.1
+2025-11-12T19:24:15.9133087Z ##[endgroup]
+2025-11-12T19:24:15.9168492Z Temporarily overriding HOME='D:\a\_temp\59e09e13-9cb7-4471-8c0d-2dad5f4bdb9b' before making global git config changes
+2025-11-12T19:24:15.9172701Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-12T19:24:15.9177557Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\icon-editor-lab\icon-editor-lab
+2025-11-12T19:24:15.9836810Z Deleting the contents of 'D:\a\icon-editor-lab\icon-editor-lab'
+2025-11-12T19:24:15.9843501Z ##[group]Initializing the repository
+2025-11-12T19:24:15.9854025Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\icon-editor-lab\icon-editor-lab
+2025-11-12T19:24:16.0723017Z Initialized empty Git repository in D:/a/icon-editor-lab/icon-editor-lab/.git/
+2025-11-12T19:24:16.0771672Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:16.1414737Z ##[endgroup]
+2025-11-12T19:24:16.1415753Z ##[group]Disabling automatic garbage collection
+2025-11-12T19:24:16.1424413Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2025-11-12T19:24:16.1753793Z ##[endgroup]
+2025-11-12T19:24:16.1755384Z ##[group]Setting up auth
+2025-11-12T19:24:16.1757346Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-11-12T19:24:16.2134838Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-11-12T19:24:17.9754761Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-12T19:24:18.0100676Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2025-11-12T19:24:18.5648858Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2025-11-12T19:24:18.6040300Z ##[endgroup]
+2025-11-12T19:24:18.6041247Z ##[group]Fetching the repository
+2025-11-12T19:24:18.6055867Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2025-11-12T19:24:20.5733466Z From https://github.com/svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:20.5738233Z  * [new branch]      chore/ci-coverage-lychee-rtm-adr -> origin/chore/ci-coverage-lychee-rtm-adr
+2025-11-12T19:24:20.5739600Z  * [new branch]      codex/add-testing-documentation-and-scripts -> origin/codex/add-testing-documentation-and-scripts
+2025-11-12T19:24:20.5740486Z  * [new branch]      dependabot/github_actions/github/codeql-action-4 -> origin/dependabot/github_actions/github/codeql-action-4
+2025-11-12T19:24:20.5741150Z  * [new branch]      develop                 -> origin/develop
+2025-11-12T19:24:20.5741593Z  * [new branch]      feat/ci-coverage-hygiene-v1 -> origin/feat/ci-coverage-hygiene-v1
+2025-11-12T19:24:20.5742120Z  * [new branch]      feat/ci-gates-rtm-adr   -> origin/feat/ci-gates-rtm-adr
+2025-11-12T19:24:20.5742616Z  * [new branch]      feat/ci-hardening-rc    -> origin/feat/ci-hardening-rc
+2025-11-12T19:24:20.5743078Z  * [new branch]      feat/cli-naming-standard -> origin/feat/cli-naming-standard
+2025-11-12T19:24:20.5743605Z  * [new branch]      feat/close-labview-coverage -> origin/feat/close-labview-coverage
+2025-11-12T19:24:20.5744234Z  * [new branch]      feat/close-lvcompare-coverage -> origin/feat/close-lvcompare-coverage
+2025-11-12T19:24:20.5744839Z  * [new branch]      feat/consolewatch-coverage-burst -> origin/feat/consolewatch-coverage-burst
+2025-11-12T19:24:20.5745372Z  * [new branch]      feat/gcli-coverage-burst -> origin/feat/gcli-coverage-burst
+2025-11-12T19:24:20.5745877Z  * [new branch]      feat/gcli-coverage-refinement -> origin/feat/gcli-coverage-refinement
+2025-11-12T19:24:20.5746478Z  * [new branch]      feat/invoke-vi-diffs-coverage -> origin/feat/invoke-vi-diffs-coverage
+2025-11-12T19:24:20.5747005Z  * [new branch]      feat/labview-gcli-coverage -> origin/feat/labview-gcli-coverage
+2025-11-12T19:24:20.5747543Z  * [new branch]      feat/labviewcli-coverage-burst -> origin/feat/labviewcli-coverage-burst
+2025-11-12T19:24:20.5748071Z  * [new branch]      feat/lvcli-pid-coverage-v2 -> origin/feat/lvcli-pid-coverage-v2
+2025-11-12T19:24:20.5748635Z  * [new branch]      feat/lvcli-suppression-coverage -> origin/feat/lvcli-suppression-coverage
+2025-11-12T19:24:20.5749152Z  * [new branch]      feat/lvcompare-coverage -> origin/feat/lvcompare-coverage
+2025-11-12T19:24:20.5749612Z  * [new branch]      feat/lvcompare-coverage-2 -> origin/feat/lvcompare-coverage-2
+2025-11-12T19:24:20.5750930Z  * [new branch]      feat/lvcompare-prepare-coverage -> origin/feat/lvcompare-prepare-coverage
+2025-11-12T19:24:20.5751502Z  * [new branch]      feat/lvcompare-report-coverage -> origin/feat/lvcompare-report-coverage
+2025-11-12T19:24:20.5752015Z  * [new branch]      feat/pester-expansion-v1 -> origin/feat/pester-expansion-v1
+2025-11-12T19:24:20.5752478Z  * [new branch]      feat/release-pipeline   -> origin/feat/release-pipeline
+2025-11-12T19:24:20.5753003Z  * [new branch]      feat/runnerprofile-coverage-burst -> origin/feat/runnerprofile-coverage-burst
+2025-11-12T19:24:20.5753570Z  * [new branch]      feat/stage-snapshot-coverage -> origin/feat/stage-snapshot-coverage
+2025-11-12T19:24:20.5754069Z  * [new branch]      feat/tools-coverage-v1  -> origin/feat/tools-coverage-v1
+2025-11-12T19:24:20.5754957Z  * [new branch]      feat/tools-coverage-v10 -> origin/feat/tools-coverage-v10
+2025-11-12T19:24:20.5755523Z  * [new branch]      feat/tools-coverage-v11 -> origin/feat/tools-coverage-v11
+2025-11-12T19:24:20.5755974Z  * [new branch]      feat/tools-coverage-v12 -> origin/feat/tools-coverage-v12
+2025-11-12T19:24:20.5756407Z  * [new branch]      feat/tools-coverage-v13 -> origin/feat/tools-coverage-v13
+2025-11-12T19:24:20.5756840Z  * [new branch]      feat/tools-coverage-v14 -> origin/feat/tools-coverage-v14
+2025-11-12T19:24:20.5757293Z  * [new branch]      feat/tools-coverage-v15 -> origin/feat/tools-coverage-v15
+2025-11-12T19:24:20.5757726Z  * [new branch]      feat/tools-coverage-v3  -> origin/feat/tools-coverage-v3
+2025-11-12T19:24:20.5758141Z  * [new branch]      feat/tools-coverage-v4  -> origin/feat/tools-coverage-v4
+2025-11-12T19:24:20.5759058Z  * [new branch]      feat/tools-coverage-v5  -> origin/feat/tools-coverage-v5
+2025-11-12T19:24:20.5759530Z  * [new branch]      feat/tools-coverage-v6  -> origin/feat/tools-coverage-v6
+2025-11-12T19:24:20.5759952Z  * [new branch]      feat/tools-coverage-v7  -> origin/feat/tools-coverage-v7
+2025-11-12T19:24:20.5760374Z  * [new branch]      feat/tools-coverage-v8  -> origin/feat/tools-coverage-v8
+2025-11-12T19:24:20.5760785Z  * [new branch]      feat/tools-coverage-v9  -> origin/feat/tools-coverage-v9
+2025-11-12T19:24:20.5761235Z  * [new branch]      feat/vi-comparison-report -> origin/feat/vi-comparison-report
+2025-11-12T19:24:20.5761694Z  * [new branch]      feat/vipm-coverage-burst -> origin/feat/vipm-coverage-burst
+2025-11-12T19:24:20.5762256Z  * [new branch]      feature/ci-seed-coverage-lychee-adr-rtm -> origin/feature/ci-seed-coverage-lychee-adr-rtm
+2025-11-12T19:24:20.5762734Z  * [new tag]         v1                      -> v1
+2025-11-12T19:24:20.5763015Z  * [new tag]         v10                     -> v10
+2025-11-12T19:24:20.5763313Z  * [new tag]         v11                     -> v11
+2025-11-12T19:24:20.5763586Z  * [new tag]         v12                     -> v12
+2025-11-12T19:24:20.5763862Z  * [new tag]         v13                     -> v13
+2025-11-12T19:24:20.5764133Z  * [new tag]         v14                     -> v14
+2025-11-12T19:24:20.6114271Z  * [new tag]         v15                     -> v15
+2025-11-12T19:24:20.6114752Z  * [new tag]         v2                      -> v2
+2025-11-12T19:24:20.6115143Z  * [new tag]         v3                      -> v3
+2025-11-12T19:24:20.6115486Z  * [new tag]         v4                      -> v4
+2025-11-12T19:24:20.6115813Z  * [new tag]         v5                      -> v5
+2025-11-12T19:24:20.6116140Z  * [new tag]         v6                      -> v6
+2025-11-12T19:24:20.6116463Z  * [new tag]         v7                      -> v7
+2025-11-12T19:24:20.6116786Z  * [new tag]         v8                      -> v8
+2025-11-12T19:24:20.6117106Z  * [new tag]         v9                      -> v9
+2025-11-12T19:24:20.6463968Z [command]"C:\Program Files\Git\bin\git.exe" branch --list --remote origin/develop
+2025-11-12T19:24:20.6836409Z   origin/develop
+2025-11-12T19:24:20.6885989Z [command]"C:\Program Files\Git\bin\git.exe" rev-parse refs/remotes/origin/develop
+2025-11-12T19:24:20.7249318Z badad46268631a9b2fdfb47bfc217a548c1cb439
+2025-11-12T19:24:20.7288799Z ##[endgroup]
+2025-11-12T19:24:20.7289301Z ##[group]Determining the checkout info
+2025-11-12T19:24:20.7291012Z ##[endgroup]
+2025-11-12T19:24:20.7302177Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2025-11-12T19:24:20.7695833Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2025-11-12T19:24:20.8074416Z ##[group]Checking out the ref
+2025-11-12T19:24:20.8087083Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force -B develop refs/remotes/origin/develop
+2025-11-12T19:24:26.5940666Z Updating files:   5% (55/1001)
+2025-11-12T19:24:26.5966489Z Updating files:   6% (61/1001)
+2025-11-12T19:24:26.6005870Z Updating files:   7% (71/1001)
+2025-11-12T19:24:26.6041564Z Updating files:   8% (81/1001)
+2025-11-12T19:24:26.6065103Z Updating files:   9% (91/1001)
+2025-11-12T19:24:26.6089650Z Updating files:  10% (101/1001)
+2025-11-12T19:24:26.6115091Z Updating files:  11% (111/1001)
+2025-11-12T19:24:26.6153090Z Updating files:  12% (121/1001)
+2025-11-12T19:24:26.6178730Z Updating files:  13% (131/1001)
+2025-11-12T19:24:26.6206039Z Updating files:  14% (141/1001)
+2025-11-12T19:24:26.6229805Z Updating files:  15% (151/1001)
+2025-11-12T19:24:26.6258153Z Updating files:  16% (161/1001)
+2025-11-12T19:24:26.6283989Z Updating files:  17% (171/1001)
+2025-11-12T19:24:26.6306426Z Updating files:  18% (181/1001)
+2025-11-12T19:24:26.6337015Z Updating files:  19% (191/1001)
+2025-11-12T19:24:26.6393588Z Updating files:  20% (201/1001)
+2025-11-12T19:24:26.6419955Z Updating files:  21% (211/1001)
+2025-11-12T19:24:26.6441742Z Updating files:  22% (221/1001)
+2025-11-12T19:24:26.6466577Z Updating files:  23% (231/1001)
+2025-11-12T19:24:26.6487021Z Updating files:  24% (241/1001)
+2025-11-12T19:24:26.6519063Z Updating files:  25% (251/1001)
+2025-11-12T19:24:26.6539492Z Updating files:  26% (261/1001)
+2025-11-12T19:24:26.6571532Z Updating files:  27% (271/1001)
+2025-11-12T19:24:26.6597893Z Updating files:  28% (281/1001)
+2025-11-12T19:24:26.6620507Z Updating files:  29% (291/1001)
+2025-11-12T19:24:26.6643819Z Updating files:  30% (301/1001)
+2025-11-12T19:24:26.6669222Z Updating files:  31% (311/1001)
+2025-11-12T19:24:26.6693105Z Updating files:  32% (321/1001)
+2025-11-12T19:24:26.6718562Z Updating files:  33% (331/1001)
+2025-11-12T19:24:26.6739739Z Updating files:  34% (341/1001)
+2025-11-12T19:24:26.6760530Z Updating files:  35% (351/1001)
+2025-11-12T19:24:26.6783945Z Updating files:  36% (361/1001)
+2025-11-12T19:24:26.6811138Z Updating files:  37% (371/1001)
+2025-11-12T19:24:26.6836038Z Updating files:  38% (381/1001)
+2025-11-12T19:24:26.6863083Z Updating files:  39% (391/1001)
+2025-11-12T19:24:26.6887465Z Updating files:  40% (401/1001)
+2025-11-12T19:24:26.6909064Z Updating files:  41% (411/1001)
+2025-11-12T19:24:26.6932980Z Updating files:  42% (421/1001)
+2025-11-12T19:24:26.6956151Z Updating files:  43% (431/1001)
+2025-11-12T19:24:26.6978636Z Updating files:  44% (441/1001)
+2025-11-12T19:24:26.7002587Z Updating files:  45% (451/1001)
+2025-11-12T19:24:26.7030902Z Updating files:  46% (461/1001)
+2025-11-12T19:24:26.7052895Z Updating files:  47% (471/1001)
+2025-11-12T19:24:26.7076289Z Updating files:  48% (481/1001)
+2025-11-12T19:24:26.7103503Z Updating files:  49% (491/1001)
+2025-11-12T19:24:26.7125365Z Updating files:  50% (501/1001)
+2025-11-12T19:24:26.7148194Z Updating files:  51% (511/1001)
+2025-11-12T19:24:26.7170956Z Updating files:  52% (521/1001)
+2025-11-12T19:24:26.7191428Z Updating files:  53% (531/1001)
+2025-11-12T19:24:26.7215964Z Updating files:  54% (541/1001)
+2025-11-12T19:24:26.7238878Z Updating files:  55% (551/1001)
+2025-11-12T19:24:26.7261257Z Updating files:  56% (561/1001)
+2025-11-12T19:24:26.7283699Z Updating files:  57% (571/1001)
+2025-11-12T19:24:26.7305980Z Updating files:  58% (581/1001)
+2025-11-12T19:24:26.7326125Z Updating files:  59% (591/1001)
+2025-11-12T19:24:26.7348394Z Updating files:  60% (601/1001)
+2025-11-12T19:24:26.7372682Z Updating files:  61% (611/1001)
+2025-11-12T19:24:26.7399361Z Updating files:  62% (621/1001)
+2025-11-12T19:24:26.7421565Z Updating files:  63% (631/1001)
+2025-11-12T19:24:26.7443659Z Updating files:  64% (641/1001)
+2025-11-12T19:24:26.7464137Z Updating files:  65% (651/1001)
+2025-11-12T19:24:26.7486574Z Updating files:  66% (661/1001)
+2025-11-12T19:24:26.7507498Z Updating files:  67% (671/1001)
+2025-11-12T19:24:26.7527844Z Updating files:  68% (681/1001)
+2025-11-12T19:24:26.7550455Z Updating files:  69% (691/1001)
+2025-11-12T19:24:26.7571977Z Updating files:  70% (701/1001)
+2025-11-12T19:24:26.7592227Z Updating files:  71% (711/1001)
+2025-11-12T19:24:26.7615696Z Updating files:  72% (721/1001)
+2025-11-12T19:24:26.7636736Z Updating files:  73% (731/1001)
+2025-11-12T19:24:26.7657503Z Updating files:  74% (741/1001)
+2025-11-12T19:24:26.7678192Z Updating files:  75% (751/1001)
+2025-11-12T19:24:26.7701263Z Updating files:  76% (761/1001)
+2025-11-12T19:24:26.7724512Z Updating files:  77% (771/1001)
+2025-11-12T19:24:26.7751255Z Updating files:  78% (781/1001)
+2025-11-12T19:24:26.7778300Z Updating files:  79% (791/1001)
+2025-11-12T19:24:26.7803008Z Updating files:  80% (801/1001)
+2025-11-12T19:24:26.7827694Z Updating files:  81% (811/1001)
+2025-11-12T19:24:26.7849990Z Updating files:  82% (821/1001)
+2025-11-12T19:24:26.7884251Z Updating files:  83% (831/1001)
+2025-11-12T19:24:26.7912388Z Updating files:  84% (841/1001)
+2025-11-12T19:24:26.7940910Z Updating files:  85% (851/1001)
+2025-11-12T19:24:26.7972557Z Updating files:  86% (861/1001)
+2025-11-12T19:24:26.8003022Z Updating files:  87% (871/1001)
+2025-11-12T19:24:26.8023705Z Updating files:  88% (881/1001)
+2025-11-12T19:24:26.8053125Z Updating files:  89% (891/1001)
+2025-11-12T19:24:26.8075716Z Updating files:  90% (901/1001)
+2025-11-12T19:24:26.8098549Z Updating files:  91% (911/1001)
+2025-11-12T19:24:26.8121683Z Updating files:  92% (921/1001)
+2025-11-12T19:24:26.8149261Z Updating files:  93% (931/1001)
+2025-11-12T19:24:26.8173310Z Updating files:  94% (941/1001)
+2025-11-12T19:24:26.8200099Z Updating files:  95% (951/1001)
+2025-11-12T19:24:26.8236616Z Updating files:  96% (961/1001)
+2025-11-12T19:24:26.8269478Z Updating files:  97% (971/1001)
+2025-11-12T19:24:26.8294882Z Updating files:  98% (981/1001)
+2025-11-12T19:24:26.8318672Z Updating files:  99% (991/1001)
+2025-11-12T19:24:26.8319115Z Updating files: 100% (1001/1001)
+2025-11-12T19:24:26.8319437Z Updating files: 100% (1001/1001), done.
+2025-11-12T19:24:26.8475541Z branch 'develop' set up to track 'origin/develop'.
+2025-11-12T19:24:26.8476115Z Switched to a new branch 'develop'
+2025-11-12T19:24:27.2154701Z ##[endgroup]
+2025-11-12T19:24:27.2617599Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2025-11-12T19:24:27.2912862Z badad46268631a9b2fdfb47bfc217a548c1cb439
+2025-11-12T19:24:27.3299117Z ##[group]Run if (-not (Test-Path 'out')) {
+2025-11-12T19:24:27.3299902Z [36;1mif (-not (Test-Path 'out')) {[0m
+2025-11-12T19:24:27.3300316Z [36;1m  New-Item -ItemType Directory -Path 'out' | Out-Null[0m
+2025-11-12T19:24:27.3300653Z [36;1m}[0m
+2025-11-12T19:24:27.3300906Z [36;1m$samplePs1 = Join-Path 'out' 'Sample-Signed.ps1'[0m
+2025-11-12T19:24:27.3301466Z [36;1m"Write-Output 'Sample payload for signing test.'" | Set-Content -Path $samplePs1 -Encoding UTF8[0m
+2025-11-12T19:24:27.3301996Z [36;1m$sampleExe = Join-Path 'out' 'sample.exe'[0m
+2025-11-12T19:24:27.3302357Z [36;1m[IO.File]::WriteAllBytes($sampleExe, [byte[]](1..16))[0m
+2025-11-12T19:24:27.3303125Z [36;1mWrite-Host 'Generated placeholder artifacts under out. Replace this block with actual build steps.'[0m
+2025-11-12T19:24:27.3962050Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:27.3962493Z env:
+2025-11-12T19:24:27.3962821Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:27.3963159Z   SIGN_ROOT: out
+2025-11-12T19:24:27.3963376Z ##[endgroup]
+2025-11-12T19:24:34.4742924Z Generated placeholder artifacts under out. Replace this block with actual build steps.
+2025-11-12T19:24:34.8039829Z ##[group]Run actions/upload-artifact@v4
+2025-11-12T19:24:34.8040127Z with:
+2025-11-12T19:24:34.8040285Z   name: unsigned
+2025-11-12T19:24:34.8040550Z   path: out/**/*.exe
+out/**/*.dll
+out/**/*.msi
+out/**/*.ps1
+out/**/*.psm1
+
+2025-11-12T19:24:34.8040869Z   if-no-files-found: error
+2025-11-12T19:24:34.8041065Z   compression-level: 6
+2025-11-12T19:24:34.8041230Z   overwrite: false
+2025-11-12T19:24:34.8041397Z   include-hidden-files: false
+2025-11-12T19:24:34.8041578Z env:
+2025-11-12T19:24:34.8041755Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:34.8041983Z   SIGN_ROOT: out
+2025-11-12T19:24:34.8042140Z ##[endgroup]
+2025-11-12T19:24:35.1007335Z With the provided path, there will be 2 files uploaded
+2025-11-12T19:24:35.1014292Z Artifact name is valid!
+2025-11-12T19:24:35.1017327Z Root directory input is valid!
+2025-11-12T19:24:35.2880163Z Beginning upload of artifact content to blob storage
+2025-11-12T19:24:35.4557720Z Uploaded bytes 329
+2025-11-12T19:24:35.5012721Z Finished uploading artifact content to blob storage!
+2025-11-12T19:24:35.5016457Z SHA256 digest of uploaded artifact zip is f9d70e8094c451de6caf41540b6032ec998cc36dce3d3fca3d5b8eea24335b3f
+2025-11-12T19:24:35.5019649Z Finalizing artifact upload
+2025-11-12T19:24:35.6217196Z Artifact unsigned.zip successfully finalized. Artifact ID 4547632631
+2025-11-12T19:24:35.6218717Z Artifact unsigned has been successfully uploaded! Final size is 329 bytes. Artifact ID is 4547632631
+2025-11-12T19:24:35.6234671Z Artifact download URL: https://github.com/svelderrainruiz/icon-editor-lab/actions/runs/19309288834/artifacts/4547632631
+2025-11-12T19:24:35.6572556Z Post job cleanup.
+2025-11-12T19:24:35.9134710Z [command]"C:\Program Files\Git\bin\git.exe" version
+2025-11-12T19:24:35.9424438Z git version 2.51.2.windows.1
+2025-11-12T19:24:35.9533873Z Temporarily overriding HOME='D:\a\_temp\61766ab3-b4fb-4f18-a103-c2ca99a0f20f' before making global git config changes
+2025-11-12T19:24:35.9535016Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-12T19:24:35.9546239Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\icon-editor-lab\icon-editor-lab
+2025-11-12T19:24:35.9868254Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2025-11-12T19:24:36.0168303Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2025-11-12T19:24:36.5788278Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-12T19:24:36.6079320Z http.https://github.com/.extraheader
+2025-11-12T19:24:36.6132716Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2025-11-12T19:24:36.6464473Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2025-11-12T19:24:37.2280330Z Cleaning up orphan processes

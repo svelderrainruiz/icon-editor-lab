@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ubuntu-run manifest (v1)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "created_utc",
+    "project",
+    "tooling",
+    "vi_diff_requests_file"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": [
+        "v1"
+      ]
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "repo",
+        "branch",
+        "commit"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "repo": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "dirty": {
+          "type": "boolean"
+        }
+      }
+    },
+    "tooling": {
+      "type": "object",
+      "required": [
+        "ubuntu_ci_tool_version",
+        "renderer_version"
+      ],
+      "properties": {
+        "ubuntu_ci_tool_version": {
+          "type": "string"
+        },
+        "renderer_version": {
+          "type": "string"
+        }
+      }
+    },
+    "path_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "purpose",
+          "windows",
+          "wsl"
+        ],
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "windows": {
+            "type": "string"
+          },
+          "wsl": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "zip": {
+          "type": "string"
+        },
+        "checksums": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "vi_diff_requests_file": {
+      "type": "string"
+    },
+    "determinism": {
+      "type": "object",
+      "properties": {
+        "sort": {
+          "type": "string"
+        },
+        "locale": {
+          "type": "string"
+        },
+        "case_sensitive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

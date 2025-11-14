@@ -1,0 +1,36 @@
+{
+  "schema": "icon-editor/vi-diff-summary@v1",
+  "generatedAt": "2025-11-14T00:04:23.2719240-08:00",
+  "counts": {
+    "total": 3,
+    "compared": 0,
+    "same": 0,
+    "different": 0,
+    "skipped": 0,
+    "dryRun": 3,
+    "errors": 0
+  },
+  "requests": [
+    {
+      "name": "module_1.vi",
+      "relPath": "src/VIs/module_1.vi",
+      "category": "sample",
+      "status": "dry-run",
+      "message": ""
+    },
+    {
+      "name": "module_2.vi",
+      "relPath": "src/VIs/module_2.vi",
+      "category": "sample",
+      "status": "dry-run",
+      "message": ""
+    },
+    {
+      "name": "module_3.vi",
+      "relPath": "src/VIs/module_3.vi",
+      "category": "sample",
+      "status": "dry-run",
+      "message": ""
+    }
+  ]
+}

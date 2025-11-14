@@ -1,0 +1,100 @@
+**********************
+PowerShell transcript start
+Start time: 20251113161824
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 24536
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 15 files.
+Discovery found 50 tests in 657ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 16 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 87ms (56ms|31ms)
+  [+] contains at least one PowerShell script
+ 12ms (11ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 41ms (39ms|2ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1'
+Describing Invoke-LabVIEWPrelaunchGuard
+ Context single running PID reported from settle
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 1234 prior to settle retry.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] force closes the PID when AllowForceClose is set
+ 485ms (476ms|8ms)
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 4321 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] skips force close when AllowForceClose is not set
+ 169ms (166ms|3ms)
+ Context fast settle with force-close retry
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 2468 prior to settle retry.
+   [+] uses fast timeout before force closing and succeeds on retry
+ 183ms (179ms|3ms)
+ Context prepare script arguments
+   [+] passes the Editor Packed Library build spec to PrepareIESource
+ 527ms (524ms|3ms)
+ Context version and bitness parameters
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 9876 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] passes versions and bitness to Close-IconEditorLabVIEW when settle fails
+ 123ms (120ms|3ms)
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 2468 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] skips Close-IconEditorLabVIEW when bitness is not provided
+ 137ms (136ms|1ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1'
+Describing Prepare_LabVIEW_source.ps1
+  [+] places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec
+ 5ms (3ms|2ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 7ms (4ms|3ms)
+  [+] contains at least one PowerShell file
+ 7ms (6ms|1ms)
+  [+] parses tools\IconEditorDevMode.Tests.ps1
+ 3ms (3ms|0ms)
+  [+] parses tools\PrepareLabVIEWSource.Tests.ps1
+ 4ms (3ms|1ms)
+  [+] parses tools\Run-DevMode-Debug.ps1
+ 2ms (2ms|1ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 4ms (2ms|1ms)
+Tests completed in 5.01s
+Tests Passed: 16, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 34
+**********************
+PowerShell transcript end
+End time: 20251113161832
+**********************

@@ -1,14 +1,43 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+#Requires -Version 7.0
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
+  [Parameter(Mandatory = $true)]
+  [string]$ConfigPath,
+
+  [string]$OutputRoot = 'tests/results/_agent/vi-analyzer',
+
+  [string]$Label,
+
+  [ValidateSet('ASCII','HTML','RSL')]
+  [string]$ReportSaveType = 'ASCII',
+
+  [int]$LabVIEWVersion = 2021,
+
+  [ValidateSet(32, 64)]
+  [int]$Bitness = 32,
+
+  [string]$LabVIEWCLIPath,
+
+  [switch]$CaptureResultsFile,
+
+  [string]$ReportPath,
+
+  [string]$ResultsPath,
+
+  [int]$TimeoutSeconds = 900,
+
+  [string[]]$AdditionalArguments,
+
+  [string]$ConfigPassword,
+
+  [ValidateSet('VI','Test')]
+  [string]$ReportSort,
+
+  [string[]]$ReportInclude,
+
+  [switch]$PassThru
 )
-#Requires -Version 7.0
+
 <#
 .SYNOPSIS
 Runs the LabVIEW VI Analyzer headlessly via LabVIEWCLI and captures telemetry.
@@ -72,47 +101,13 @@ Extra arguments appended to the LabVIEWCLI invocation (after the analyzer args).
 .PARAMETER PassThru
 Return the telemetry object instead of just writing files.
 #>
-[CmdletBinding()]
-param(
-  [Parameter(Mandatory = $true)]
-  [string]$ConfigPath,
-
-  [string]$OutputRoot = 'tests/results/_agent/vi-analyzer',
-
-  [string]$Label,
-
-  [ValidateSet('ASCII','HTML','RSL')]
-  [string]$ReportSaveType = 'ASCII',
-
-  [int]$LabVIEWVersion = 2021,
-
-  [ValidateSet(32, 64)]
-  [int]$Bitness = 32,
-
-  [string]$LabVIEWCLIPath,
-
-  [switch]$CaptureResultsFile,
-
-  [string]$ReportPath,
-
-  [string]$ResultsPath,
-
-  [int]$TimeoutSeconds = 900,
-
-  [string[]]$AdditionalArguments,
-
-  [string]$ConfigPassword,
-
-  [ValidateSet('VI','Test')]
-  [string]$ReportSort,
-
-  [string[]]$ReportInclude,
-
-  [switch]$PassThru
-)
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+# Manually load the core cmdlet modules we rely on when auto-loading is disabled.
+$null = Import-Module -Name Microsoft.PowerShell.Management -Force -Scope Local
+$null = Import-Module -Name Microsoft.PowerShell.Utility -Force -Scope Local
+$PSModuleAutoLoadingPreference = 'None'
 
 function Write-ViAnalyzerFailureSummary {
   param(
@@ -183,9 +178,44 @@ function Resolve-RepoRoot {
   return (Resolve-Path -LiteralPath $StartPath).Path
 }
 
+function Invoke-LabVIEWCliProcess {
+  param(
+    [Parameter(Mandatory)][string]$CliPath,
+    [Parameter(Mandatory)][System.Collections.Generic.List[string]]$Arguments,
+    [Parameter(Mandatory)][string]$WorkingDirectory,
+    [Parameter(Mandatory)][int]$TimeoutSeconds
+  )
+
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = $CliPath
+  foreach ($arg in $Arguments) {
+    [void]$psi.ArgumentList.Add($arg)
+  }
+  $psi.WorkingDirectory = $WorkingDirectory
+  $psi.UseShellExecute = $false
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+
+  $process = [System.Diagnostics.Process]::Start($psi)
+  if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
+    try { $process.Kill() } catch {}
+    throw "VI Analyzer invocation timed out after $TimeoutSeconds seconds."
+  }
+  $stdOut = $process.StandardOutput.ReadToEnd()
+  $stdErr = $process.StandardError.ReadToEnd()
+  $exitCode = $process.ExitCode
+  return [pscustomobject]@{
+    ExitCode   = $exitCode
+    StdOut     = $stdOut
+    StdErr     = $stdErr
+    Arguments  = $Arguments.ToArray()
+  }
+}
+
 $repoRoot = Resolve-RepoRoot
 $structuredConfigInfo = $null
 $originalConfigPath = $ConfigPath
+$structuredConfigFatal = $false
 if (Test-Path -LiteralPath $ConfigPath -PathType Leaf) {
   try {
     $rawContent = Get-Content -LiteralPath $ConfigPath -Raw -ErrorAction Stop
@@ -194,20 +224,34 @@ if (Test-Path -LiteralPath $ConfigPath -PathType Leaf) {
       if ($parsed.schema -and $parsed.schema -like 'vi-analyzer/config*') {
         $targetPath = $parsed.targetPath
         if (-not [string]::IsNullOrWhiteSpace($targetPath)) {
-          if (-not [System.IO.Path]::IsPathRooted($targetPath)) {
-            $targetPath = Join-Path $repoRoot $targetPath
+          $targetType = if ($parsed.targetType) { $parsed.targetType } else { 'folder' }
+          $targetResolved = $targetPath
+          if (-not [System.IO.Path]::IsPathRooted($targetResolved)) {
+            $targetResolved = Join-Path $repoRoot $targetResolved
           }
-          $ConfigPath = $targetPath
+          $pathType = if ($targetType.ToLowerInvariant() -eq 'folder') { 'Container' } else { 'Leaf' }
+          if (-not (Test-Path -LiteralPath $targetResolved -PathType $pathType)) {
+            $friendlyType = if ($pathType -eq 'Container') { 'directory' } else { 'file' }
+            $hint = 'Ensure the referenced path exists or override -ConfigPath.'
+            if ($targetResolved -like "*vendor${([System.IO.Path]::DirectorySeparatorChar)}icon-editor*") {
+              $hint += ' Populate vendor/labview-icon-editor with Sync-IconEditorFork.ps1 or another tooling import first.'
+            }
+            $structuredConfigFatal = $true
+            throw ("Structured VI Analyzer config '{0}' targets {1} '{2}', but it was not found. {3}" -f $originalConfigPath, $friendlyType, $targetResolved, $hint)
+          }
+          $resolvedTargetPath = (Resolve-Path -LiteralPath $targetResolved -ErrorAction Stop).Path
+          $ConfigPath = $resolvedTargetPath
           $structuredConfigInfo = [ordered]@{
             sourcePath = (Resolve-Path -LiteralPath $originalConfigPath -ErrorAction Stop).Path
-            targetPath = (Resolve-Path -LiteralPath $targetPath -ErrorAction Stop).Path
-            targetType = if ($parsed.targetType) { $parsed.targetType } else { 'folder' }
+            targetPath = $resolvedTargetPath
+            targetType = $targetType
           }
         }
       }
     }
   } catch {
-    Write-Warning ("Failed to parse structured VI Analyzer config '{0}': {1}" -f $ConfigPath, $_.Exception.Message)
+    Write-Warning ("Failed to parse structured VI Analyzer config '{0}': {1}" -f $originalConfigPath, $_.Exception.Message)
+    if ($structuredConfigFatal) { throw }
   }
 }
 
@@ -290,7 +334,14 @@ if (-not $ReportPath) {
 }
 $reportResolved = [System.IO.Path]::GetFullPath($ReportPath)
 
-if ($CaptureResultsFile -and -not $ResultsPath) {
+$resultsPathExplicit = $PSBoundParameters.ContainsKey('ResultsPath')
+$autoResultsCapture = [bool]$CaptureResultsFile -and -not $resultsPathExplicit
+$minimumResultsPathVersion = 2024 # LabVIEW 2023 CLI rejects -ResultsPath (error -350051)
+if ($autoResultsCapture -and $LabVIEWVersion -lt $minimumResultsPathVersion) {
+  Write-Verbose ("[vi-analyzer] Skipping automatic .rsl capture; LabVIEW {0} CLI does not support -ResultsPath." -f $LabVIEWVersion)
+  $autoResultsCapture = $false
+}
+if ($autoResultsCapture -and -not $ResultsPath) {
   $ResultsPath = Join-Path $runDir 'vi-analyzer-results.rsl'
 }
 if ($ResultsPath) {
@@ -333,33 +384,47 @@ if ($ReportInclude) {
     }
   }
 }
-if ($ResultsPath) {
+
+$coreArgumentList = $argumentList
+$resultsCaptureRequested = -not [string]::IsNullOrWhiteSpace($ResultsPath)
+if ($resultsCaptureRequested) {
+  $argumentList = New-Object System.Collections.Generic.List[string]
+  foreach ($arg in $coreArgumentList) { $argumentList.Add($arg) | Out-Null }
   $argumentList.Add('-ResultsPath')
   $argumentList.Add($ResultsPath)
+} else {
+  $argumentList = $coreArgumentList
 }
 
-$psi = New-Object System.Diagnostics.ProcessStartInfo
-$psi.FileName = $cliResolved
-foreach ($arg in $argumentList) {
-  [void]$psi.ArgumentList.Add($arg)
+$cliWorkingDir = Split-Path $configResolved -Parent
+$cliRetryNote = $null
+$cliResult = Invoke-LabVIEWCliProcess -CliPath $cliResolved -Arguments $argumentList -WorkingDirectory $cliWorkingDir -TimeoutSeconds $TimeoutSeconds
+if ($resultsCaptureRequested) {
+  $combinedOutput = (($cliResult.StdOut ?? '') + "`n" + ($cliResult.StdErr ?? ''))
+  $resultsArgRejected = ($cliResult.ExitCode -ne 0) -and `
+    ($combinedOutput -match '(?i)illegal arguments?') -and `
+    ($combinedOutput -match '-ResultsPath')
+  if ($resultsArgRejected) {
+    if ($resultsPathExplicit) {
+      $cliRetryNote = 'LabVIEW CLI rejected -ResultsPath; the requested results file could not be created. Retrying without the argument.'
+    } else {
+      $cliRetryNote = 'LabVIEW CLI rejected -ResultsPath; automatic .rsl capture is disabled for this run.'
+    }
+    Write-Warning $cliRetryNote
+    $ResultsPath = $null
+    $resultsCaptureRequested = $false
+    $cliResult = Invoke-LabVIEWCliProcess -CliPath $cliResolved -Arguments $coreArgumentList -WorkingDirectory $cliWorkingDir -TimeoutSeconds $TimeoutSeconds
+  }
 }
-$psi.WorkingDirectory = Split-Path $configResolved -Parent
-$psi.UseShellExecute = $false
-$psi.RedirectStandardOutput = $true
-$psi.RedirectStandardError = $true
 
-$process = [System.Diagnostics.Process]::Start($psi)
-if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
-  try { $process.Kill() } catch {}
-  throw "VI Analyzer invocation timed out after $TimeoutSeconds seconds."
-}
-$stdOut = $process.StandardOutput.ReadToEnd()
-$stdErr = $process.StandardError.ReadToEnd()
-$exitCode = $process.ExitCode
+$stdOut = $cliResult.StdOut
+$stdErr = $cliResult.StdErr
+$exitCode = $cliResult.ExitCode
+$finalArgumentArray = $cliResult.Arguments
 
 $cliLogPath = Join-Path $runDir 'vi-analyzer-cli.log'
 $cliLogContent = @(
-  "Command: `"$cliResolved`" $($argumentList -join ' ')",
+  "Command: `"$cliResolved`" $($finalArgumentArray -join ' ')",
   '',
   '--- stdout ---',
   $stdOut,
@@ -367,6 +432,11 @@ $cliLogContent = @(
   '--- stderr ---',
   $stdErr
 )
+if ($cliRetryNote) {
+  $cliLogContent += ''
+  $cliLogContent += '--- notes ---'
+  $cliLogContent += $cliRetryNote
+}
 Set-Content -LiteralPath $cliLogPath -Value $cliLogContent -Encoding utf8
 
 $testFailureExitCode = 0
@@ -621,3 +691,4 @@ function Invoke-WithTimeout {
   }
   Receive-Job $job -ErrorAction Stop
 }
+

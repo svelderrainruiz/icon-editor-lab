@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="9" errors="0" failures="0" not-run="43" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-11-13" time="16:46:47">
+  <environment user-domain="NI" user="svelderr" machine-name="USAUSLT-Z7DLW6G" os-version="0.0.0.0" clr-version="9.0.8" platform="Unknown" cwd="C:\codex\home\runner\work\icon-editor-lab" nunit-version="2.5.8.0" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="5.1376" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1" executed="True" result="Success" success="True" time="4.5928" asserts="0" description="C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard" executed="True" result="Success" success="True" time="4.1331" asserts="0" description="Invoke-LabVIEWPrelaunchGuard">
+            <results>
+              <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard.single running PID reported from settle" executed="True" result="Success" success="True" time="0.8741" asserts="0" description="Invoke-LabVIEWPrelaunchGuard.single running PID reported from settle">
+                <results>
+                  <test-case description="force closes the PID when AllowForceClose is set" name="Invoke-LabVIEWPrelaunchGuard.single running PID reported from settle.force closes the PID when AllowForceClose is set" time="0.6026" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="skips force close when AllowForceClose is not set" name="Invoke-LabVIEWPrelaunchGuard.single running PID reported from settle.skips force close when AllowForceClose is not set" time="0.1197" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard.fast settle with force-close retry" executed="True" result="Success" success="True" time="1.2313" asserts="0" description="Invoke-LabVIEWPrelaunchGuard.fast settle with force-close retry">
+                <results>
+                  <test-case description="uses fast timeout before force closing and succeeds on retry" name="Invoke-LabVIEWPrelaunchGuard.fast settle with force-close retry.uses fast timeout before force closing and succeeds on retry" time="0.1723" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard.prepare script arguments" executed="True" result="Success" success="True" time="2.0239" asserts="0" description="Invoke-LabVIEWPrelaunchGuard.prepare script arguments">
+                <results>
+                  <test-case description="passes the Editor Packed Library build spec to PrepareIESource" name="Invoke-LabVIEWPrelaunchGuard.prepare script arguments.passes the Editor Packed Library build spec to PrepareIESource" time="0.5282" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard.version and bitness parameters" executed="True" result="Success" success="True" time="2.9197" asserts="0" description="Invoke-LabVIEWPrelaunchGuard.version and bitness parameters">
+                <results>
+                  <test-case description="passes versions and bitness to Close-IconEditorLabVIEW when settle fails" name="Invoke-LabVIEWPrelaunchGuard.version and bitness parameters.passes versions and bitness to Close-IconEditorLabVIEW when settle fails" time="0.1261" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="skips Close-IconEditorLabVIEW when bitness is not provided" name="Invoke-LabVIEWPrelaunchGuard.version and bitness parameters.skips Close-IconEditorLabVIEW when bitness is not provided" time="0.1293" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+              <test-suite type="TestFixture" name="Invoke-LabVIEWPrelaunchGuard.build package operation" executed="True" result="Success" success="True" time="4.087" asserts="0" description="Invoke-LabVIEWPrelaunchGuard.build package operation">
+                <results>
+                  <test-case description="targets LabVIEW 2023 (32-bit) by default" name="Invoke-LabVIEWPrelaunchGuard.build package operation.targets LabVIEW 2023 (32-bit) by default" time="0.2925" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="respects explicit bitness selection when requesting 64-bit only" name="Invoke-LabVIEWPrelaunchGuard.build package operation.respects explicit bitness selection when requesting 64-bit only" time="0.2675" asserts="0" success="True" result="Success" executed="True" />
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+      <test-suite type="TestFixture" name="C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1" executed="True" result="Success" success="True" time="0.1814" asserts="0" description="C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="Prepare_LabVIEW_source.ps1" executed="True" result="Success" success="True" time="0.041" asserts="0" description="Prepare_LabVIEW_source.ps1">
+            <results>
+              <test-case description="places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec" name="Prepare_LabVIEW_source.ps1.places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec" time="0.0175" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

@@ -1,0 +1,1 @@
+See docs/schemas/*.schema.json and examples in docs/examples/.

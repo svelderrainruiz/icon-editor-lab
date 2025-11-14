@@ -1,0 +1,12 @@
+{
+  "schema": "vi-compare/publish@v1",
+  "windowsRun": "WIN-543975d5",
+  "ubuntuPayload": "TEST-RUN-fa5607bb",
+  "paths": {
+    "runRoot": {
+      "root": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-543975d5",
+      "requests": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-543975d5/vi-diff-requests.json",
+      "summary": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-543975d5/vi-comparison-summary.json"
+    }
+  }
+}

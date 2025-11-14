@@ -20,11 +20,212 @@ function Resolve-IconEditorRoot {
   if (-not $RepoRoot) {
     $RepoRoot = Resolve-IconEditorRepoRoot
   }
-  $root = Join-Path $RepoRoot 'vendor' 'icon-editor'
-  if (-not (Test-Path -LiteralPath $root -PathType Container)) {
-    throw "Icon editor root not found at '$root'. Vendor the labview-icon-editor repository first."
+  $candidates = @(
+    Join-PathSegments @($RepoRoot, 'vendor', 'labview-icon-editor'),
+    Join-PathSegments @($RepoRoot, 'vendor', 'icon-editor')
+  )
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Container) {
+      return (Resolve-Path -LiteralPath $candidate).Path
+    }
   }
-  return (Resolve-Path -LiteralPath $root).Path
+  throw ("Icon editor root not found. Checked: {0}. Vendor the labview-icon-editor repository first." -f ($candidates -join ', '))
+}
+
+function Join-PathSegments {
+  param(
+    [Parameter(Mandatory, Position = 0, ValueFromRemainingArguments = $true)]
+    [string[]]$Parts
+  )
+  $filtered = @()
+  foreach ($part in $Parts) {
+    if ([string]::IsNullOrWhiteSpace($part)) { continue }
+    $filtered += $part
+  }
+  if ($filtered.Count -eq 0) { return '' }
+  if ($filtered.Count -eq 1) { return $filtered[0] }
+  return [System.IO.Path]::Combine([string[]]$filtered)
+}
+
+function ConvertTo-IconEditorSafeLabel {
+  param([string]$Label)
+  if ([string]::IsNullOrWhiteSpace($Label)) { return 'labview-cli' }
+  $safe = ($Label -replace '[^a-zA-Z0-9._-]','-')
+  if ([string]::IsNullOrWhiteSpace($safe)) { return 'labview-cli' }
+  return $safe.ToLowerInvariant()
+}
+
+function Enter-IconEditorLabVIEWCliIsolation {
+  param(
+    [string]$RepoRoot,
+    [string]$RunRoot,
+    [string]$Label = 'labview-cli'
+  )
+
+  $existing = [Environment]::GetEnvironmentVariable('LABVIEWCLI_RESULTS_ROOT','Process')
+  $existingNotice = [Environment]::GetEnvironmentVariable('LV_NOTICE_DIR','Process')
+  if ($existing) {
+    return [pscustomobject]@{
+      Changed    = $false
+      SessionRoot= $existing
+      NoticeDir  = $existingNotice
+    }
+  }
+
+  if (-not $RepoRoot) {
+    $RepoRoot = Resolve-IconEditorRepoRoot
+  } else {
+    $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot -ErrorAction Stop).Path
+  }
+
+  $safeLabel = ConvertTo-IconEditorSafeLabel -Label $Label
+  $baseRoot = $null
+  if ($RunRoot) {
+    if (-not (Test-Path -LiteralPath $RunRoot -PathType Container)) {
+      New-Item -ItemType Directory -Path $RunRoot -Force | Out-Null
+    }
+    $baseRoot = Join-PathSegments @($RunRoot, 'labview-cli')
+  } else {
+    $baseRoot = Join-PathSegments @($RepoRoot, 'tests','results','_cli','sessions')
+  }
+  if (-not (Test-Path -LiteralPath $baseRoot -PathType Container)) {
+    New-Item -ItemType Directory -Path $baseRoot -Force | Out-Null
+  }
+  $sessionRoot = Join-PathSegments @($baseRoot, ("{0}-{1}" -f $safeLabel, (Get-Date -Format 'yyyyMMddHHmmssfff')))
+  New-Item -ItemType Directory -Path $sessionRoot -Force | Out-Null
+
+  $noticeDir = Join-PathSegments @($sessionRoot, 'notice')
+  $resultsDir = Join-PathSegments @($sessionRoot, 'tests','results')
+  New-Item -ItemType Directory -Path $noticeDir -Force | Out-Null
+  New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
+
+  [Environment]::SetEnvironmentVariable('LABVIEWCLI_RESULTS_ROOT', $sessionRoot, 'Process')
+  [Environment]::SetEnvironmentVariable('LV_NOTICE_DIR', $noticeDir, 'Process')
+
+  return [pscustomobject]@{
+    Changed    = $true
+    SessionRoot= $sessionRoot
+    NoticeDir  = $noticeDir
+  }
+}
+
+function Exit-IconEditorLabVIEWCliIsolation {
+  param([psobject]$Handle)
+  if (-not $Handle) { return }
+  if (-not $Handle.PSObject.Properties['Changed'] -or -not $Handle.Changed) { return }
+  [Environment]::SetEnvironmentVariable('LABVIEWCLI_RESULTS_ROOT', $null, 'Process')
+  [Environment]::SetEnvironmentVariable('LV_NOTICE_DIR', $null, 'Process')
+}
+
+function Get-IconEditorLocalhostLibraryPath {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$IconEditorRoot,
+    [string[]]$AdditionalPaths,
+    [switch]$AllowMissingAdditionalPaths,
+    [string]$Separator = ';'
+  )
+
+  if (-not (Test-Path -LiteralPath $IconEditorRoot -PathType Container)) {
+    throw "IconEditorRoot '$IconEditorRoot' not found."
+  }
+  $rootResolved = (Resolve-Path -LiteralPath $IconEditorRoot).Path.TrimEnd('\')
+  $pathList = [System.Collections.Generic.List[string]]::new()
+  $pathList.Add($rootResolved)
+
+  $additionalList = @()
+  if ($AdditionalPaths) {
+    $additionalList = @($AdditionalPaths)
+  }
+
+  if ($additionalList.Count -gt 0) {
+    foreach ($entry in $additionalList) {
+      if ([string]::IsNullOrWhiteSpace($entry)) { continue }
+      $candidate = $entry
+      if (-not [System.IO.Path]::IsPathRooted($entry)) {
+        $candidate = [System.IO.Path]::Combine($rootResolved, $entry)
+      }
+      if (-not (Test-Path -LiteralPath $candidate)) {
+        if ($AllowMissingAdditionalPaths) { continue }
+        throw "Additional Localhost.LibraryPaths entry '$entry' not found at '$candidate'."
+      }
+      $resolved = (Resolve-Path -LiteralPath $candidate).Path.TrimEnd('\')
+      $pathList.Add($resolved)
+    }
+  }
+
+  $unique = @(
+    $pathList |
+    Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+    ForEach-Object { $_.TrimEnd('\') } |
+    Select-Object -Unique
+  )
+
+  if (-not $unique -or $unique.Count -eq 0) {
+    throw "Computed Localhost.LibraryPaths string is empty."
+  }
+
+  return ($unique -join $Separator)
+}
+
+function Resolve-VendorToolsModulePath {
+  param(
+    [string]$RepoRoot,
+    [psobject]$Context
+  )
+
+  if ($Context -and $Context.PSObject.Properties['VendorToolsPath'] -and $Context.VendorToolsPath) {
+    return $Context.VendorToolsPath
+  }
+  if (-not $RepoRoot) {
+    $RepoRoot = Resolve-IconEditorRepoRoot
+  }
+  $candidates = @(
+    [System.IO.Path]::Combine($RepoRoot, 'tools', 'VendorTools.psm1'),
+    [System.IO.Path]::Combine($RepoRoot, 'src', 'tools', 'VendorTools.psm1'),
+    # Fallback relative to this module location: ../VendorTools.psm1 (src/tools/VendorTools.psm1)
+    [System.IO.Path]::Combine((Split-Path -Parent $PSScriptRoot), 'VendorTools.psm1')
+  )
+  if ($env:LOCALCI_DEBUG_DEV_MODE -eq '1') {
+    Write-Host "[DevMode] Resolving VendorTools from RepoRoot=$RepoRoot" -ForegroundColor DarkGray
+    foreach ($c in $candidates) {
+      $exists = Test-Path -LiteralPath $c -PathType Leaf
+      Write-Host ("[DevMode] Candidate: {0} -> exists={1}" -f $c, $exists) -ForegroundColor DarkGray
+    }
+  }
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      $resolved = (Resolve-Path -LiteralPath $candidate).Path
+      if ($env:LOCALCI_DEBUG_DEV_MODE -eq '1') {
+        Write-Host ("[DevMode] Using VendorTools at: {0}" -f $resolved) -ForegroundColor DarkGray
+      }
+      if ($Context) {
+        $Context | Add-Member -NotePropertyName VendorToolsPath -NotePropertyValue $resolved -Force
+      }
+      return $resolved
+    }
+  }
+  $candList = ($candidates -join '; ')
+  throw "VendorTools module not found under 'tools' or 'src/tools'. Checked: $candList"
+}
+
+function Resolve-RepoToolFile {
+  param(
+    [string]$RepoRoot,
+    [Parameter(Mandatory)][string[]]$RelativeSegments
+  )
+  if (-not $RepoRoot) {
+    $RepoRoot = Resolve-IconEditorRepoRoot
+  }
+  $candidates = @()
+  $candidates += (Join-PathSegments (@($RepoRoot, 'tools') + $RelativeSegments))
+  $candidates += (Join-PathSegments (@($RepoRoot, 'src', 'tools') + $RelativeSegments))
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      return (Resolve-Path -LiteralPath $candidate).Path
+    }
+  }
+  return $candidates[0]
 }
 
 function Get-IconEditorDevModeStatePath {
@@ -32,7 +233,7 @@ function Get-IconEditorDevModeStatePath {
   if (-not $RepoRoot) {
     $RepoRoot = Resolve-IconEditorRepoRoot
   }
-  return Join-Path $RepoRoot 'tests' 'results' '_agent' 'icon-editor' 'dev-mode-state.json'
+  return Join-PathSegments @($RepoRoot, 'tests', 'results', '_agent', 'icon-editor', 'dev-mode-state.json')
 }
 
 function Get-IconEditorDevModeState {
@@ -96,7 +297,10 @@ function Invoke-IconEditorRogueCheck {
     [string]$RepoRoot,
     [string]$Stage,
     [switch]$FailOnRogue,
-    [switch]$AutoClose
+    [switch]$AutoClose,
+    [string]$RunRoot,
+    [int[]]$Versions,
+    [int[]]$Bitness
   )
 
   try {
@@ -109,17 +313,39 @@ function Invoke-IconEditorRogueCheck {
     $RepoRoot = Resolve-IconEditorRepoRoot
   }
 
-  $detectScript = Join-Path $RepoRoot 'tools' 'Detect-RogueLV.ps1'
+  $detectScript = Resolve-RepoToolFile -RepoRoot $RepoRoot -RelativeSegments @('Detect-RogueLV.ps1')
   if (-not (Test-Path -LiteralPath $detectScript -PathType Leaf)) {
     return $null
   }
 
-  $resultsDir = Join-Path $RepoRoot 'tests' 'results'
-  if (-not (Test-Path -LiteralPath $resultsDir -PathType Container)) {
-    try { New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null } catch {}
+  $customLogRoot = $env:LOCALCI_DEV_MODE_LOGROOT
+  $customLogResolved = $null
+  if ($customLogRoot) {
+    try {
+      if (-not (Test-Path -LiteralPath $customLogRoot -PathType Container)) {
+        New-Item -ItemType Directory -Force -Path $customLogRoot | Out-Null
+      }
+      $customLogResolved = (Resolve-Path -LiteralPath $customLogRoot).Path
+    } catch {
+      $customLogResolved = $customLogRoot
+      try { New-Item -ItemType Directory -Force -Path $customLogResolved | Out-Null } catch {}
+    }
   }
 
-  $outputDir = Join-Path $resultsDir '_agent' 'icon-editor' 'rogue-lv'
+  if ($customLogResolved) {
+    $resultsDir = $customLogResolved
+  } else {
+    $resultsDir = Join-PathSegments @($RepoRoot, 'tests', 'results')
+    if (-not (Test-Path -LiteralPath $resultsDir -PathType Container)) {
+      try { New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null } catch {}
+    }
+  }
+
+  if ($customLogResolved) {
+    $outputDir = Join-Path $resultsDir 'rogue'
+  } else {
+    $outputDir = Join-PathSegments @($resultsDir, '_agent', 'icon-editor', 'rogue-lv')
+  }
   if (-not (Test-Path -LiteralPath $outputDir -PathType Container)) {
     try { New-Item -ItemType Directory -Force -Path $outputDir | Out-Null } catch {}
   }
@@ -127,7 +353,7 @@ function Invoke-IconEditorRogueCheck {
   $safeStage = if ($Stage) { ($Stage -replace '[^a-zA-Z0-9_-]','-') } else { 'icon-editor' }
   if ([string]::IsNullOrWhiteSpace($safeStage)) { $safeStage = 'icon-editor' }
   $timestamp = Get-Date -Format 'yyyyMMddTHHmmssfff'
-  $outputPath = Join-Path $outputDir ("rogue-lv-{0}-{1}.json" -f $safeStage.ToLowerInvariant(), $timestamp)
+  $outputPath = Join-PathSegments @($outputDir, ("rogue-lv-{0}-{1}.json" -f $safeStage.ToLowerInvariant(), $timestamp))
 
   $pwshExe = 'pwsh'
   try {
@@ -166,19 +392,21 @@ function Invoke-IconEditorRogueCheck {
   }
 
   if ($exitCode -ne 0 -and $AutoClose) {
-    $closeScript = Join-Path $RepoRoot 'tools' 'Close-LabVIEW.ps1'
-    if (Test-Path -LiteralPath $closeScript -PathType Leaf) {
-      try {
-        & $pwshExe -NoLogo -NoProfile -File $closeScript | Out-Null
-      } catch {
-        Write-Warning ("Automatic Close-LabVIEW attempt failed: {0}" -f $_.Exception.Message)
-      }
-    }
+    $isolationHandle = Enter-IconEditorLabVIEWCliIsolation -RepoRoot $RepoRoot -RunRoot $RunRoot -Label ("rogue-{0}" -f ($safeStage ?? 'auto'))
     try {
-      & $pwshExe @args | Out-Null
-      $exitCode = $LASTEXITCODE
-    } catch {
-      Write-Warning ("Detect-RogueLV retry failed during stage '{0}': {1}" -f $Stage, $_.Exception.Message)
+      try {
+        Close-IconEditorLabVIEW -RepoRoot $RepoRoot -IconEditorRoot $null -Versions $Versions -Bitness $Bitness -FailOnRogue:$false -RunRoot $RunRoot | Out-Null
+      } catch {
+        Write-Warning ("Automatic Close-IconEditorLabVIEW attempt failed: {0}" -f $_.Exception.Message)
+      }
+      try {
+        & $pwshExe @args | Out-Null
+        $exitCode = $LASTEXITCODE
+      } catch {
+        Write-Warning ("Detect-RogueLV retry failed during stage '{0}': {1}" -f $Stage, $_.Exception.Message)
+      }
+    } finally {
+      Exit-IconEditorLabVIEWCliIsolation -Handle $isolationHandle
     }
   }
 
@@ -211,11 +439,11 @@ function Write-DevModeScriptLog {
   if (-not $RepoRoot) {
     $RepoRoot = Resolve-IconEditorRepoRoot
   }
-  $resultsDir = Join-Path $RepoRoot 'tests' 'results'
+  $resultsDir = Join-PathSegments @($RepoRoot, 'tests', 'results')
   if (-not (Test-Path -LiteralPath $resultsDir -PathType Container)) {
     New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
   }
-  $logDir = Join-Path $resultsDir '_agent' 'icon-editor' 'dev-mode-script'
+  $logDir = Join-PathSegments @($resultsDir, '_agent', 'icon-editor', 'dev-mode-script')
   if (-not (Test-Path -LiteralPath $logDir -PathType Container)) {
     New-Item -ItemType Directory -Force -Path $logDir | Out-Null
   }
@@ -224,7 +452,7 @@ function Write-DevModeScriptLog {
   if (-not $label) { $label = 'dev-mode-script' }
   $label = ($label -replace '[^\w\.\-]', '-').ToLowerInvariant()
   $timestamp = Get-Date -Format 'yyyyMMddTHHmmssfff'
-  $logPath = Join-Path $logDir ("{0}-{1}.log" -f $label, $timestamp)
+  $logPath = Join-PathSegments @($logDir, ("{0}-{1}.log" -f $label, $timestamp))
 
   $header = @(
     "# Dev-mode Script Log",
@@ -267,16 +495,34 @@ function Invoke-IconEditorDevModeScript {
     throw "Icon editor dev-mode script not found at '$ScriptPath'."
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  Import-Module (Resolve-VendorToolsModulePath -RepoRoot $RepoRoot -Context $Context) -Force
   $scriptDirectory = Split-Path -Parent $ScriptPath
   $previousLocation = Get-Location
 
   $pwshCmd = Get-Command pwsh -ErrorAction Stop
-  $args = if ($ArgumentList -and $ArgumentList.Count -gt 0) { $ArgumentList } else { @('-IconEditorRoot', $IconEditorRoot) }
+  $args = @()
+  if ($ArgumentList -and $ArgumentList.Count -gt 0) {
+    foreach ($arg in $ArgumentList) {
+      if ($null -ne $arg) { $args += [string]$arg }
+    }
+  } else {
+    $args = @('-IconEditorRoot', [string]$IconEditorRoot)
+  }
+
+  # Guard against non-scalar argument values sneaking into the list
+  foreach ($item in $args) {
+    if ($item -is [System.Array]) {
+      throw "Dev-mode script arguments contained a non-scalar value. Ensure arguments are flattened into strings."
+    }
+  }
 
   Set-Location -LiteralPath $scriptDirectory
   try {
     $scriptOutput = @()
+    if ($env:LOCALCI_DEBUG_DEV_MODE -eq '1') {
+      Write-Host ("[DevMode] Invoking {0}" -f $ScriptPath) -ForegroundColor DarkGray
+      $args | ForEach-Object { Write-Host ("  {0}" -f $_) }
+    }
     & $pwshCmd.Source -NoLogo -NoProfile -File $ScriptPath @args 2>&1 |
       Tee-Object -Variable scriptOutput | Out-Host
     $exitCode = $LASTEXITCODE
@@ -358,7 +604,7 @@ function Get-IconEditorDevModePolicyPath {
     return (Resolve-Path -LiteralPath $env:ICON_EDITOR_DEV_MODE_POLICY_PATH).Path
   }
 
-  return (Join-Path $RepoRoot 'configs' 'icon-editor' 'dev-mode-targets.json')
+  return Join-PathSegments @($RepoRoot, 'configs', 'icon-editor', 'dev-mode-targets.json')
 }
 
 function Get-IconEditorDevModePolicy {
@@ -462,7 +708,9 @@ function Enable-IconEditorDevelopmentMode {
     [string]$IconEditorRoot,
     [int[]]$Versions,
     [int[]]$Bitness,
-    [string]$Operation = 'Compare'
+    [string]$Operation = 'Compare',
+    [string]$RunRoot,
+    [switch]$AllowForceClose
   )
 
   if (-not $RepoRoot) {
@@ -477,12 +725,9 @@ function Enable-IconEditorDevelopmentMode {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
 
-  $preStage = if ($Operation) { "disable-{0}-pre" -f $Operation } else { 'disable-devmode-pre' }
-  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $preStage -FailOnRogue -AutoClose | Out-Null
-
-  $actionsRoot = Join-Path $IconEditorRoot '.github' 'actions'
-  $addTokenScript = Join-Path $actionsRoot 'add-token-to-labview' 'AddTokenToLabVIEW.ps1'
-  $prepareScript  = Join-Path $actionsRoot 'prepare-labview-source' 'Prepare_LabVIEW_source.ps1'
+  $actionsRoot = Join-PathSegments @($IconEditorRoot, '.github', 'actions')
+  $addTokenScript = Join-PathSegments @($actionsRoot, 'add-token-to-labview', 'AddTokenToLabVIEW.ps1')
+  $prepareScript  = Join-PathSegments @($actionsRoot, 'prepare-labview-source', 'Prepare_LabVIEW_source.ps1')
 
   foreach ($required in @($addTokenScript, $prepareScript)) {
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
@@ -519,12 +764,15 @@ function Enable-IconEditorDevelopmentMode {
     throw "LabVIEW version/bitness selection resolved to an empty set for operation '$Operation'."
   }
 
+  $preStage = if ($Operation) { "disable-{0}-pre" -f $Operation } else { 'disable-devmode-pre' }
+  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $preStage -FailOnRogue -AutoClose -RunRoot $RunRoot -Versions $versionList -Bitness $bitnessList | Out-Null
+
   $strictReliability = Test-IconEditorReliabilityOperation -Operation $Operation
   if ($strictReliability) {
     Write-Host ("[dev-mode] Reliability policy active for operation '{0}'." -f $Operation) -ForegroundColor DarkGray
   }
 
-  $pluginsPath = Join-Path $IconEditorRoot 'resource' 'plugins'
+  $pluginsPath = Join-PathSegments @($IconEditorRoot, 'resource', 'plugins')
   if (Test-Path -LiteralPath $pluginsPath -PathType Container) {
     Get-ChildItem -LiteralPath $pluginsPath -Filter '*.lvlibp' -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
   }
@@ -538,29 +786,51 @@ function Enable-IconEditorDevelopmentMode {
         -Stage ("enable-addtoken-{0}-{1}" -f $versionText, $bitnessText) `
         -Versions @($versionValue) `
         -Bitness @($bitnessValue) `
-        -IconEditorRoot $IconEditorRoot | Out-Null
-      Invoke-IconEditorDevModeScript `
-        -ScriptPath $addTokenScript `
-        -ArgumentList @(
-          '-MinimumSupportedLVVersion', $versionText,
-          '-SupportedBitness',          $bitnessText,
-          '-RelativePath',              $IconEditorRoot
-        ) `
-        -RepoRoot $RepoRoot `
         -IconEditorRoot $IconEditorRoot `
-        -StageLabel ("enable-addtoken-{0}-{1}" -f $versionText, $bitnessText)
+        -RunRoot $RunRoot `
+        -AllowForceClose:$AllowForceClose | Out-Null
+      $localhostLibraryPath = Get-IconEditorLocalhostLibraryPath -IconEditorRoot $IconEditorRoot
+      $tokenPresent = $false
+      try {
+        $tokenCheck = Test-IconEditorDevelopmentMode -RepoRoot $RepoRoot -IconEditorRoot $IconEditorRoot -Versions @($versionValue) -Bitness @($bitnessValue)
+        if ($tokenCheck -and $tokenCheck.Entries) {
+          $tokenPresent = ($tokenCheck.Entries | Where-Object { $_.Present -and $_.ContainsIconEditorPath }).Count -gt 0
+        }
+      } catch {
+        $tokenPresent = $false
+      }
+      if ($tokenPresent) {
+        Write-Host ("Icon editor path already present in Localhost.LibraryPaths for LabVIEW {0} ({1}-bit); skipping add-token stage." -f $versionText, $bitnessText) -ForegroundColor Yellow
+      } else {
+        Invoke-IconEditorDevModeScript `
+          -ScriptPath $addTokenScript `
+          -ArgumentList @(
+            '-MinimumSupportedLVVersion', $versionText,
+            '-SupportedBitness',          $bitnessText,
+            '-RelativePath',              $localhostLibraryPath
+          ) `
+          -RepoRoot $RepoRoot `
+          -IconEditorRoot $IconEditorRoot `
+          -StageLabel ("enable-addtoken-{0}-{1}" -f $versionText, $bitnessText)
+      }
 
       Invoke-LabVIEWRogueSweep `
         -RepoRoot $RepoRoot `
         -Reason ("enable-addtoken-{0}-{1}" -f $versionText, $bitnessText) `
-        -RequireClean:$strictReliability | Out-Null
+        -RequireClean:$strictReliability `
+        -RunRoot $RunRoot `
+        -Versions @($versionValue) `
+        -Bitness @($bitnessValue) `
+        -ForceTerminateOnFailure:$AllowForceClose | Out-Null
 
       Invoke-LabVIEWPrelaunchGuard `
         -RepoRoot $RepoRoot `
         -Stage ("enable-prepare-{0}-{1}" -f $versionText, $bitnessText) `
         -Versions @($versionValue) `
         -Bitness @($bitnessValue) `
-        -IconEditorRoot $IconEditorRoot | Out-Null
+        -IconEditorRoot $IconEditorRoot `
+        -RunRoot $RunRoot `
+        -AllowForceClose:$AllowForceClose | Out-Null
       Invoke-IconEditorDevModeScript `
         -ScriptPath $prepareScript `
         -ArgumentList @(
@@ -577,7 +847,11 @@ function Enable-IconEditorDevelopmentMode {
       Invoke-LabVIEWRogueSweep `
         -RepoRoot $RepoRoot `
         -Reason ("enable-prepare-{0}-{1}" -f $versionText, $bitnessText) `
-        -RequireClean:$strictReliability | Out-Null
+        -RequireClean:$strictReliability `
+        -RunRoot $RunRoot `
+        -Versions @($versionValue) `
+        -Bitness @($bitnessValue) `
+        -ForceTerminateOnFailure:$AllowForceClose | Out-Null
 
       # Keep LabVIEW running after preparing source; closing is handled elsewhere when needed.
     }
@@ -593,13 +867,18 @@ function Enable-IconEditorDevelopmentMode {
     -IconEditorRoot $IconEditorRoot `
     -Versions $versionList `
     -Bitness $bitnessList `
-    -FailOnRogue:$strictReliability
+    -FailOnRogue:$strictReliability `
+    -RunRoot $RunRoot
   Invoke-LabVIEWRogueSweep `
     -RepoRoot $RepoRoot `
     -Reason 'enable-close' `
-    -RequireClean:$strictReliability | Out-Null
+    -RequireClean:$strictReliability `
+    -RunRoot $RunRoot `
+    -Versions $versionList `
+    -Bitness $bitnessList `
+    -ForceTerminateOnFailure:$AllowForceClose | Out-Null
   $postStage = if ($Operation) { "devmode-{0}-post" -f $Operation } else { 'devmode-post' }
-  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $postStage -AutoClose -FailOnRogue:$strictReliability | Out-Null
+  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $postStage -AutoClose -FailOnRogue:$strictReliability -RunRoot $RunRoot -Versions $versionList -Bitness $bitnessList | Out-Null
   return $state
 }
 
@@ -609,7 +888,9 @@ function Disable-IconEditorDevelopmentMode {
     [string]$IconEditorRoot,
     [int[]]$Versions,
     [int[]]$Bitness,
-    [string]$Operation = 'Compare'
+    [string]$Operation = 'Compare',
+    [string]$RunRoot,
+    [switch]$AllowForceClose
   )
 
   if (-not $RepoRoot) {
@@ -624,10 +905,10 @@ function Disable-IconEditorDevelopmentMode {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
 
-  $actionsRoot = Join-Path $IconEditorRoot '.github' 'actions'
-  $restoreScript = Join-Path $actionsRoot 'restore-setup-lv-source' 'RestoreSetupLVSource.ps1'
-  $closeScript   = Join-Path $actionsRoot 'close-labview' 'Close_LabVIEW.ps1'
-  $resetHelper   = Join-Path $RepoRoot 'tools' 'icon-editor' 'Reset-IconEditorWorkspace.ps1'
+  $actionsRoot = Join-PathSegments @($IconEditorRoot, '.github', 'actions')
+  $restoreScript = Join-PathSegments @($actionsRoot, 'restore-setup-lv-source', 'RestoreSetupLVSource.ps1')
+  $closeScript   = Join-PathSegments @($actionsRoot, 'close-labview', 'Close_LabVIEW.ps1')
+  $resetHelper   = Resolve-RepoToolFile -RepoRoot $RepoRoot -RelativeSegments @('icon-editor','Reset-IconEditorWorkspace.ps1')
 
   foreach ($required in @($restoreScript, $closeScript, $resetHelper)) {
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
@@ -693,13 +974,18 @@ function Disable-IconEditorDevelopmentMode {
     -IconEditorRoot $IconEditorRoot `
     -Versions $versionsList `
     -Bitness $bitnessList `
-    -FailOnRogue:$strictReliability
+    -FailOnRogue:$strictReliability `
+    -RunRoot $RunRoot
   Invoke-LabVIEWRogueSweep `
     -RepoRoot $RepoRoot `
     -Reason 'disable-close' `
-    -RequireClean:$strictReliability | Out-Null
+    -RequireClean:$strictReliability `
+    -RunRoot $RunRoot `
+    -Versions $versionsList `
+    -Bitness $bitnessList `
+    -ForceTerminateOnFailure:$AllowForceClose | Out-Null
   $postStage = if ($Operation) { "disable-{0}-post" -f $Operation } else { 'disable-devmode-post' }
-  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $postStage -AutoClose -FailOnRogue:$strictReliability | Out-Null
+  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $postStage -AutoClose -FailOnRogue:$strictReliability -RunRoot $RunRoot -Versions $versionsList -Bitness $bitnessList | Out-Null
   return $state
 }
 
@@ -723,7 +1009,7 @@ function Get-IconEditorDevModeLabVIEWTargets {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  Import-Module (Resolve-VendorToolsModulePath -RepoRoot $RepoRoot -Context $Context) -Force
 
   $versionList = ConvertTo-IntList -Values $Versions -DefaultValues @(2023)
   $bitnessList = ConvertTo-IntList -Values $Bitness -DefaultValues @(32,64)
@@ -771,7 +1057,7 @@ function Assert-IconEditorDevModeTokenState {
   }
 
   $violations = if ($ExpectedActive) {
-    @($presentEntries | Where-Object { -not $_.ContainsIconEditorPath })
+    @($presentEntries | Where-Object { (-not $_.ContainsIconEditorPath) -or ($_.TokenValueEmpty -eq $true) })
   } else {
     @($presentEntries | Where-Object { $_.ContainsIconEditorPath })
   }
@@ -781,6 +1067,11 @@ function Assert-IconEditorDevModeTokenState {
     $details = $violations | ForEach-Object {
       $iniPath = if ($_.LabVIEWIniPath) { $_.LabVIEWIniPath } else { '[ini path unavailable]' }
       $status = if ($_.ContainsIconEditorPath) { 'contains icon-editor path' } else { 'missing icon-editor path' }
+      if ($_.TokenValueEmpty -eq $true) {
+        $status = 'LocalHost.LibraryPaths empty'
+      } elseif ($_.TokenValue) {
+        $status = "$status (found: '$($_.TokenValue)')"
+      }
       "LabVIEW {0} ({1}-bit) - {2} (ini: {3})" -f $_.Version, $_.Bitness, $status, $iniPath
     }
     $joined = [string]::Join('; ', $details)
@@ -817,6 +1108,7 @@ function Test-IconEditorDevelopmentMode {
   foreach ($target in $targets) {
     $tokenValue = $null
     $containsIconEditor = $false
+    $tokenEmpty = $true
     if ($target.Present -and $target.LabVIEWIniPath -and (Test-Path -LiteralPath $target.LabVIEWIniPath -PathType Leaf)) {
       try {
         $tokenValue = Get-LabVIEWIniValue -Key 'LocalHost.LibraryPaths' -LabVIEWExePath $target.LabVIEWExePath -LabVIEWIniPath $target.LabVIEWIniPath
@@ -824,6 +1116,7 @@ function Test-IconEditorDevelopmentMode {
         $tokenValue = $null
       }
       if ($tokenValue) {
+        $tokenEmpty = [string]::IsNullOrWhiteSpace($tokenValue)
         $normalizedValue = ($tokenValue -replace '"', '').Split(';') | ForEach-Object {
           $_.Trim().TrimEnd('\').ToLowerInvariant()
         }
@@ -834,6 +1127,8 @@ function Test-IconEditorDevelopmentMode {
             break
           }
         }
+      } else {
+        $tokenEmpty = $true
       }
     }
 
@@ -844,6 +1139,7 @@ function Test-IconEditorDevelopmentMode {
       LabVIEWIniPath = $target.LabVIEWIniPath
       Present = $target.Present
       TokenValue = $tokenValue
+      TokenValueEmpty = $tokenEmpty
       ContainsIconEditorPath = $containsIconEditor
     }) | Out-Null
   }
@@ -870,7 +1166,8 @@ function Close-IconEditorLabVIEW {
     [int[]]$Versions,
     [int[]]$Bitness,
     [int]$WaitTimeoutSeconds = 30,
-    [switch]$FailOnRogue
+    [switch]$FailOnRogue,
+    [string]$RunRoot
   )
 
   $skipWait = $false
@@ -894,14 +1191,14 @@ function Close-IconEditorLabVIEW {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
 
-  $actionsRoot = Join-Path $IconEditorRoot '.github' 'actions'
-  $closeScript = Join-Path $actionsRoot 'close-labview' 'Close_LabVIEW.ps1'
+  $actionsRoot = Join-PathSegments @($IconEditorRoot, '.github', 'actions')
+  $closeScript = Join-PathSegments @($actionsRoot, 'close-labview', 'Close_LabVIEW.ps1')
   if (-not (Test-Path -LiteralPath $closeScript -PathType Leaf)) {
     Write-Verbose "Close-IconEditorLabVIEW: close script not found at '$closeScript'; skipping graceful shutdown."
     return
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  Import-Module (Resolve-VendorToolsModulePath -RepoRoot $RepoRoot -Context $Context) -Force
 
   $rawVersions = ConvertTo-IntList -Values $Versions -DefaultValues @(2023)
   $rawBitness  = ConvertTo-IntList -Values $Bitness -DefaultValues @(32, 64)
@@ -969,7 +1266,7 @@ $settleResult = Wait-IconEditorLabVIEWSettle -ExeCandidates $exeArray -TimeoutSe
     throw "Timed out waiting for LabVIEW to exit after close sequence."
   }
 
-  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage 'close-labview' -AutoClose -FailOnRogue:$FailOnRogue | Out-Null
+  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage 'close-labview' -AutoClose -FailOnRogue:$FailOnRogue -RunRoot $RunRoot | Out-Null
 }
 
 function Wait-LabVIEWProcessExit {
@@ -1030,7 +1327,9 @@ function Wait-IconEditorLabVIEWSettle {
     [string[]]$ExeCandidates,
     [int]$TimeoutSeconds = 30,
     [int]$ExtraSleepSeconds = 2,
-    [string]$Stage = 'labview-settle'
+    [string]$Stage = 'labview-settle',
+    [switch]$SuppressWarning,
+    [int]$FastTimeoutSeconds
   )
 
   $result = [ordered]@{
@@ -1042,13 +1341,27 @@ function Wait-IconEditorLabVIEWSettle {
   }
 
   $watch = [System.Diagnostics.Stopwatch]::StartNew()
-  $ok = Wait-LabVIEWProcessExit -ExeCandidates $ExeCandidates -TimeoutSeconds $TimeoutSeconds
+  $settleTimeout = $TimeoutSeconds
+  $fastPathTried = $false
+  if ($FastTimeoutSeconds -gt 0 -and $FastTimeoutSeconds -lt $TimeoutSeconds) {
+    $settleTimeout = $FastTimeoutSeconds
+    $fastPathTried = $true
+  }
+
+  $ok = Wait-LabVIEWProcessExit -ExeCandidates $ExeCandidates -TimeoutSeconds $settleTimeout
+  if (-not $ok -and $fastPathTried) {
+    $settleTimeout = $TimeoutSeconds
+    $ok = Wait-LabVIEWProcessExit -ExeCandidates $ExeCandidates -TimeoutSeconds $settleTimeout
+  }
+
   if (-not $ok) {
     $result.error = "Timed out waiting for LabVIEW processes to exit."
     $running = @(Get-Process LabVIEW -ErrorAction SilentlyContinue)
     if ($running -and $running.Count -gt 0) {
       $result.runningPids = ($running | Select-Object -ExpandProperty Id)
-      Write-Warning ("{0}: still saw LabVIEW PIDs {1} after {2}s." -f $Stage, ($result.runningPids -join ','), $TimeoutSeconds)
+      if (-not $SuppressWarning) {
+        Write-Warning ("{0}: still saw LabVIEW PIDs {1} after {2}s." -f $Stage, ($result.runningPids -join ','), $settleTimeout)
+      }
     }
   } else {
     if ($ExtraSleepSeconds -gt 0) {
@@ -1079,7 +1392,9 @@ function Invoke-LabVIEWPrelaunchGuard {
     [int]$SettleSleepSeconds = 1,
     [int[]]$Versions,
     [int[]]$Bitness,
-    [string]$IconEditorRoot
+    [string]$IconEditorRoot,
+    [string]$RunRoot,
+    [switch]$AllowForceClose
   )
 
   if (-not $RepoRoot) {
@@ -1096,18 +1411,26 @@ function Invoke-LabVIEWPrelaunchGuard {
     }
   }
 
-  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $Stage -AutoClose | Out-Null
-  $settleResult = Wait-IconEditorLabVIEWSettle -ExeCandidates @() -TimeoutSeconds $SettleTimeoutSeconds -ExtraSleepSeconds $SettleSleepSeconds -Stage ("{0}-settle" -f $Stage)
+  Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $Stage -AutoClose -RunRoot $RunRoot | Out-Null
+  $fastTimeout = [Math]::Min([Math]::Max([Math]::Floor($SettleTimeoutSeconds / 2), 3), $SettleTimeoutSeconds - 1)
+  if ($SettleTimeoutSeconds -le 3) { $fastTimeout = 0 }
+  $settleResult = Wait-IconEditorLabVIEWSettle `
+    -ExeCandidates @() `
+    -TimeoutSeconds $SettleTimeoutSeconds `
+    -FastTimeoutSeconds $fastTimeout `
+    -ExtraSleepSeconds $SettleSleepSeconds `
+    -Stage ("{0}-settle" -f $Stage) `
+    -SuppressWarning
   if (-not $settleResult.Succeeded) {
     Write-Warning ("{0}: initial settle failed, attempting rogue cleanup and retry." -f $Stage)
     try {
-      Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage ("{0}-rogue-retry" -f $Stage) -AutoClose | Out-Null
+      Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage ("{0}-rogue-retry" -f $Stage) -AutoClose -RunRoot $RunRoot | Out-Null
     } catch {
       Write-Warning ("{0}: rogue cleanup retry encountered an error: {1}" -f $Stage, $_.Exception.Message)
     }
     if ($Versions -and $Bitness -and $resolvedIconEditorRoot) {
       try {
-        Close-IconEditorLabVIEW -RepoRoot $RepoRoot -IconEditorRoot $resolvedIconEditorRoot -Versions $Versions -Bitness $Bitness | Out-Null
+        Close-IconEditorLabVIEW -RepoRoot $RepoRoot -IconEditorRoot $resolvedIconEditorRoot -Versions $Versions -Bitness $Bitness -RunRoot $RunRoot | Out-Null
       } catch {
         Write-Warning ("{0}: Close-LabVIEW fallback reported: {1}" -f $Stage, $_.Exception.Message)
       }
@@ -1123,17 +1446,21 @@ function Invoke-LabVIEWPrelaunchGuard {
         $pidsToKill += ($liveLabVIEW | Select-Object -ExpandProperty Id)
       }
     } catch {}
-    $pidsToKill = $pidsToKill | Sort-Object -Unique
-    foreach ($pid in $pidsToKill) {
-      try {
-        Stop-Process -Id $pid -Force -ErrorAction Stop
-        $terminated += $pid
-      } catch {
-        Write-Warning ("{0}: failed to terminate LabVIEW PID {1}: {2}" -f $Stage, $pid, $_.Exception.Message)
+    $pidsToKill = @($pidsToKill | Sort-Object -Unique)
+    if ($pidsToKill.Count -gt 0 -and $AllowForceClose) {
+      foreach ($pid in $pidsToKill) {
+        try {
+          Stop-Process -Id $pid -Force -ErrorAction Stop
+          $terminated += $pid
+        } catch {
+          Write-Warning ("{0}: failed to terminate LabVIEW PID {1}: {2}" -f $Stage, $pid, $_.Exception.Message)
+        }
       }
-    }
-    if ($terminated.Count -gt 0) {
-      Write-Warning ("{0}: forcibly terminated LabVIEW PIDs {1} prior to settle retry." -f $Stage, ($terminated -join ','))
+      if ($terminated.Count -gt 0) {
+        Write-Warning ("{0}: forcibly terminated LabVIEW PIDs {1} prior to settle retry." -f $Stage, ($terminated -join ','))
+      }
+    } elseif ($pidsToKill.Count -gt 0 -and -not $AllowForceClose) {
+      Write-Warning ("{0}: force-close disabled; leaving LabVIEW PIDs {1} running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically." -f $Stage, ($pidsToKill -join ','))
     }
     $retryTimeout = [Math]::Max($SettleTimeoutSeconds * 2, $SettleTimeoutSeconds + 10)
     $settleResult = Wait-IconEditorLabVIEWSettle -ExeCandidates @() -TimeoutSeconds $retryTimeout -ExtraSleepSeconds $SettleSleepSeconds -Stage ("{0}-settle-retry" -f $Stage)
@@ -1238,84 +1565,109 @@ function Invoke-LabVIEWRogueSweep {
     [string]$Reason = 'rogue-sweep',
     [int]$LookBackSeconds = 900,
     [switch]$RequireClean,
-    [switch]$InvokeCloseOnDetection = $true
+    [switch]$InvokeCloseOnDetection = $true,
+    [string]$RunRoot,
+    [int[]]$Versions,
+    [int[]]$Bitness,
+    [switch]$ForceTerminateOnFailure
   )
 
   if (-not $RepoRoot) { return $null }
-  $detectScript = Join-Path $RepoRoot 'tools' 'Detect-RogueLV.ps1'
+  $detectScript = Resolve-RepoToolFile -RepoRoot $RepoRoot -RelativeSegments @('Detect-RogueLV.ps1')
   if (-not (Test-Path -LiteralPath $detectScript -PathType Leaf)) { return $null }
 
-  $resultsDir = Join-Path $RepoRoot 'tests' 'results'
+  $resultsDir = Join-PathSegments @($RepoRoot, 'tests', 'results')
   if (-not (Test-Path -LiteralPath $resultsDir -PathType Container)) {
     New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
   }
-  $rogueDir = Join-Path $resultsDir '_agent' 'icon-editor' 'rogue-lv'
+  $rogueDir = Join-PathSegments @($resultsDir, '_agent', 'icon-editor', 'rogue-lv')
   if (-not (Test-Path -LiteralPath $rogueDir -PathType Container)) {
     New-Item -ItemType Directory -Force -Path $rogueDir | Out-Null
   }
 
-  $outputPath = Join-Path $rogueDir ("rogue-sweep-{0}.json" -f (Get-Date -Format 'yyyyMMddTHHmmssfff'))
-  try {
-    & $detectScript -ResultsDir $resultsDir -LookBackSeconds $LookBackSeconds -OutputPath $outputPath -Quiet | Out-Null
-  } catch {
-    Write-Warning ("{0}: rogue sweep failed ({1})." -f $Reason, $_.Exception.Message)
-    return $null
-  }
+  $versionsList = @()
+  if ($Versions) { $versionsList = @($Versions | ForEach-Object { [int]$_ }) }
+  $bitnessList = @()
+  if ($Bitness) { $bitnessList = @($Bitness | ForEach-Object { [int]$_ }) }
 
-  if (-not (Test-Path -LiteralPath $outputPath -PathType Leaf)) { return $null }
-  try {
-    $payload = Get-Content -LiteralPath $outputPath -Raw | ConvertFrom-Json -ErrorAction Stop
-  } catch {
-    Write-Warning ("{0}: unable to parse rogue sweep output ({1})." -f $Reason, $_.Exception.Message)
-    return $null
-  }
-
-  $rogueLabVIEW = @()
-  $rogueLVCompare = @()
-  if ($payload -and $payload.rogue) {
-    if ($payload.rogue.labview) {
-      foreach ($pid in $payload.rogue.labview) {
-        if ($null -ne $pid) {
-          try { $rogueLabVIEW += [int]$pid } catch {}
-        }
-      }
+  $runDetection = {
+    param([string]$Tag)
+    $tagLabel = if ($Tag) { $Tag } else { 'rogue' }
+    $path = Join-PathSegments @($rogueDir, ("rogue-sweep-{0}-{1}.json" -f $tagLabel, (Get-Date -Format 'yyyyMMddTHHmmssfff')))
+    try {
+      & $detectScript -ResultsDir $resultsDir -LookBackSeconds $LookBackSeconds -OutputPath $path -Quiet | Out-Null
+    } catch {
+      Write-Warning ("{0}: rogue sweep failed ({1})." -f $Reason, $_.Exception.Message)
+      return $null
     }
-    if ($payload.rogue.lvcompare) {
-      foreach ($pid in $payload.rogue.lvcompare) {
-        if ($null -ne $pid) {
-          try { $rogueLVCompare += [int]$pid } catch {}
-        }
-      }
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { return $null }
+    try {
+      $payload = Get-Content -LiteralPath $path -Raw | ConvertFrom-Json -ErrorAction Stop
+    } catch {
+      Write-Warning ("{0}: unable to parse rogue sweep output ({1})." -f $Reason, $_.Exception.Message)
+      return $null
+    }
+    return [pscustomobject]@{
+      path    = $path
+      payload = $payload
     }
   }
 
-  if ($rogueLabVIEW.Count -gt 0) {
-    Write-Warning ("{0}: terminating rogue LabVIEW PIDs {1}." -f $Reason, ($rogueLabVIEW -join ','))
+  $detection = & $runDetection 'initial'
+  if (-not $detection) { return $null }
+  $outputPath = $detection.path
+  $payload = $detection.payload
+
+  $getRogueLists = {
+    param([object]$Payload)
+    $rogueLabVIEW = @()
+    $rogueLVCompare = @()
+    if ($Payload -and $Payload.rogue) {
+      if ($Payload.rogue.labview) {
+        foreach ($pid in $Payload.rogue.labview) {
+          if ($null -ne $pid) {
+            try { $rogueLabVIEW += [int]$pid } catch {}
+          }
+        }
+      }
+      if ($Payload.rogue.lvcompare) {
+        foreach ($pid in $Payload.rogue.lvcompare) {
+          if ($null -ne $pid) {
+            try { $rogueLVCompare += [int]$pid } catch {}
+          }
+        }
+      }
+    }
+    return ,@($rogueLabVIEW, $rogueLVCompare)
+  }
+
+  $lists = & $getRogueLists -Payload $payload
+  $rogueLabVIEW = $lists[0]
+  $rogueLVCompare = $lists[1]
+
+  if ($rogueLabVIEW.Count -gt 0 -and $InvokeCloseOnDetection) {
+    try {
+      Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage ("{0}-rogue" -f $Reason) -AutoClose -RunRoot $RunRoot -Versions $versionsList -Bitness $bitnessList | Out-Null
+    } catch {
+      Write-Warning ("{0}: automatic Close-LabVIEW attempt failed ({1})." -f $Reason, $_.Exception.Message)
+    }
+    $postDetection = & $runDetection 'post'
+    if ($postDetection) {
+      $outputPath = $postDetection.path
+      $payload = $postDetection.payload
+      $lists = & $getRogueLists -Payload $payload
+      $rogueLabVIEW = $lists[0]
+      $rogueLVCompare = $lists[1]
+    }
+  }
+
+  if ($rogueLabVIEW.Count -gt 0 -and $ForceTerminateOnFailure) {
+    Write-Warning ("{0}: force-terminating rogue LabVIEW PIDs {1}." -f $Reason, ($rogueLabVIEW -join ','))
     foreach ($pid in $rogueLabVIEW) {
       try {
         Stop-Process -Id $pid -Force -ErrorAction Stop
       } catch {
         Write-Warning ("{0}: failed to terminate PID {1}: {2}" -f $Reason, $pid, $_.Exception.Message)
-      }
-    }
-
-    if ($InvokeCloseOnDetection) {
-      $pwshExe = 'pwsh'
-      try {
-        $cmd = Get-Command -Name 'pwsh' -ErrorAction Stop
-        if ($cmd -and $cmd.Source) {
-          $pwshExe = $cmd.Source
-        } elseif ($cmd -and $cmd.Path) {
-          $pwshExe = $cmd.Path
-        }
-      } catch {}
-      $closeScript = Join-Path $RepoRoot 'tools' 'Close-LabVIEW.ps1'
-      if (Test-Path -LiteralPath $closeScript -PathType Leaf) {
-        try {
-          & $pwshExe -NoLogo -NoProfile -File $closeScript | Out-Null
-        } catch {
-          Write-Warning ("{0}: Close-LabVIEW retry failed ({1})." -f $Reason, $_.Exception.Message)
-        }
       }
     }
   }
@@ -1344,13 +1696,13 @@ function Initialize-IconEditorDevModeTelemetry {
   )
 
   if (-not $ResultsDir) {
-    $ResultsDir = if ($RepoRoot) { Join-Path $RepoRoot 'tests' 'results' } else { 'tests/results' }
+    $ResultsDir = if ($RepoRoot) { Join-PathSegments @($RepoRoot, 'tests', 'results') } else { 'tests/results' }
   }
   if (-not (Test-Path -LiteralPath $ResultsDir -PathType Container)) {
     try { New-Item -ItemType Directory -Force -Path $ResultsDir | Out-Null } catch {}
   }
 
-  $devModeRunDir = Join-Path $ResultsDir '_agent' 'icon-editor' 'dev-mode-run'
+  $devModeRunDir = Join-PathSegments @($ResultsDir, '_agent', 'icon-editor', 'dev-mode-run')
   if (-not (Test-Path -LiteralPath $devModeRunDir -PathType Container)) {
     New-Item -ItemType Directory -Force -Path $devModeRunDir | Out-Null
   }
@@ -1359,12 +1711,12 @@ function Initialize-IconEditorDevModeTelemetry {
   $timestamp = Get-Date -Format 'yyyyMMddTHHmmssfff'
   $labelPrefix = if ($Mode -eq 'enable') { 'dev-mode-on-' } else { 'dev-mode-off-' }
   $telemetryLabel = "{0}{1}" -f $labelPrefix, $timestamp
-  $telemetryPath = Join-Path $devModeRunDir ("dev-mode-run-$timestamp.json")
-  $telemetryLatestPath = Join-Path $devModeRunDir 'latest-run.json'
+  $telemetryPath = Join-PathSegments @($devModeRunDir, "dev-mode-run-$timestamp.json")
+  $telemetryLatestPath = Join-PathSegments @($devModeRunDir, 'latest-run.json')
 
   $agentWaitAvailable = $false
   if ($RepoRoot) {
-    $agentWaitPath = Join-Path $RepoRoot 'tools' 'Agent-Wait.ps1'
+    $agentWaitPath = Resolve-RepoToolFile -RepoRoot $RepoRoot -RelativeSegments @('Agent-Wait.ps1')
     if (Test-Path -LiteralPath $agentWaitPath -PathType Leaf) {
       try {
         . $agentWaitPath
@@ -1511,6 +1863,8 @@ function Complete-IconEditorDevModeTelemetry {
 Export-ModuleMember -Function `
   Resolve-IconEditorRepoRoot, `
   Resolve-IconEditorRoot, `
+  Join-PathSegments, `
+  Get-IconEditorLocalhostLibraryPath, `
   Get-IconEditorDevModeStatePath, `
   Get-IconEditorDevModeState, `
   Set-IconEditorDevModeState, `
@@ -1555,3 +1909,4 @@ function Invoke-WithTimeout {
   }
   Receive-Job $job -ErrorAction Stop
 }
+

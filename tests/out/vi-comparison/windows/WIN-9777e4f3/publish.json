@@ -1,0 +1,12 @@
+{
+  "windowsRun": "WIN-9777e4f3",
+  "schema": "vi-compare/publish@v1",
+  "paths": {
+    "runRoot": {
+      "root": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-9777e4f3",
+      "requests": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-9777e4f3/vi-diff-requests.json",
+      "summary": "/mnt/c/codex/home/runner/work/icon-editor-lab/tests/out/vi-comparison/windows/WIN-9777e4f3/vi-comparison-summary.json"
+    }
+  },
+  "ubuntuPayload": "TEST-RUN-cd3b495b"
+}

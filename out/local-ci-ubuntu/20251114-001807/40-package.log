@@ -1,0 +1,3 @@
+Wrote checksums to /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-001807/pack-root/checksums.sha256
+zip CLI not found; using python3 zipfile fallback.
+Packaged artifacts into /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-001807/local-ci-artifacts.zip

@@ -1,0 +1,40 @@
+{
+  "schema": "rogue-lv-detection/v1",
+  "generatedAt": "2025-11-13T08:07:33.8503532-08:00",
+  "lookbackSeconds": 300,
+  "noticeDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-080728\\devmode\\_lvcompare_notice",
+  "live": {
+    "lvcompare": [],
+    "labview": []
+  },
+  "liveDetails": {
+    "lvcompare": [],
+    "labview": []
+  },
+  "noticed": {
+    "lvcompare": [],
+    "labview": []
+  },
+  "rogue": {
+    "lvcompare": [],
+    "labview": []
+  },
+  "attempt": {
+    "index": 1,
+    "total": 2
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "generatedAt": "2025-11-13T08:07:33.8503532-08:00",
+      "live": {
+        "lvcompare": [],
+        "labview": []
+      },
+      "rogue": {
+        "lvcompare": [],
+        "labview": []
+      }
+    }
+  ]
+}

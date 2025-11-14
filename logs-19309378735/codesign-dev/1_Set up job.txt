@@ -1,0 +1,29 @@
+﻿2025-11-12T19:27:57.8855080Z Current runner version: '2.329.0'
+2025-11-12T19:27:57.8902457Z ##[group]Runner Image Provisioner
+2025-11-12T19:27:57.8903239Z Hosted Compute Agent
+2025-11-12T19:27:57.8903734Z Version: 20251016.436
+2025-11-12T19:27:57.8904336Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-12T19:27:57.8904992Z Build Date: 2025-10-15T20:44:12Z
+2025-11-12T19:27:57.8905516Z ##[endgroup]
+2025-11-12T19:27:57.8906010Z ##[group]Operating System
+2025-11-12T19:27:57.8906558Z Microsoft Windows Server 2025
+2025-11-12T19:27:57.8907050Z 10.0.26100
+2025-11-12T19:27:57.8907493Z Datacenter
+2025-11-12T19:27:57.8907924Z ##[endgroup]
+2025-11-12T19:27:57.8908332Z ##[group]Runner Image
+2025-11-12T19:27:57.8908841Z Image: windows-2025
+2025-11-12T19:27:57.8909319Z Version: 20251102.77.1
+2025-11-12T19:27:57.8910291Z Included Software: https://github.com/actions/runner-images/blob/win25/20251102.77/images/windows/Windows2025-Readme.md
+2025-11-12T19:27:57.8911927Z Image Release: https://github.com/actions/runner-images/releases/tag/win25%2F20251102.77
+2025-11-12T19:27:57.8913428Z ##[endgroup]
+2025-11-12T19:27:57.8914503Z ##[group]GITHUB_TOKEN Permissions
+2025-11-12T19:27:57.8916626Z Contents: read
+2025-11-12T19:27:57.8917184Z Metadata: read
+2025-11-12T19:27:57.8917655Z ##[endgroup]
+2025-11-12T19:27:57.8919744Z Secret source: Actions
+2025-11-12T19:27:57.8920482Z Prepare workflow directory
+2025-11-12T19:27:57.9453909Z Prepare all required actions
+2025-11-12T19:27:57.9491300Z Getting action download info
+2025-11-12T19:27:58.2738050Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2025-11-12T19:27:59.0238777Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-11-12T19:27:59.3115754Z Complete job name: codesign-dev

@@ -1,7 +1,7 @@
 
 Param()
 $ErrorActionPreference = 'Stop'
-$here = Split-Path -LiteralPath $MyInvocation.MyCommand.Path -Parent
+$here = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 $repoRoot = Resolve-Path (Join-Path $here '..' '..')
 $toolsRoot = Join-Path $repoRoot 'tools'
 $manifestPath = Join-Path $here 'tools-manifest.json'

@@ -29,6 +29,22 @@ if (-not (Test-Path -LiteralPath $script:SpecPath -PathType Leaf)) {
 $script:OperationSpec = Get-Content -LiteralPath $script:SpecPath -Raw | ConvertFrom-Json -ErrorAction Stop
 $script:Providers = @{}
 
+function Resolve-LVResultsRoot {
+  $override = [System.Environment]::GetEnvironmentVariable('LABVIEWCLI_RESULTS_ROOT')
+  if ($override) {
+    try {
+      if (-not (Test-Path -LiteralPath $override -PathType Container)) {
+        New-Item -ItemType Directory -Path $override -Force | Out-Null
+      }
+      $resolved = (Resolve-Path -LiteralPath $override -ErrorAction Stop).Path
+      return $resolved
+    } catch {
+      return $override
+    }
+  }
+  return $script:RepoRoot
+}
+
 <#
 .SYNOPSIS
 Get-LVOperationNames: brief description (TODO: refine).
@@ -563,7 +579,8 @@ function Write-LVOperationEvent {
     [Parameter(Mandatory)][hashtable]$EventData
   )
   try {
-    $resultsDir = Join-Path $script:RepoRoot 'tests/results'
+    $resultsRoot = Resolve-LVResultsRoot
+    $resultsDir = Join-Path $resultsRoot 'tests/results'
     if (-not (Test-Path -LiteralPath $resultsDir -PathType Container)) {
       New-Item -ItemType Directory -Path $resultsDir -Force | Out-Null
     }
@@ -594,7 +611,8 @@ function Initialize-LabVIEWCliPidTracker {
   if (-not $script:LabVIEWPidTrackerLoaded) { return }
   if ($script:LabVIEWPidTrackerState) { return }
 
-  $resultsDir = Join-Path $script:RepoRoot 'tests/results'
+  $resultsRoot = Resolve-LVResultsRoot
+  $resultsDir = Join-Path $resultsRoot 'tests/results'
   $cliDir = Join-Path $resultsDir '_cli'
   $agentDir = Join-Path $cliDir '_agent'
 
@@ -626,7 +644,7 @@ function Initialize-LabVIEWCliPidTracker {
     $script:LabVIEWPidTrackerState = $state
     $script:LabVIEWPidTrackerInitialState = $state
     $script:LabVIEWPidTrackerPath = $trackerPath
-    $script:LabVIEWPidTrackerRelativePath = 'tests/results/_cli/_agent/labview-pid.json'
+    $script:LabVIEWPidTrackerRelativePath = (Join-Path 'tests' (Join-Path 'results' '_cli/_agent/labview-pid.json'))
     if ($state -and $state.PSObject.Properties['Pid'] -and $state.Pid) {
       $modeText = if ($state.Reused) { 'Reusing existing' } else { 'Tracking detected' }
       Write-Host ("[labview-pid] {0} LabVIEW.exe PID {1}." -f $modeText, $state.Pid) -ForegroundColor DarkGray

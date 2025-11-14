@@ -1,0 +1,104 @@
+{
+  "schema_version": "v1",
+  "run_id": "20251114-000348-ff88efa7",
+  "created_utc": "2025-11-14T08:04:36.599825+00:00",
+  "project": {
+    "name": "icon-editor-lab",
+    "repo": "svelderrainruiz/icon-editor-lab",
+    "branch": "feature/gcli-lifecycle",
+    "commit": "ff88efa7b2d7506775e5026b3e0b3b4cbfbee9d1",
+    "dirty": true
+  },
+  "tooling": {
+    "ubuntu_ci_tool_version": "local-ci-ubuntu@ff88efa",
+    "renderer_version": "vi-compare@local-ci"
+  },
+  "path_map": [
+    {
+      "purpose": "run_root",
+      "windows": "C:\\\\local-ci-ubuntu\\\\20251114-000348",
+      "wsl": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-000348"
+    },
+    {
+      "purpose": "sign_root",
+      "windows": "C:\\\\local-ci-sign-root\\\\20251114-000348",
+      "wsl": "/mnt/c/codex/home/runner/work/icon-editor-lab/out"
+    }
+  ],
+  "artifacts": {
+    "zip": "out/local-ci-ubuntu/20251114-000348/local-ci-artifacts.zip",
+    "checksums": {
+      "local-ci-artifacts.zip": "sha256:fddccaedeec0dfda8bf1a895098bb35b6f861b4a6250dc5b873374b0e6682846"
+    }
+  },
+  "vi_diff_requests_file": "vi-comparison/vi-diff-requests.json",
+  "determinism": {
+    "sort": "lexicographic",
+    "locale": "C",
+    "case_sensitive": true
+  },
+  "notes": "Local CI Ubuntu handshake run",
+  "git": {
+    "commit": "ff88efa7b2d7506775e5026b3e0b3b4cbfbee9d1",
+    "branch": "feature/gcli-lifecycle"
+  },
+  "paths": {
+    "repo_root": "/mnt/c/codex/home/runner/work/icon-editor-lab",
+    "run_root": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-000348",
+    "sign_root": "/mnt/c/codex/home/runner/work/icon-editor-lab/out",
+    "artifact_zip_rel": "out/local-ci-ubuntu/20251114-000348/local-ci-artifacts.zip",
+    "artifact_zip_abs": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-000348/local-ci-artifacts.zip",
+    "coverage_xml_rel": "out/coverage/coverage.xml",
+    "vi_diff_requests_rel_repo": "out/local-ci-ubuntu/20251114-000348/vi-comparison/vi-diff-requests.json",
+    "vi_diff_requests_rel_run_root": "vi-comparison/vi-diff-requests.json"
+  },
+  "stages": [
+    {
+      "id": "10",
+      "name": "10-prep",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/10-prep.log",
+      "duration_seconds": 11
+    },
+    {
+      "id": "20",
+      "name": "20-build",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/20-build.log",
+      "duration_seconds": 2
+    },
+    {
+      "id": "25",
+      "name": "25-docker",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/25-docker.log",
+      "duration_seconds": 6
+    },
+    {
+      "id": "35",
+      "name": "35-coverage",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/35-coverage.log",
+      "duration_seconds": 14
+    },
+    {
+      "id": "45",
+      "name": "45-vi-compare",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/45-vi-compare.log",
+      "duration_seconds": 3
+    },
+    {
+      "id": "40",
+      "name": "40-package",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251114-000348/40-package.log",
+      "duration_seconds": 3
+    }
+  ],
+  "coverage": {
+    "percent": 100.0,
+    "min_percent": 75,
+    "report": "out/coverage/coverage.xml"
+  }
+}

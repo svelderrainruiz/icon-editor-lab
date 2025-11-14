@@ -1,0 +1,15 @@
+Command: "C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe" -PortNumber 3363 -LabVIEWPath C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe -OperationName RunVIAnalyzer -ConfigPath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project -ReportPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-213504\vi-analyzer-report.txt -ReportSaveType ASCII -ResultsPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-213504\vi-analyzer-results.rsl
+
+--- stdout ---
+LabVIEWCLI started logging in file:  C:\Users\svelderr\AppData\Local\Temp\lvtemporary_904421.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe"
+Connection established with LabVIEW at port number 3363.
+
+
+
+--- stderr ---
+Error code : 1
+Error message : Call By Reference in RunExecuteOperationVI.vi->RunOperationCore.vi->RunOperation.vi->RunOperation.vi.ProxyCaller
+An error occurred while running the LabVIEW CLI.
+
+

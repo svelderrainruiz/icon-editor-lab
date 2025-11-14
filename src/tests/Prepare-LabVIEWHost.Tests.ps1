@@ -22,7 +22,7 @@ Describe 'Prepare-LabVIEWHost helper' -Tag 'Unit','IconEditor' {
       -Bitness '64' `
       -StageName 'unit-host-prep' `
       -WorkspaceRoot $workspaceRoot `
-      -IconEditorRoot (Join-Path $script:repoRoot 'vendor/icon-editor') `
+      -IconEditorRoot (Join-Path $script:repoRoot 'vendor/labview-icon-editor') `
       -SkipStage `
       -SkipDevMode `
       -SkipClose `
@@ -57,7 +57,7 @@ Describe 'Prepare-LabVIEWHost helper' -Tag 'Unit','IconEditor' {
   It 'records dev-mode telemetry links when enable scripts run' {
     $testRepo = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
     $toolsDir = Join-Path $testRepo 'tools'
-    $iconEditorDir = Join-Path $testRepo 'vendor/icon-editor'
+    $iconEditorDir = Join-Path $testRepo 'vendor/labview-icon-editor'
     $actionsDir = Join-Path $iconEditorDir '.github/actions/close-labview'
     $resultsDir = Join-Path $testRepo 'tests/results'
 
@@ -181,4 +181,5 @@ New-Item -ItemType Directory -Path `$runRoot -Force | Out-Null
     $enableTelemetry.mode | Should -Be 'enable'
   }
 }
+
 

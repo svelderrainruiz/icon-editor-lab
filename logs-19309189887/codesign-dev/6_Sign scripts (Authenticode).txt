@@ -1,0 +1,23 @@
+﻿2025-11-12T19:21:21.1238530Z ##[group]Run $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
+2025-11-12T19:21:21.1239314Z [36;1m$cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new([0m
+2025-11-12T19:21:21.1240098Z [36;1m  "$env:RUNNER_TEMP\codesign.pfx",[0m
+2025-11-12T19:21:21.1240670Z [36;1m  '***[0m
+2025-11-12T19:21:21.1240869Z [36;1m',[0m
+2025-11-12T19:21:21.1241222Z [36;1m  [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet)[0m
+2025-11-12T19:21:21.1241721Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:21:21.1242178Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:21:21.1242596Z [36;1mforeach ($s in $scripts) {[0m
+2025-11-12T19:21:21.1243120Z [36;1m  Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null[0m
+2025-11-12T19:21:21.1243620Z [36;1m}[0m
+2025-11-12T19:21:21.1303906Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:21:21.1304232Z env:
+2025-11-12T19:21:21.1304441Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:21:21.1304689Z   SIGN_ROOT: out
+2025-11-12T19:21:21.1304871Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:21:21.1305062Z ##[endgroup]
+2025-11-12T19:21:22.0603502Z [31;1mParentContainsErrorRecordException: [0mD:\a\_temp\81029048-1590-4533-99db-1962b0dd8fa4.ps1:2[0m
+2025-11-12T19:21:22.0605978Z [31;1m[0m[36;1mLine |[0m
+2025-11-12T19:21:22.0606847Z [31;1m[0m[36;1m[36;1m   2 | [0m [36;1m$cert = [System.Security.Cryptography.X509Certificates.X509Certificat[0m …[0m
+2025-11-12T19:21:22.0607485Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2025-11-12T19:21:22.0608395Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mException calling ".ctor" with "3" argument(s): "The specified network password is not correct."[0m
+2025-11-12T19:21:22.1085614Z ##[error]Process completed with exit code 1.

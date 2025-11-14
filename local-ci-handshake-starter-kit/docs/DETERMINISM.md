@@ -1,0 +1,1 @@
+Stable run ids, canonical sort, claim files, atomic sentinels, checksums.

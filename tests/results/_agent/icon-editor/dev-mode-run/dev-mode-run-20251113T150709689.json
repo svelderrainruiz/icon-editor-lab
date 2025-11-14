@@ -1,0 +1,40 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251113T150709689",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "/mnt/c/codex/home/runner/work/icon-editor-lab",
+  "iconEditorRoot": "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor",
+  "startedAt": "2025-11-13T15:07:09.6880450-08:00",
+  "status": "failed",
+  "rogueSnapshotPath": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-150701/devmode/rogue/rogue-lv-enable-devmode-pre-20251113T150710061.json",
+  "error": "Dev-mode script '/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.\nExecuting the following command:\ng-cli --lv-ver 2021 --arch 64 -v \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\" \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\\lv_icon_editor.lvproj\" \"Editor Packed Library\"\nWrite-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\nWrite-Error: Please check the parameters and ensure the command is valid.",
+  "completedAt": "2025-11-13T15:07:40.3162840-08:00",
+  "durationSeconds": 30.63,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-13T15:07:09.7967328-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "snapshotPath": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-150701/devmode/rogue/rogue-lv-enable-devmode-pre-20251113T150710061.json",
+      "exitCode": 0,
+      "endedAt": "2025-11-13T15:07:12.6779630-08:00",
+      "durationSeconds": 2.88
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-13T15:07:12.6864780-08:00",
+      "status": "failed",
+      "error": "Dev-mode script '/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.\nExecuting the following command:\ng-cli --lv-ver 2021 --arch 64 -v \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\" \"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\\lv_icon_editor.lvproj\" \"Editor Packed Library\"\nWrite-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\nWrite-Error: Please check the parameters and ensure the command is valid.",
+      "endedAt": "2025-11-13T15:07:40.3136617-08:00",
+      "durationSeconds": 27.65
+    }
+  ]
+}

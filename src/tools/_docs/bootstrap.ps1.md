@@ -7,6 +7,7 @@ Runs the priority hook bootstrap: ensures `develop` is checked out, runs npm hoo
 
 ## Description
 - Verifies Node.js is available, then uses `tools/npm/run-script.mjs` to run the various hook npm scripts (`hooks:plane`, `hooks:preflight`, optional `hooks:multi` + `hooks:schema`, `priority:sync`, `priority:show`).
+  - `priority:show` now summarizes the cached router (top actions, priorities, first scripts) and supports `--json` for the full payload.
 - Ensures the local `develop` branch exists: fetches from `upstream`/`origin`, creates/resets it when missing, or simply checks it out.
 - Optionally (unless `-PreflightOnly`) runs the SemVer validator (`tools/priority/validate-semver.mjs`). The results are written to `tests/results/_agent/handoff/release-summary.json` (`agent-handoff/release-v1`) so CI artifacts capture version + validity.
 - `-VerboseHooks` adds hook parity/snapshot validation noise but continues even if those scripts fail (`-AllowFailure`).

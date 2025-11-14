@@ -1,0 +1,1 @@
+Check path mapping, permissions, antivirus, long paths, LabVIEW/LVCompare versions.

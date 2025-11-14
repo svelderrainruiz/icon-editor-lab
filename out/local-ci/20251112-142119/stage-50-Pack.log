@@ -1,0 +1,33 @@
+**********************
+PowerShell transcript start
+Start time: 20251112142129
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 24460
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Hashing artifacts under C:\codex\home\runner\work\icon-editor-lab\out
+
+Creating archive C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\signed-artifacts.zip
+PS>TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+PS>TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+>> TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+>> TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+PS>TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+>> TerminatingError(ZipArchiveHelper): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 50-Pack failed: The process cannot access the file 'C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-142119\stage-50-Pack.log' because it is being used by another process."
+**********************
+PowerShell transcript end
+End time: 20251112142130
+**********************

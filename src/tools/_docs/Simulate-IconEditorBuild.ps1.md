@@ -22,8 +22,8 @@ Unpack an Icon Editor fixture VIP, overlay repo resources, harvest lvlibp artifa
 | `VipDiffOutputDir` | string | — | Enables VI diff request generation under this directory. |
 | `VipDiffRequestsPath` | string | `<VipDiffOutputDir>/vi-diff-requests.json` | Overrides the request file location. |
 | `KeepExtract` | switch | Off | Skip cleanup of temporary extraction folders. |
-| `SkipResourceOverlay` | switch | Off | Avoid copying repo `vendor/icon-editor/resource` files into the simulated install. |
-| `ResourceOverlayRoot` | string | `vendor/icon-editor/resource` | Custom overlay root; ignored when `-SkipResourceOverlay`. |
+| `SkipResourceOverlay` | switch | Off | Avoid copying repo `vendor/labview-icon-editor/resource` files into the simulated install. |
+| `ResourceOverlayRoot` | string | `vendor/labview-icon-editor/resource` | Custom overlay root; ignored when `-SkipResourceOverlay`. |
 
 ## Outputs
 - `<ResultsRoot>/manifest.json` (`icon-editor/build@v1`) with artifact metadata, version info, vipDiff/packageSmoke summaries.
@@ -37,3 +37,4 @@ Unpack an Icon Editor fixture VIP, overlay repo resources, harvest lvlibp artifa
 ## Related
 - `tools/icon-editor/Test-IconEditorPackage.ps1`
 - `tools/icon-editor/Prepare-VipViDiffRequests.ps1`
+

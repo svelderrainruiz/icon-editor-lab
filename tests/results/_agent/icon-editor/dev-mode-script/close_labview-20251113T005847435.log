@@ -1,0 +1,12 @@
+# Dev-mode Script Log
+timestamp: 2025-11-13T00:58:47.4366353-08:00
+stage: close_labview
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\close-labview\Close_LabVIEW.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 64
+exitCode: 0
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 QuitLabVIEW
+Closing LabVIEW in 1000ms
+Close LabVIEW 2021 (64-bit)
+

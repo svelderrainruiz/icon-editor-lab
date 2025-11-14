@@ -1,0 +1,46 @@
+{
+  "schema": "integration/mip-lunit-2023@v1",
+  "label": "mip-2023-labtest-20251112T230206",
+  "resultsRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results",
+  "status": "pending",
+  "checks": {
+    "toolkit": {
+      "status": "pending",
+      "version": 2023,
+      "bitness": 64,
+      "path": null,
+      "labviewExe": null,
+      "reason": null
+    },
+    "gcli": {
+      "status": "pending",
+      "version": null,
+      "reason": null
+    },
+    "labviewServer": {
+      "status": "pending",
+      "iniPath": null,
+      "enabled": null,
+      "port": null,
+      "warnings": []
+    }
+  },
+  "analyzer": {
+    "status": "pending",
+    "label": "mip-2023-labtest-20251112T230206",
+    "logPath": null,
+    "reportDir": null,
+    "note": null
+  },
+  "mipReport": null,
+  "unit": {
+    "status": "pending",
+    "total": null,
+    "passed": null,
+    "failed": null,
+    "skipped": null,
+    "reportPath": null,
+    "note": null
+  },
+  "generatedAt": "2025-11-12T23:02:06.5143292-08:00"
+}

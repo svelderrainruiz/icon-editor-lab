@@ -1,0 +1,58 @@
+**********************
+PowerShell transcript start
+Start time: 20251112161915
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -SkipStages 40
+Process ID: 4992
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 6 files.
+Discovery found 13 tests in 206ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 6 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 70ms (47ms|22ms)
+  [+] contains at least one PowerShell script
+ 10ms (9ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 14ms (13ms|2ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 6ms (3ms|3ms)
+  [+] contains at least one PowerShell file
+ 7ms (6ms|1ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 24ms (6ms|19ms)
+Tests completed in 894ms
+Tests Passed: 6, 
+Failed: 0, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 7
+**********************
+PowerShell transcript end
+End time: 20251112161918
+**********************

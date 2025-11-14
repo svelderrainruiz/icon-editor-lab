@@ -1,0 +1,29 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251113T015807184",
+  "mode": "disable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "startedAt": "2025-11-13T01:58:07.1833113-08:00",
+  "status": "failed",
+  "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\icon-editor\\Reset-IconEditorWorkspace.ps1' was not found.",
+  "completedAt": "2025-11-13T01:58:07.2325329-08:00",
+  "durationSeconds": 0.05,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-13T01:58:07.1989469-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\icon-editor\\Reset-IconEditorWorkspace.ps1' was not found.",
+      "endedAt": "2025-11-13T01:58:07.2179931-08:00",
+      "durationSeconds": 0.02
+    }
+  ]
+}

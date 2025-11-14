@@ -15,7 +15,7 @@ Mirror image of `Enable-DevMode.ps1`. Resolves repo/icon paths, initializes dev-
 ### Parameters
 | Name | Type | Default | Notes |
 |---|---|---|---|
-| `RepoRoot` | string | Resolved via `Resolve-IconEditorRepoRoot` | Repo containing `vendor/icon-editor`. |
+| `RepoRoot` | string | Resolved via `Resolve-IconEditorRepoRoot` | Repo containing `vendor/labview-icon-editor`. |
 | `IconEditorRoot` | string | Derived from repo root | Use to override bundle/extracted paths. |
 | `Versions` | int[] | Policy default | LabVIEW versions to disable. |
 | `Bitness` | int[] | Policy default | Bitness of LabVIEW targets. |
@@ -34,3 +34,4 @@ Mirror image of `Enable-DevMode.ps1`. Resolves repo/icon paths, initializes dev-
 - `tools/icon-editor/Enable-DevMode.ps1`
 - `tools/icon-editor/Test-DevModeStability.ps1`
 - `docs/LABVIEW_GATING.md`
+

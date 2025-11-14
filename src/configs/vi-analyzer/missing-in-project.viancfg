@@ -2,5 +2,6 @@
   "schema": "vi-analyzer/config@v1",
   "description": "Targets the MissingInProject CLI VI and supporting tests for dev-mode verification.",
   "targetType": "folder",
-  "targetPath": "vendor/icon-editor/.github/actions/missing-in-project"
+  "targetPath": "vendor/labview-icon-editor/.github/actions/missing-in-project"
 }
+

@@ -1,0 +1,37 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251112T222102954",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "startedAt": "2025-11-12T22:21:02.9535390-08:00",
+  "status": "failed",
+  "error": "The specified module 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\VendorTools.psm1' was not loaded because no valid module file was found in any module directory.",
+  "completedAt": "2025-11-12T22:21:04.1188777-08:00",
+  "durationSeconds": 1.17,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-12T22:21:02.9714995-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-12T22:21:02.9898510-08:00",
+      "durationSeconds": 0.02
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-12T22:21:03.0014584-08:00",
+      "status": "failed",
+      "error": "The specified module 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\VendorTools.psm1' was not loaded because no valid module file was found in any module directory.",
+      "endedAt": "2025-11-12T22:21:04.1146340-08:00",
+      "durationSeconds": 1.11
+    }
+  ]
+}

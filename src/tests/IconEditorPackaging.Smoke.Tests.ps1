@@ -885,7 +885,7 @@ function Disable-IconEditorDevelopmentMode {
 
     It 'Stage-IconEditorSnapshot.ps1 fails fast when FixturePath missing' {
         { & $script:stageScript `
-            -SourcePath (Join-Path $script:repoRoot 'vendor/icon-editor') `
+            -SourcePath (Join-Path $script:repoRoot 'vendor/labview-icon-editor') `
             -StageName 'smoke' `
             -SkipValidate `
             -SkipLVCompare `
@@ -895,7 +895,7 @@ function Disable-IconEditorDevelopmentMode {
     It 'Stage-IconEditorSnapshot.ps1 honors baseline paths' {
         $workspace = Join-Path $TestDrive 'snapshot-workspace'
         $result = & $script:stageScript `
-            -SourcePath (Join-Path $script:repoRoot 'vendor/icon-editor') `
+            -SourcePath (Join-Path $script:repoRoot 'vendor/labview-icon-editor') `
             -StageName 'baseline-check' `
             -WorkspaceRoot $workspace `
             -FixturePath $script:fixtureVipPath `
@@ -963,7 +963,7 @@ function Disable-IconEditorDevelopmentMode {
 
     It 'Invoke-VipmCliBuild.ps1 calls rogue detection and close between VIPC targets' -Tag 'VipmSequence' {
         $repoRoot = Join-Path $TestDrive 'vipm-repo'
-        $iconRoot = Join-Path $repoRoot 'vendor/icon-editor'
+        $iconRoot = Join-Path $repoRoot 'vendor/labview-icon-editor'
         $applyRoot = Join-Path $iconRoot '.github/actions/apply-vipc'
         $closeRoot = Join-Path $iconRoot '.github/actions/close-labview'
 
@@ -1027,7 +1027,7 @@ Add-Content -LiteralPath $env:VIPM_TEST_LOG -Value ('apply-{0}-{1}-{2}' -f $Supp
 
     It 'Invoke-VipmCliBuild.ps1 installs vipm and g-cli wrappers during sync' -Tag 'VipmSequence' {
         $repoRoot = Join-Path $TestDrive 'vipm-wrappers'
-        $iconRoot = Join-Path $repoRoot 'vendor/icon-editor'
+        $iconRoot = Join-Path $repoRoot 'vendor/labview-icon-editor'
         $syncScript = Join-Path $repoRoot 'tools/icon-editor/Sync-IconEditorFork.ps1'
 
         New-Item -ItemType Directory -Path (Join-Path $repoRoot 'tools/icon-editor'),$iconRoot -Force | Out-Null
@@ -1056,7 +1056,7 @@ param()
 
     It 'Invoke-VipmCliBuild.ps1 forwards vipm build arguments to Invoke-IconEditorBuild' -Tag 'VipmSequence' {
         $repoRoot = Join-Path $TestDrive 'vipm-build'
-        $iconRoot = Join-Path $repoRoot 'vendor/icon-editor'
+        $iconRoot = Join-Path $repoRoot 'vendor/labview-icon-editor'
         $syncScript = Join-Path $repoRoot 'tools/icon-editor/Sync-IconEditorFork.ps1'
         $buildScript = Join-Path $repoRoot 'tools/icon-editor/Invoke-IconEditorBuild.ps1'
         $recordPath = Join-Path $TestDrive 'vipm-build-record.json'
@@ -1198,4 +1198,5 @@ if (-not \$recordPath) { throw 'Missing ICON_EDITOR_BUILD_RECORD env variable.' 
         }
     }
 }
+
 

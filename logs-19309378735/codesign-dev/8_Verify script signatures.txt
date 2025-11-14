@@ -1,0 +1,30 @@
+﻿2025-11-12T19:28:09.3950559Z ##[group]Run $expected = ''
+2025-11-12T19:28:09.3950892Z [36;1m$expected = ''[0m
+2025-11-12T19:28:09.3951089Z [36;1m$invalid = @()[0m
+2025-11-12T19:28:09.3951480Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:28:09.3951896Z [36;1mforeach ($s in $scripts) {[0m
+2025-11-12T19:28:09.3952167Z [36;1m  $sig = Get-AuthenticodeSignature $s.FullName[0m
+2025-11-12T19:28:09.3952533Z [36;1m  if ($sig.Status -ne 'Valid') { $invalid += $s.FullName; continue }[0m
+2025-11-12T19:28:09.3952949Z [36;1m  if ($expected -and $sig.SignerCertificate.Thumbprint -ne $expected) {[0m
+2025-11-12T19:28:09.3953455Z [36;1m    throw "Unexpected signer for $($s.Name): $($sig.SignerCertificate.Thumbprint), expected $expected"[0m
+2025-11-12T19:28:09.3953846Z [36;1m  }[0m
+2025-11-12T19:28:09.3953989Z [36;1m}[0m
+2025-11-12T19:28:09.3954151Z [36;1mif ($invalid.Count -gt 0) {[0m
+2025-11-12T19:28:09.3954422Z [36;1m  'Scripts with invalid signatures:' | Write-Host[0m
+2025-11-12T19:28:09.3954758Z [36;1m  $invalid | ForEach-Object { $_ | Write-Host }[0m
+2025-11-12T19:28:09.3955024Z [36;1m  throw 'Invalid script signatures'[0m
+2025-11-12T19:28:09.3955247Z [36;1m}[0m
+2025-11-12T19:28:09.4011977Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:28:09.4012287Z env:
+2025-11-12T19:28:09.4012492Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:28:09.4012899Z   SIGN_ROOT: out
+2025-11-12T19:28:09.4013073Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:28:09.4013249Z ##[endgroup]
+2025-11-12T19:28:09.8364736Z Scripts with invalid signatures:
+2025-11-12T19:28:09.8395489Z D:\a\icon-editor-lab\icon-editor-lab\unsigned\Sample-Signed.ps1
+2025-11-12T19:28:10.1290281Z [31;1mException: [0mD:\a\_temp\ee60168b-883c-4485-97a6-26d8c15434e5.ps1:15[0m
+2025-11-12T19:28:10.1291121Z [31;1m[0m[36;1mLine |[0m
+2025-11-12T19:28:10.1291718Z [31;1m[0m[36;1m[36;1m  15 | [0m   [36;1mthrow 'Invalid script signatures'[0m
+2025-11-12T19:28:10.1292520Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m     | [31;1m   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+2025-11-12T19:28:10.1293296Z [31;1m[0m[36;1m[36;1m[0m[36;1m[0m[36;1m[31;1m[31;1m[36;1m     | [31;1mInvalid script signatures[0m
+2025-11-12T19:28:10.1839842Z ##[error]Process completed with exit code 1.

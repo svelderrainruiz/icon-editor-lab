@@ -1,0 +1,67 @@
+VI Analyzer Results
+
+Original Analysis Performed	Wednesday, November 12, 2025 10:38:44 PM
+Total Analysis Time	00:00:25.68
+
+Results
+VIs Analyzed	6
+Total Tests Run	624
+Passed Tests	595
+Failed Tests	29
+Skipped Tests	0
+
+Errors
+VI not loadable	0
+Test not loadable	0
+Test not runnable	0
+Test error out	0
+
+Failed Tests (sorted by VI)
+
+MissingInProject.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\MissingInProject.vi)
+Control Alignment	The controls on this VI's front panel are not arranged in a manner similar to their locations on the connector pane (right).  A VI is more self-documenting when its front panel arrangement matches that of its connector pane.
+VI Documentation	This VI has no VI Description.
+Spell Check	This VI contains the misspelled word "MissingInProject" in its name.
+Comment Usage	This block diagram contains fewer than 1 comment.
+Wire Crossings	This wire has 6 crossing(s)  which is more than the user specified maximum (5). The test was configured with 3 maximum fixed number of crossings and 2 maximum number of crossings per sink.
+Wire Bends	This Path wire has a segment that is less than the user-specified minimum pixel length (3).
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+MissingInProjectCLI.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\MissingInProjectCLI.vi)
+Diagram Size	The Block Diagram width (1027 pixels) exceeds the user-specified maximum (1024 pixels).
+Auto Error Handling Enabled	This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.
+Spell Check	This VI contains the misspelled word "MissingInProjectCLI" in its name.
+Comment Usage	This block diagram contains fewer than 1 comment.
+Error Cluster Wired	The error output of this Invoke Node is not wired.  In order to facilitate effective error handling, you should usually wire the error output on block diagram objects.
+Wire Bends	This I32 wire has a segment that is less than the user-specified minimum pixel length (3).
+Wire Bends	This Boolean wire has a segment that is less than the user-specified minimum pixel length (3).
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+Test Missing Classes.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\Test Missing Classes.vi)
+Auto Error Handling Enabled	This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.
+Comment Usage	This block diagram contains fewer than 1 comment.
+Wire Bends	This String wire has a segment that is less than the user-specified minimum pixel length (3).
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+Test Missing Libraries.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\Test Missing Libraries.vi)
+Auto Error Handling Enabled	This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.
+Comment Usage	This block diagram contains fewer than 1 comment.
+Wire Bends	This String wire has a segment that is less than the user-specified minimum pixel length (3).
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+Test Missing PPLs.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\Test Missing PPLs.vi)
+Auto Error Handling Enabled	This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.
+Spell Check	This VI has the following misspellings:  "PPLs" (name) "PPLs" (description)
+Comment Usage	This block diagram contains fewer than 1 comment.
+Wire Bends	This String wire has a segment that is less than the user-specified minimum pixel length (3).
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+Test Missing VIs.vi (C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project\Test Missing VIs.vi)
+Auto Error Handling Enabled	This VI has Automatic Error Handling enabled. Automatic Error Handling is not advised for released versions of LabVIEW code. Change the setting for this VI in the VI Properties dialog under the Execution tab. You can change the default setting for new VIs in Tools > Options > Block Diagram > Error Handling.
+Enabled Debugging	This VI has debugging enabled, which can reduce performance slightly.  Consider disabling debugging in the VI Properties >> Execution dialog box for this VI. 
+
+
+Testing Errors
+
+(none)
+

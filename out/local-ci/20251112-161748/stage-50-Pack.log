@@ -1,0 +1,28 @@
+**********************
+PowerShell transcript start
+Start time: 20251112161752
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -SkipStages 40
+Process ID: 36268
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Hashing artifacts under C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251112-161748\pack-root
+PS>TerminatingError(50-Pack.ps1): "The term 'pwsh' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 50-Pack failed: The term 'pwsh' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again."
+**********************
+PowerShell transcript end
+End time: 20251112161752
+**********************

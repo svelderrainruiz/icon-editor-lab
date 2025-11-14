@@ -1,0 +1,79 @@
+{
+  "schema_version": "v1",
+  "run_id": "20251113-233103-a73dbec2",
+  "created_utc": "2025-11-14T07:31:28.614228+00:00",
+  "project": {
+    "name": "icon-editor-lab",
+    "repo": "unknown/icon-editor-lab",
+    "branch": "feature/gcli-lifecycle",
+    "commit": "a73dbec28e9f45b081871aa5ef9bc15a4dd249f9",
+    "dirty": true
+  },
+  "tooling": {
+    "ubuntu_ci_tool_version": "local-ci-ubuntu@a73dbec",
+    "renderer_version": "vi-compare@local-ci"
+  },
+  "path_map": [
+    {
+      "purpose": "run_root",
+      "windows": "C:\\\\local-ci-ubuntu\\\\20251113-233103",
+      "wsl": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251113-233103"
+    },
+    {
+      "purpose": "sign_root",
+      "windows": "C:\\\\local-ci-sign-root\\\\20251113-233103",
+      "wsl": "/mnt/c/codex/home/runner/work/icon-editor-lab/out"
+    }
+  ],
+  "artifacts": {
+    "zip": "out/local-ci-ubuntu/20251113-233103/local-ci-artifacts.zip",
+    "checksums": {
+      "local-ci-artifacts.zip": "sha256:dd1af470f270371c6715e7bc6fa0bda292a1c7616804f4bb67db4036040705a4"
+    }
+  },
+  "vi_diff_requests_file": "vi-comparison/vi-diff-requests.json",
+  "determinism": {
+    "sort": "lexicographic",
+    "locale": "C",
+    "case_sensitive": true
+  },
+  "notes": "Local CI Ubuntu handshake run",
+  "coverage": null,
+  "git": {
+    "commit": "a73dbec28e9f45b081871aa5ef9bc15a4dd249f9",
+    "branch": "feature/gcli-lifecycle"
+  },
+  "paths": {
+    "repo_root": "/mnt/c/codex/home/runner/work/icon-editor-lab",
+    "run_root": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251113-233103",
+    "sign_root": "/mnt/c/codex/home/runner/work/icon-editor-lab/out",
+    "artifact_zip_rel": "out/local-ci-ubuntu/20251113-233103/local-ci-artifacts.zip",
+    "artifact_zip_abs": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251113-233103/local-ci-artifacts.zip",
+    "coverage_xml_rel": null,
+    "vi_diff_requests_rel_repo": "out/local-ci-ubuntu/20251113-233103/vi-comparison/vi-diff-requests.json",
+    "vi_diff_requests_rel_run_root": "vi-comparison/vi-diff-requests.json"
+  },
+  "stages": [
+    {
+      "id": "10",
+      "name": "10-prep",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251113-233103/10-prep.log",
+      "duration_seconds": 10
+    },
+    {
+      "id": "20",
+      "name": "20-build",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251113-233103/20-build.log",
+      "duration_seconds": 2
+    },
+    {
+      "id": "40",
+      "name": "40-package",
+      "status": "succeeded",
+      "log": "out/local-ci-ubuntu/20251113-233103/40-package.log",
+      "duration_seconds": 3
+    }
+  ]
+}

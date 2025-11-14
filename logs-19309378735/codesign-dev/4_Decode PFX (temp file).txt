@@ -1,0 +1,9 @@
+﻿2025-11-12T19:28:05.7049189Z ##[group]Run [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***
+2025-11-12T19:28:05.7074655Z [36;1m[IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('***[0m
+2025-11-12T19:28:05.7075144Z [36;1m'))[0m
+2025-11-12T19:28:05.7137124Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:28:05.7137487Z env:
+2025-11-12T19:28:05.7137748Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:28:05.7138067Z   SIGN_ROOT: out
+2025-11-12T19:28:05.7138318Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:28:05.7138538Z ##[endgroup]

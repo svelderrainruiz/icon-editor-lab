@@ -14,7 +14,7 @@ Restores the vendor icon-editor LabVIEW project to a known state by running NIâ€
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
 | `RepoRoot` | string | repo root | Icon-editor repo root. |
-| `IconEditorRoot` | string | `vendor/icon-editor` | Location of vendor scripts. |
+| `IconEditorRoot` | string | `vendor/labview-icon-editor` | Location of vendor scripts. |
 | `Versions` | int[] | `@(2023)` | LabVIEW versions to reset. |
 | `Bitness` | int[] | `@(32)` | Bitness list per version. |
 | `LabVIEWProject` | string | `lv_icon_editor` | Project passed to restore script. |
@@ -25,3 +25,4 @@ Restores the vendor icon-editor LabVIEW project to a known state by running NIâ€
 - `.github/actions/restore-setup-lv-source/RestoreSetupLVSource.ps1`
 - `.github/actions/close-labview/Close_LabVIEW.ps1`
 - `tools/icon-editor/Prepare-LabVIEWHost.ps1`
+

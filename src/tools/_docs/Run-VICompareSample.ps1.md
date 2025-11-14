@@ -14,8 +14,8 @@ Runs a quick VI Compare smoke test using `tools/TestStand-CompareHarness.ps1`, p
 | Name | Type | Default |
 | --- | --- | --- |
 | `LabVIEWPath` | string | `C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe` |
-| `BaseVI` | string | `vendor/icon-editor/.github/actions/missing-in-project/MissingInProject.vi` |
-| `HeadVI` | string | `vendor/icon-editor/.github/actions/missing-in-project/MissingInProjectCLI.vi` |
+| `BaseVI` | string | `vendor/labview-icon-editor/.github/actions/missing-in-project/MissingInProject.vi` |
+| `HeadVI` | string | `vendor/labview-icon-editor/.github/actions/missing-in-project/MissingInProjectCLI.vi` |
 | `OutputRoot` | string | `tests/results/teststand-session` |
 | `Label` | string | `vi-compare-smoke` |
 | `DryRun` | switch | Off |
@@ -27,3 +27,4 @@ Runs a quick VI Compare smoke test using `tools/TestStand-CompareHarness.ps1`, p
 ## Related
 - `tools/TestStand-CompareHarness.ps1`
 - `docs/LVCOMPARE_LAB_PLAN.md`
+

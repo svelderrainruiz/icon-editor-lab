@@ -12,9 +12,9 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 | --- | --- | --- |
 | Dev-mode lifecycle (IELA-SRS-F-001) | `tools/icon-editor/Enable-DevMode.ps1`, `Disable-DevMode.ps1`, `Test-DevModeStability.ps1` | Toggle per LabVIEW version/bitness, verify `dev-mode.txt`, and log under `tests/results/_agent/icon-editor/dev-mode-run/…`. Stability harness enforces the “3 consecutive passes” gate. |
 | MissingInProject suite (IELA-SRS-F-008) | `tools/icon-editor/Invoke-MissingInProjectSuite.ps1`, `Run-MipLunit-2023x64.ps1`, `Run-MipLunit-2021x64.ps1` | VI Analyzer gate runs first, then the suite, producing `_agent/reports/missing-in-project/<label>.json` plus `<label>/missing-in-project-session.json` with command/analyzer metadata. |
-| Snapshot staging (IELA-SRS-INT-001) | `tools/icon-editor/Stage-IconEditorSnapshot.ps1`, `tools/Ensure-SessionIndex.ps1` | Captures a staged copy of `vendor/icon-editor`, fixture manifests, and a `session-index.json` (`icon-editor/snapshot-session@v1`). |
+| Snapshot staging (IELA-SRS-INT-001) | `tools/icon-editor/Stage-IconEditorSnapshot.ps1`, `tools/Ensure-SessionIndex.ps1` | Captures a staged copy of `vendor/labview-icon-editor`, fixture manifests, and a `session-index.json` (`icon-editor/snapshot-session@v1`). |
 | LVCompare smoke / Scenario 1-4 | `tools/Run-HeadlessCompare.ps1`, `tools/TestStand-CompareHarness.ps1` | Writes `compare-report.html`, `lvcompare-capture.json`, and `session-index.json` under the chosen output root. Pair with `tools/report/Analyze-CompareReportImages.ps1` to validate screenshots. |
-| Bundle export / downstream consumption | `tools/Export-LabTooling.ps1`, `tools/Get-IconEditorLabTooling.ps1`, `Resolve-IconEditorLabPath.ps1` | Creates `artifacts/icon-editor-lab-tooling.zip`, then rehydrates bundle consumers under `vendor/icon-editor-lab/bundle/`. |
+| Bundle export / downstream consumption | `tools/Export-LabTooling.ps1`, `tools/Get-IconEditorLabTooling.ps1`, `Resolve-IconEditorLabPath.ps1` | Creates `artifacts/icon-editor-lab-tooling.zip`, then rehydrates bundle consumers under `vendor/labview-icon-editor-lab/bundle/`. |
 
 ### Common paths & environment hints
 
@@ -376,6 +376,7 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 - Test docs: `docs/testing/` (if present)
 
 > Regenerate this file by re-running the doc generator in CI to keep in sync with tool headers.
+
 
 
 

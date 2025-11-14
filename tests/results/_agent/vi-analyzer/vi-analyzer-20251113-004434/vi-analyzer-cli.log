@@ -1,0 +1,15 @@
+Command: "C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe" -PortNumber 3365 -LabVIEWPath C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe -OperationName RunVIAnalyzer -ConfigPath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project -ReportPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251113-004434\vi-analyzer-report.txt -ReportSaveType ASCII
+
+--- stdout ---
+LabVIEWCLI started logging in file:  C:\Users\svelderr\AppData\Local\Temp\lvtemporary_627783.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2021\LabVIEW.exe"
+LabVIEW launched successfully.
+
+
+
+--- stderr ---
+Error code : -350000
+Error message : LabVIEW CLI: (Hex 0xFFFAA8D0) The CLI for LabVIEW failed to establish a connection with LabVIEW. Ensure LabVIEW is running with VI server enabled on the correct port number. To enable VI server in LabVIEW, select "Tools>>Options>>VI Server" and enable the "TCP/IP" checkbox. If the port number under "TCP/IP" is not 3363, you must specify the port number using the "-PortNumber" argument. 
+An error occurred while running the LabVIEW CLI.
+
+

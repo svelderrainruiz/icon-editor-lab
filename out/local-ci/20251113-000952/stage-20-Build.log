@@ -1,0 +1,25 @@
+**********************
+PowerShell transcript start
+Start time: 20251113001048
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 32014
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Preparing build artifacts under /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/out
+Build stage complete. Microsoft.PowerShell.Commands.GenericMeasureInfo.Count files staged.
+**********************
+PowerShell transcript end
+End time: 20251113001058
+**********************

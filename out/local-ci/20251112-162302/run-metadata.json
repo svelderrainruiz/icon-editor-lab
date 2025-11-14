@@ -1,0 +1,21 @@
+{
+  "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "SignRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out",
+  "RunRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-162302",
+  "Timestamp": "20251112-162302",
+  "GitCommit": "unknown",
+  "GitBranch": "unknown",
+  "Host": "USAUSLT-Z7DLW6G",
+  "OS": "Microsoft Windows NT 10.0.22631.0",
+  "PowerShell": "7.5.3",
+  "Stages": [
+    {
+      "Id": 40,
+      "Error": null,
+      "DurationMs": 2283,
+      "LogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251112-162302\\stage-40-Signing.log",
+      "Status": "Succeeded",
+      "Label": "Signing"
+    }
+  ]
+}

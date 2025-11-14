@@ -123,7 +123,7 @@ plus session-index artifacts).
    pwsh -File .github/actions/run-unit-tests/RunUnitTests.ps1 `
      -MinimumSupportedLVVersion 2023 `
      -SupportedBitness 64 `
-     -ProjectPath vendor/icon-editor/lv_icon_editor.lvproj `
+     -ProjectPath vendor/labview-icon-editor/lv_icon_editor.lvproj `
      -ReportLabel iconeditor-lunit-labtest
    ```
 
@@ -154,7 +154,7 @@ plus session-index artifacts).
    pwsh -File .github/actions/run-unit-tests/RunUnitTests.ps1 `
      -MinimumSupportedLVVersion 2021 `
      -SupportedBitness 64 `
-     -ProjectPath vendor/icon-editor/lv_icon_editor.lvproj `
+     -ProjectPath vendor/labview-icon-editor/lv_icon_editor.lvproj `
      -ReportLabel iconeditor-lunit-legacy
    ```
 
@@ -313,3 +313,4 @@ lane repeatedly.
   `-Warmup spawn -DisableTimeout`.
 - If reports are not written, verify `tools/report/Write-RunReport.ps1` exists on the lab runner and
   `COMPAREVI_REPORTS_ROOT` is writable.
+

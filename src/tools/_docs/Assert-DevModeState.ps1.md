@@ -15,7 +15,7 @@ Assert that Icon Editor development mode is active (or inactive) for the request
 | --- | --- | --- | --- |
 | `ExpectedActive` | bool (required) | — | `$true` when you expect dev mode to be on; `$false` after disabling. |
 | `RepoRoot` | string | Resolved via `Resolve-IconEditorRepoRoot` | Override when running from a staged bundle. |
-| `IconEditorRoot` | string | Derived from repo root | Explicit path to `vendor/icon-editor`. |
+| `IconEditorRoot` | string | Derived from repo root | Explicit path to `vendor/labview-icon-editor`. |
 | `Versions` | int[] | Policy default | Optional explicit LabVIEW versions. |
 | `Bitness` | int[] | Policy default | Optional explicit bitness set. |
 | `Operation` | string | `BuildPackage` | Influences policy fallback (e.g., `Compare` defaults to 2025 x64). |
@@ -29,3 +29,4 @@ Assert that Icon Editor development mode is active (or inactive) for the request
 - `tools/icon-editor/Disable-DevMode.ps1`
 - `tools/icon-editor/Test-DevModeStability.ps1`
 - `docs/LABVIEW_GATING.md`
+

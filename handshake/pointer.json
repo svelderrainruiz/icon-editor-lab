@@ -1,0 +1,21 @@
+{
+  "schema": "handshake/v1",
+  "sequence": 1763111397,
+  "status": "ubuntu-ready",
+  "last_updated": "2025-11-14T09:09:56.198822+00:00",
+  "ubuntu": {
+    "stamp": "20251114-003806",
+    "artifact": "ubuntu-local-ci-20251114-003806",
+    "manifest_rel": "out/local-ci-ubuntu/20251114-003806/ubuntu-run.json",
+    "manifest_abs": "/mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci-ubuntu/20251114-003806/ubuntu-run.json",
+    "pointer": "out/local-ci-ubuntu/latest.json",
+    "updated_at": "2025-11-14T09:09:56.198804+00:00"
+  },
+  "windows": {
+    "status": "pending",
+    "updated_at": "2025-11-14T09:09:56.198822+00:00",
+    "run_root": null,
+    "stamp": null,
+    "runner": null
+  }
+}

@@ -3,14 +3,14 @@
 **Path:** `tools/icon-editor/Invoke-VIAnalyzer.ps1`
 
 ## Synopsis
-Headless VI Analyzer runner: launches LabVIEWCLI with a `.viancfg`/VI/folder target, captures HTML/ASCII/RSL reports, and emits telemetry JSON under `tests/results/_agent/vi-analyzer`.
+Headless VI Analyzer runner: launches LabVIEWCLI with a `.viancfg`/VI/folder target, captures HTML/ASCII/RSL reports (best-effort), and emits telemetry JSON under `tests/results/_agent/vi-analyzer`.
 
 ## Description
 - Resolves LabVIEWCLI (`LabVIEWVersion`, `Bitness`, or explicit `LabVIEWCLIPath`) and workspace/output roots.
 - Runs `RunVIAnalyzer` via LabVIEWCLI, honoring report options (`ReportSaveType`, `ReportPath`, `ReportSort`, `ReportInclude`).  
-- Optionally captures `.rsl` output, collects broken VI data, and writes:
+- Optionally captures `.rsl` output (when the LabVIEWCLI build accepts `-ResultsPath`), collects broken VI data, and writes:
   - `<OutputRoot>/<label>/vi-analyzer-report.{txt|html}`
-  - `<OutputRoot>/<label>/vi-analyzer-results.rsl` (when requested)
+  - `<OutputRoot>/<label>/vi-analyzer-results.rsl` (suppressed automatically if the CLI rejects the argument)
   - `<OutputRoot>/<label>/vi-analyzer.json` (telemetry: counts, broken VIs, CLI log path).  
 - Returns the telemetry object when `-PassThru` is set so callers (e.g., MissingInProject suites) can inspect failures/retry dev-mode recovery.
 
@@ -24,7 +24,7 @@ Headless VI Analyzer runner: launches LabVIEWCLI with a `.viancfg`/VI/folder tar
 | `LabVIEWVersion` | string | `2023` | LabVIEW install used by LabVIEWCLI resolution. |
 | `Bitness` | int | `64` | LabVIEW bitness. |
 | `LabVIEWCLIPath` | string | Auto-resolved | Override when LabVIEWCLI is not on PATH. |
-| `CaptureResultsFile` | switch | Off | Writes `.rsl` output to `<runDir>/vi-analyzer-results.rsl`. |
+| `CaptureResultsFile` | switch | Off | Attempts to write `.rsl` output to `<runDir>/vi-analyzer-results.rsl`; falls back gracefully when LabVIEWCLI rejects `-ResultsPath`. |
 | `ReportPath` / `ResultsPath` | string | Auto paths inside the run dir | Set explicit destinations for report/RSL files. |
 | `ConfigPassword` | string | — | Passphrase for encrypted `.viancfg`. |
 | `ReportSort` | string (`VI`,`Test`) | — | Available on newer LabVIEW versions. |

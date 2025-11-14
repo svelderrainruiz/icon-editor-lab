@@ -1,3 +1,4 @@
+[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [string]$ResultsDir = 'tests/results',
   [int]$LookBackSeconds = 900,
@@ -10,13 +11,6 @@ param(
 )
 
 Set-StrictMode -Version Latest
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
 $ErrorActionPreference = 'Stop'
 $retryCount = [Math]::Max(1, [Math]::Abs([int]$RetryCount))
 $retryDelay = [Math]::Max(0, [Math]::Abs([int]$RetryDelaySeconds))
@@ -56,14 +50,14 @@ Get-ProcessDetails: brief description (TODO: refine).
 Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Get-ProcessDetails {
-
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
-    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
+  [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
   param(
     [int[]]$ProcessIds
   )
+
+  if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) {
+    return
+  }
   $details = @()
   foreach ($processId in $ProcessIds) {
     if ($processId -le 0) { continue }

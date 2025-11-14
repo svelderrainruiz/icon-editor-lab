@@ -1,0 +1,15 @@
+﻿2025-11-12T19:24:27.3299099Z ##[group]Run if (-not (Test-Path 'out')) {
+2025-11-12T19:24:27.3299898Z [36;1mif (-not (Test-Path 'out')) {[0m
+2025-11-12T19:24:27.3300313Z [36;1m  New-Item -ItemType Directory -Path 'out' | Out-Null[0m
+2025-11-12T19:24:27.3300650Z [36;1m}[0m
+2025-11-12T19:24:27.3300903Z [36;1m$samplePs1 = Join-Path 'out' 'Sample-Signed.ps1'[0m
+2025-11-12T19:24:27.3301464Z [36;1m"Write-Output 'Sample payload for signing test.'" | Set-Content -Path $samplePs1 -Encoding UTF8[0m
+2025-11-12T19:24:27.3301994Z [36;1m$sampleExe = Join-Path 'out' 'sample.exe'[0m
+2025-11-12T19:24:27.3302355Z [36;1m[IO.File]::WriteAllBytes($sampleExe, [byte[]](1..16))[0m
+2025-11-12T19:24:27.3303121Z [36;1mWrite-Host 'Generated placeholder artifacts under out. Replace this block with actual build steps.'[0m
+2025-11-12T19:24:27.3962032Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:24:27.3962490Z env:
+2025-11-12T19:24:27.3962771Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:27.3963157Z   SIGN_ROOT: out
+2025-11-12T19:24:27.3963374Z ##[endgroup]
+2025-11-12T19:24:34.4742881Z Generated placeholder artifacts under out. Replace this block with actual build steps.

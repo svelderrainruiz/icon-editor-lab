@@ -1,0 +1,19 @@
+Command: "C:\Program Files (x86)\National Instruments\Shared\LabVIEW CLI\LabVIEWCLI.exe" -PortNumber 3363 -LabVIEWPath C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe -OperationName RunVIAnalyzer -ConfigPath C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project -ReportPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-205708\vi-analyzer-report.txt -ReportSaveType ASCII -ResultsPath C:\codex\home\runner\work\icon-editor-lab\tests\results\_agent\vi-analyzer\vi-analyzer-20251112-205708\vi-analyzer-results.rsl
+
+--- stdout ---
+LabVIEWCLI started logging in file:  C:\Users\svelderr\AppData\Local\Temp\lvtemporary_357260.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2023\LabVIEW.exe"
+LabVIEW launched successfully.
+Connection established with LabVIEW at port number 3363.
+
+
+
+--- stderr ---
+Operation output: 
+Error Code : -350051
+Error Message : LabVIEW CLI: (Hex 0xFFFAA89D) The CLI for LabVIEW failed to run the operation because the command contains illegal arguments. -ResultsPath
+An error occurred while running the RunVIAnalyzer operation.
+
+RunVIAnalyzer operation failed.
+
+

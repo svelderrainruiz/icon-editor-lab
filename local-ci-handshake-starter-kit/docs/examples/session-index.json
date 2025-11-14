@@ -1,0 +1,23 @@
+{
+  "schema_version": "v1",
+  "run_id": "20251113-142012Z-a1b2c3d-01",
+  "pairs": [
+    {
+      "pair_id": "0001",
+      "baseline": "source/Baseline/Controller.vi",
+      "candidate": "source/FeatureX/Controller.vi",
+      "lvcompare": {
+        "html_report": "lvcompare/0001/Controller.html",
+        "json_report": "lvcompare/0001/Controller.json",
+        "log": "lvcompare/0001/Controller.log",
+        "exit_code": 0
+      },
+      "captures": {
+        "baseline_fp_png": "captures/0001/baseline_fp.png",
+        "candidate_fp_png": "captures/0001/candidate_fp.png",
+        "baseline_bd_png": "captures/0001/baseline_bd.png",
+        "candidate_bd_png": "captures/0001/candidate_bd.png"
+      }
+    }
+  ]
+}

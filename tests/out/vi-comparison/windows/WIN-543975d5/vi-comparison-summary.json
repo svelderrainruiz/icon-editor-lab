@@ -1,0 +1,21 @@
+{
+  "schema": "icon-editor/vi-diff-summary@v1",
+  "counts": {
+    "different": 1,
+    "dryRun": 0,
+    "skipped": 0,
+    "total": 1,
+    "errors": 0,
+    "same": 0
+  },
+  "requests": [
+    {
+      "artifacts": {
+        "captureJson": "captures/demo/capture.json"
+      },
+      "message": "real",
+      "relPath": "src/VIs/demo.vi",
+      "status": "different"
+    }
+  ]
+}

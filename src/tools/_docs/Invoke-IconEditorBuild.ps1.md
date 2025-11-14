@@ -18,7 +18,7 @@ End-to-end Icon Editor build orchestrator: runs g-cli/VIPM builds, optional unit
 ### Parameters
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `IconEditorRoot` | string | `vendor/icon-editor` | Set when building from a staged bundle. |
+| `IconEditorRoot` | string | `vendor/labview-icon-editor` | Set when building from a staged bundle. |
 | `Major/Minor/Patch/Build` | int | `0` | Version components embedded in the package metadata. |
 | `Commit` | string | — | Optional git commit SHA recorded in telemetry. |
 | `CompanyName` / `AuthorName` | string | `LabVIEW Community CI/CD` | Branding for generated VIPs. |
@@ -44,3 +44,4 @@ End-to-end Icon Editor build orchestrator: runs g-cli/VIPM builds, optional unit
 - `tools/icon-editor/Invoke-IconEditorVipPackaging.ps1`
 - `tools/icon-editor/Run-OneShotBuildAndTests.ps1`
 - `docs/ICON_EDITOR_LAB_MIGRATION.md`
+

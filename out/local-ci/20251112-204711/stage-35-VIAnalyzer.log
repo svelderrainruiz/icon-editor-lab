@@ -1,0 +1,36 @@
+**********************
+PowerShell transcript start
+Start time: 20251112204712
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 35
+Process ID: 23532
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[35-VIAnalyzer] Running analyzer for config C:\codex\home\runner\work\icon-editor-lab\src\configs\vi-analyzer\missing-in-project.viancfg
+WARNING: Failed to parse structured VI Analyzer config 'C:\codex\home\runner\work
+\icon-editor-lab\vendor\icon-editor\.github\actions\missing-in-project': Cannot f
+ind path 'C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\ac
+tions\missing-in-project' because it does not exist.
+Resolve-Path: C:\codex\home\runner\work\icon-editor-lab\src\tools\icon-editor\Inv
+oke-VIAnalyzer.ps1:209:19
+Line |
+ 209 |  … figResolved = Resolve-Path -LiteralPath $ConfigPath -ErrorAction Stop
+     |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find path
+     | 'C:\codex\home\runner\work\icon-editor-lab\vendor\icon-editor\.github\acti
+ons\missing-in-project' because it does not exist.
+**********************
+PowerShell transcript end
+End time: 20251112204713
+**********************

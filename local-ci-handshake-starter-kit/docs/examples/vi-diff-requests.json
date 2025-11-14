@@ -1,0 +1,40 @@
+{
+  "schema_version": "v1",
+  "run_id": "20251113-142012Z-a1b2c3d-01",
+  "labview": {
+    "target_version": "2023 SP1 64-bit",
+    "compare_options": {
+      "ignoreCosmetic": true,
+      "ignoreFPDecoration": true,
+      "ignoreBDWireRouting": false
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "0001",
+      "baseline": {
+        "path": "source/Baseline/Controller.vi"
+      },
+      "candidate": {
+        "path": "source/FeatureX/Controller.vi"
+      },
+      "labels": [
+        "Controller",
+        "FeatureX"
+      ]
+    },
+    {
+      "pair_id": "0002",
+      "baseline": {
+        "path": "source/Baseline/Utils/ErrorHandler.vi"
+      },
+      "candidate": {
+        "path": "source/FeatureX/Utils/ErrorHandler.vi"
+      }
+    }
+  ],
+  "render_hints": {
+    "captureFrontPanelPng": true,
+    "captureBlockDiagramPng": true
+  }
+}

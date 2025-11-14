@@ -123,7 +123,7 @@ $overlayResolved = $null
 if ($ResourceOverlayRoot) {
   $overlayResolved = (Resolve-Path -LiteralPath $ResourceOverlayRoot).Path
 } else {
-  $defaultOverlay = Join-Path $repoRoot 'vendor/icon-editor/resource'
+  $defaultOverlay = Join-Path $repoRoot 'vendor/labview-icon-editor/resource'
   if (Test-Path -LiteralPath $defaultOverlay -PathType Container) {
     $overlayResolved = (Resolve-Path -LiteralPath $defaultOverlay).Path
   }
@@ -299,3 +299,4 @@ function Invoke-WithTimeout {
   }
   Receive-Job $job -ErrorAction Stop
 }
+

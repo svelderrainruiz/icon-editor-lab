@@ -16,7 +16,7 @@ Stage a self-contained Icon Editor snapshot (source + overlay + fixture metadata
 ### Parameters
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `SourcePath` | string | `vendor/icon-editor` | Root to stage (bundle/import). |
+| `SourcePath` | string | `vendor/labview-icon-editor` | Root to stage (bundle/import). |
 | `WorkspaceRoot` | string | `tests/results/_agent/icon-editor/snapshots` | Parent directory for staged snapshots. |
 | `StageName` | string | `snapshot-{timestamp}` | Folder name under the workspace. |
 | `FixturePath` | string | — (required) | VIP/fixture to include in the manifest/report. |
@@ -37,3 +37,4 @@ Stage a self-contained Icon Editor snapshot (source + overlay + fixture metadata
 - `tools/icon-editor/Enable-DevMode.ps1`
 - `tools/icon-editor/Invoke-MissingInProjectSuite.ps1`
 - `tools/README.md`
+

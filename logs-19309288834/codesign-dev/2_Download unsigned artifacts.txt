@@ -1,0 +1,23 @@
+﻿2025-11-12T19:24:45.7417867Z ##[group]Run actions/download-artifact@v4
+2025-11-12T19:24:45.7419159Z with:
+2025-11-12T19:24:45.7419552Z   name: unsigned
+2025-11-12T19:24:45.7419953Z   path: unsigned
+2025-11-12T19:24:45.7420396Z   merge-multiple: false
+2025-11-12T19:24:45.7420899Z   repository: svelderrainruiz/icon-editor-lab
+2025-11-12T19:24:45.7421440Z   run-id: 19309288834
+2025-11-12T19:24:45.7422025Z env:
+2025-11-12T19:24:45.7422465Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:24:45.7423003Z   SIGN_ROOT: out
+2025-11-12T19:24:45.7423408Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:24:45.7423826Z ##[endgroup]
+2025-11-12T19:24:46.0399610Z Downloading single artifact
+2025-11-12T19:24:46.1634297Z Preparing to download the following artifacts:
+2025-11-12T19:24:46.1637765Z - unsigned (ID: 4547632631, Size: 329, Expected Digest: sha256:f9d70e8094c451de6caf41540b6032ec998cc36dce3d3fca3d5b8eea24335b3f)
+2025-11-12T19:24:46.2509240Z Redirecting to blob download url: https://productionresultssa3.blob.core.windows.net/actions-results/ede4a50d-204e-4809-91dc-a157dcd74964/workflow-job-run-3d463a1e-e555-58cc-b71f-b34c3e913e74/artifacts/ceffe727ab2fa2c7c3322ee4a1aa0c2d2a4664836c2133df93dd15055bb617be.zip
+2025-11-12T19:24:46.2514854Z Starting download of artifact to: D:\a\icon-editor-lab\icon-editor-lab\unsigned
+2025-11-12T19:24:46.2975972Z (node:8660) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2025-11-12T19:24:46.2982004Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-11-12T19:24:46.3061591Z SHA256 digest of downloaded artifact is f9d70e8094c451de6caf41540b6032ec998cc36dce3d3fca3d5b8eea24335b3f
+2025-11-12T19:24:46.3064415Z Artifact download completed successfully.
+2025-11-12T19:24:46.3065792Z Total of 1 artifact(s) downloaded
+2025-11-12T19:24:46.3073506Z Download artifact has finished successfully

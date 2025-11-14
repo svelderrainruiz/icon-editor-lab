@@ -1,0 +1,65 @@
+**********************
+PowerShell transcript start
+Start time: 20251113134902
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 51706
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] LabVIEW CLI session root: /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/labview-cli/stage-25-20251113134903194
+[25-DevMode] LabVIEW CLI session metadata: /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/labview-cli/stage-25-20251113134903194/session.json
+[25-DevMode] Ensuring no rogue LabVIEW instances are running before enabling dev mode...
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" -- "LabVIEW" "Localhost.LibraryPaths" "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor"
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor"
+Write-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Write-Error: Please check the parameters and ensure the command is valid.
+Exception: Dev-mode script
+Exception: Dev-mode script
+'/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor/.github/action
+'/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor/.github/action
+s/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.
+s/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.
+Executing the following command: g-cli --lv-ver 2021 --arch 64 -v
+Executing the following command: g-cli --lv-ver 2021 --arch 64 -v
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\Tooling\Prepar
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\Tooling\Prepar
+eIESource.vi" -- LabVIEW Localhost.LibraryPaths
+eIESource.vi" -- LabVIEW Localhost.LibraryPaths
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\lv_icon_editor
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\lv_icon_editor
+.lvproj" "Editor Packed Library"
+.lvproj" "Editor Packed Library"
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor" Write-Error:
+"/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor" Write-Error:
+An error occurred during execution: The term 'g-cli' is not recognized as a
+An error occurred during execution: The term 'g-cli' is not recognized as a
+name of a cmdlet, function, script file, or executable program. Check the
+name of a cmdlet, function, script file, or executable program. Check the
+spelling of the name, or if a path was included, verify that the path is
+spelling of the name, or if a path was included, verify that the path is
+correct and try again. Write-Error: Please check the parameters and ensure the
+correct and try again. Write-Error: Please check the parameters and ensure the
+command is valid.
+command is valid.
+PS>TerminatingError(): "[25-DevMode][DMO200] Enable-DevMode.ps1 exited with code 1. See stage log and rogue details under /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/devmode/rogue. Latest rogue log: /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/devmode/rogue/rogue-lv-enable-prepare-2021-64-20251113T134925503.json"
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 25-DevMode failed: [25-DevMode][DMO200] Enable-DevMode.ps1 exited with code 1. See stage log and rogue details under /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/devmode/rogue. Latest rogue log: /mnt/c/codex/home/runner/work/icon-editor-lab/out/local-ci/20251113-134820/devmode/rogue/rogue-lv-enable-prepare-2021-64-20251113T134925503.json"
+**********************
+PowerShell transcript end
+End time: 20251113134953
+**********************

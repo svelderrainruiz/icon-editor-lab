@@ -1,0 +1,34 @@
+﻿2025-11-12T19:28:07.0097248Z ##[group]Run if ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {
+2025-11-12T19:28:07.0097930Z [36;1mif ($env:GITHUB_REPOSITORY -ne 'LabVIEW-Community-CI-CD/icon-editor-lab') {[0m
+2025-11-12T19:28:07.0098489Z [36;1m  Write-Host "Repo is $env:GITHUB_REPOSITORY (fork). Using ephemeral dev cert for script signing."[0m
+2025-11-12T19:28:07.0099325Z [36;1m  $cert = New-SelfSignedCertificate -Subject 'CN=CI Ephemeral Code Signing' -Type CodeSigningCert -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddDays(14)[0m
+2025-11-12T19:28:07.0099983Z [36;1m}[0m
+2025-11-12T19:28:07.0100142Z [36;1melse {[0m
+2025-11-12T19:28:07.0100301Z [36;1m  try {[0m
+2025-11-12T19:28:07.0100681Z [36;1m    $flags = [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet `[0m
+2025-11-12T19:28:07.0101320Z [36;1m           -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::Exportable `[0m
+2025-11-12T19:28:07.0101957Z [36;1m           -bor [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::PersistKeySet[0m
+2025-11-12T19:28:07.0102637Z [36;1m    $cert = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new([0m
+2025-11-12T19:28:07.0103632Z [36;1m      "$env:RUNNER_TEMP\codesign.pfx",[0m
+2025-11-12T19:28:07.0104320Z [36;1m      '***[0m
+2025-11-12T19:28:07.0104528Z [36;1m',[0m
+2025-11-12T19:28:07.0104684Z [36;1m      $flags)[0m
+2025-11-12T19:28:07.0105515Z [36;1m  } catch {[0m
+2025-11-12T19:28:07.0105926Z [36;1m    Write-Warning "Direct PFX load failed; attempting store import fallback. Error: $($_.Exception.Message)"[0m
+2025-11-12T19:28:07.0106641Z [36;1m    $pwd = ConvertTo-SecureString '***[0m
+2025-11-12T19:28:07.0106908Z [36;1m' -AsPlainText -Force[0m
+2025-11-12T19:28:07.0107690Z [36;1m    $cert = Import-PfxCertificate -FilePath "$env:RUNNER_TEMP\codesign.pfx" -CertStoreLocation Cert:\CurrentUser\My***
+2025-11-12T19:28:07.0108244Z [36;1m  }[0m
+2025-11-12T19:28:07.0108432Z [36;1m}[0m
+2025-11-12T19:28:07.0108668Z [36;1m$tsa = 'http://timestamp.digicert.com'[0m
+2025-11-12T19:28:07.0109194Z [36;1m$scripts = Get-ChildItem unsigned -Include *.ps1,*.psm1 -Recurse -ErrorAction SilentlyContinue[0m
+2025-11-12T19:28:07.0109632Z [36;1mforeach ($s in $scripts) {[0m
+2025-11-12T19:28:07.0110146Z [36;1m  Set-AuthenticodeSignature -FilePath $s.FullName -Certificate $cert -TimestampServer $tsa -HashAlgorithm SHA256 | Out-Null[0m
+2025-11-12T19:28:07.0110652Z [36;1m}[0m
+2025-11-12T19:28:07.0167877Z shell: C:\Program Files\PowerShell\7\pwsh.EXE -command ". '{0}'"
+2025-11-12T19:28:07.0168193Z env:
+2025-11-12T19:28:07.0168379Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:28:07.0168618Z   SIGN_ROOT: out
+2025-11-12T19:28:07.0168790Z   EXPECTED_THUMBPRINT: 
+2025-11-12T19:28:07.0168970Z ##[endgroup]
+2025-11-12T19:28:07.3188982Z Repo is svelderrainruiz/icon-editor-lab (fork). Using ephemeral dev cert for script signing.

@@ -131,10 +131,16 @@ function Invoke-UbuntuRunImport {
             if ($line -match '^[0-9a-fA-F]{64}') { $expectedHash = $line.Substring(0,64) }
         }
     }
+    $hashStatus = $null
     if ($expectedHash) {
         $zipHash = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash
         if ($zipHash.ToLowerInvariant() -ne $expectedHash.ToLowerInvariant()) {
             throw "Artifact hash mismatch for '$zipPath'"
+        }
+        $hashStatus = [ordered]@{
+            expected = $expectedHash
+            actual   = $zipHash
+            verified = $true
         }
     }
 
@@ -148,6 +154,7 @@ function Invoke-UbuntuRunImport {
         GitCommit     = $manifest.git.commit
         GitBranch     = $manifest.git.branch
         Coverage      = $coveragePayload
+        HashStatus    = $hashStatus
         Timestamp     = $manifest.timestamp
     }
     $summaryPath = Join-Path $RunRoot 'ubuntu-import.json'

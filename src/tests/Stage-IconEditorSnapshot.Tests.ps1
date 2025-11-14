@@ -4,7 +4,7 @@ Describe 'Stage-IconEditorSnapshot.ps1' -Tag 'IconEditor','Snapshot','Unit' {
         $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
         Set-Variable -Scope Script -Name repoRoot -Value $repoRoot
         Set-Variable -Scope Script -Name stageScript -Value (Join-Path $repoRoot 'tools/icon-editor/Stage-IconEditorSnapshot.ps1')
-        Set-Variable -Scope Script -Name vendorPath -Value (Join-Path $repoRoot 'vendor/icon-editor')
+        Set-Variable -Scope Script -Name vendorPath -Value (Join-Path $repoRoot 'vendor/labview-icon-editor')
         Set-Variable -Scope Script -Name fixturePath -Value $env:ICON_EDITOR_FIXTURE_PATH
 
         Test-Path -LiteralPath $script:stageScript | Should -BeTrue
@@ -540,4 +540,5 @@ $stubTemplate.Replace('__LOG_PATH__', $logPath) | Set-Content -LiteralPath $vali
         Restore-SnapshotScriptStubs
     }
 }
+
 

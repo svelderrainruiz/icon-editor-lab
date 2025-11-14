@@ -1,0 +1,5 @@
+2025-11-12T19:20:21.5580000Z Requested labels: windows-latest
+2025-11-12T19:20:21.5580000Z Job defined at: svelderrainruiz/icon-editor-lab/.github/workflows/ci-windows-signed.yml@refs/heads/develop
+2025-11-12T19:20:21.5580000Z Waiting for a runner to pick up this job...
+2025-11-12T19:20:22.5180000Z Job is waiting for a hosted runner to come online.
+2025-11-12T19:20:22.5180000Z Job is about to start running on the hosted runner: GitHub Actions 1000002697

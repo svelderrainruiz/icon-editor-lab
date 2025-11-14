@@ -1,0 +1,116 @@
+**********************
+PowerShell transcript start
+Start time: 20251113000350
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/local-ci/windows/Invoke-LocalCI.ps1 -ConfigPath local-ci/windows/profile.psd1 -OnlyStages 25
+Process ID: 31800
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[25-DevMode] Running Enable-DevMode.ps1 for versions 2021 (64-bit)
+[25-DevMode] pwsh arguments:
+  -NoLogo
+  -NoProfile
+  -File
+  /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/icon-editor/Enable-DevMode.ps1
+  -Operation
+  MissingInProject
+  -Versions
+  2021
+  -Bitness
+  64
+  -RepoRoot
+  /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718
+  -IconEditorRoot
+  /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor
+[DevMode] Resolving VendorTools from RepoRoot=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/tools/VendorTools.psm1 -> exists=False
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Using VendorTools at: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1
+[DevMode] Resolving VendorTools from RepoRoot=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/tools/VendorTools.psm1 -> exists=False
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Using VendorTools at: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1
+[DevMode] Invoking /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/add-token-to-labview/AddTokenToLabVIEW.ps1
+  -MinimumSupportedLVVersion
+  2021
+  -SupportedBitness
+  64
+  -RelativePath
+  /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" -- "LabVIEW" "Localhost.LibraryPaths" "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor"
+
+[DevMode] Resolving VendorTools from RepoRoot=/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/tools/VendorTools.psm1 -> exists=False
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Candidate: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1 -> exists=True
+[DevMode] Using VendorTools at: /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/src/tools/VendorTools.psm1
+[DevMode] Invoking /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1
+  -MinimumSupportedLVVersion
+  2021
+  -SupportedBitness
+  64
+  -RelativePath
+  /mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor
+  -LabVIEW_Project
+  lv_icon_editor
+  -Build_Spec
+  Editor Packed Library
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor"
+Write-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Write-Error: Please check the parameters and ensure the command is valid.
+Exception: Dev-mode script
+Exception: Dev-mode script
+'/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+'/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-
+source/Prepare_LabVIEW_source.ps1' exited with code 1. Executing the following
+source/Prepare_LabVIEW_source.ps1' exited with code 1. Executing the following
+command: g-cli --lv-ver 2021 --arch 64 -v
+command: g-cli --lv-ver 2021 --arch 64 -v
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\PrepareIESource.vi" --
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor\Tooling\PrepareIESource.vi" --
+LabVIEW Localhost.LibraryPaths
+LabVIEW Localhost.LibraryPaths
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor\lv_icon_editor.lvproj" "Editor
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor\lv_icon_editor.lvproj" "Editor
+Packed Library"
+Packed Library"
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor" Write-Error: An error occurred
+04fa4252bedcba021b2d9fc50718/vendor/icon-editor" Write-Error: An error occurred
+during execution: The term 'g-cli' is not recognized as a name of a cmdlet,
+during execution: The term 'g-cli' is not recognized as a name of a cmdlet,
+function, script file, or executable program. Check the spelling of the name,
+function, script file, or executable program. Check the spelling of the name,
+or if a path was included, verify that the path is correct and try again.
+or if a path was included, verify that the path is correct and try again.
+Write-Error: Please check the parameters and ensure the command is valid.
+Write-Error: Please check the parameters and ensure the command is valid.
+PS>TerminatingError(): "[25-DevMode] Enable-DevMode.ps1 exited with code 1. See stage log for details."
+>> TerminatingError(Invoke-LocalCI.ps1): "The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: Stage 25-DevMode failed: [25-DevMode] Enable-DevMode.ps1 exited with code 1. See stage log for details."
+**********************
+PowerShell transcript end
+End time: 20251113000454
+**********************

@@ -1,0 +1,28 @@
+﻿2025-11-12T19:20:54.5832377Z ##[group]Run actions/upload-artifact@v4
+2025-11-12T19:20:54.5832704Z with:
+2025-11-12T19:20:54.5832859Z   name: unsigned
+2025-11-12T19:20:54.5833144Z   path: out/**/*.exe
+out/**/*.dll
+out/**/*.msi
+out/**/*.ps1
+out/**/*.psm1
+
+2025-11-12T19:20:54.5833452Z   if-no-files-found: error
+2025-11-12T19:20:54.5833644Z   compression-level: 6
+2025-11-12T19:20:54.5833820Z   overwrite: false
+2025-11-12T19:20:54.5833994Z   include-hidden-files: false
+2025-11-12T19:20:54.5834172Z env:
+2025-11-12T19:20:54.5834350Z   TSA_URL: http://timestamp.digicert.com
+2025-11-12T19:20:54.5834572Z   SIGN_ROOT: out
+2025-11-12T19:20:54.5834729Z ##[endgroup]
+2025-11-12T19:20:54.9133819Z With the provided path, there will be 2 files uploaded
+2025-11-12T19:20:54.9141113Z Artifact name is valid!
+2025-11-12T19:20:54.9144586Z Root directory input is valid!
+2025-11-12T19:20:55.1304703Z Beginning upload of artifact content to blob storage
+2025-11-12T19:20:55.3236939Z Uploaded bytes 329
+2025-11-12T19:20:55.3754871Z Finished uploading artifact content to blob storage!
+2025-11-12T19:20:55.3758557Z SHA256 digest of uploaded artifact zip is b8200ca0ad8b0dac82b475100727306f284f35fe55eb9f2f4a3c4ec2dd053816
+2025-11-12T19:20:55.3761233Z Finalizing artifact upload
+2025-11-12T19:20:55.4962499Z Artifact unsigned.zip successfully finalized. Artifact ID 4547594161
+2025-11-12T19:20:55.4963649Z Artifact unsigned has been successfully uploaded! Final size is 329 bytes. Artifact ID is 4547594161
+2025-11-12T19:20:55.4977073Z Artifact download URL: https://github.com/svelderrainruiz/icon-editor-lab/actions/runs/19309189887/artifacts/4547594161

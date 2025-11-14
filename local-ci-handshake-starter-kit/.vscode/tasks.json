@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Ubuntu: run new CI (U0-U2)",
+      "type": "shell",
+      "command": "bash tools/ubuntu/run-ci.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "Ubuntu: watch (U3-U4)",
+      "type": "shell",
+      "command": "bash tools/ubuntu/watch.sh",
+      "isBackground": true
+    },
+    {
+      "label": "Ubuntu: render one run",
+      "type": "shell",
+      "command": "bash tools/ubuntu/render.sh --run ${input:runId}"
+    },
+    {
+      "label": "Windows: watch (W0-W2)",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File tools/windows/watch.ps1",
+      "windows": {
+        "command": "powershell -ExecutionPolicy Bypass -File tools/windows/watch.ps1"
+      },
+      "isBackground": true
+    },
+    {
+      "label": "Windows: process one run",
+      "type": "shell",
+      "command": "powershell -ExecutionPolicy Bypass -File tools/windows/run-once.ps1 -RunId ${input:runId}"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "runId",
+      "type": "promptString",
+      "description": "run_id to process"
+    }
+  ]
+}

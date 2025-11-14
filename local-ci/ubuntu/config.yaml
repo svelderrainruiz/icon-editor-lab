@@ -8,9 +8,16 @@ skip_stages: []
 docs_stage:
   check_links: true
   markdownlint: true
+  allow_missing: []
+  allow_missing_globs: []
+prep:
+  allow_missing:
+    - zip
+  skip_module_install: false
 coverage:
   enabled: true
   min_percent: 75
+  tags: []
 vi_compare:
   enabled: true
   dry_run: true

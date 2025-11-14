@@ -1,0 +1,25 @@
+**********************
+PowerShell transcript start
+Start time: 20251113134851
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 51706
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Preparing build artifacts under /mnt/c/codex/home/runner/work/icon-editor-lab/out
+Build stage complete. Microsoft.PowerShell.Commands.GenericMeasureInfo.Count files staged.
+**********************
+PowerShell transcript end
+End time: 20251113134902
+**********************

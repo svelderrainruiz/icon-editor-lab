@@ -1,0 +1,40 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251113T165526600",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-13T16:55:26.5992208-08:00",
+  "status": "failed",
+  "rogueSnapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-165524\\devmode\\2021-64\\rogue\\rogue-lv-enable-devmode-pre-20251113T165526648.json",
+  "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' was not found.",
+  "completedAt": "2025-11-13T16:55:27.3617615-08:00",
+  "durationSeconds": 0.76,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-13T16:55:26.6272307-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "snapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\out\\local-ci\\20251113-165524\\devmode\\2021-64\\rogue\\rogue-lv-enable-devmode-pre-20251113T165526648.json",
+      "exitCode": 0,
+      "endedAt": "2025-11-13T16:55:27.3318936-08:00",
+      "durationSeconds": 0.7
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-13T16:55:27.3422946-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' was not found.",
+      "endedAt": "2025-11-13T16:55:27.3583542-08:00",
+      "durationSeconds": 0.02
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+# Dev-mode Script Log
+timestamp: 2025-11-13T13:36:22.7235090-08:00
+stage: enable-prepare-2021-64
+script: /mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 64 -RelativePath /mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor -LabVIEW_Project lv_icon_editor -Build_Spec Editor Packed Library
+exitCode: 1
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 64 -v "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor\lv_icon_editor.lvproj" "Editor Packed Library" "/mnt/c/codex/home/runner/work/icon-editor-lab/vendor/icon-editor"
+Write-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Write-Error: Please check the parameters and ensure the command is valid.
+

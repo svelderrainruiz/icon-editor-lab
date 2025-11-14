@@ -3,7 +3,7 @@
 param(
   [Parameter(Mandatory)][string]$ExtractRoot,
   [string]$RepoRoot,
-  [string]$SourceRoot = 'vendor/icon-editor',
+  [string]$SourceRoot = 'vendor/labview-icon-editor',
   [string]$OutputDir,
   [string]$RequestsPath,
   [string]$Category = 'vip'

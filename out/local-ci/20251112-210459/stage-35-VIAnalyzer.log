@@ -1,0 +1,34 @@
+**********************
+PowerShell transcript start
+Start time: 20251112210500
+Username: USAUSLT-Z7DLW6G\svelderr
+RunAs User: USAUSLT-Z7DLW6G\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Unix 6.6.87.2)
+Host Application: /home/svelderr/.local/microsoft/powershell/7.4.5/pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1 -OnlyStages 35
+Process ID: 30600
+PSVersion: 7.4.5
+PSEdition: Core
+GitCommitId: 7.4.5
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+[35-VIAnalyzer] Running analyzer for config /mnt/c/codex/home/runner/work/icon-editor-lab/src/configs/vi-analyzer/missing-in-project.viancfg
+Exception: /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/icon-editor/Invoke-VIAnalyzer.ps1:272
+Exception: /mnt/c/codex/home/runner/work/icon-editor-lab/src/tools/icon-editor/Invoke-VIAnalyzer.ps1:272
+Line |
+Line |
+ 272 |    throw "Unable to resolve LabVIEWCLI.exe for version $LabVIEWVersion …
+ 272 |    throw "Unable to resolve LabVIEWCLI.exe for version $LabVIEWVersion …
+     |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Unable to resolve LabVIEWCLI.exe for version 2023 (64-bit).
+     | Unable to resolve LabVIEWCLI.exe for version 2023 (64-bit).
+**********************
+PowerShell transcript end
+End time: 20251112210505
+**********************

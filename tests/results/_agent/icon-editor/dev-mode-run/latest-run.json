@@ -1,0 +1,29 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251113T205517319",
+  "mode": "disable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-13T20:55:17.3183226-08:00",
+  "status": "failed",
+  "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\restore-setup-lv-source\\RestoreSetupLVSource.ps1' was not found.",
+  "completedAt": "2025-11-13T20:55:17.3718151-08:00",
+  "durationSeconds": 0.05,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-13T20:55:17.3434003-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\restore-setup-lv-source\\RestoreSetupLVSource.ps1' was not found.",
+      "endedAt": "2025-11-13T20:55:17.3584004-08:00",
+      "durationSeconds": 0.01
+    }
+  ]
+}

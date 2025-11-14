@@ -1,0 +1,37 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251113T000355237",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718",
+  "iconEditorRoot": "/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor",
+  "startedAt": "2025-11-13T00:03:55.2344494-08:00",
+  "status": "failed",
+  "error": "Dev-mode script '/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.\nExecuting the following command:\ng-cli --lv-ver 2021 --arch 64 -v \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\\lv_icon_editor.lvproj\" \"Editor Packed Library\" \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\"\nWrite-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\nWrite-Error: Please check the parameters and ensure the command is valid.",
+  "completedAt": "2025-11-13T00:04:22.4451091-08:00",
+  "durationSeconds": 27.21,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-13T00:03:55.3088064-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-13T00:03:55.3813661-08:00",
+      "durationSeconds": 0.07
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-13T00:03:55.4099420-08:00",
+      "status": "failed",
+      "error": "Dev-mode script '/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor/.github/actions/prepare-labview-source/Prepare_LabVIEW_source.ps1' exited with code 1.\nExecuting the following command:\ng-cli --lv-ver 2021 --arch 64 -v \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\\lv_icon_editor.lvproj\" \"Editor Packed Library\" \"/mnt/wsl/docker-desktop-bind-mounts/Ubuntu/4747620b44d44a7f247228606020571f5e9e04fa4252bedcba021b2d9fc50718/vendor/icon-editor\"\nWrite-Error: An error occurred during execution: The term 'g-cli' is not recognized as a name of a cmdlet, function, script file, or executable program.\nCheck the spelling of the name, or if a path was included, verify that the path is correct and try again.\nWrite-Error: Please check the parameters and ensure the command is valid.",
+      "endedAt": "2025-11-13T00:04:22.4415206-08:00",
+      "durationSeconds": 27.08
+    }
+  ]
+}

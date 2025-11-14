@@ -5,7 +5,9 @@ param(
   [string]$IconEditorRoot,
   [int[]]$Versions,
   [int[]]$Bitness,
-  [string]$Operation = 'BuildPackage'
+  [string]$Operation = 'BuildPackage',
+  [string]$RunRoot,
+  [switch]$AllowForceClose
 )
 
 Set-StrictMode -Version Latest
@@ -51,6 +53,8 @@ if ($IconEditorRoot) { $invokeParams.IconEditorRoot = $IconEditorRoot }
 if ($Versions) { $invokeParams.Versions = $Versions }
 if ($Bitness) { $invokeParams.Bitness = $Bitness }
 if ($Operation) { $invokeParams.Operation = $Operation }
+if ($RunRoot) { $invokeParams.RunRoot = $RunRoot }
+if ($AllowForceClose) { $invokeParams.AllowForceClose = $true }
 
 $rawState = $null
 

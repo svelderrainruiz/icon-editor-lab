@@ -60,7 +60,7 @@ $sourcePath = $syncRoot
 $targetPath = $null
 if ($WorkingPath) {
   if ($UpdateFixture.IsPresent -or $RunValidateLocal.IsPresent) {
-    throw "UpdateFixture/RunValidateLocal are only supported when mirroring into vendor/icon-editor. Omit -WorkingPath or run the helpers manually."
+    throw "UpdateFixture/RunValidateLocal are only supported when mirroring into vendor/labview-icon-editor. Omit -WorkingPath or run the helpers manually."
   }
   $targetPath = if ([System.IO.Path]::IsPathRooted($WorkingPath)) {
     $WorkingPath
@@ -72,7 +72,7 @@ if ($WorkingPath) {
   }
   $targetPath = (Resolve-Path -LiteralPath $targetPath).Path
 } else {
-  $targetPath = Join-Path $repoRoot 'vendor/icon-editor'
+  $targetPath = Join-Path $repoRoot 'vendor/labview-icon-editor'
   if (-not (Test-Path -LiteralPath $targetPath -PathType Container)) {
     throw "Target path '$targetPath' not found."
   }
@@ -90,7 +90,7 @@ if (Test-Path -LiteralPath $syncRoot) {
   Remove-Item -LiteralPath $syncRoot -Recurse -Force
 }
 
-Write-Host '==> Sync complete. Review changes under vendor/icon-editor.'
+Write-Host '==> Sync complete. Review changes under vendor/labview-icon-editor.'
 
 if ($UpdateFixture.IsPresent) {
   Write-Host '==> Updating fixture report/manifest'

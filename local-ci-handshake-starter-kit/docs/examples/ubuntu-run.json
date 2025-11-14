@@ -1,0 +1,36 @@
+{
+  "schema_version": "v1",
+  "run_id": "20251113-142012Z-a1b2c3d-01",
+  "created_utc": "2025-11-13T02:51:51Z",
+  "project": {
+    "name": "AcmeLabVIEWProject",
+    "repo": "git",
+    "branch": "main",
+    "commit": "a1b2c3d",
+    "dirty": false
+  },
+  "tooling": {
+    "ubuntu_ci_tool_version": "1.3.0",
+    "renderer_version": "2.5.1"
+  },
+  "path_map": [
+    {
+      "purpose": "interop_root",
+      "windows": "C:\\\\repo\\\\acme\\\\out",
+      "wsl": "/mnt/c/repo/acme/out"
+    }
+  ],
+  "artifacts": {
+    "zip": "out/local-ci-ubuntu/20251113-142012Z-a1b2c3d-01/artifacts-ubuntu.zip",
+    "checksums": {
+      "artifacts-ubuntu.zip": "sha256:<fill>"
+    }
+  },
+  "vi_diff_requests_file": "out/local-ci-ubuntu/20251113-142012Z-a1b2c3d-01/vi-diff-requests.json",
+  "determinism": {
+    "sort": "lexicographic",
+    "locale": "C",
+    "case_sensitive": true
+  },
+  "notes": "Ubuntu generated run; Windows must only produce raw compare artifacts."
+}

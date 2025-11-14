@@ -1,0 +1,314 @@
+**********************
+PowerShell transcript start
+Start time: 20251113205506
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 7240
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Running Pester with tags: tools, scripts, smoke
+CI mode: writing Pester results to C:\codex\home\runner\work\icon-editor-lab\out\test-results\pester.xml
+Invoking Pester with tags: tools, scripts, smoke
+Pester v5.7.1
+
+Starting discovery in 15 files.
+Discovery found 52 tests in 511ms.
+Filter 'Tag' set to ('tools', 'scripts', 'smoke').
+Filters selected 18 tests to run.
+Running tests.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\scripts\ScriptsSyntax.Tests.ps1'
+Describing Scripts folder syntax
+  [+] has a scripts directory
+ 104ms (60ms|44ms)
+  [+] contains at least one PowerShell script
+ 11ms (10ms|1ms)
+  [+] parses scripts\ScriptsSyntax.Tests.ps1
+ 16ms (14ms|1ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\IconEditorDevMode.Tests.ps1'
+Describing Invoke-LabVIEWPrelaunchGuard
+ Context single running PID reported from settle
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 1234 prior to settle retry.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] force closes the PID when AllowForceClose is set
+ 367ms (361ms|6ms)
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 4321 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+PS>TerminatingError(): "Pre-launch settle failed for stage 'unit-test'."
+   [+] skips force close when AllowForceClose is not set
+ 116ms (114ms|2ms)
+ Context fast settle with force-close retry
+PS>TerminatingError(): "Icon editor root not found. Checked: C:\codex\home\runner\work\icon-editor-lab vendor icon-editor. Vendor the labview-icon-editor repository first."
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: forcibly terminated LabVIEW PIDs 2468 prior to settle retry.
+   [+] uses fast timeout before force closing and succeeds on retry
+ 126ms (123ms|3ms)
+ Context prepare script arguments
+   [+] passes the Editor Packed Library build spec to PrepareIESource
+ 373ms (371ms|3ms)
+ Context version and bitness parameters
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 9876 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] passes versions and bitness to Close-IconEditorLabVIEW when settle fails
+ 100ms (98ms|2ms)
+WARNING: unit-test: initial settle failed, attempting rogue cleanup and retry.
+WARNING: unit-test: force-close disabled; leaving LabVIEW PIDs 2468 running for retry. Set DevModeAllowForceClose or LOCALCI_DEV_MODE_FORCE_CLOSE=1 to terminate them automatically.
+   [+] skips Close-IconEditorLabVIEW when bitness is not provided
+ 95ms (94ms|1ms)
+ Context build package operation
+PS>TerminatingError(): "Icon editor dev-mode policy not found at 'C:\Users\svelderr\AppData\Local\Temp\a32f2227-0f0c-4180-8521-3d17adfb2ae1\repo-buildpkg\configs\icon-editor\dev-mode-targets.json'."
+>> TerminatingError(): "Icon editor dev-mode policy not found at 'C:\Users\svelderr\AppData\Local\Temp\a32f2227-0f0c-4180-8521-3d17adfb2ae1\repo-buildpkg\configs\icon-editor\dev-mode-targets.json'."
+   [+] targets LabVIEW 2023 (32-bit) by default
+ 212ms (210ms|2ms)
+   [+] respects explicit bitness selection when requesting 64-bit only
+ 174ms (173ms|1ms)
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1'
+Describing Prepare_LabVIEW_source.ps1
+PS>TerminatingError(): "Expected regular expression 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath' to match '# Example usage:
+# .\Prepare_LabVIEW_source.ps1 -MinimumSupportedLVVersion "2021" -SupportedBitness "64" -RelativePath "C:\labview icon editor" -LabVIEW_Project "lv_icon_editor" -Build_Spec "Editor Packed Library"
+
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$MinimumSupportedLVVersion,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("32", "64", IgnoreCase = $true)]
+    [string]$SupportedBitness,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateScript({ Test-Path $_ })]
+    [string]$RelativePath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$LabVIEW_Project,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Build_Spec
+)
+
+# Ensure paths with spaces are enclosed in double quotes
+$escapedRelativePath = "`"$RelativePath`""
+$escapedLabVIEWProjectPath = "`"$RelativePath\$LabVIEW_Project.lvproj`""
+$escapedBuildSpec = "`"$Build_Spec`""
+
+# Construct the command
+$script = @"
+g-cli --lv-ver $MinimumSupportedLVVersion --arch $SupportedBitness -v `"$RelativePath\Tooling\PrepareIESource.vi`" -- LabVIEW Localhost.LibraryPaths `"$RelativePath\$LabVIEW_Project.lvproj`" $Build_Spec
+"@
+
+Write-Output "Executing the following command:"
+Write-Output $script
+
+try {
+    # Execute the command and check for errors
+    Invoke-Expression $script
+
+    # Check the exit code
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Success: Process completed."
+        Write-Host "Unzipping vi.lib/LabVIEW Icon API from LabVIEW $MinimumSupportedLVVersion ($SupportedBitness-bit)."
+        Write-Host "Removing localhost.library path from ini file."
+    } else {
+        throw "Error: Command execution failed with exit code $LASTEXITCODE."
+    }
+} catch {
+    Write-Error "An error occurred during execution: $_"
+    Write-Error "Please check the parameters and ensure the command is valid."
+    exit 1
+}
+', but it did not match."
+>> TerminatingError(): "Expected regular expression 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath' to match '# Example usage:
+# .\Prepare_LabVIEW_source.ps1 -MinimumSupportedLVVersion "2021" -SupportedBitness "64" -RelativePath "C:\labview icon editor" -LabVIEW_Project "lv_icon_editor" -Build_Spec "Editor Packed Library"
+
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$MinimumSupportedLVVersion,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("32", "64", IgnoreCase = $true)]
+    [string]$SupportedBitness,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateScript({ Test-Path $_ })]
+    [string]$RelativePath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$LabVIEW_Project,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Build_Spec
+)
+
+# Ensure paths with spaces are enclosed in double quotes
+$escapedRelativePath = "`"$RelativePath`""
+$escapedLabVIEWProjectPath = "`"$RelativePath\$LabVIEW_Project.lvproj`""
+$escapedBuildSpec = "`"$Build_Spec`""
+
+# Construct the command
+$script = @"
+g-cli --lv-ver $MinimumSupportedLVVersion --arch $SupportedBitness -v `"$RelativePath\Tooling\PrepareIESource.vi`" -- LabVIEW Localhost.LibraryPaths `"$RelativePath\$LabVIEW_Project.lvproj`" $Build_Spec
+"@
+
+Write-Output "Executing the following command:"
+Write-Output $script
+
+try {
+    # Execute the command and check for errors
+    Invoke-Expression $script
+
+    # Check the exit code
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Success: Process completed."
+        Write-Host "Unzipping vi.lib/LabVIEW Icon API from LabVIEW $MinimumSupportedLVVersion ($SupportedBitness-bit)."
+        Write-Host "Removing localhost.library path from ini file."
+    } else {
+        throw "Error: Command execution failed with exit code $LASTEXITCODE."
+    }
+} catch {
+    Write-Error "An error occurred during execution: $_"
+    Write-Error "Please check the parameters and ensure the command is valid."
+    exit 1
+}
+', but it did not match."
+>> TerminatingError(): "Expected regular expression 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath' to match '# Example usage:
+# .\Prepare_LabVIEW_source.ps1 -MinimumSupportedLVVersion "2021" -SupportedBitness "64" -RelativePath "C:\labview icon editor" -LabVIEW_Project "lv_icon_editor" -Build_Spec "Editor Packed Library"
+
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$MinimumSupportedLVVersion,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("32", "64", IgnoreCase = $true)]
+    [string]$SupportedBitness,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateScript({ Test-Path $_ })]
+    [string]$RelativePath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$LabVIEW_Project,
+
+    [Parameter(Mandatory = $true)]
+    [string]$Build_Spec
+)
+
+# Ensure paths with spaces are enclosed in double quotes
+$escapedRelativePath = "`"$RelativePath`""
+$escapedLabVIEWProjectPath = "`"$RelativePath\$LabVIEW_Project.lvproj`""
+$escapedBuildSpec = "`"$Build_Spec`""
+
+# Construct the command
+$script = @"
+g-cli --lv-ver $MinimumSupportedLVVersion --arch $SupportedBitness -v `"$RelativePath\Tooling\PrepareIESource.vi`" -- LabVIEW Localhost.LibraryPaths `"$RelativePath\$LabVIEW_Project.lvproj`" $Build_Spec
+"@
+
+Write-Output "Executing the following command:"
+Write-Output $script
+
+try {
+    # Execute the command and check for errors
+    Invoke-Expression $script
+
+    # Check the exit code
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "Success: Process completed."
+        Write-Host "Unzipping vi.lib/LabVIEW Icon API from LabVIEW $MinimumSupportedLVVersion ($SupportedBitness-bit)."
+        Write-Host "Removing localhost.library path from ini file."
+    } else {
+        throw "Error: Command execution failed with exit code $LASTEXITCODE."
+    }
+} catch {
+    Write-Error "An error occurred during execution: $_"
+    Write-Error "Please check the parameters and ensure the command is valid."
+    exit 1
+}
+', but it did not match."
+  [-] places Localhost.LibraryPaths ahead of the .lvproj path and includes the Editor Packed Library build spec
+ 11ms (9ms|2ms)
+   at $script:prepareScriptContent | Should -Match 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath', C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1:15
+   at <ScriptBlock>, C:\codex\home\runner\work\icon-editor-lab\tests\tools\PrepareLabVIEWSource.Tests.ps1:15
+   Expected regular expression 'Localhost\.LibraryPaths.*\$escapedLibraryPaths.*\$escapedLabVIEWProjectPath' to match '# Example usage:
+   # .\Prepare_LabVIEW_source.ps1 -MinimumSupportedLVVersion "2021" -SupportedBitness "64" -RelativePath "C:\labview icon editor" -LabVIEW_Project "lv_icon_editor" -Build_Spec "Editor Packed Library"
+   param(
+       [Parameter(Mandatory = $true)]
+       [string]$MinimumSupportedLVVersion,
+       [Parameter(Mandatory = $true)]
+       [ValidateSet("32", "64", IgnoreCase = $true)]
+       [string]$SupportedBitness,
+       [Parameter(Mandatory = $true)]
+       [ValidateScript({ Test-Path $_ })]
+       [string]$RelativePath,
+       [Parameter(Mandatory = $true)]
+       [string]$LabVIEW_Project,
+       [Parameter(Mandatory = $true)]
+       [string]$Build_Spec
+   )
+   # Ensure paths with spaces are enclosed in double quotes
+   $escapedRelativePath = "`"$RelativePath`""
+   $escapedLabVIEWProjectPath = "`"$RelativePath\$LabVIEW_Project.lvproj`""
+   $escapedBuildSpec = "`"$Build_Spec`""
+   # Construct the command
+   $script = @"
+   g-cli --lv-ver $MinimumSupportedLVVersion --arch $SupportedBitness -v `"$RelativePath\Tooling\PrepareIESource.vi`" -- LabVIEW Localhost.LibraryPaths `"$RelativePath\$LabVIEW_Project.lvproj`" $Build_Spec
+   "@
+   Write-Output "Executing the following command:"
+   Write-Output $script
+   try {
+       # Execute the command and check for errors
+       Invoke-Expression $script
+       # Check the exit code
+       if ($LASTEXITCODE -eq 0) {
+           Write-Host "Success: Process completed."
+           Write-Host "Unzipping vi.lib/LabVIEW Icon API from LabVIEW $MinimumSupportedLVVersion ($SupportedBitness-bit)."
+           Write-Host "Removing localhost.library path from ini file."
+       } else {
+           throw "Error: Command execution failed with exit code $LASTEXITCODE."
+       }
+   } catch {
+       Write-Error "An error occurred during execution: $_"
+       Write-Error "Please check the parameters and ensure the command is valid."
+       exit 1
+   }
+   ', but it did not match.
+
+Running tests from 'C:\codex\home\runner\work\icon-editor-lab\tests\tools\ToolsSyntax.Tests.ps1'
+Describing Tools folder script syntax
+  [+] has a tools directory
+ 6ms (4ms|2ms)
+  [+] contains at least one PowerShell file
+ 7ms (7ms|0ms)
+  [+] parses tools\IconEditorDevMode.Tests.ps1
+ 3ms (3ms|0ms)
+  [+] parses tools\PrepareLabVIEWSource.Tests.ps1
+ 2ms (1ms|0ms)
+  [+] parses tools\Run-DevMode-Debug.ps1
+ 2ms (1ms|0ms)
+  [+] parses tools\ToolsSyntax.Tests.ps1
+ 2ms (1ms|1ms)
+Tests completed in 4.84s
+Tests Passed: 17, 
+Failed: 1, 
+Skipped: 0, 
+Inconclusive: 0, 
+
+NotRun: 34
+**********************
+PowerShell transcript end
+End time: 20251113205513
+**********************

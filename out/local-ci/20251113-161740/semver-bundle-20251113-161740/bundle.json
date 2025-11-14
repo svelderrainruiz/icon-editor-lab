@@ -1,0 +1,41 @@
+{
+  "schema": "icon-editor/semver-bundle@v1",
+  "generatedAt": "2025-11-13T16:19:30.1685583-08:00",
+  "repo": {
+    "root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+    "commit": "9049333f869ab90720d00fbbf8f7bf7faef65911",
+    "branch": "feature/gcli-lifecycle"
+  },
+  "files": [
+    {
+      "relativePath": "src/tools/priority/validate-semver.mjs",
+      "sha256": "C17C799AA0BB7EC571B201086B0FE1253EA9E4FBF421AA560694B58E2F2B3131",
+      "sizeBytes": 2111
+    },
+    {
+      "relativePath": "docs/semver-guard-kit.md",
+      "sha256": "C707BDA1F5829717BD6130210D5F683A473019E24998FCDC4CF93C54738CE5B4",
+      "sizeBytes": 3355
+    },
+    {
+      "relativePath": "docs/semver-node-evidence.md",
+      "sha256": "2D34E0BAF5EBCABB86B4633372D919AA8E47509FDE1C3C3AE9D4B17C8C9082F0",
+      "sizeBytes": 2268
+    },
+    {
+      "relativePath": ".github/workflows/semver-guard.yml",
+      "sha256": "F07433D870C7F84B142BCEA09026734F8D5B9C525AF84CA748E1AF8D86506533",
+      "sizeBytes": 308
+    },
+    {
+      "relativePath": "IMPORT-CHECKLIST.md",
+      "sha256": "6FB2D1ADDC9A56FD4CF035341C283925E736AADF34FC1CAF9BA3AE34043FA4DF",
+      "sizeBytes": 531
+    },
+    {
+      "relativePath": "README.md",
+      "sha256": "38FB839B44C9EA81503DACFCB9D654E8FBFC2D111E7A6C49CE6CCE3C5DE5F322",
+      "sizeBytes": 667
+    }
+  ]
+}

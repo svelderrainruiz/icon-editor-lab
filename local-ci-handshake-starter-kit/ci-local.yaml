@@ -1,0 +1,25 @@
+schema_version: v1
+interop:
+  location: windows   # windows | ubuntu
+  ubuntu_out: out/local-ci-ubuntu
+  windows_out: out/local-ci-windows
+paths:
+  repo_root_windows: C:\\repo\\acme
+  repo_root_wsl: /mnt/c/repo/acme
+windows:
+  max_parallel: 2
+  poll_sec: 5
+  labview_version: "2023 SP1 64-bit"
+  labviewcli_path: "C:\\Program Files\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe"
+  lvcompare_path: "C:\\Program Files\\National Instruments\\LabVIEW 2023\\resource\\Framework\\Providers\\LVCompare\\LVCompare.exe"
+  capture_front_panel: true
+  capture_block_diagram: true
+ubuntu:
+  poll_sec: 5
+  renderer: "python3 tools/ubuntu/render.py"
+determinism:
+  locale: C
+  case_sensitive: true
+  sort: lexicographic
+retention:
+  keep_runs: 30

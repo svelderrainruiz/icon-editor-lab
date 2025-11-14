@@ -1,0 +1,1 @@
+renderer reads session-index.json and builds Markdown + HTML.

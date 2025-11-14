@@ -74,7 +74,7 @@ function Resolve-VipmApplyVipcPath {
 
     $candidate = Join-Path $RepoRoot 'vendor\icon-editor\Tooling\deployment\Applyvipc.vi'
     if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
-        throw "Applyvipc.vi not found at '$candidate'. Ensure vendor/icon-editor assets are present."
+        throw "Applyvipc.vi not found at '$candidate'. Ensure vendor/labview-icon-editor assets are present."
     }
     return (Resolve-Path -LiteralPath $candidate).Path
 }

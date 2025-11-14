@@ -1,0 +1,27 @@
+ M scripts/Test-Signing.ps1
+ M tools/Hash-Artifacts.ps1
+?? docs/local-ci-runner.md
+?? local-ci/
+?? logs-19309030616.zip
+?? logs-19309030616/
+?? logs-19309097331.zip
+?? logs-19309097331/
+?? logs-19309189887.zip
+?? logs-19309189887/
+?? logs-19309288834.zip
+?? logs-19309288834/
+?? logs-19309378735.zip
+?? logs-19309378735/
+?? out/
+?? run-19307500270.zip
+?? run-19308748881-build.log
+?? run-19308784941-build.log
+?? run-19308841472-codesign-dev-full.log
+?? run-19308841472-codesign-dev.log
+?? run-19308900335-codesign-dev.log
+?? run-19308970881-codesign-dev.log
+?? run-19309030616-codesign-dev.log
+?? tests/scripts/
+?? tests/tools/
+?? tools/Hash-Artifacts.ps1.tmp
+?? wf.yml

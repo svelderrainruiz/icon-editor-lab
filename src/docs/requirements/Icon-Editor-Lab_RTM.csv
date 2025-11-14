@@ -11,4 +11,5 @@ IELA-SRS-INT-001,Snapshot staging,Test; Inspection,tests/Invoke-IconEditorSnapsh
 IELA-SRS-INT-002,Headless env flags,Demonstration; Inspection,,tools/Run-HeadlessCompare.ps1,
 IELA-SRS-NF-001,Reliability harness,Test; Analysis,tests/IconEditorDevMode.Stability.Tests.ps1,tools/icon-editor/Test-DevModeStability.ps1; tools/LabVIEWResolution.psm1,tests/results/_agent/icon-editor/stability/*.json
 IELA-SRS-NF-002,Timeout enforcement,Demonstration; Inspection,tests/Prepare-LabVIEWHost.Tests.ps1,tools/icon-editor/Prepare-LabVIEWHost.ps1; tools/Run-HeadlessCompare.ps1,
-IELA-SRS-NF-003,Configurability,Inspection; Analysis,tests/Invoke-VipmDependencies.Tests.ps1,tools/icon-editor/Invoke-VipmDependencies.ps1; tools/icon-editor/Replay-ApplyVipcJob.ps1,vendor/icon-editor-lab/bundle/*; tests/results/_agent/icon-editor/logs/*
+IELA-SRS-NF-003,Configurability,Inspection; Analysis,tests/Invoke-VipmDependencies.Tests.ps1,tools/icon-editor/Invoke-VipmDependencies.ps1; tools/icon-editor/Replay-ApplyVipcJob.ps1,vendor/labview-icon-editor-lab/bundle/*; tests/results/_agent/icon-editor/logs/*
+

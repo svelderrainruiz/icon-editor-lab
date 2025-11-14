@@ -1,0 +1,51 @@
+name: VI Compare Smoke
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vi-compare:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compare MissingInProject sample VIs
+        id: compare
+        uses: LabVIEW-Community-CI-CD/compare-vi-cli-action@v0.6.0
+        with:
+          base: .github/actions/missing-in-project/MissingInProject.vi
+          head: .github/actions/missing-in-project/MissingInProjectCLI.vi
+          fail-on-diff: "false"
+          loop-enabled: "false"
+          loop-simulate: "false"
+          working-directory: ${{ github.workspace }}
+
+      - name: Append smoke summary
+        if: always()
+        shell: pwsh
+        run: |
+          $summaryPath = $env:GITHUB_STEP_SUMMARY
+          if (-not $summaryPath) { return }
+          $diff = '${{ steps.compare.outputs.diff }}'
+          $exitCode = '${{ steps.compare.outputs.exitCode }}'
+          $cliPath = '${{ steps.compare.outputs.cliPath }}'
+          $status = if ($diff -eq 'true') { 'diff' } else { 'no-diff' }
+          $lines = @(
+            '### VI Compare Smoke',
+            '',
+            '* Base: `.github/actions/missing-in-project/MissingInProject.vi`',
+            '* Head: `.github/actions/missing-in-project/MissingInProjectCLI.vi`',
+            \"* Status: $status (exitCode=$exitCode)\",
+            \"* LVCompare CLI: $cliPath\"
+          )
+          $lines -join \"`n\" | Out-File -FilePath $summaryPath -Append -Encoding utf8
+
+      - name: Upload compare summary artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vi-compare-smoke-summary
+          path: ${{ steps.compare.outputs.compareSummaryPath }}
+          if-no-files-found: warn
+

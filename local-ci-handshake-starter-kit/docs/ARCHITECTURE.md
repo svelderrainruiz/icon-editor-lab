@@ -1,0 +1,1 @@
+Architecture overview: file-based handshake; Ubuntu orchestrates and renders; Windows executes LVCompare only.

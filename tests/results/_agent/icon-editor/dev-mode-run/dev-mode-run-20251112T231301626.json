@@ -1,0 +1,37 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251112T231301626",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "startedAt": "2025-11-12T23:13:01.6254602-08:00",
+  "status": "failed",
+  "error": "The property 'Count' cannot be found on this object. Verify that the property exists.",
+  "completedAt": "2025-11-12T23:13:02.7332647-08:00",
+  "durationSeconds": 1.11,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-12T23:13:01.6381894-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-12T23:13:01.6524633-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-12T23:13:01.6575662-08:00",
+      "status": "failed",
+      "error": "The property 'Count' cannot be found on this object. Verify that the property exists.",
+      "endedAt": "2025-11-12T23:13:02.7302600-08:00",
+      "durationSeconds": 1.07
+    }
+  ]
+}

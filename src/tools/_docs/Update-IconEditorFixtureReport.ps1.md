@@ -17,7 +17,7 @@ Run `Describe-IconEditorFixture.ps1` against a built VIP, capture `fixture-repor
 | `FixturePath` | string (required) | — | Icon Editor fixture VIP produced by Simulate/real builds. |
 | `ManifestPath` | string | — | When set, writes `icon-editor/fixture-manifest@v1` JSON to this path. |
 | `ResultsRoot` | string | `tests/results/_agent/icon-editor` | Directory receiving `fixture-report.json` (and descriptor scratch). |
-| `ResourceOverlayRoot` | string | `vendor/icon-editor/resource` | Override overlay folder used during description. |
+| `ResourceOverlayRoot` | string | `vendor/labview-icon-editor/resource` | Override overlay folder used during description. |
 | `SkipDocUpdate` | switch | No-op | Retained for legacy usage; ignored. |
 | `CheckOnly` | switch | No-op | Retained for legacy usage; emits warning. |
 | `NoSummary` | switch | Off | Suppress returning the parsed summary object. |
@@ -34,3 +34,4 @@ Run `Describe-IconEditorFixture.ps1` against a built VIP, capture `fixture-repor
 ## Related
 - `tools/icon-editor/Describe-IconEditorFixture.ps1`
 - `tools/icon-editor/Simulate-IconEditorBuild.ps1`
+
