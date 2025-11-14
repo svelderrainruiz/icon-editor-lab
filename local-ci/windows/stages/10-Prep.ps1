@@ -156,6 +156,11 @@ if ($importHint) {
 }
 
 $envParityEnabled = $Context.Config.EnableEnvironmentParityCheck
+$parityMode = ($env:LOCALCI_ENV_PARITY_MODE ?? '').ToLowerInvariant()
+if ($parityMode -eq 'skip') {
+    Write-Host '[10-Prep] Environment parity skipped via LOCALCI_ENV_PARITY_MODE=skip.' -ForegroundColor Yellow
+    $envParityEnabled = $false
+}
 if ($envParityEnabled) {
     $parityScript = Join-Path $PSScriptRoot '..' 'scripts' 'Test-EnvironmentParity.ps1'
     if (-not (Test-Path -LiteralPath $parityScript -PathType Leaf)) {
@@ -169,7 +174,15 @@ if ($envParityEnabled) {
         '-ProfileName', $profileName
     )
     Write-Host ("[10-Prep] Verifying environment profile '{0}'" -f $profileName) -ForegroundColor Cyan
-    pwsh -NoLogo -NoProfile -File $parityScript @parityArgs
+    try {
+        pwsh -NoLogo -NoProfile -File $parityScript @parityArgs
+    } catch {
+        if ($parityMode -eq 'warn') {
+            Write-Warning ("[10-Prep] Environment parity failed (warn mode): {0}" -f $_.Exception.Message)
+        } else {
+            throw
+        }
+    }
 } else {
     Write-Host '[10-Prep] Environment parity check disabled.' -ForegroundColor Yellow
 }
