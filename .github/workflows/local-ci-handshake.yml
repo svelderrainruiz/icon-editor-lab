@@ -178,14 +178,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python3 scripts/workflows/check_windows_runner_coverage.py
-
-  windows-consumer:
-    if: ${{ needs.ubuntu-handshake.result == 'success' && needs.windows-runner-coverage.result != 'failure' }}
-    needs:
-      - ubuntu-handshake
-      - windows-runner-coverage
-    # Allow repo/org vars (LOCALCI_WINDOWS_RUNS_ON) to override label set.
-    runs-on: ${{ fromJson(vars.LOCALCI_WINDOWS_RUNS_ON || '["self-hosted","Windows","X64"]') }}
+    concurrency:
+      group: windows-consumer-${{ github.ref }}
+      cancel-in-progress: true
     defaults:
       run:
         shell: pwsh
