@@ -125,12 +125,12 @@ jobs:
               try {
                 Invoke-SignTool -Path $signtoolPath -Args $tsaArgs
               } catch {
-                Write-Warning "Timestamping failed for $target: $($_.Exception.Message). Retrying without TSA."
+                Write-Warning "Timestamping failed for ${target}: $($_.Exception.Message). Retrying without TSA."
                 $noTsaArgs = @('sign','/fd','SHA256','/sm','/sha1',$thumb,'/td','SHA256',$target)
                 try {
                   Invoke-SignTool -Path $signtoolPath -Args $noTsaArgs
                 } catch {
-                  Write-Warning "signtool retry without TSA failed for $target: $($_.Exception.Message)"
+                  Write-Warning "signtool retry without TSA failed for ${target}: $($_.Exception.Message)"
                 }
               }
             }
