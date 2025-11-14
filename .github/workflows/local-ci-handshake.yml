@@ -101,6 +101,15 @@ jobs:
           HANDSHAKE_MANIFEST_ABS: ${{ steps.capture-meta.outputs.manifest_abs }}
           UBUNTU_POINTER_PATH: out/local-ci-ubuntu/latest.json
 
+      - name: Run handshake heuristics (Ubuntu artifacts)
+        run: |
+          python3 scripts/workflows/check_handshake_artifacts.py \
+            --manifest "${{ steps.capture-meta.outputs.manifest_abs }}" \
+            --pointer handshake/pointer.json \
+            --repo-root "$PWD" \
+            --stamp "${{ steps.capture-meta.outputs.stamp }}" \
+            --artifact-dir "out/local-ci-ubuntu/${{ steps.capture-meta.outputs.stamp }}"
+
       - name: Upload handshake pointer (control plane)
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
