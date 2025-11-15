@@ -103,7 +103,7 @@ jobs:
       - name: Write GitHub handshake pointer
         shell: pwsh
         run: |
-          python3 scripts/workflows/update_handshake_pointer.py `
+          python3 scripts/workflows/update_handshake_pointer.py`
             --pointer "${HANDSHAKE_POINTER}" `
             --stamp "${HANDSHAKE_STAMP}" `
             --artifact "${HANDSHAKE_ARTIFACT}" `
@@ -297,7 +297,7 @@ jobs:
         if: ${{ always() }}
         shell: pwsh
         run: |
-          python3 scripts/workflows/update_handshake_pointer.py `
+          python3 scripts/workflows/update_handshake_pointer.py`
             --pointer handshake/pointer.json `
             --windows-run "$LOCALCI_WINDOWS_RUN" `
             --windows-runner "$COMPUTERNAME" `
