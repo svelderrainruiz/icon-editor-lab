@@ -322,7 +322,7 @@ run_id = f"{timestamp}-{git_commit[:8]}" if git_commit not in ("unknown", "") el
 vi_base_commit = os.environ.get("LOCALCI_VI_BASE_COMMIT") or None
 vi_head_commit = os.environ.get("LOCALCI_VI_HEAD_COMMIT") or None
 
-  manifest = {
+manifest = {
     "schema_version": "v1",
     "runner": "ubuntu",
     "run_id": run_id,
