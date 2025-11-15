@@ -1,5 +1,8 @@
 $root = $env:WORKSPACE_ROOT
 if (-not $root) { $root = '/mnt/data/repo_local' }
+if (-not (Test-Path -LiteralPath $root -PathType Container)) {
+    $root = (Resolve-Path -LiteralPath '.').Path
+}
 $repoRoot = (Resolve-Path -LiteralPath $root).Path
 $script:root = $root
 $script:repoRoot = $repoRoot
@@ -62,3 +65,5 @@ Describe 'detect_vi_changes.py' {
         (Get-Content -LiteralPath $output | Measure-Object).Count | Should -Be 0
     }
 }
+
+
