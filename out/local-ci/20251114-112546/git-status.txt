@@ -1,0 +1,14 @@
+M  README.md
+M  tests/ConfigSchema.Tests.ps1
+A  tests/Modules/CompareVI.Tools.Tests.ps1
+A  tests/Modules/IconEditorPackage.Tests.ps1
+M  tests/Sanity.Tests.ps1
+A  tests/Scripts/Packaging.Tests.ps1
+A  tests/Scripts/Validate.Tests.ps1
+M  tests/local-ci/ViChanges.Tests.ps1
+M  tests/sample.tests.ps1
+M  tests/smoke/Smoke.Tests.ps1
+?? out/
+?? testResults.xml
+?? tools/Validate-Paths.psm1
+?? tools/checksums.sha256

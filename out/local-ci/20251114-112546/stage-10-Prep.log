@@ -1,0 +1,35 @@
+**********************
+PowerShell transcript start
+Start time: 20251114112547
+Username: NI\svelderr
+RunAs User: NI\svelderr
+Configuration Name: 
+Machine: USAUSLT-Z7DLW6G (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Program Files\PowerShell\7\pwsh.dll -NoLogo -NoProfile -File local-ci/windows/Invoke-LocalCI.ps1
+Process ID: 35256
+PSVersion: 7.5.3
+PSEdition: Core
+GitCommitId: 7.5.3
+OS: Microsoft Windows 10.0.22631
+Platform: Win32NT
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Sign root : C:\codex\home\runner\work\icon-editor-lab\out
+Run root  : C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251114-112546
+Wrote git status to C:\codex\home\runner\work\icon-editor-lab\out\local-ci\20251114-112546\git-status.txt
+[10-Prep] No Ubuntu manifest discovered; set LOCALCI_IMPORT_UBUNTU_RUN to override.
+[10-Prep] Ubuntu import skipped (no manifest selected).
+[10-Prep] Verifying environment profile 'labview-2021-x64'
+[EnvParity] Validating profile 'LabVIEW 2021 (64-bit)'
+[EnvParity] Found file: LabVIEW 2021 (64-bit) executable
+[EnvParity] Found file: LabVIEW CLI executable
+[EnvParity] Found command: g-cli
+[EnvParity] Found directory: Shared National Instruments data directory
+[EnvParity] Environment parity requirements satisfied.
+**********************
+PowerShell transcript end
+End time: 20251114112548
+**********************
