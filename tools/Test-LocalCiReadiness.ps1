@@ -239,9 +239,35 @@ try {
     $results | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $reportPath -Encoding UTF8
     Write-Host "Readiness report written to $reportPath"
 
+    $summaryPath = $env:GITHUB_STEP_SUMMARY
+    if ($summaryPath) {
+        $lines = New-Object System.Collections.Generic.List[string]
+        $lines.Add('### Local CI Readiness') | Out-Null
+        $lines.Add('') | Out-Null
+        $lines.Add('| Check | Status | Details |') | Out-Null
+        $lines.Add('|-------|--------|---------|') | Out-Null
+        foreach ($r in $results) {
+            $statusText = $r.Status
+            $detailText = ($r.Details ?? '').Replace('|','\|')
+            $lines.Add(('| {0} | {1} | {2} |' -f $r.Name, $statusText, $detailText)) | Out-Null
+        }
+        $lines.Add('') | Out-Null
+        $lines.Add(('*Report:* `{0}`' -f $reportPath)) | Out-Null
+        $lines.Add('') | Out-Null
+        $lines.Add('*Required checks: Workspace Policy, Pester Tests, Coverage Gates, Handshake Assets.*') | Out-Null
+        $lines.Add('') | Out-Null
+        $linesText = [string]::Join([Environment]::NewLine, $lines)
+        $linesText | Out-File -FilePath $summaryPath -Encoding utf8 -Append
+    }
+
     $failures = $results | Where-Object { $_.Severity -eq 'Required' -and $_.Status -eq 'FAIL' }
     if ($failures -and -not $Force) {
-        throw "Local CI readiness failed: $([string]::Join(', ', ($failures | ForEach-Object { $_.Name })))."
+        $failedNames = $failures | ForEach-Object { $_.Name }
+        $message = "Local CI readiness failed: $([string]::Join(', ', $failedNames))."
+        if ($env:GITHUB_ACTIONS -eq 'true') {
+            Write-Host "::error::$message"
+        }
+        throw $message
     } elseif ($failures) {
         Write-Warning "Readiness reported failures but Force was specified."
     } else {

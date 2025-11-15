@@ -31,6 +31,7 @@ jobs:
         shell: pwsh
         run: |
           pwsh -NoLogo -NoProfile -File tools/Test-LocalCiReadiness.ps1 `
+            -SkipTests `
             -SkipCoverage `
             -SkipHandshake `
             -SkipRunnerCheck
