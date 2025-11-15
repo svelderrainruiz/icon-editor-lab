@@ -54,7 +54,7 @@ jobs:
       - name: Fetch latest handshake pointer artifact
         id: fetch-pointer
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.WATCHDOG_GH_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p pointer-artifact
           repo="${GITHUB_REPOSITORY}"
