@@ -216,7 +216,14 @@ jobs:
       - name: Decode PFX (temp file)
         if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
         run: |
-          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\\codesign.pfx", [Convert]::FromBase64String('${{ secrets.WIN_CODESIGN_PFX_B64 }}'))
+          $pfxRaw = @'
+${{ secrets.WIN_CODESIGN_PFX_B64 }}
+'@
+          $pfxClean = ($pfxRaw -replace '\s','')
+          if ([string]::IsNullOrWhiteSpace($pfxClean)) {
+            throw "WIN_CODESIGN_PFX_B64 secret resolved to an empty string."
+          }
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\codesign.pfx", [Convert]::FromBase64String($pfxClean))
 
       - name: Sign binaries (signtool)
         if: ${{ steps.determine_signing_mode.outputs.has_prod_cert == 'true' }}
