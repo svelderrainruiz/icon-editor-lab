@@ -320,11 +320,14 @@ jobs:
         if: ${{ always() }}
         shell: pwsh
         run: |
-          python3 scripts/workflows/update_handshake_pointer.py`
-            --pointer handshake/pointer.json `
-            --windows-run "$env:LOCALCI_WINDOWS_RUN" `
-            --windows-runner "$env:COMPUTERNAME" `
-            --windows-job "${{ github.run_id }}"
+          $args = @(
+            'scripts/workflows/update_handshake_pointer.py',
+            '--pointer', 'handshake/pointer.json',
+            '--windows-run', $env:LOCALCI_WINDOWS_RUN,
+            '--windows-runner', $env:COMPUTERNAME,
+            '--windows-job', '${{ github.run_id }}'
+          )
+          python3 @args
       - name: Upload handshake pointer (control plane, updated)
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
