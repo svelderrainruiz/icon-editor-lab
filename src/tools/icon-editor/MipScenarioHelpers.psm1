@@ -122,7 +122,147 @@ function Write-AnalyzerDevModeWarning {
   return $false
 }
 
-Export-ModuleMember -Function Resolve-Abs, Test-VIAnalyzerToolkit, Test-GCliAvailable, Get-LabVIEWServerInfo, Get-ReportPathFromOutput, Write-AnalyzerDevModeWarning
+function Get-MissingInProjectMissingViPaths {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$ReportPath
+  )
+
+  if (-not (Test-Path -LiteralPath $ReportPath -PathType Leaf)) {
+    throw "MissingInProject report '$ReportPath' was not found."
+  }
+
+  $raw = Get-Content -LiteralPath $ReportPath -Raw | ConvertFrom-Json
+  if (-not $raw) { return @() }
+
+  $root = $raw
+  if ($raw -is [psobject] -and $raw.PSObject.Properties['extra']) {
+    $root = $raw.extra
+  }
+
+  $paths = @()
+
+  if ($root -is [psobject] -and $root.PSObject.Properties['missingTargets']) {
+    foreach ($target in $root.missingTargets) {
+      if (-not $target) { continue }
+      if ($target -is [psobject]) {
+        if ($target.PSObject.Properties['path'] -and $target.path) {
+          $paths += [string]$target.path
+        } elseif ($target.PSObject.Properties['viPath'] -and $target.viPath) {
+          $paths += [string]$target.viPath
+        }
+      } elseif ($target) {
+        $paths += [string]$target
+      }
+    }
+  }
+
+  if (-not $paths -and $root -is [psobject] -and $root.PSObject.Properties['missingVIs']) {
+    foreach ($entry in $root.missingVIs) {
+      if ($entry) { $paths += [string]$entry }
+    }
+  }
+
+  return ($paths | Where-Object { $_ } | Sort-Object -Unique)
+}
+
+function Get-VIAnalyzerScenarioFamily {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$AnalyzerJsonPath
+  )
+
+  if (-not (Test-Path -LiteralPath $AnalyzerJsonPath -PathType Leaf)) {
+    throw "VI Analyzer telemetry file '$AnalyzerJsonPath' was not found."
+  }
+
+  $data = Get-Content -LiteralPath $AnalyzerJsonPath -Raw | ConvertFrom-Json
+  if (-not $data) { return 'vianalyzer.unknown' }
+
+  $exitCode = 0
+  if ($data -is [psobject] -and $data.PSObject.Properties['exitCode']) {
+    $exitCode = [int]$data.exitCode
+  }
+
+  $devModeDisabled = $false
+  if ($data -is [psobject] -and $data.PSObject.Properties['devModeLikelyDisabled']) {
+    $devModeDisabled = [bool]$data.devModeLikelyDisabled
+  }
+
+  $failureCount = 0
+  if ($data -is [psobject] -and $data.PSObject.Properties['failureCount']) {
+    $failureCount = [int]$data.failureCount
+  }
+
+  if ($exitCode -eq 0 -and -not $devModeDisabled -and $failureCount -eq 0) {
+    return 'vianalyzer.ok'
+  }
+
+  if ($devModeDisabled) {
+    return 'vianalyzer.devmode-drift'
+  }
+
+  if ($exitCode -eq 0 -and $failureCount -gt 0) {
+    return 'vianalyzer.test-failures'
+  }
+
+  return 'vianalyzer.error'
+}
+
+function Get-LUnitFailedTestsFromReport {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$ReportPath
+  )
+
+  if (-not (Test-Path -LiteralPath $ReportPath -PathType Leaf)) {
+    throw "Unit-test report '$ReportPath' was not found."
+  }
+
+  $raw = Get-Content -LiteralPath $ReportPath -Raw | ConvertFrom-Json
+  if (-not $raw) { return @() }
+
+  $root = $raw
+  if ($raw -is [psobject] -and $raw.PSObject.Properties['extra']) {
+    $root = $raw.extra
+  }
+
+  $tests = @()
+
+  if ($root -is [psobject] -and $root.PSObject.Properties['failedTests']) {
+    foreach ($entry in $root.failedTests) {
+      if (-not $entry) { continue }
+      if ($entry -is [psobject]) {
+        $name = $null
+        $path = $null
+        if ($entry.PSObject.Properties['name'] -and $entry.name) {
+          $name = [string]$entry.name
+        }
+        if ($entry.PSObject.Properties['viPath'] -and $entry.viPath) {
+          $path = [string]$entry.viPath
+        }
+        if (-not $name -and $path) {
+          $name = [System.IO.Path]::GetFileNameWithoutExtension($path)
+        }
+        if ($name) {
+          $tests += [pscustomobject]@{
+            Name = $name
+            Path = $path
+          }
+        }
+      } elseif ($entry) {
+        $tests += [pscustomobject]@{
+          Name = [string]$entry
+          Path = $null
+        }
+      }
+    }
+  }
+
+  return $tests
+}
+
+Export-ModuleMember -Function Resolve-Abs, Test-VIAnalyzerToolkit, Test-GCliAvailable, Get-LabVIEWServerInfo, Get-ReportPathFromOutput, Write-AnalyzerDevModeWarning, Get-MissingInProjectMissingViPaths, Get-VIAnalyzerScenarioFamily, Get-LUnitFailedTestsFromReport
 
 function Test-ValidLabel {
   param([Parameter(Mandatory)][string]$Label)

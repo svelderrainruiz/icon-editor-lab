@@ -1,0 +1,33 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251114T193149322",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\mnt\\data\\repo_local",
+  "iconEditorRoot": "C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-14T19:31:49.3216069-08:00",
+  "status": "failed",
+  "error": "Cannot convert 'System.Object[]' to the type 'System.String' required by parameter 'AdditionalChildPath'. Specified method is not supported.",
+  "completedAt": "2025-11-14T19:31:49.4023887-08:00",
+  "durationSeconds": 0.08,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-14T19:31:49.3310119-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-14T19:31:49.3447244-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-14T19:31:49.3544468-08:00",
+      "status": "failed",
+      "error": "Cannot convert 'System.Object[]' to the type 'System.String' required by parameter 'AdditionalChildPath'. Specified method is not supported.",
+      "endedAt": "2025-11-14T19:31:49.3769298-08:00",
+      "durationSeconds": 0.02
+    }
+  ]
+}

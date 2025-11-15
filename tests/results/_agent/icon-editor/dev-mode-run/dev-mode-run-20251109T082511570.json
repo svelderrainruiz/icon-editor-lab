@@ -1,0 +1,56 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251109T082511570",
+  "mode": "disable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2023
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-09T08:25:11.5692081-08:00",
+  "status": "succeeded",
+  "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+  "updatedAt": "2025-11-09T08:25:35.7252557-08:00",
+  "verification": {
+    "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+    "IconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+    "Active": false,
+    "Entries": [
+      {
+        "Version": 2023,
+        "Bitness": 64,
+        "LabVIEWExePath": "C:\\Program Files\\National Instruments\\LabVIEW 2023\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files\\National Instruments\\LabVIEW 2023\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": null,
+        "ContainsIconEditorPath": false
+      }
+    ]
+  },
+  "verificationSummary": {
+    "presentCount": 1,
+    "containsIconEditorCount": 0,
+    "active": false,
+    "missingTargets": {
+      "version": 2023,
+      "bitness": 64,
+      "labviewIniPath": "C:\\Program Files\\National Instruments\\LabVIEW 2023\\LabVIEW.ini"
+    }
+  },
+  "completedAt": "2025-11-09T08:26:48.4768863-08:00",
+  "durationSeconds": 96.91,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-09T08:25:11.6080010-08:00",
+      "status": "ok",
+      "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+      "endedAt": "2025-11-09T08:26:48.4320495-08:00",
+      "durationSeconds": 96.82
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Dev-mode Script Log
+timestamp: 2025-11-15T01:04:09.3922904-08:00
+stage: enable-addtoken-2021-32
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\add-token-to-labview\AddTokenToLabVIEW.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor
+exitCode: 1
+
+Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-32'. See temp_telemetry/labview-devmode/rogue-sim.log for details.
+{"timestampUtc":"2025-11-15T09:04:09.3270935Z","pid":2568,"os":"Windows","subcommand":"labview-devmode-enable","args":["--lvaddon-root","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor","--lv-version","2021","--bitness","32","--script","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1","--args-json","[\r\n  \u0022-MinimumSupportedLVVersion\u0022,\r\n  \u00222021\u0022,\r\n  \u0022-SupportedBitness\u0022,\r\n  \u002232\u0022,\r\n  \u0022-RelativePath\u0022,\r\n  \u0022C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\u0022\r\n]","--scenario","rogue","--operation","enable-addtoken-2021-32","--run-id","e27223bc6c984bdaa49682f0e2532be4"],"env":{"XCLI_DEV_MODE_ROOT":"C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry"},"result":"failure","exitCode":1,"message":"unspecified failure","durationMs":63}

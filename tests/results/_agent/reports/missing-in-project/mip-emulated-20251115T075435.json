@@ -1,0 +1,16 @@
+{
+  "schema": "icon-editor/report@v1",
+  "kind": "missing-in-project",
+  "label": "mip-emulated-20251115T075435",
+  "summary": "2 missing VIs (emulated)",
+  "extra": {
+    "missingTargets": [
+      {
+        "path": "C:\\src\\Missing1.vi"
+      },
+      {
+        "viPath": "C:\\src\\Missing2.vi"
+      }
+    ]
+  }
+}

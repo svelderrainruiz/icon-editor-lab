@@ -33,7 +33,7 @@ All suites assume PowerShell 7+, and most of them import the corresponding modul
 | Suite | Validates | Notes / Key scripts |
 | --- | --- | --- |
 | [Enable-Disable-DevMode.Tests.ps1](./_docs/Enable-Disable-DevMode.Tests.ps1.md) | CLI helpers (`tools/icon-editor/Enable-DevMode.ps1`, `Disable-DevMode.ps1`) toggle state, respect env overrides, and emit policy markers correctly. | Exercises wait/skip env vars and stub CLI paths. |
-| [IconEditorDevMode.Tests.ps1](./_docs/IconEditorDevMode.Tests.ps1.md) | Core module API (`IconEditorDevMode.psm1`) for reading/writing/reconciling state. | Covers `Get/Set-IconEditorDevModeState`, policy persistence, and guard env vars. |
+| [LvAddonDevMode.Tests.ps1](./_docs/LvAddonDevMode.Tests.ps1.md) | Core module API (`IconEditorDevMode.psm1`) for reading/writing/reconciling state. | Covers `Get/Set-IconEditorDevModeState`, policy persistence, and guard env vars. |
 | [IconEditorDevMode.Integration.Tests.ps1](./_docs/IconEditorDevMode.Integration.Tests.ps1.md) | End-to-end enable/disable flows with actual policy files and rogue-LV detection toggles. | Imports the module and spawns fixture directories under `TestDrive:`. |
 | [IconEditorDevMode.Stability.Tests.ps1](./_docs/IconEditorDevMode.Stability.Tests.ps1.md) | Stress tests the stability harness (open/close LabVIEW loops, sentinel waiters). | Verifies state machine transitions used by `Test-DevModeStability.ps1`. |
 | [IconEditorDevMode.Telemetry.Tests.ps1](./_docs/IconEditorDevMode.Telemetry.Tests.ps1.md) | Ensures telemetry emission (JSON attachments, summary text) reflects enable/disable actions. | Parses `_agent/icon-editor/dev-mode-run/…` output. |

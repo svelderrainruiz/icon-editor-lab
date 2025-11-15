@@ -1,0 +1,30 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251109T105451439",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2023
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-09T10:54:51.4398957-08:00",
+  "status": "failed",
+  "error": "Rogue LabVIEW/LVCompare processes detected (stage 'enable-devmode-pre'). See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T105451524.json for details.",
+  "completedAt": "2025-11-09T10:55:36.4009689-08:00",
+  "durationSeconds": 44.96,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-09T10:54:51.4731414-08:00",
+      "status": "failed",
+      "stage": "enable-devmode-pre",
+      "error": "Rogue LabVIEW/LVCompare processes detected (stage 'enable-devmode-pre'). See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T105451524.json for details.",
+      "endedAt": "2025-11-09T10:55:36.3687557-08:00",
+      "durationSeconds": 44.89
+    }
+  ]
+}

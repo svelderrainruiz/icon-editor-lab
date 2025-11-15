@@ -1,0 +1,8 @@
+# Dev-mode Script Log
+timestamp: 2025-11-15T01:07:44.3132495-08:00
+stage: enable-addtoken-2021-32
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\add-token-to-labview\AddTokenToLabVIEW.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor
+exitCode: 0
+
+{"timestampUtc":"2025-11-15T09:07:44.2399949Z","pid":34900,"os":"Windows","subcommand":"labview-devmode-enable","args":["--lvaddon-root","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor","--lv-version","2021","--bitness","32","--script","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1","--args-json","[\r\n  \u0022-MinimumSupportedLVVersion\u0022,\r\n  \u00222021\u0022,\r\n  \u0022-SupportedBitness\u0022,\r\n  \u002232\u0022,\r\n  \u0022-RelativePath\u0022,\r\n  \u0022C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\u0022\r\n]","--scenario","happy-path","--operation","enable-addtoken-2021-32","--run-id","9c5a0a1b074847d1a62268b14692fed3"],"env":{"XCLI_DEV_MODE_ROOT":"C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry"},"result":"success","exitCode":0,"message":"","durationMs":59}

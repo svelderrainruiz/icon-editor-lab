@@ -1,0 +1,33 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251114T193627785",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\mnt\\data\\repo_local",
+  "iconEditorRoot": "C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-14T19:36:27.7852110-08:00",
+  "status": "failed",
+  "error": "The specified module 'C:\\mnt\\data\\repo_local\\tools\\VendorTools.psm1' was not loaded because no valid module file was found in any module directory.",
+  "completedAt": "2025-11-14T19:36:28.9508020-08:00",
+  "durationSeconds": 1.17,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-14T19:36:27.7957150-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-14T19:36:27.8096908-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-14T19:36:27.8211730-08:00",
+      "status": "failed",
+      "error": "The specified module 'C:\\mnt\\data\\repo_local\\tools\\VendorTools.psm1' was not loaded because no valid module file was found in any module directory.",
+      "endedAt": "2025-11-14T19:36:28.9479562-08:00",
+      "durationSeconds": 1.13
+    }
+  ]
+}

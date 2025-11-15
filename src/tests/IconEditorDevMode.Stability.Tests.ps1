@@ -82,6 +82,100 @@ switch ($mode) {
             }
         })
     }
+    'lunit-fail' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.scenario = 'lunit-fail'
+        $summary.unit = @{
+            status = 'failed'
+            note   = 'LUnit run failed during stability harness scenario.'
+            total  = 42
+            failed = 1
+        }
+        $summary.iterations = @([ordered]@{
+            status = 'error'
+            enable = @{
+                devModeVerified = $true
+                settleSeconds   = 1.1
+                note            = 'LUnit failure observed after enable stage.'
+            }
+            disable= @{
+                settleSeconds = 1.1
+            }
+        })
+        $summary.failure = @{ reason = 'LUnit run failed' }
+    }
+    'lvcompare-fail' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.scenario = 'lvcompare-fail'
+        $summary.compare = @{
+            status         = 'failed'
+            note           = 'LVCompare capture or report failed during stability harness scenario.'
+            htmlReportPath = 'C:\fake\lvcompare\compare-report.html'
+        }
+        $summary.iterations = @([ordered]@{
+            status = 'error'
+            enable = @{
+                devModeVerified = $true
+                settleSeconds   = 1.1
+            }
+            disable= @{
+                settleSeconds = 1.1
+                note          = 'LVCompare error observed during disable stage.'
+            }
+        })
+        $summary.failure = @{ reason = 'LVCompare run failed' }
+    }
+    'ppl-fail' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.scenario = 'ppl-fail'
+        $summary.ppl = @{
+            status    = 'failed'
+            note      = 'Packed project library build failed during stability harness scenario.'
+            project   = 'lv_icon_editor.lvproj'
+            buildSpec = 'Editor Packed Library'
+        }
+        $summary.iterations = @([ordered]@{
+            status = 'error'
+            enable = @{
+                devModeVerified = $true
+                settleSeconds   = 1.1
+                note            = 'PPL build failure observed after enable stage.'
+            }
+            disable= @{
+                settleSeconds = 1.1
+            }
+        })
+        $summary.failure = @{ reason = 'Packed project library build failed' }
+    }
+    'vipc-fail' {
+        $exitCode = 1
+        $summary.status = 'failed'
+        $summary.requirements.met = $false
+        $summary.scenario = 'vipc-fail'
+        $summary.vipc = @{
+            status  = 'failed'
+            note    = 'VIPC apply failed during stability harness scenario.'
+            package = 'icon-editor-deps.vipc'
+        }
+        $summary.iterations = @([ordered]@{
+            status = 'error'
+            enable = @{
+                devModeVerified = $true
+                settleSeconds   = 1.1
+                note            = 'VIPC failure observed after enable stage.'
+            }
+            disable= @{
+                settleSeconds = 1.1
+            }
+        })
+        $summary.failure = @{ reason = 'VIPC apply failed' }
+    }
     'fail-scenario' {
         $exitCode = 1
         $summary.status = 'failed'
@@ -544,6 +638,145 @@ exit 0
         Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
         $summary.failure.reason | Should -Match 'consecutive verified iterations'
         $summary.requirements.maxConsecutiveVerified | Should -Be 2
+    }
+
+    It 'fails when the LUnit scenario reports failure' {
+        $stub = New-StabilityStubRepo -ScenarioMode success
+
+        $params = @{
+            LabVIEWVersion = 2026
+            Bitness = 64
+            Iterations = 3
+            RepoRoot = $stub.RepoRoot
+            ResultsRoot = (Join-Path $stub.RepoRoot 'tests/results')
+            EnableScriptPath = $stub.Enable
+            DisableScriptPath = $stub.Disable
+            ScenarioScriptPath = $stub.Scenario
+            ScenarioProjectPath = $stub.ProjectPath
+            ScenarioAnalyzerConfigPath = $stub.AnalyzerConfigPath
+            ScenarioResultsPath = $stub.ResultsRoot
+            ScenarioAutoCloseWrongLV = $true
+        }
+
+        $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'lunit-fail'
+        try {
+            & $script:harnessPath @params 2>$null
+            Assert-StabilityExitCode -Expected 1
+        } finally {
+            Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
+        }
+
+        $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
+        $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
+        $summary.failure.reason | Should -Match 'LUnit run failed'
+        $summary.scenario | Should -Be 'lunit-fail'
+        $summary.unit.status | Should -Be 'failed'
+        $summary.unit.failed | Should -Be 1
+    }
+
+    It 'fails when the LVCompare scenario reports failure' {
+        $stub = New-StabilityStubRepo -ScenarioMode success
+
+        $params = @{
+            LabVIEWVersion = 2026
+            Bitness = 64
+            Iterations = 3
+            RepoRoot = $stub.RepoRoot
+            ResultsRoot = (Join-Path $stub.RepoRoot 'tests/results')
+            EnableScriptPath = $stub.Enable
+            DisableScriptPath = $stub.Disable
+            ScenarioScriptPath = $stub.Scenario
+            ScenarioProjectPath = $stub.ProjectPath
+            ScenarioAnalyzerConfigPath = $stub.AnalyzerConfigPath
+            ScenarioResultsPath = $stub.ResultsRoot
+            ScenarioAutoCloseWrongLV = $true
+        }
+
+        $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'lvcompare-fail'
+        try {
+            & $script:harnessPath @params 2>$null
+            Assert-StabilityExitCode -Expected 1
+        } finally {
+            Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
+        }
+
+        $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
+        $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
+        $summary.failure.reason | Should -Match 'LVCompare run failed'
+        $summary.scenario | Should -Be 'lvcompare-fail'
+        $summary.compare.status | Should -Be 'failed'
+    }
+
+    It 'fails when the packed project library build fails' {
+        $stub = New-StabilityStubRepo -ScenarioMode success
+
+        $params = @{
+            LabVIEWVersion = 2026
+            Bitness = 64
+            Iterations = 3
+            RepoRoot = $stub.RepoRoot
+            ResultsRoot = (Join-Path $stub.RepoRoot 'tests/results')
+            EnableScriptPath = $stub.Enable
+            DisableScriptPath = $stub.Disable
+            ScenarioScriptPath = $stub.Scenario
+            ScenarioProjectPath = $stub.ProjectPath
+            ScenarioAnalyzerConfigPath = $stub.AnalyzerConfigPath
+            ScenarioResultsPath = $stub.ResultsRoot
+            ScenarioAutoCloseWrongLV = $true
+        }
+
+        $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'ppl-fail'
+        try {
+            & $script:harnessPath @params 2>$null
+            Assert-StabilityExitCode -Expected 1
+        } finally {
+            Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
+        }
+
+        $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
+        $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
+        $summary.failure.reason | Should -Match 'Packed project library build failed'
+        $summary.scenario | Should -Be 'ppl-fail'
+        $summary.ppl.status | Should -Be 'failed'
+        $summary.ppl.buildSpec | Should -Be 'Editor Packed Library'
+    }
+
+    It 'fails when VIPC apply fails' {
+        $stub = New-StabilityStubRepo -ScenarioMode success
+
+        $params = @{
+            LabVIEWVersion = 2026
+            Bitness = 64
+            Iterations = 3
+            RepoRoot = $stub.RepoRoot
+            ResultsRoot = (Join-Path $stub.RepoRoot 'tests/results')
+            EnableScriptPath = $stub.Enable
+            DisableScriptPath = $stub.Disable
+            ScenarioScriptPath = $stub.Scenario
+            ScenarioProjectPath = $stub.ProjectPath
+            ScenarioAnalyzerConfigPath = $stub.AnalyzerConfigPath
+            ScenarioResultsPath = $stub.ResultsRoot
+            ScenarioAutoCloseWrongLV = $true
+        }
+
+        $env:DEV_MODE_STABILITY_SCENARIO_MODE = 'vipc-fail'
+        try {
+            & $script:harnessPath @params 2>$null
+            Assert-StabilityExitCode -Expected 1
+        } finally {
+            Remove-Item Env:DEV_MODE_STABILITY_SCENARIO_MODE -ErrorAction SilentlyContinue
+        }
+
+        $summaryRoot = Join-Path $stub.ResultsRoot '_agent/icon-editor/dev-mode-stability'
+        $summary = Get-Content -LiteralPath (Join-Path $summaryRoot 'latest-run.json') -Raw | ConvertFrom-Json
+        Assert-StabilitySummary -Summary $summary -ExpectedStatus 'failed'
+        $summary.failure.reason | Should -Match 'VIPC apply failed'
+        $summary.scenario | Should -Be 'vipc-fail'
+        $summary.vipc.status | Should -Be 'failed'
+        $summary.vipc.package | Should -Be 'icon-editor-deps.vipc'
     }
 
     AfterAll {

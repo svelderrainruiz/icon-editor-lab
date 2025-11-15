@@ -1,0 +1,11 @@
+{
+  "schema": "pipeline.manifest/v1",
+  "run": { "workflow": "Stage 2 CI", "run_id": "18044271490", "commit": "1782d6cb147849ef99e63029251919f607838593", "ts": "2025-09-26T17:06:01Z" },
+  "artifacts": {
+    "win_x64":   { "path": "dist/x-cli-win-x64", "sha256": "07e40a769ddbb4f9b18a715630de7d0e5e8cf1098435b87a04e1e8694d12d622" },
+    "linux_x64": { "path": "dist/x-cli-linux-x64", "sha256": "a3abf1d55c8f322eb89ebdbeb1dd2915b037ceecd4dc596267d87e2be2686d6c" }
+  },
+  "telemetry": {
+    "summary": { "path": "telemetry/summary.json", "sha256": "6be9e8262d1305f121a73c6ba7dd5afbac6f5c40bb1ed1af49a406a10421bbb8" }
+  }
+}

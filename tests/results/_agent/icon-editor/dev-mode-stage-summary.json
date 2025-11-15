@@ -1,0 +1,26 @@
+{
+  "GeneratedAt": "2025-11-15T01:08:06.9345143-08:00",
+  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "TelemetryDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-run",
+  "Stages": [
+    {
+      "Name": "enable-dev-mode",
+      "Count": 32,
+      "AverageSeconds": 28.57,
+      "MinSeconds": 0.01,
+      "MaxSeconds": 215.6,
+      "Statuses": [
+        "failed",
+        "ok"
+      ]
+    },
+    {
+      "Name": "rogue-check",
+      "Count": 32,
+      "AverageSeconds": 0.01,
+      "MinSeconds": 0.01,
+      "MaxSeconds": 0.02,
+      "Statuses": "ok"
+    }
+  ]
+}

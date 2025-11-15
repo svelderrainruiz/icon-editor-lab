@@ -1,0 +1,163 @@
+{
+  "GeneratedAt": "2025-11-15T07:10:02.6929638-08:00",
+  "Root": "/mnt/data/repo_local",
+  "XCliRoot": "\\mnt\\data\\repo_local\\tools\\x-cli-develop",
+  "DevmodeDir": "\\mnt\\data\\repo_local\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode",
+  "TotalRecords": 59,
+  "ByScenario": [
+    {
+      "Scenario": "happy-path",
+      "Total": 24,
+      "Outcomes": [
+        {
+          "Outcome": "succeeded",
+          "Count": 24
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ]
+    },
+    {
+      "Scenario": "partial+timeout-soft.enable-addtoken-2021-32.v2",
+      "Total": 1,
+      "Outcomes": [
+        {
+          "Outcome": "degraded",
+          "Count": 1
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "degraded"
+      ]
+    },
+    {
+      "Scenario": "retry-success.enable-addtoken-2021-32.v1",
+      "Total": 17,
+      "Outcomes": [
+        {
+          "Outcome": "failed",
+          "Count": 1
+        },
+        {
+          "Outcome": "succeeded",
+          "Count": 16
+        }
+      ],
+      "IsFlaky": true,
+      "OutcomeSequence": [
+        "failed",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ]
+    },
+    {
+      "Scenario": "rogue",
+      "Total": 6,
+      "Outcomes": [
+        {
+          "Outcome": "failed",
+          "Count": 6
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "failed",
+        "failed",
+        "failed",
+        "failed",
+        "failed",
+        "failed"
+      ]
+    },
+    {
+      "Scenario": "timeout",
+      "Total": 6,
+      "Outcomes": [
+        {
+          "Outcome": "failed",
+          "Count": 6
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "failed",
+        "failed",
+        "failed",
+        "failed",
+        "failed",
+        "failed"
+      ]
+    },
+    {
+      "Scenario": "timeout-soft.enable-addtoken-2021-32.v2",
+      "Total": 4,
+      "Outcomes": [
+        {
+          "Outcome": "succeeded",
+          "Count": 4
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "succeeded",
+        "succeeded",
+        "succeeded",
+        "succeeded"
+      ]
+    },
+    {
+      "Scenario": "timeout.enable-addtoken-2021-32.v2",
+      "Total": 1,
+      "Outcomes": [
+        {
+          "Outcome": "failed",
+          "Count": 1
+        }
+      ],
+      "IsFlaky": false,
+      "OutcomeSequence": [
+        "failed"
+      ]
+    }
+  ]
+}

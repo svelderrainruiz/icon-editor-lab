@@ -1,0 +1,622 @@
+{
+  "GeneratedAt": "2025-11-15T09:26:30.9945422-08:00",
+  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "XCliRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop",
+  "DevmodeDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode",
+  "TotalRecords": 76,
+  "ByOperation": [
+    {
+      "Operation": "enable-addtoken-2021-32",
+      "Total": 31,
+      "Modes": [
+        {
+          "Mode": "enable",
+          "Count": 31,
+          "LvVersions": "2021",
+          "Bitness": "32",
+          "Scripts": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1"
+        }
+      ]
+    },
+    {
+      "Operation": "enable-addtoken-2021-64",
+      "Total": 15,
+      "Modes": [
+        {
+          "Mode": "enable",
+          "Count": 15,
+          "LvVersions": "2021",
+          "Bitness": "64",
+          "Scripts": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1"
+        }
+      ]
+    },
+    {
+      "Operation": "enable-prepare-2021-32",
+      "Total": 15,
+      "Modes": [
+        {
+          "Mode": "enable",
+          "Count": 15,
+          "LvVersions": "2021",
+          "Bitness": "32",
+          "Scripts": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1"
+        }
+      ]
+    },
+    {
+      "Operation": "enable-prepare-2021-64",
+      "Total": 15,
+      "Modes": [
+        {
+          "Mode": "enable",
+          "Count": 15,
+          "LvVersions": "2021",
+          "Bitness": "64",
+          "Scripts": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1"
+        }
+      ]
+    }
+  ],
+  "SchemaVersions": "<none>",
+  "ByRunId": [
+    {
+      "RunId": "02ab8c003ae640f584d41f41bf57559d",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "02f5b95dcb0b4525a579efd9b1262723",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "049e4fdae9834aecb4541b39c1574869",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "079e6c3dfe544ce39ed780dcf91f97e3",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "0a5845ab91b743d1b566346d3cfc7390",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "0a6a5d852d58443fa9b37bccdd97efa4",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "0b2566a741824efcad155063bc11122d",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "0fc2bc976eda4bb29b6f19d833cbbd8c",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "0fe77956b2eb41be80eb9422a90f8fef",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "1965551728624d8f871b85418f7b5fbe",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "19aa160d0600439b9f0fa4c71ad17922",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "239b4dd1aeb445f1b3d667514d8c8a6e",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "256ad136b7f5482bab67664bedc10973",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "293aac75b52f406dac4e508f10feb95b",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "29dcaef805df424893e39281b44a5d13",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "3623c073870c4914851780da6746843f",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "385ec3a0b4674847903d6138b975c0c1",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "3b8b9b441192473d89011598bd4b2808",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "4127c132bdd7409bb9d4d3b95aa2ba99",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "4454c3e214ea4aa6b1a03b52f4fef9a4",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "494eee46dcf24ed296f6d4ead01d407c",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 2,
+      "Outcome": "degraded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "4f1c140c2f9b4182bcc6de43602b4a83",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "5a64473218af4b05b90f385c8dcbd394",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "5eaabd92686f476d943adc9996cb2a74",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "669e309e36514d41b50246f801c9601f",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "6dab1f8e27e14529956026dd11f7d88e",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "6dfdde3eadb0408a8934a95dfef888e3",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "751b8a5de2f845cc80e04c8b7a46485d",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "7545900cd5904bc68f92d6629e54f034",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "7b551fc2812b4aa2a7669216cf3722bc",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "7ff653f1001940969583efaa0cd3fd0a",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "8016c9b62d5846d687a16f3b139bd7fe",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "88e449576d2d4054b14d6e3e334c19c8",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "8a7fd31cddd545c3a0098a77910f7896",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 2,
+      "Outcome": "degraded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "8bbbdc4bb32446e19e34c47b41a5ea71",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "8c5d93c60e61467aafcb3bdbe60ef793",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "8cce419b20694565bbd94cdf26aec365",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "97fe03c1c0b644608e74aca87a09ae9b",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "9c5a0a1b074847d1a62268b14692fed3",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "a404265766e1487c9040043c81ea34f4",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "bacbd66b37474263a41247c188310ff0",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "bf2a6c006641428082b0de3a191fad53",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "c1a7e90e99aa4972b509ca3def583230",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "c7469abde32249459d9517c7eca5bf1c",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "cdc06d042e074c2bb535c967e4b5de04",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "cf9f830648884940bf7ebe94dc3ff27d",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "d1d3b242658c428198f98a6be42e3ada",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "d31ae2a1d34a4da881fb509d08c2a2d3",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "d5775e8e3d504a21aec9c2b28678bf52",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "dbf2ec12d6a14f5082e5384475a35b67",
+      "Total": 1,
+      "Operations": "enable-prepare-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "dcb3b92d4e8f40f1bd0abd5dd2e8542e",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-64",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "e27223bc6c984bdaa49682f0e2532be4",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "e6808ddaa4fd4899a137c6a5de8faa98",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "e6d64eaf4a7840e3aafefa67fe5e67c1",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "ea8c5a115ad24f8ca88e44102858e46a",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "f792a18c67d54394a008b960a8c012c9",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "f93b24e0705a4fba87bf4ebd7774aa5a",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 0,
+      "Outcome": "succeeded",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "fcd5ce1dc8664d4e913d686829ec1dca",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "fd11dd68e9c5427bb24b8dfb0eea975c",
+      "Total": 1,
+      "Operations": "enable-addtoken-2021-32",
+      "Modes": "enable",
+      "ExitCodes": 1,
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    },
+    {
+      "RunId": "lvaddon-flaky-retry-success-enable-addtoken-2021-32",
+      "Total": 17,
+      "Operations": [
+        "enable-addtoken-2021-32",
+        "enable-addtoken-2021-64",
+        "enable-prepare-2021-32",
+        "enable-prepare-2021-64"
+      ],
+      "Modes": "enable",
+      "ExitCodes": [
+        0,
+        1
+      ],
+      "Outcome": "failed",
+      "LvaddonRoots": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+    }
+  ],
+  "ConfigErrors": null,
+  "LvaddonRoots": [
+    {
+      "LvaddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "InWorkspace": true,
+      "Count": 76
+    }
+  ],
+  "ResourceFailures": null,
+  "ToolchainFailures": null
+}

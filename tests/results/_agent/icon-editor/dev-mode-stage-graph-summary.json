@@ -1,0 +1,596 @@
+{
+  "GeneratedAt": "2025-11-15T01:08:06.7320631-08:00",
+  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "TelemetryDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-run",
+  "TotalRuns": 32,
+  "ExpectedGraphs": 0,
+  "UnexpectedGraphs": 32,
+  "AnomalyKinds": [
+    {
+      "Anomaly": "missing-enable-addtoken",
+      "Count": 32
+    },
+    {
+      "Anomaly": "missing-enable-prepare",
+      "Count": 32
+    }
+  ],
+  "Runs": [
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "<none>",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "c26068608e0f447fada4ae92a642f860",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "0fb2a06976ac499f95240867f7759136",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "590b9bcea69540edab79f3cfb4ae7d0f",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "5484b936c0fc4454a0d8cdbeda90b23f",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "3a6d08812a2e454aa68054c32c7a0221",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "544662a4e48a43a99256ac407fe857fa",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "4c1cec0d541a414290490e5b7874b5d3",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "eefaf9f380bc42b788cb0bac5bd90f92",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "c8f5ca5e590643b28cb23b0e7975b361",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "b1fdfde5f94745ddbd23fc1a13102e7d",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "3155b5cb40ea4fc491f93f6ebb042b79",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "d313233d748449859d344b07e32bb93a",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "0de5527da8c147b9b4d4a51c2ab5a0df",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "4dbb41720a5b4ec39ebb88dc2378f10d",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    },
+    {
+      "RunId": "4de3a56df2a24efa93e7ad385ff07fc0",
+      "Mode": "enable",
+      "Operation": "BuildPackage",
+      "StageNames": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "StageKinds": [
+        "rogue-check",
+        "enable-dev-mode"
+      ],
+      "IsExpectedGraph": false,
+      "Anomalies": [
+        "missing-enable-addtoken",
+        "missing-enable-prepare"
+      ]
+    }
+  ]
+}

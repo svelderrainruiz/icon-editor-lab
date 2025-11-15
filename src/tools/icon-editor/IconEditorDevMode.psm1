@@ -20,11 +20,307 @@ function Resolve-IconEditorRoot {
   if (-not $RepoRoot) {
     $RepoRoot = Resolve-IconEditorRepoRoot
   }
-  $root = Join-Path $RepoRoot 'vendor' 'icon-editor'
-  if (-not (Test-Path -LiteralPath $root -PathType Container)) {
-    throw "Icon editor root not found at '$root'. Vendor the labview-icon-editor repository first."
+
+  $candidates = @(
+    (Join-Path -Path $RepoRoot -ChildPath 'vendor/labview-icon-editor'),
+    (Join-Path -Path $RepoRoot -ChildPath 'vendor/icon-editor')
+  )
+
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Container) {
+      return (Resolve-Path -LiteralPath $candidate).Path
+    }
   }
-  return (Resolve-Path -LiteralPath $root).Path
+
+  $expected = $candidates -join ' or '
+  throw "Icon editor root not found under $expected. Vendor the labview-icon-editor repository first."
+}
+
+function Resolve-IconEditorVendorToolsModulePath {
+  param([string]$RepoRoot)
+
+  if (-not $RepoRoot) {
+    $RepoRoot = Resolve-IconEditorRepoRoot
+  } else {
+    $RepoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path
+  }
+
+  $candidates = @(
+    (Join-Path -Path $RepoRoot -ChildPath 'tools/VendorTools.psm1'),
+    (Join-Path -Path $RepoRoot -ChildPath 'src/tools/VendorTools.psm1')
+  )
+
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      return (Resolve-Path -LiteralPath $candidate).Path
+    }
+  }
+
+  throw "VendorTools module not found under 'tools' or 'src/tools'. Checked: $($candidates -join ', ')"
+}
+
+function Get-LvAddonAllowedHosts {
+  $hosts = New-Object System.Collections.Generic.List[string]
+  $hosts.Add('github.com')
+  if ($env:ICONEDITORLAB_GITHUB_HOSTS) {
+    $extra = $env:ICONEDITORLAB_GITHUB_HOSTS -split '[,; ]+' | Where-Object { $_ }
+    foreach ($entry in $extra) { $hosts.Add($entry) }
+  }
+  return $hosts | Where-Object { $_ } | ForEach-Object { $_.Trim().ToLowerInvariant() } | Where-Object { $_ } | Select-Object -Unique
+}
+
+function Get-LvAddonContributorLogin {
+  param(
+    [string]$IconEditorRoot,
+    [string]$RepoRoot
+  )
+
+  if ($env:ICONEDITORLAB_GITHUB_LOGIN) {
+    $envLogin = $env:ICONEDITORLAB_GITHUB_LOGIN.Trim()
+    if ($envLogin) { return $envLogin }
+  }
+
+  $ghDisabled = $env:ICONEDITORLAB_DISABLE_GH_LOGIN -eq '1'
+  if (-not $ghDisabled) {
+    $gh = Get-Command gh -ErrorAction SilentlyContinue
+    if ($gh) {
+      try {
+        $statusOutput = & $gh.Path auth status 2>&1
+        if ($LASTEXITCODE -eq 0 -and $statusOutput) {
+          foreach ($line in $statusOutput) {
+            if ($line -match 'Logged in to [^ ]+ as ([^ ()]+)') {
+              return $Matches[1]
+            }
+          }
+        }
+      } catch {}
+
+      try {
+        $loginOutput = & $gh.Path api user --jq '.login' 2>$null
+        if ($LASTEXITCODE -eq 0 -and $loginOutput) {
+          $login = $loginOutput.Trim()
+          if ($login) { return $login }
+        }
+      } catch {}
+    }
+  }
+
+  $remoteUrls = New-Object System.Collections.Generic.List[string]
+  $repoRoot = $null
+  if ($RepoRoot) {
+    try { $repoRoot = (Resolve-Path -LiteralPath $RepoRoot).Path }
+    catch { $repoRoot = $RepoRoot }
+  } else {
+    try { $repoRoot = Resolve-IconEditorRepoRoot } catch {}
+  }
+
+  if ($repoRoot) {
+    try {
+      $repoRemote = git -C $repoRoot remote get-url origin 2>$null
+      if ($repoRemote) { $remoteUrls.Add($repoRemote) | Out-Null }
+    } catch {}
+  }
+
+  if ($IconEditorRoot) {
+    try {
+      $iconRemote = git -C $IconEditorRoot remote get-url origin 2>$null
+      if ($iconRemote) { $remoteUrls.Add($iconRemote) | Out-Null }
+    } catch {}
+  }
+
+  $parsedOwners = New-Object System.Collections.Generic.List[string]
+  foreach ($remoteUrl in $remoteUrls) {
+    $owner = Get-GitHubOwnerFromUrl -Url $remoteUrl
+    if ($owner) { $parsedOwners.Add($owner) | Out-Null }
+  }
+
+  foreach ($owner in $parsedOwners) {
+    if ($owner -and $owner.ToLowerInvariant() -ne 'contributor') {
+      return $owner
+    }
+  }
+
+  foreach ($owner in $parsedOwners) {
+    if ($owner) { return $owner }
+  }
+
+  return 'ni'
+}
+
+function ConvertTo-LvAddonContributorOriginUrl {
+  param(
+    [string]$OriginUrl,
+    [string]$ContributorLogin
+  )
+
+  if (-not $OriginUrl -or -not $ContributorLogin) { return $null }
+
+  $trimmed = $OriginUrl.Trim()
+  if (-not $trimmed) { return $null }
+
+  $pathPart = $null
+  $hasGitSuffix = $false
+
+  $uri = $null
+  if ([Uri]::TryCreate($trimmed, [UriKind]::Absolute, [ref]$uri)) {
+    $pathPart = $uri.AbsolutePath.Trim('/')
+  } elseif ($trimmed -match '^[^@]+@[^:]+:(?<path>.+)$') {
+    $pathPart = $Matches['path']
+  } elseif ($trimmed -match 'github\.com[:/](?<path>.+)$') {
+    $pathPart = $Matches['path']
+  }
+
+  if (-not $pathPart) { return $null }
+
+  if ($pathPart.EndsWith('.git')) {
+    $pathPart = $pathPart.Substring(0, $pathPart.Length - 4)
+    $hasGitSuffix = $true
+  }
+
+  $segments = $pathPart.Split('/', [System.StringSplitOptions]::RemoveEmptyEntries)
+  if ($segments.Length -lt 2) { return $null }
+
+  $repo = $segments[$segments.Length - 1]
+  if (-not $repo) { return $null }
+
+  $suffix = if ($hasGitSuffix) { '.git' } else { '' }
+  return "https://github.com/$ContributorLogin/$repo$suffix"
+}
+
+function Get-GitHubOwnerFromUrl {
+  param([string]$Url)
+
+  if (-not $Url) { return $null }
+  $candidate = $Url.Trim()
+  if (-not $candidate) { return $null }
+
+  $pathPart = $null
+  $uri = $null
+  if ([Uri]::TryCreate($candidate, [UriKind]::Absolute, [ref]$uri)) {
+    if ($uri.Host -like '*github.com') {
+      $pathPart = $uri.AbsolutePath.Trim('/')
+    }
+  } elseif ($candidate -match '^[^@]+@github\.com:(?<path>.+)$') {
+    $pathPart = $Matches['path']
+  } elseif ($candidate -match 'github\.com[:/](?<path>.+)$') {
+    $pathPart = $Matches['path']
+  }
+
+  if (-not $pathPart) { return $null }
+  $segments = $pathPart.Split('/', [System.StringSplitOptions]::RemoveEmptyEntries)
+  if ($segments.Length -lt 1) { return $null }
+
+  $owner = $segments[0]
+  if ($owner.EndsWith('.git')) {
+    $owner = $owner.Substring(0, $owner.Length - 4)
+  }
+
+  return $owner
+}
+
+function Write-LvAddonRootSummary {
+  param(
+    [Parameter(Mandatory)][string]$IconEditorRoot,
+    [string]$Source = 'resolved',
+    [bool]$Strict,
+    $LVAddonAnalysis,
+    [string]$RepoRoot
+  )
+
+  $modeText = if ($Strict) { 'Strict' } else { 'Relaxed' }
+  $origin = $null
+  $host = $null
+  $isLvAddon = $null
+  if ($LVAddonAnalysis) {
+    if ($LVAddonAnalysis.PSObject.Properties['OriginUrl']) { $origin = $LVAddonAnalysis.OriginUrl }
+    if ($LVAddonAnalysis.PSObject.Properties['OriginHost']) { $host = $LVAddonAnalysis.OriginHost }
+    if ($LVAddonAnalysis.PSObject.Properties['IsLVAddonLab']) { $isLvAddon = $LVAddonAnalysis.IsLVAddonLab }
+  }
+
+  $contributorLogin = Get-LvAddonContributorLogin -IconEditorRoot $IconEditorRoot -RepoRoot $RepoRoot
+  $forkOrigin = ConvertTo-LvAddonContributorOriginUrl -OriginUrl $origin -ContributorLogin $contributorLogin
+  if ($forkOrigin) {
+    $origin = $forkOrigin
+    $host = 'github.com'
+  }
+
+  $message = "[devscript] LvAddonRoot=""$IconEditorRoot"" Source=$Source"
+  if ($Strict) { $message += " Mode=$modeText" }
+  if ($origin) { $message += " Origin=$origin" }
+  if ($host) { $message += " Host=$host" }
+  if ($null -ne $isLvAddon) { $message += " IsLvAddonLab=$isLvAddon" }
+  if ($contributorLogin) { $message += " Contributor=$contributorLogin" }
+  Write-Host $message -ForegroundColor Cyan
+
+  return [pscustomobject]@{
+    Path = $IconEditorRoot
+    Source = $Source
+    Mode = $modeText
+    Origin = $origin
+    Host = $host
+    IsLVAddonLab = $isLvAddon
+    Contributor = $contributorLogin
+  }
+}
+
+function Get-IconEditorAmbientTelemetryContext {
+  $scopes = @('Script','Global')
+  foreach ($scope in $scopes) {
+    try {
+      $variable = Get-Variable -Name telemetryContext -Scope $scope -ErrorAction Stop
+      if ($null -ne $variable.Value) {
+        return $variable.Value
+      }
+    } catch {
+      # Ignore and continue to next scope.
+    }
+  }
+  return $null
+}
+
+function Set-LvAddonRootTelemetry {
+  param(
+    [psobject]$TelemetryContext,
+    [psobject]$Summary
+  )
+
+  if (-not $TelemetryContext -or -not $TelemetryContext.Telemetry -or -not $Summary) {
+    return
+  }
+
+  Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootPath' -Value $Summary.Path
+  Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootSource' -Value $Summary.Source
+  Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootMode' -Value $Summary.Mode
+  if ($Summary.PSObject.Properties['Origin']) {
+    Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootOrigin' -Value $Summary.Origin
+  }
+  if ($Summary.PSObject.Properties['Host']) {
+    Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootHost' -Value $Summary.Host
+  }
+  if ($Summary.PSObject.Properties['IsLVAddonLab']) {
+    Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootIsLVAddonLab' -Value $Summary.IsLVAddonLab
+  }
+  if ($Summary.PSObject.Properties['Contributor']) {
+    Set-IconEditorTelemetryValue -Telemetry $TelemetryContext.Telemetry -PropertyName 'lvAddonRootContributor' -Value $Summary.Contributor
+  }
+}
+
+function Set-IconEditorTelemetryValue {
+  param(
+    [psobject]$Telemetry,
+    [Parameter(Mandatory)][string]$PropertyName,
+    $Value
+  )
+
+  if (-not $Telemetry -or -not $PropertyName) { return }
+  if ($null -eq $Value) { return }
+
+  $existing = $Telemetry.PSObject.Properties[$PropertyName]
+  if ($existing) {
+    $existing.Value = $Value
+  } else {
+    $Telemetry | Add-Member -NotePropertyName $PropertyName -NotePropertyValue $Value -Force
+  }
 }
 
 function Get-IconEditorDevModeStatePath {
@@ -237,7 +533,9 @@ function Write-DevModeScriptLog {
   )
   $header | Set-Content -LiteralPath $logPath -Encoding utf8
   if ($OutputLines -and $OutputLines.Count -gt 0) {
-    $OutputLines | Out-String | Add-Content -LiteralPath $logPath -Encoding utf8
+    foreach ($line in $OutputLines) {
+      Add-Content -LiteralPath $logPath -Value $line -Encoding utf8
+    }
   }
   return $logPath
 }
@@ -250,6 +548,9 @@ function Invoke-IconEditorDevModeScript {
     [string]$IconEditorRoot,
     [string]$StageLabel
   )
+
+  $provider = $env:ICONEDITORLAB_PROVIDER
+  if (-not $provider) { $provider = 'Real' }
 
   if (-not $RepoRoot) {
     $RepoRoot = Resolve-IconEditorRepoRoot
@@ -267,7 +568,12 @@ function Invoke-IconEditorDevModeScript {
     throw "Icon editor dev-mode script not found at '$ScriptPath'."
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  if ($provider -ieq 'XCliSim') {
+    return Invoke-IconEditorDevModeScriptWithXCli -ScriptPath $ScriptPath -ArgumentList $ArgumentList -RepoRoot $RepoRoot -IconEditorRoot $IconEditorRoot -StageLabel $StageLabel
+  }
+
+  $vendorToolsModule = Resolve-IconEditorVendorToolsModulePath -RepoRoot $RepoRoot
+  Import-Module $vendorToolsModule -Force
   $scriptDirectory = Split-Path -Parent $ScriptPath
   $previousLocation = Get-Location
 
@@ -292,6 +598,91 @@ function Invoke-IconEditorDevModeScript {
   }
   finally {
     Set-Location -LiteralPath $previousLocation.Path
+  }
+}
+
+  function Invoke-IconEditorDevModeScriptWithXCli {
+  param(
+    [Parameter(Mandatory)][string]$ScriptPath,
+    [string[]]$ArgumentList,
+    [string]$RepoRoot,
+    [string]$IconEditorRoot,
+    [string]$StageLabel
+  )
+
+  $xCliProject = Join-Path $RepoRoot 'tools/x-cli-develop/src/XCli/XCli.csproj'
+  if (-not (Test-Path -LiteralPath $xCliProject -PathType Leaf)) {
+    throw "XCli project not found at '$xCliProject'. Set ICONEDITORLAB_PROVIDER=Real or vendor x-cli under tools/x-cli-develop."
+  }
+
+  $args = if ($ArgumentList -and $ArgumentList.Count -gt 0) { $ArgumentList } else { @('-IconEditorRoot', $IconEditorRoot) }
+
+  $lvVersion = $null
+  $bitness = $null
+  for ($i = 0; $i -lt $args.Count; $i++) {
+    if ($args[$i] -eq '-MinimumSupportedLVVersion' -and ($i + 1) -lt $args.Count) {
+      $lvVersion = [string]$args[$i + 1]
+      $i++
+      continue
+    }
+    if ($args[$i] -eq '-SupportedBitness' -and ($i + 1) -lt $args.Count) {
+      $bitness = [string]$args[$i + 1]
+      $i++
+      continue
+    }
+  }
+
+    $argsJson = ConvertTo-Json -Depth 5 -InputObject $args
+
+    $operationTag = if ($StageLabel) { $StageLabel } else { [IO.Path]::GetFileNameWithoutExtension($ScriptPath) }
+    $runId = $env:ICONEDITORLAB_RUN_ID
+    if (-not $runId) {
+      $runId = [guid]::NewGuid().ToString('n')
+    }
+
+  $simulationScenario = if ($env:ICONEDITORLAB_SIM_SCENARIO) { $env:ICONEDITORLAB_SIM_SCENARIO } else { 'happy-path' }
+  $subcommand = if ($StageLabel -like 'enable-*') { 'labview-devmode-enable' } else { 'labview-devmode-disable' }
+
+    $dotnetCmd = Get-Command dotnet -ErrorAction Stop
+    $payloadArgs = @($subcommand)
+    $payloadArgs += @('--lvaddon-root', $IconEditorRoot)
+    if ($lvVersion) { $payloadArgs += @('--lv-version', $lvVersion) }
+    if ($bitness)   { $payloadArgs += @('--bitness', $bitness) }
+    $payloadArgs += @(
+      '--script', $ScriptPath,
+      '--args-json', $argsJson,
+      '--scenario', $simulationScenario,
+      '--operation', $operationTag,
+      '--run-id', $runId
+    )
+
+  $xCliRoot = Join-Path $RepoRoot 'tools/x-cli-develop'
+  $xCliLogRoot = Join-Path $xCliRoot 'temp_telemetry'
+  $previousDevModeRoot = $env:XCLI_DEV_MODE_ROOT
+  $env:XCLI_DEV_MODE_ROOT = $xCliLogRoot
+
+  $scriptOutput = @()
+  try {
+    & $dotnetCmd.Source 'run' '--project' $xCliProject '--' @payloadArgs 2>&1 |
+      Tee-Object -Variable scriptOutput | Out-Host
+    $exitCode = $LASTEXITCODE
+    $null = Write-DevModeScriptLog -RepoRoot $RepoRoot -StageLabel $StageLabel -ScriptPath $ScriptPath -ArgumentList $args -OutputLines $scriptOutput -ExitCode $exitCode
+
+    if ($exitCode -ne 0) {
+      $capturedText = ($scriptOutput | Out-String).Trim()
+      $message = "Dev-mode simulation via x-cli for script '$ScriptPath' exited with code $exitCode."
+      if (-not [string]::IsNullOrWhiteSpace($capturedText)) {
+        $message += [Environment]::NewLine + $capturedText
+      }
+      throw $message
+    }
+  }
+  finally {
+    if ($null -ne $previousDevModeRoot) {
+      $env:XCLI_DEV_MODE_ROOT = $previousDevModeRoot
+    } else {
+      Remove-Item Env:XCLI_DEV_MODE_ROOT -ErrorAction SilentlyContinue
+    }
   }
 }
 
@@ -358,7 +749,28 @@ function Get-IconEditorDevModePolicyPath {
     return (Resolve-Path -LiteralPath $env:ICON_EDITOR_DEV_MODE_POLICY_PATH).Path
   }
 
-  return (Join-Path $RepoRoot 'configs' 'icon-editor' 'dev-mode-targets.json')
+  if ($env:ICON_EDITOR_DEV_MODE_POLICY_PATH) {
+    try {
+      return (Resolve-Path -LiteralPath $env:ICON_EDITOR_DEV_MODE_POLICY_PATH).Path
+    } catch {
+      # fall through to defaults
+    }
+  }
+
+  $candidates = @(
+    (Join-Path -Path $RepoRoot -ChildPath 'src/configs/labview-icon-editor/dev-mode-targets.json'),
+    (Join-Path -Path $RepoRoot -ChildPath 'src/configs/icon-editor/dev-mode-targets.json'),
+    (Join-Path -Path $RepoRoot -ChildPath 'configs/labview-icon-editor/dev-mode-targets.json'),
+    (Join-Path -Path $RepoRoot -ChildPath 'configs/icon-editor/dev-mode-targets.json')
+  )
+
+  foreach ($candidate in $candidates) {
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) {
+      return (Resolve-Path -LiteralPath $candidate).Path
+    }
+  }
+
+  return $candidates[0]
 }
 
 function Get-IconEditorDevModePolicy {
@@ -462,7 +874,8 @@ function Enable-IconEditorDevelopmentMode {
     [string]$IconEditorRoot,
     [int[]]$Versions,
     [int[]]$Bitness,
-    [string]$Operation = 'Compare'
+    [string]$Operation = 'Compare',
+    [psobject]$TelemetryContext
   )
 
   if (-not $RepoRoot) {
@@ -476,6 +889,24 @@ function Enable-IconEditorDevelopmentMode {
   } else {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
+
+  $vendorToolsModule = Resolve-IconEditorVendorToolsModulePath -RepoRoot $RepoRoot
+  Import-Module $vendorToolsModule -Force
+  $allowedHosts = Get-LvAddonAllowedHosts
+  $enforceLvAddon = $false
+  if ($env:GITHUB_ACTIONS -or $env:ICONEDITORLAB_ENFORCE_GITHUB_PATH -eq '1') {
+    $enforceLvAddon = $true
+  }
+  $lvAddonAnalysis = Assert-LVAddonLabPath -Path $IconEditorRoot -Strict:$enforceLvAddon -AllowedHosts $allowedHosts
+  $rootSource = if ($PSBoundParameters.ContainsKey('IconEditorRoot')) { 'parameter' } elseif ($env:ICONEDITOR_ROOT) { 'env' } else { 'resolved' }
+  $iconEditorRootSummary = Write-LvAddonRootSummary -IconEditorRoot $IconEditorRoot -Source $rootSource -Strict:$enforceLvAddon -LVAddonAnalysis $lvAddonAnalysis -RepoRoot $RepoRoot
+  $resolvedTelemetryContext = $null
+  if ($PSBoundParameters.ContainsKey('TelemetryContext')) {
+    $resolvedTelemetryContext = $TelemetryContext
+  } else {
+    $resolvedTelemetryContext = Get-IconEditorAmbientTelemetryContext
+  }
+  Set-LvAddonRootTelemetry -TelemetryContext $resolvedTelemetryContext -Summary $iconEditorRootSummary
 
   $preStage = if ($Operation) { "disable-{0}-pre" -f $Operation } else { 'disable-devmode-pre' }
   Invoke-IconEditorRogueCheck -RepoRoot $RepoRoot -Stage $preStage -FailOnRogue -AutoClose | Out-Null
@@ -609,7 +1040,8 @@ function Disable-IconEditorDevelopmentMode {
     [string]$IconEditorRoot,
     [int[]]$Versions,
     [int[]]$Bitness,
-    [string]$Operation = 'Compare'
+    [string]$Operation = 'Compare',
+    [psobject]$TelemetryContext
   )
 
   if (-not $RepoRoot) {
@@ -623,6 +1055,24 @@ function Disable-IconEditorDevelopmentMode {
   } else {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
+
+  $vendorToolsModule = Resolve-IconEditorVendorToolsModulePath -RepoRoot $RepoRoot
+  Import-Module $vendorToolsModule -Force
+  $allowedHosts = Get-LvAddonAllowedHosts
+  $enforceLvAddon = $false
+  if ($env:GITHUB_ACTIONS -or $env:ICONEDITORLAB_ENFORCE_GITHUB_PATH -eq '1') {
+    $enforceLvAddon = $true
+  }
+  $lvAddonAnalysis = Assert-LVAddonLabPath -Path $IconEditorRoot -Strict:$enforceLvAddon -AllowedHosts $allowedHosts
+  $rootSource = if ($PSBoundParameters.ContainsKey('IconEditorRoot')) { 'parameter' } elseif ($env:ICONEDITOR_ROOT) { 'env' } else { 'resolved' }
+  $iconEditorRootSummary = Write-LvAddonRootSummary -IconEditorRoot $IconEditorRoot -Source $rootSource -Strict:$enforceLvAddon -LVAddonAnalysis $lvAddonAnalysis -RepoRoot $RepoRoot
+  $resolvedTelemetryContext = $null
+  if ($PSBoundParameters.ContainsKey('TelemetryContext')) {
+    $resolvedTelemetryContext = $TelemetryContext
+  } else {
+    $resolvedTelemetryContext = Get-IconEditorAmbientTelemetryContext
+  }
+  Set-LvAddonRootTelemetry -TelemetryContext $resolvedTelemetryContext -Summary $iconEditorRootSummary
 
   $actionsRoot = Join-Path $IconEditorRoot '.github' 'actions'
   $restoreScript = Join-Path $actionsRoot 'restore-setup-lv-source' 'RestoreSetupLVSource.ps1'
@@ -723,7 +1173,8 @@ function Get-IconEditorDevModeLabVIEWTargets {
     $IconEditorRoot = (Resolve-Path -LiteralPath $IconEditorRoot).Path
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  $vendorToolsModule = Resolve-IconEditorVendorToolsModulePath -RepoRoot $RepoRoot
+  Import-Module $vendorToolsModule -Force
 
   $versionList = ConvertTo-IntList -Values $Versions -DefaultValues @(2023)
   $bitnessList = ConvertTo-IntList -Values $Bitness -DefaultValues @(32,64)
@@ -901,7 +1352,8 @@ function Close-IconEditorLabVIEW {
     return
   }
 
-  Import-Module (Join-Path $RepoRoot 'tools' 'VendorTools.psm1') -Force
+  $vendorToolsModule = Resolve-IconEditorVendorToolsModulePath -RepoRoot $RepoRoot
+  Import-Module $vendorToolsModule -Force
 
   $rawVersions = ConvertTo-IntList -Values $Versions -DefaultValues @(2023)
   $rawBitness  = ConvertTo-IntList -Values $Bitness -DefaultValues @(32, 64)
@@ -1196,7 +1648,7 @@ function Get-IconEditorSettleSummary {
   return $summary
 }
 
-function Get-IconEditorVerificationSummary {
+  function Get-IconEditorVerificationSummary {
   param([psobject]$Verification)
 
   if (-not $Verification) { return $null }
@@ -1230,9 +1682,39 @@ function Get-IconEditorVerificationSummary {
   }
 
   return $summary
-}
+  }
 
-function Invoke-LabVIEWRogueSweep {
+  function Get-IconEditorDevModeOutcomeStatus {
+    [CmdletBinding()]
+    param(
+      [Parameter(Mandatory)][string]$ErrorMessage
+    )
+
+    $defaultStatus = 'failed'
+    if (-not $ErrorMessage) {
+      return $defaultStatus
+    }
+
+    # Prefer explicit x-cli simulation hints when present.
+    if ($ErrorMessage -match 'Dev-mode simulation via x-cli' -and $ErrorMessage -match 'exited with code\s+(\d+)') {
+      $exitCode = 0
+      if ([int]::TryParse($Matches[1], [ref]$exitCode)) {
+        if ($exitCode -eq 2) {
+          return 'degraded'
+        }
+      }
+    }
+
+    # Fallback: treat messages that explicitly call out partial/recoverable
+    # failures as degraded.
+    if ($ErrorMessage -match 'partial failure' -and $ErrorMessage -match 'recoverable') {
+      return 'degraded'
+    }
+
+    return $defaultStatus
+  }
+
+  function Invoke-LabVIEWRogueSweep {
   param(
     [string]$RepoRoot,
     [string]$Reason = 'rogue-sweep',
@@ -1332,7 +1814,7 @@ function Invoke-LabVIEWRogueSweep {
   }
 }
 
-function Initialize-IconEditorDevModeTelemetry {
+  function Initialize-IconEditorDevModeTelemetry {
   param(
     [ValidateSet('enable','disable')][string]$Mode,
     [string]$RepoRoot,
@@ -1375,8 +1857,8 @@ function Initialize-IconEditorDevModeTelemetry {
     }
   }
 
-  $context = [ordered]@{
-    Mode = $Mode
+    $context = [ordered]@{
+      Mode = $Mode
     RepoRoot = $RepoRoot
     IconEditorRoot = $IconEditorRoot
     ResultsDir = $ResultsDir
@@ -1390,18 +1872,25 @@ function Initialize-IconEditorDevModeTelemetry {
     Stages = New-Object System.Collections.Generic.List[object]
   }
 
-  $context.Telemetry = [ordered]@{
-    schema = 'icon-editor/dev-mode-run@v1'
-    label = $telemetryLabel
-    mode = $Mode
-    operation = $Operation
-    requestedVersions = $Versions
-    requestedBitness = $Bitness
-    repoRoot = $RepoRoot
-    iconEditorRoot = $IconEditorRoot
-    startedAt = $scriptStart.ToString('o')
-    status = 'pending'
-  }
+    $provider = $env:ICONEDITORLAB_PROVIDER
+    if (-not $provider) { $provider = 'Real' }
+    $runId = $env:ICONEDITORLAB_RUN_ID
+    if (-not $runId) { $runId = [guid]::NewGuid().ToString('n') }
+
+    $context.Telemetry = [ordered]@{
+      schema = 'icon-editor/dev-mode-run@v1'
+      label = $telemetryLabel
+      mode = $Mode
+      operation = $Operation
+      requestedVersions = $Versions
+      requestedBitness = $Bitness
+      repoRoot = $RepoRoot
+      iconEditorRoot = $IconEditorRoot
+      startedAt = $scriptStart.ToString('o')
+      status = 'pending'
+      provider = $provider
+      runId    = $runId
+    }
 
   return [pscustomobject]$context
 }
@@ -1478,7 +1967,23 @@ function Complete-IconEditorDevModeTelemetry {
       }
     }
   }
-  if ($Error) { $Context.Telemetry.error = $Error }
+  if ($Error) {
+    $Context.Telemetry.error = $Error
+    $lines = $Error -split "(`r`n|`n)"
+    $primary = $lines | Where-Object {
+      $_ -and (
+        $_ -match 'Error:' -or
+        $_ -match 'Rogue LabVIEW' -or
+        $_ -match 'Timed out waiting for app to connect to g-cli'
+      )
+    } | Select-Object -First 1
+    if (-not $primary) {
+      $primary = $lines | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -First 1
+    }
+    if ($primary) {
+      $Context.Telemetry.errorSummary = $primary.Trim()
+    }
+  }
 
   $Context.Telemetry.completedAt = $completed.ToString('o')
   $Context.Telemetry.durationSeconds = [Math]::Round(($completed - $Context.ScriptStart).TotalSeconds, 2)
@@ -1508,7 +2013,7 @@ function Complete-IconEditorDevModeTelemetry {
   $Context.TelemetrySaved = $true
 }
 
-Export-ModuleMember -Function `
+  Export-ModuleMember -Function `
   Resolve-IconEditorRepoRoot, `
   Resolve-IconEditorRoot, `
   Get-IconEditorDevModeStatePath, `
@@ -1532,7 +2037,11 @@ Export-ModuleMember -Function `
   Invoke-LabVIEWRogueSweep, `
   Initialize-IconEditorDevModeTelemetry, `
   Invoke-IconEditorTelemetryStage, `
-  Complete-IconEditorDevModeTelemetry
+    Complete-IconEditorDevModeTelemetry, `
+    Get-IconEditorDevModeOutcomeStatus, `
+  Get-LvAddonAllowedHosts, `
+  Write-LvAddonRootSummary, `
+  Resolve-IconEditorVendorToolsModulePath
 if (-not (Get-Variable -Name IconEditorLabVIEWSettleEvents -Scope Script -ErrorAction SilentlyContinue)) {
   $script:IconEditorLabVIEWSettleEvents = New-Object System.Collections.Generic.List[object]
 }

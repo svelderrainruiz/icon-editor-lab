@@ -1,0 +1,9 @@
+{
+  "schema": "icon-editor/report@v1",
+  "kind": "unit-tests",
+  "label": "unit-tests-emulated-20251115T082531",
+  "summary": "LUnit: all tests passed (emulated)",
+  "extra": {
+    "failedTests": []
+  }
+}

@@ -1,0 +1,234 @@
+defaults:
+  run:
+    shell: pwsh        # PowerShell Core by default
+
+name: Insight CI
+
+on:
+  push:
+    branches: [ "main" ]
+    tags: [ "v*.*.*" ]    # Trigger workflow on version tag (for CLI releases)
+  pull_request:
+    branches: [ "main" ]
+
+###############################################################################
+# 1.  Insight-file validation (unchanged)                                     #
+###############################################################################
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Insight files
+        run: |
+          $files = git ls-files "*.insight.json"
+          if ($files) {
+            ./scripts/validate-insight.ps1 -Path $files
+          } else {
+            Write-Host "No Insight files to validate."
+          }
+
+###############################################################################
+# 2.  Pester tests (self-hosted Windows X64)                                  #
+###############################################################################
+  pester:
+    runs-on: [ self-hosted, Windows, X64 ]
+    steps:
+      - uses: actions/checkout@v4
+        # Use clean: true to remove any pre-existing files on runner
+        with:
+          clean: true
+
+      - name: Install Pester 5.7.1
+        run: |
+          Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+          $have = Get-Module -ListAvailable Pester |
+                  Where-Object { $_.Version -eq [version]'5.7.1' }
+          if (-not $have) {
+            Install-Module Pester -RequiredVersion 5.7.1 -Scope CurrentUser -Force
+          }
+
+      - name: Run Pester tests and capture log
+        id: pester
+        run: |
+          # Ensure Pester 5.7.1 is loaded in this session
+          Import-Module Pester -RequiredVersion 5.7.1
+          Invoke-Pester -Path tests/pester -Output Detailed -CI |
+            Tee-Object -FilePath pester.log
+
+      - name: Upload Pester artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pester-artifacts
+          path: |
+            pester.log
+            TestResults.xml
+          if-no-files-found: error
+
+###############################################################################
+# 3.  Jest tests for VS Code extension (Ubuntu + bash)                        #
+###############################################################################
+  jest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps, add Jest types, optionally patch tsconfig, build
+        run: |
+          set -e
+          cd tooling/vscode-seed-insight
+          npm ci
+          npm install --no-save jest @types/jest
+          if [ -f tsconfig.json ]; then
+            node -e "const fs=require('fs'),p='tsconfig.json',cfg=JSON.parse(fs.readFileSync(p,'utf8'));cfg.compilerOptions=cfg.compilerOptions||{};const t=new Set(cfg.compilerOptions.types||[]);['jest','node'].forEach(x=>t.add(x));cfg.compilerOptions.types=Array.from(t);fs.writeFileSync(p,JSON.stringify(cfg,null,2));"
+          else
+            echo "::warning::tsconfig.json not found – skipping Jest type patch"
+          fi
+          npm run build
+
+      - name: Run Jest and capture log
+        id: jest
+        run: |
+          set -o pipefail
+          npx jest --clearCache
+          npx jest --runInBand --detectOpenHandles \
+            --config tooling/vscode-seed-insight/jest.config.js \
+            --coverage \
+            2>&1 | tee $GITHUB_WORKSPACE/jest-output.log
+
+      - name: Upload Jest artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-artifacts
+          path: |
+            jest-output.log
+            tooling/vscode-seed-insight/coverage
+          if-no-files-found: error
+
+###############################################################################
+# 4.  .NET build and test (Ubuntu + .NET 8)                                   #
+###############################################################################
+  dotnet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.302'
+      - name: Restore & Build VipbJsonTool (Release)
+        run: |
+          dotnet restore src/VipbJsonTool/VipbJsonTool.csproj
+          dotnet build src/VipbJsonTool/VipbJsonTool.csproj -c Release
+      - name: Restore & Build Tests (Debug)
+        run: |
+          dotnet restore tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj
+          dotnet build tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj
+      - name: Run Unit Tests
+        run: dotnet test tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj --no-build
+      - name: Build Tests (Release)
+        run: dotnet build tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj -c Release
+      - name: Run Perf Tests
+        run: dotnet test tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj --no-build --configuration Release --filter Category=Perf
+
+###############################################################################
+# 5.  Publish CLI (on version tag push)                                       #
+###############################################################################
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [ validate-artifacts ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+          - os: windows-latest
+            rid: win-x64
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.302'
+      - name: Publish CLI (${{ matrix.rid }})
+        run: dotnet publish src/VipbJsonTool/VipbJsonTool.csproj -c Release -r ${{ matrix.rid }} --self-contained true -p:PublishSingleFile=false --output publish/${{ matrix.rid }}
+      - name: Upload CLI artifact (${{ matrix.rid }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: vipb-json-cli-${{ matrix.rid }}
+          path: publish/${{ matrix.rid }}
+
+###############################################################################
+# 6.  Final artifact validation (download & verify test results and coverage) #
+###############################################################################
+  validate-artifacts:
+    needs: [ validate, pester, jest, dotnet ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Pester artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: pester-artifacts
+      - name: Download Jest artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: jest-artifacts
+      - name: Validate Pester results
+        shell: pwsh
+        run: |
+          $log = 'pester-artifacts/pester.log'
+          if (-not (Test-Path $log)) {
+            Write-Host "❌ Pester log not found!"
+            exit 1
+          }
+          if (-not (Select-String -Path $log -Pattern 'Tests Passed:.*Failed: 0' -Quiet)) {
+            Write-Host "❌ Pester tests reported failures."
+            exit 1
+          }
+          Write-Host "✅ Pester tests passed."
+      - name: Validate Jest results
+        shell: pwsh
+        run: |
+          $log = 'jest-artifacts/jest-output.log'
+          if (-not (Test-Path $log)) {
+            Write-Host "❌ Jest log not found!"
+            exit 1
+          }
+          if (-not (Select-String -Path $log -Pattern 'Test Suites:.*0 failed' -Quiet)) {
+            Write-Host "❌ Jest test suite failures detected."
+            exit 1
+          }
+          if (-not (Select-String -Path $log -Pattern 'Tests:.*0 failed' -Quiet)) {
+            Write-Host "❌ Jest test failures detected."
+            exit 1
+          }
+          Write-Host "✅ Jest tests passed."
+      - name: Check coverage threshold
+        shell: pwsh
+        run: |
+          $covFiles = Get-ChildItem -Path 'jest-artifacts' -Filter 'coverage-summary.json' -Recurse
+          if (!$covFiles) {
+            Write-Host "❌ Coverage summary not found!"
+            exit 1
+          }
+          $covJson = Get-Content $covFiles[0].FullName | ConvertFrom-Json
+          $linePct = [math]::Round($covJson.total.lines.pct, 2)
+          $min = 80
+          Write-Host "Line coverage: $linePct% (minimum required: $min%)"
+          if ($linePct -lt $min) {
+            Write-Host "❌ Coverage $linePct% is below the required $min%."
+            exit 1
+          }
+          Write-Host "✅ Coverage threshold met."

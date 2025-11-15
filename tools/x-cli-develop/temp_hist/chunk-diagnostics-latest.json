@@ -1,0 +1,9 @@
+{
+  "mode": "dry-run",
+  "strategy": "single",
+  "chunks": 1,
+  "message_length": 179,
+  "attachment": false,
+  "attachment_name": null,
+  "ts": "20250926T171356Z"
+}

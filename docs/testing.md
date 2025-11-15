@@ -66,3 +66,27 @@ Scope and rationale
 - Never use them to sign release artifacts published from the upstream repository.
 - This pattern mirrors the hardened workflow without exposing production secrets.
 
+## DevMode quick links
+
+For icon editor dev-mode work, prefer these entrypoints:
+
+- Workflow overview: `docs/DEV_MODE_WORKFLOW.md`
+- Primary tests:
+  - `src/tests/LvAddonDevMode.Tests.ps1`
+  - `src/tests/IconEditorDevMode.Telemetry.Tests.ps1`
+- Tools:
+  - `tests/tools/Run-DevMode-Debug.ps1` (VS Code tasks: Local CI Stage 25 DevMode enable/disable/debug)
+  - `tests/tools/Show-LastDevModeRun.ps1` (VS Code task: Local CI Show last DevMode run) 
+
+### Standard Pester parameters
+
+When running any of the suites above (locally or in CI) use the same invocation so providers get consistent coverage data:
+
+```pwsh
+pwsh -NoLogo -NoProfile -Command "Invoke-Pester -Path <relative/test/file> -CI"
+```
+
+- `-Path` makes it explicit which suite is under test (`src/tests/LvAddonDevMode.Tests.ps1`, `src/tests/tools/VendorTools.LVAddonLab.Tests.ps1`, etc.).
+- `-CI` enables Pester’s CI mode (structured output, exit codes wired to pass/fail, discovery logging).
+- Stick to that `pwsh -NoLogo -NoProfile` shim for parity with GitHub runners and VS Code tasks; it keeps module resolution deterministic across providers.
+

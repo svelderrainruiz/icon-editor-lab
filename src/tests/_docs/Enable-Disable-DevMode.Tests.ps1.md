@@ -24,3 +24,5 @@ pwsh -File Invoke-PesterTests.ps1 -TestsPath tests/Enable-Disable-DevMode.Tests.
 ## Related
 - `tools/icon-editor/Enable-DevMode.ps1`
 - `tools/icon-editor/Disable-DevMode.ps1`
+ - `tests/tools/Run-DevMode-Debug.ps1` (VS Code tasks: Local CI Stage 25 DevMode enable/disable/debug)
+ - `tests/tools/Show-LastDevModeRun.ps1` (VS Code task: Local CI Show last DevMode run)

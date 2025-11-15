@@ -54,7 +54,7 @@ function Get-RunnerProfile {
   $profile['machine'] = [System.Environment]::MachineName
 
   $labels = Get-RunnerLabels -ForceRefresh:$ForceRefresh
-  if ($labels -and $labels.Count -gt 0) {
+  if ($labels -and @($labels).Length -gt 0) {
     $profile['labels'] = $labels
   }
 
@@ -82,10 +82,10 @@ function Get-RunnerLabels {
 
   $envLabels = Get-EnvironmentValue -Name 'RUNNER_LABELS'
   if ($envLabels) {
-    $labels = Parse-Labels -Raw $envLabels
+    $labels = @((Parse-Labels -Raw $envLabels))
   }
 
-  if ($labels.Count -eq 0) {
+  if (-not $labels -or @($labels).Length -eq 0) {
     $labels = Get-RunnerLabelsFromApi
   }
 
@@ -240,7 +240,132 @@ function Parse-Labels {
   return @($parts | Select-Object -Unique)
 }
 
-Export-ModuleMember -Function Get-RunnerProfile,Get-RunnerLabels
+function Get-RunnerHostEnvironment {
+  [CmdletBinding()]
+  param(
+    [string[]]$LibraryPaths
+  )
+
+  $profile = Get-RunnerProfile
+
+  $isCI = $false
+  $ciEnv = [System.Environment]::GetEnvironmentVariable('GITHUB_ACTIONS','Process')
+  if ($ciEnv -and $ciEnv.Trim().ToLowerInvariant() -eq 'true') {
+    $isCI = $true
+  }
+
+  $labels = @()
+  if ($profile.PSObject.Properties.Name -contains 'labels' -and $profile.labels) {
+    $labels = @($profile.labels)
+  }
+
+  $hostKind = 'local-shell'
+  if ($isCI) {
+    if ($labels -contains 'self-hosted') {
+      $hostKind = 'self-hosted-ci'
+    } else {
+      $hostKind = 'github-hosted-ci'
+    }
+  }
+
+  $psEdition = $PSVersionTable.PSEdition
+  $psVersion = $PSVersionTable.PSVersion.ToString()
+  $pwshAvailable = $false
+  try {
+    $cmd = Get-Command -Name 'pwsh' -ErrorAction Stop
+    if ($cmd) { $pwshAvailable = $true }
+  } catch {
+    $pwshAvailable = $false
+  }
+  $psHostKind = 'unknown-shell'
+  if ($psEdition -and $psEdition -eq 'Core') {
+    $psHostKind = 'pwsh'
+  } elseif ($IsWindows) {
+    $psHostKind = 'windows-powershell'
+  }
+
+  $osFamily = $null
+  if ($profile.PSObject.Properties.Name -contains 'os' -and $profile.os) {
+    $osFamily = $profile.os.ToString().ToLowerInvariant()
+  } else {
+    if ($IsWindows) { $osFamily = 'windows' }
+    elseif ($IsLinux) { $osFamily = 'linux' }
+    elseif ($IsMacOS) { $osFamily = 'macos' }
+  }
+
+  $repoRoot = [System.Environment]::GetEnvironmentVariable('WORKSPACE_ROOT','Process')
+  if (-not $repoRoot) {
+    $repoRoot = [System.Environment]::GetEnvironmentVariable('GITHUB_WORKSPACE','Process')
+  }
+  if ($repoRoot -and (Test-Path -LiteralPath $repoRoot)) {
+    try {
+      $repoRoot = (Resolve-Path -LiteralPath $repoRoot -ErrorAction Stop).ProviderPath
+    } catch {
+      $repoRoot = $null
+    }
+  } else {
+    $repoRoot = $null
+  }
+
+  $devModeSuggested = $false
+  if (-not $isCI -and $LibraryPaths -and $repoRoot) {
+    foreach ($path in $LibraryPaths) {
+      if (-not $path) { continue }
+      $normalized = $path
+      try {
+        if (Test-Path -LiteralPath $path) {
+          $normalized = (Resolve-Path -LiteralPath $path -ErrorAction Stop).ProviderPath
+        }
+      } catch {
+        # best-effort; fall back to raw value
+      }
+      if ($normalized.StartsWith($repoRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+        $devModeSuggested = $true
+        break
+      }
+    }
+  }
+
+  $devModeSupported = (-not $isCI) -and ($osFamily -eq 'windows') -and ($psHostKind -eq 'pwsh')
+
+  $repoOwner = $null
+  $repoName = $null
+  $repoSlug = Get-EnvironmentValue -Name 'GITHUB_REPOSITORY'
+  if ($repoSlug -and $repoSlug -match '^(?<owner>[^/]+)/(?<name>[^/]+)$') {
+    $repoOwner = $Matches.owner
+    $repoName = $Matches.name
+  } else {
+    try {
+      $git = Get-Command -Name git -ErrorAction SilentlyContinue
+      if ($git) {
+        $url = git config --get remote.origin.url 2>$null
+        if ($LASTEXITCODE -eq 0 -and $url) {
+          if ($url -match '[:/]([^/:]+)/([^/]+?)(?:\.git)?$') {
+            $repoOwner = $Matches[1]
+            $repoName = $Matches[2]
+          }
+        }
+      }
+    } catch {}
+  }
+
+  [pscustomobject]@{
+    profile          = $profile
+    hostKind         = $hostKind
+    osFamily         = $osFamily
+    isCI             = $isCI
+    devModeSuggested = $devModeSuggested
+    devModeSupported = $devModeSupported
+    psEdition        = $psEdition
+    psVersion        = $psVersion
+    psHostKind       = $psHostKind
+    pwshAvailable    = $pwshAvailable
+    repoOwner        = $repoOwner
+    repoName         = $repoName
+  }
+}
+
+Export-ModuleMember -Function Get-RunnerProfile,Get-RunnerLabels,Get-RunnerHostEnvironment
 
 <#
 .SYNOPSIS

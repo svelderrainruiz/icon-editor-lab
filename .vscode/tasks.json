@@ -91,6 +91,85 @@
       "problemMatcher": []
     },
     {
+      "label": "Local CI: Show last DevMode run",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tests/tools/Show-LastDevModeRun.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "DevMode: Review last run (human gate)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tests/tools/Verify-DevModeLog.ps1",
+        "-PromptReview"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Local CI: Stage 25 DevMode (enable + review)",
+      "dependsOn": [
+        "Local CI: Stage 25 DevMode (enable)",
+        "DevMode: Review last run (human gate)"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "Local CI: Stage 25 DevMode (disable + review)",
+      "dependsOn": [
+        "Local CI: Stage 25 DevMode (disable)",
+        "DevMode: Review last run (human gate)"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "LvAddon: Run learning loop",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tests/tools/Run-LvAddonLearningLoop.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "LvAddon: Collect learning data (XCliSim)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tests/tools/Collect-LvAddonLearningData.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "LvAddon: Show learning snippet",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tests/tools/Show-LvAddonLearningSnippet.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "SemVer: Export Bundle",
       "type": "shell",
       "command": "pwsh",

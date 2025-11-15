@@ -1,0 +1,10 @@
+# Dev-mode Script Log
+timestamp: 2025-11-15T01:04:03.3608695-08:00
+stage: enable-addtoken-2021-32
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\add-token-to-labview\AddTokenToLabVIEW.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor
+exitCode: 1
+
+Error: [enable-addtoken-2021-32] No connection established with application.
+Caused by: Timed out waiting for app to connect to g-cli
+{"timestampUtc":"2025-11-15T09:04:03.2960539Z","pid":17228,"os":"Windows","subcommand":"labview-devmode-enable","args":["--lvaddon-root","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor","--lv-version","2021","--bitness","32","--script","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1","--args-json","[\r\n  \u0022-MinimumSupportedLVVersion\u0022,\r\n  \u00222021\u0022,\r\n  \u0022-SupportedBitness\u0022,\r\n  \u002232\u0022,\r\n  \u0022-RelativePath\u0022,\r\n  \u0022C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\u0022\r\n]","--scenario","timeout","--operation","enable-addtoken-2021-32","--run-id","3b8b9b441192473d89011598bd4b2808"],"env":{"XCLI_DEV_MODE_ROOT":"C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry"},"result":"failure","exitCode":1,"message":"unspecified failure","durationMs":73}

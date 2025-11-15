@@ -1,0 +1,10 @@
+{
+  "schema": "icon-editor/report@v1",
+  "kind": "lvcompare",
+  "label": "lvcompare-emulated-20251115T075511",
+  "summary": "capture missing (emulated)",
+  "extra": {
+    "htmlReportPath": null,
+    "capturePath": null
+  }
+}

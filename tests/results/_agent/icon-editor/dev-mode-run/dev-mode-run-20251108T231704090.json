@@ -1,0 +1,29 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251108T231704090",
+  "mode": "disable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2023
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-08T23:17:04.0895233-08:00",
+  "status": "failed",
+  "error": "Timed out waiting for LabVIEW to exit after close sequence.",
+  "completedAt": "2025-11-08T23:18:29.7467874-08:00",
+  "durationSeconds": 85.66,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-08T23:17:04.1165791-08:00",
+      "status": "failed",
+      "error": "Timed out waiting for LabVIEW to exit after close sequence.",
+      "endedAt": "2025-11-08T23:18:29.7074067-08:00",
+      "durationSeconds": 85.59
+    }
+  ]
+}

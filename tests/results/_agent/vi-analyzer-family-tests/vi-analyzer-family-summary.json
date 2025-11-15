@@ -1,0 +1,42 @@
+{
+  "GeneratedAt": "2025-11-15T08:04:40.2034831-08:00",
+  "Root": "/mnt/data/repo_local",
+  "AnalyzerRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer-family-tests",
+  "TotalRuns": 4,
+  "ByFamily": [
+    {
+      "Family": "vianalyzer.devmode-drift",
+      "Count": 1
+    },
+    {
+      "Family": "vianalyzer.error",
+      "Count": 1
+    },
+    {
+      "Family": "vianalyzer.ok",
+      "Count": 1
+    },
+    {
+      "Family": "vianalyzer.test-failures",
+      "Count": 1
+    }
+  ],
+  "Runs": [
+    {
+      "Family": "vianalyzer.devmode-drift",
+      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer-family-tests\\drift-run\\vi-analyzer.json"
+    },
+    {
+      "Family": "vianalyzer.error",
+      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer-family-tests\\error-run\\vi-analyzer.json"
+    },
+    {
+      "Family": "vianalyzer.test-failures",
+      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer-family-tests\\fail-run\\vi-analyzer.json"
+    },
+    {
+      "Family": "vianalyzer.ok",
+      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer-family-tests\\ok-run\\vi-analyzer.json"
+    }
+  ]
+}

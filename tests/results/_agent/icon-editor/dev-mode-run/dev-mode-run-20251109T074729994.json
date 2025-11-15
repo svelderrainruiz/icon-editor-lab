@@ -1,0 +1,40 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251109T074729994",
+  "mode": "enable",
+  "operation": "Reliability",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-09T07:47:29.9939903-08:00",
+  "status": "failed",
+  "rogueSnapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T074730097.json",
+  "error": "Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-64'. See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-sweep-20251109T074821358.json for details.",
+  "completedAt": "2025-11-09T07:48:54.5845810-08:00",
+  "durationSeconds": 84.59,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-09T07:47:30.0431147-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "snapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T074730097.json",
+      "exitCode": 0,
+      "endedAt": "2025-11-09T07:47:30.7619608-08:00",
+      "durationSeconds": 0.72
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-09T07:47:30.8014795-08:00",
+      "status": "failed",
+      "error": "Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-64'. See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-sweep-20251109T074821358.json for details.",
+      "endedAt": "2025-11-09T07:48:54.5344161-08:00",
+      "durationSeconds": 83.73
+    }
+  ]
+}

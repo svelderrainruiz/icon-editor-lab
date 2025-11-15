@@ -1,0 +1,140 @@
+{
+  "GeneratedAt": "2025-11-15T01:08:07.0218247-08:00",
+  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "TelemetryDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-run",
+  "TotalRuns": 16,
+  "ByProviderChain": [
+    {
+      "ProviderChain": "<unknown>",
+      "TotalRuns": 1,
+      "Succeeded": 0,
+      "Degraded": 0,
+      "Failed": 1,
+      "Aborted": 0,
+      "Unknown": 0
+    },
+    {
+      "ProviderChain": "XCliSim",
+      "TotalRuns": 15,
+      "Succeeded": 5,
+      "Degraded": 0,
+      "Failed": 10,
+      "Aborted": 0,
+      "Unknown": 0
+    }
+  ],
+  "Runs": [
+    {
+      "RunId": "<none>",
+      "ProviderChain": "<unknown>",
+      "Providers": "<unknown>",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "0de5527da8c147b9b4d4a51c2ab5a0df",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "succeeded"
+    },
+    {
+      "RunId": "0fb2a06976ac499f95240867f7759136",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "3155b5cb40ea4fc491f93f6ebb042b79",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "3a6d08812a2e454aa68054c32c7a0221",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "4c1cec0d541a414290490e5b7874b5d3",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "succeeded"
+    },
+    {
+      "RunId": "4dbb41720a5b4ec39ebb88dc2378f10d",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "4de3a56df2a24efa93e7ad385ff07fc0",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "544662a4e48a43a99256ac407fe857fa",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "5484b936c0fc4454a0d8cdbeda90b23f",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "succeeded"
+    },
+    {
+      "RunId": "590b9bcea69540edab79f3cfb4ae7d0f",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "b1fdfde5f94745ddbd23fc1a13102e7d",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "succeeded"
+    },
+    {
+      "RunId": "c26068608e0f447fada4ae92a642f860",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "succeeded"
+    },
+    {
+      "RunId": "c8f5ca5e590643b28cb23b0e7975b361",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "d313233d748449859d344b07e32bb93a",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    },
+    {
+      "RunId": "eefaf9f380bc42b788cb0bac5bd90f92",
+      "ProviderChain": "XCliSim",
+      "Providers": "XCliSim",
+      "Operations": "BuildPackage",
+      "Outcome": "failed"
+    }
+  ]
+}

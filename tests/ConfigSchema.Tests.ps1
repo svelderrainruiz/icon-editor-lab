@@ -1,9 +1,32 @@
 #requires -Version 7.0
+$root = $env:WORKSPACE_ROOT
+if (-not $root) { $root = '/mnt/data/repo_local' }
+if (-not (Test-Path -LiteralPath $root -PathType Container)) {
+    $scriptDir = Split-Path -Parent $PSCommandPath
+    $probe = $scriptDir
+    while ($probe -and (Split-Path -Leaf $probe) -ne 'tests') {
+        $next = Split-Path -Parent $probe
+        if (-not $next -or $next -eq $probe) { break }
+        $probe = $next
+    }
+    if ($probe -and (Split-Path -Leaf $probe) -eq 'tests') {
+        $root = Split-Path -Parent $probe
+    }
+    else {
+        $root = $scriptDir
+    }
+}
+$repoRoot = (Resolve-Path -LiteralPath $root).Path
+$script:root = $root
+$script:repoRoot = $repoRoot
+$tmp = Join-Path $repoRoot '.tmp-tests'
+New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+
 Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
   It 'validates the example config against the schema' {
-    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-    $cfg = Join-Path $repoRoot 'configs' 'examples' 'vi-diff-heuristics.json'
-    $schema = Join-Path $repoRoot 'configs' 'schema' 'vi-diff-heuristics.schema.json'
+    $repoRoot = $script:repoRoot
+    $cfg = [System.IO.Path]::Combine($repoRoot,'configs','examples','vi-diff-heuristics.json')
+    $schema = [System.IO.Path]::Combine($repoRoot,'configs','schema','vi-diff-heuristics.schema.json')
     Test-Path -LiteralPath $cfg | Should -BeTrue
     Test-Path -LiteralPath $schema | Should -BeTrue
     $content = Get-Content -LiteralPath $cfg -Raw
@@ -12,8 +35,8 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
   }
 
   It 'rejects labels longer than 64 chars' {
-    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-    $schema = Join-Path $repoRoot 'configs' 'schema' 'vi-diff-heuristics.schema.json'
+    $repoRoot = $script:repoRoot
+    $schema = [System.IO.Path]::Combine($repoRoot,'configs','schema','vi-diff-heuristics.schema.json')
     $cfg = @{
       label = ('x' * 65)
       inputs = @('samples/project-A')
@@ -22,8 +45,8 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
   }
 
   It 'rejects path traversal in inputs' {
-    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-    $schema = Join-Path $repoRoot 'configs' 'schema' 'vi-diff-heuristics.schema.json'
+    $repoRoot = $script:repoRoot
+    $schema = [System.IO.Path]::Combine($repoRoot,'configs','schema','vi-diff-heuristics.schema.json')
     $cfg = @{
       label = 'ok'
       inputs = @('../outside')
@@ -32,8 +55,8 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
   }
 
   It 'rejects dangerous metacharacters in inputs' {
-    $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
-    $schema = Join-Path $repoRoot 'configs' 'schema' 'vi-diff-heuristics.schema.json'
+    $repoRoot = $script:repoRoot
+    $schema = [System.IO.Path]::Combine($repoRoot,'configs','schema','vi-diff-heuristics.schema.json')
     $cfg = @{
       label = 'ok'
       inputs = @('samples;rm -rf')
@@ -41,3 +64,5 @@ Describe 'Config schema validation' -Tag 'Schema','Linux','CI' {
     { $cfg | Test-Json -SchemaFile $schema -ErrorAction Stop | Out-Null } | Should -Throw
   }
 }
+
+

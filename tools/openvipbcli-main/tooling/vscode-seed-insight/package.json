@@ -1,0 +1,16 @@
+{
+  "name": "seed-insight",
+  "displayName": "Seed Insight",
+  "publisher": "labview-community",
+  "version": "0.0.1",
+  "engines": { "vscode": "^1.90.0" },
+  "activationEvents": ["onCommand:seedInsight.generate"],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "seedInsight.generate", "title": "Generate Insight" }
+    ]
+  },
+  "scripts": { "build": "tsc -p ./", "package": "vsce package", "test:ui": "node tests/ui/runUITests.js" },
+  "devDependencies": { "typescript": "^5.5.0", "vsce": "^3.17.0", "@vscode/test-electron": "^2.3.0" }
+}

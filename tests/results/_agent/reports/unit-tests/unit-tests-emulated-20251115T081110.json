@@ -1,0 +1,19 @@
+{
+  "schema": "icon-editor/report@v1",
+  "kind": "unit-tests",
+  "label": "unit-tests-emulated-20251115T081110",
+  "summary": "LUnit: 3 failed tests (emulated)",
+  "extra": {
+    "failedTests": [
+      {
+        "name": "Test_AddToken",
+        "viPath": "C:\\src\\tests\\Test_AddToken.vi"
+      },
+      {
+        "name": "Test_PreparePPL",
+        "viPath": null
+      },
+      "Test_LegacyHelper"
+    ]
+  }
+}

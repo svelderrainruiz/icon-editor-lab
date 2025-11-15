@@ -51,6 +51,7 @@ if ($IconEditorRoot) { $invokeParams.IconEditorRoot = $IconEditorRoot }
 if ($Versions) { $invokeParams.Versions = $Versions }
 if ($Bitness) { $invokeParams.Bitness = $Bitness }
 if ($Operation) { $invokeParams.Operation = $Operation }
+if ($telemetryContext) { $invokeParams.TelemetryContext = $telemetryContext }
 
 $rawState = $null
 
@@ -118,7 +119,14 @@ try {
   Complete-IconEditorDevModeTelemetry -Context $telemetryContext -Status 'succeeded' -State $state
   $state
 } catch {
-  Complete-IconEditorDevModeTelemetry -Context $telemetryContext -Status 'failed' -Error $_.Exception.Message
+  $errorText = $_.Exception.Message
+  $status = 'failed'
+  try {
+    $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $errorText
+  } catch {
+    $status = 'failed'
+  }
+  Complete-IconEditorDevModeTelemetry -Context $telemetryContext -Status $status -Error $errorText
   throw
 }
 

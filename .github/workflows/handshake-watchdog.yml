@@ -58,12 +58,25 @@ jobs:
         run: |
           mkdir -p pointer-artifact
           repo="${GITHUB_REPOSITORY}"
-          artifact_id="$(gh api "repos/${repo}/actions/artifacts" --paginate -F per_page=100 --jq '[.artifacts[] | select(.name | startswith("handshake-pointer-"))] | sort_by(.created_at) | reverse | .[0].id')"
+          list_payload="$(mktemp)"
+          if ! gh api "repos/${repo}/actions/artifacts" --paginate -F per_page=100 > "$list_payload" 2>pointer-artifact/list-error.log; then
+            err="$(cat pointer-artifact/list-error.log)"
+            echo "::error ::Failed to enumerate artifacts for ${repo}. ${err}"
+            if echo "$err" | grep -q "Not Found"; then
+              echo "GitHub API returned 404. Ensure GH_TOKEN has actions:read scope and that ${repo} is correct."
+            fi
+            exit 1
+          fi
+          artifact_id="$(jq -r '[.artifacts[] | select(.name | startswith("handshake-pointer-"))] | sort_by(.created_at) | reverse | .[0].id' "$list_payload")"
           if [[ -z "$artifact_id" || "$artifact_id" == "null" ]]; then
             echo "No handshake pointer artifacts found."
             exit 0
           fi
-          gh api "repos/${repo}/actions/artifacts/${artifact_id}/zip" > pointer-artifact/pointer.zip
+          if ! gh api "repos/${repo}/actions/artifacts/${artifact_id}/zip" > pointer-artifact/pointer.zip 2>pointer-artifact/download-error.log; then
+            err="$(cat pointer-artifact/download-error.log)"
+            echo "::error ::Failed to download handshake pointer artifact ${artifact_id}. ${err}"
+            exit 1
+          fi
           unzip -q pointer-artifact/pointer.zip -d pointer-artifact/unpacked
           pointer_path="$(find pointer-artifact/unpacked -name 'pointer.json' | head -n 1)"
           if [[ -z "$pointer_path" ]]; then

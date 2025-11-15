@@ -1188,6 +1188,175 @@ function Resolve-VIPMPath {
   return $null
 }
 
+function Test-LVAddonLabPath {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [switch]$Strict,
+    [string[]]$AllowedHosts
+  )
+
+  $mode = if ($Strict) { 'Strict' } else { 'Relaxed' }
+  $result = [ordered]@{
+    Path            = $Path
+    IsDirectory     = $false
+    IsGitRepo       = $false
+    RepoRoot        = $null
+    HasOrigin       = $false
+    OriginUrl       = $null
+    OriginHost      = $null
+    IsAllowedHost   = $false
+    IsLVAddonLab    = $false
+    Mode            = $mode
+  }
+
+  $resolved = $null
+  try {
+    $resolved = (Resolve-Path -LiteralPath $Path -ErrorAction Stop).Path
+    $result.Path = $resolved
+    if (Test-Path -LiteralPath $resolved -PathType Container) {
+      $result.IsDirectory = $true
+    }
+  } catch {
+    return [pscustomobject]$result
+  }
+
+  if (-not $result.IsDirectory) {
+    return [pscustomobject]$result
+  }
+
+  $gitRoot = $null
+  try {
+    $gitRoot = git -C $resolved rev-parse --show-toplevel 2>$null
+  } catch {
+    $gitRoot = $null
+  }
+  if ($gitRoot) {
+    $result.IsGitRepo = $true
+    try {
+      $result.RepoRoot = (Resolve-Path -LiteralPath $gitRoot.Trim()).Path
+    } catch {
+      $result.RepoRoot = $gitRoot.Trim()
+    }
+  } else {
+    return [pscustomobject]$result
+  }
+
+  $origin = $null
+  try {
+    $origin = git -C $resolved remote get-url origin 2>$null
+  } catch {
+    $origin = $null
+  }
+
+  if ($origin) {
+    $result.HasOrigin = $true
+    $result.OriginUrl = $origin.Trim()
+  } else {
+    return [pscustomobject]$result
+  }
+
+  $hostList = New-Object System.Collections.Generic.List[string]
+  $hostList.Add('github.com')
+  if ($env:ICONEDITORLAB_GITHUB_HOSTS) {
+    $envHosts = $env:ICONEDITORLAB_GITHUB_HOSTS -split '[,; ]+' | Where-Object { $_ }
+    foreach ($h in $envHosts) { $hostList.Add($h) }
+  }
+  if ($AllowedHosts) {
+    foreach ($h in $AllowedHosts) { if ($h) { $hostList.Add($h) } }
+  }
+  $allowedHosts = $hostList | Where-Object { $_ } | ForEach-Object { $_.Trim().ToLowerInvariant() } | Where-Object { $_ } | Select-Object -Unique
+
+  $originHost = $null
+  $uri = $null
+  if ([Uri]::TryCreate($result.OriginUrl, [UriKind]::Absolute, [ref]$uri)) {
+    $originHost = $uri.Host.ToLowerInvariant()
+  } elseif ($result.OriginUrl -match '^[^@]+@([^:]+):') {
+    $originHost = $Matches[1].ToLowerInvariant()
+  }
+  $result.OriginHost = $originHost
+  if ($originHost -and $allowedHosts.Contains($originHost)) {
+    $result.IsAllowedHost = $true
+  }
+
+  if ($result.RepoRoot) {
+    $hasLvproj = $false
+    try {
+      foreach ($file in [System.IO.Directory]::EnumerateFiles($result.RepoRoot, '*.lvproj', [System.IO.SearchOption]::AllDirectories)) {
+        if ($file) {
+          $hasLvproj = $true
+          break
+        }
+      }
+    } catch {}
+
+    $hasVipbMarker = $false
+    if (-not $hasLvproj) {
+      try {
+        $vipbFiles = [System.IO.Directory]::EnumerateFiles($result.RepoRoot, '*.vipb', [System.IO.SearchOption]::AllDirectories)
+        $checked = 0
+        foreach ($vipb in $vipbFiles) {
+          if ($checked -ge 3) { break }
+          $checked++
+          if (Select-String -Path $vipb -Pattern 'LVAddons' -SimpleMatch -Quiet -ErrorAction SilentlyContinue) {
+            $hasVipbMarker = $true
+            break
+          }
+        }
+      } catch {}
+    }
+
+    $addonHelper = Test-Path -LiteralPath (Join-Path $result.RepoRoot 'Tooling/deployment/CreateLVAddonJSONfile.vi') -PathType Leaf
+    $result.IsLVAddonLab = $hasLvproj -or $hasVipbMarker -or $addonHelper
+  }
+
+  return [pscustomobject]$result
+}
+
+function Assert-LVAddonLabPath {
+  [CmdletBinding()]
+  param(
+    [Parameter(Mandatory)][string]$Path,
+    [switch]$Strict,
+    [string[]]$AllowedHosts
+  )
+
+  $analysis = Test-LVAddonLabPath -Path $Path -Strict:$Strict -AllowedHosts $AllowedHosts
+
+  if (-not $analysis.IsDirectory) {
+    throw ("IconEditorRoot '{0}' does not exist or is not a directory." -f $analysis.Path)
+  }
+
+  if (-not $analysis.IsGitRepo) {
+    throw ("IconEditorRoot '{0}' is not a git repository. Localhost.LibraryPaths must point to an LV add-on lab clone." -f $analysis.Path)
+  }
+
+  if (-not $analysis.HasOrigin) {
+    throw ("IconEditorRoot '{0}' has no 'origin' remote; cannot confirm GitHub LV add-on source." -f $analysis.Path)
+  }
+
+  if (-not $analysis.IsAllowedHost) {
+    $originDisplay = if ($analysis.OriginUrl) { $analysis.OriginUrl } else { '<unknown>' }
+    $hostMessage = "IconEditorRoot '{0}' origin '{1}' is not on an allowed GitHub host." -f $analysis.Path, $originDisplay
+    if ($Strict) {
+      throw $hostMessage
+    } else {
+      Write-Warning "[devmode] $hostMessage"
+    }
+  }
+
+  if (-not $analysis.IsLVAddonLab) {
+    $addonMessage = "IconEditorRoot '{0}' does not appear to contain a LabVIEW add-on project (.lvproj)." -f $analysis.Path
+    if ($Strict) {
+      throw $addonMessage
+    } else {
+      Write-Warning "[devmode] $addonMessage"
+    }
+  }
+
+  return $analysis
+}
+
 Export-ModuleMember -Function *
 
 <#

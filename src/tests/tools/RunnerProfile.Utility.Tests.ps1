@@ -2,20 +2,24 @@
 param()
 #Requires -Version 7.0
 
-Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
-    BeforeAll {
-        $here = $PSScriptRoot
-        if (-not $here -and $PSCommandPath) {
-            $here = Split-Path -Parent $PSCommandPath
-        }
-        if (-not $here -and $MyInvocation.MyCommand.Path) {
-            $here = Split-Path -Parent $MyInvocation.MyCommand.Path
-        }
-        if (-not $here) {
-            throw 'Unable to determine test location.'
-        }
-        $script:RepoRoot = (Resolve-Path (Join-Path $here '..\..\..')).Path
-        $script:modulePath = (Resolve-Path (Join-Path $script:RepoRoot 'src/tools/RunnerProfile.psm1')).Path
+$repoRootHint = $env:WORKSPACE_ROOT
+if (-not $repoRootHint) { $repoRootHint = '/mnt/data/repo_local' }
+if (-not (Test-Path -LiteralPath $repoRootHint)) {
+    $repoRootHint = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..' '..' '..') -ErrorAction Stop).ProviderPath
+}
+$tmp  = Join-Path $repoRootHint '.tmp-tests'; New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+
+$runnerProfilePath = Join-Path $repoRootHint 'src/tools/RunnerProfile.psm1'
+
+    Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
+        BeforeAll {
+            $repoRoot = $env:WORKSPACE_ROOT
+            if (-not $repoRoot) { $repoRoot = '/mnt/data/repo_local' }
+            if (-not (Test-Path -LiteralPath $repoRoot)) {
+                $repoRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..' '..' '..') -ErrorAction Stop).ProviderPath
+            }
+            $script:RepoRoot = (Resolve-Path -LiteralPath $repoRoot -ErrorAction Stop).ProviderPath
+            $script:modulePath = (Resolve-Path -LiteralPath (Join-Path $script:RepoRoot 'src/tools/RunnerProfile.psm1') -ErrorAction Stop).ProviderPath
         if (Get-Module -Name RunnerProfile -ErrorAction SilentlyContinue) {
             Remove-Module RunnerProfile -Force -ErrorAction SilentlyContinue
         }
@@ -334,6 +338,37 @@ Describe 'RunnerProfile utility helpers' -Tag 'Unit','Tools','RunnerProfile' {
             $profile.instrumentationDisabled | Should -BeTrue
         }
 
+    }
+
+    Context 'Get-RunnerHostEnvironment' {
+        It 'classifies GitHub-hosted CI and does not suggest dev mode' {
+            $env:GITHUB_ACTIONS = 'true'
+            $env:RUNNER_LABELS = 'ubuntu-latest'
+            $env:GITHUB_REPOSITORY = 'svelderrainruiz/icon-editor-lab'
+            $envInfo = Get-RunnerHostEnvironment -LibraryPaths @()
+            $envInfo.isCI | Should -BeTrue
+            $envInfo.hostKind | Should -Be 'github-hosted-ci'
+            $envInfo.devModeSuggested | Should -BeFalse
+            $envInfo.repoOwner | Should -Be 'svelderrainruiz'
+            $envInfo.repoName  | Should -Be 'icon-editor-lab'
+        }
+
+        It 'suggests dev mode when library paths are under repo root and not CI' {
+            $env:GITHUB_ACTIONS = ''
+            $env:WORKSPACE_ROOT = (Resolve-Path -LiteralPath $script:RepoRoot).ProviderPath
+            $devPath = Join-Path $env:WORKSPACE_ROOT 'src/tools'
+            $envInfo = Get-RunnerHostEnvironment -LibraryPaths @($devPath)
+            $envInfo.isCI | Should -BeFalse
+            $envInfo.devModeSuggested | Should -BeTrue
+        }
+
+        It 'does not suggest dev mode when library paths are outside repo root' {
+            $env:GITHUB_ACTIONS = ''
+            $env:WORKSPACE_ROOT = (Resolve-Path -LiteralPath $script:RepoRoot).ProviderPath
+            $external = Join-Path $env:TEMP 'labview-libs'
+            $envInfo = Get-RunnerHostEnvironment -LibraryPaths @($external)
+            $envInfo.devModeSuggested | Should -BeFalse
+        }
     }
 
     Context 'Module helper functions' {

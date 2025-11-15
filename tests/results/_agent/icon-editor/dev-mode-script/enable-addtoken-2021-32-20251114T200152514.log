@@ -1,0 +1,33 @@
+# Dev-mode Script Log
+timestamp: 2025-11-14T20:01:52.5147566-08:00
+stage: enable-addtoken-2021-32
+script: C:\mnt\data\repo_local\vendor\labview-icon-editor\.github\actions\add-token-to-labview\AddTokenToLabVIEW.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\mnt\data\repo_local\vendor\labview-icon-editor
+exitCode: 0
+
+Executing the following command:
+g-cli --lv-ver 2021 --arch 32 -v "C:\mnt\data\repo_local\vendor\labview-icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" -- "LabVIEW" "Localhost.LibraryPaths" "C:\mnt\data\repo_local\vendor\labview-icon-editor"
+04:00:17.305 [0m[36m[DEBUG] [0mG CLI Started - Verbose Mode
+04:00:17.305 [0m[36m[DEBUG] [0mVersion 3.0.1
+04:00:17.305 [0m[36m[DEBUG] [0mG CLI Arguments: "C:\Program Files\G-CLI\bin\g-cli.exe" "--lv-ver" "2021" "--arch" "32" "-v" "C:\mnt\data\repo_local\vendor\labview-icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" "--" "LabVIEW" "Localhost.LibraryPaths" "C:\mnt\data\repo_local\vendor\labview-icon-editor"
+04:00:17.305 [0m[36m[DEBUG] [0mArguments passed to LabVIEW: "LabVIEW Localhost.LibraryPaths C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor"
+04:00:17.309 [0m[36m[DEBUG] [0mDetected LabVIEW versions:
+2020 SP1 f1, 64bit (C:\Program Files\National Instruments\LabVIEW 2020\)
+2021 SP1 f6, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2021\)
+2021 SP1 f6, 64bit (C:\Program Files\National Instruments\LabVIEW 2021\)
+2023 Q3 Patch 7, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2023\)
+2023 Q3 Patch 6, 64bit (C:\Program Files\National Instruments\LabVIEW 2023\)
+2025 Q1 Patch 2, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2025\)
+2025 Q3 Patch 2, 64bit (C:\Program Files\National Instruments\LabVIEW 2025\)
+2026 Q1, 64bit (C:\Program Files\National Instruments\LabVIEW 2026\)
+
+04:00:19.367 [0m[36m[DEBUG] [0mLaunching: C:\Program Files (x86)\National Instruments\LabVIEW 2021\LabVIEW.exe "C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor\\Tooling\\deployment\\Create_LV_INI_Token.vi -unattended -- -p:53457"
+04:00:19.374 [0m[36m[DEBUG] [0mProcess launched with PID 6624
+Error: No connection established with application.
+
+Caused by:
+    Timed out waiting for app to connect to g-cli
+
+Location:
+    src\main.rs:62:10
+

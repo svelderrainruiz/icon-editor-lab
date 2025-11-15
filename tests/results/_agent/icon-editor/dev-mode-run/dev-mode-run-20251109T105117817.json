@@ -1,0 +1,56 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251109T105117817",
+  "mode": "disable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    32
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-09T10:51:17.8165594-08:00",
+  "status": "succeeded",
+  "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+  "updatedAt": "2025-11-09T10:52:10.5969518-08:00",
+  "verification": {
+    "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+    "IconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+    "Active": false,
+    "Entries": [
+      {
+        "Version": 2021,
+        "Bitness": 32,
+        "LabVIEWExePath": "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": null,
+        "ContainsIconEditorPath": false
+      }
+    ]
+  },
+  "verificationSummary": {
+    "presentCount": 1,
+    "containsIconEditorCount": 0,
+    "active": false,
+    "missingTargets": {
+      "version": 2021,
+      "bitness": 32,
+      "labviewIniPath": "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.ini"
+    }
+  },
+  "completedAt": "2025-11-09T10:53:23.0440391-08:00",
+  "durationSeconds": 125.23,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-09T10:51:17.8463401-08:00",
+      "status": "ok",
+      "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+      "endedAt": "2025-11-09T10:53:23.0087775-08:00",
+      "durationSeconds": 125.16
+    }
+  ]
+}

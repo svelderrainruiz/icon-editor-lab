@@ -1,0 +1,33 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251114T192545917",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\mnt\\data\\repo_local",
+  "iconEditorRoot": "C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-14T19:25:45.9169625-08:00",
+  "status": "failed",
+  "error": "Icon editor dev-mode policy not found at 'C:\\mnt\\data\\repo_local\\configs\\icon-editor\\dev-mode-targets.json'.",
+  "completedAt": "2025-11-14T19:25:45.9929076-08:00",
+  "durationSeconds": 0.08,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-14T19:25:45.9262777-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-14T19:25:45.9400933-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-14T19:25:45.9468870-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode policy not found at 'C:\\mnt\\data\\repo_local\\configs\\icon-editor\\dev-mode-targets.json'.",
+      "endedAt": "2025-11-14T19:25:45.9896670-08:00",
+      "durationSeconds": 0.02
+    }
+  ]
+}

@@ -17,7 +17,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  handshake-readiness:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run local CI readiness (handshake buffer)
+        shell: pwsh
+        run: |
+          pwsh -NoLogo -NoProfile -File tools/Test-LocalCiReadiness.ps1 `
+            -SkipTests `
+            -SkipCoverage `
+            -SkipHandshake `
+            -SkipRunnerCheck
+
   ubuntu-handshake:
+    needs: handshake-readiness
     runs-on: ubuntu-latest
     outputs:
       stamp: ${{ steps.capture-meta.outputs.stamp }}
@@ -101,14 +121,18 @@ jobs:
           python3 scripts/workflows/read_pointer.py "$POINTER" "$GITHUB_OUTPUT"
 
       - name: Write GitHub handshake pointer
+        shell: pwsh
         run: |
-          python3 scripts/workflows/update_handshake_pointer.py \
-            --pointer "${HANDSHAKE_POINTER}" \
-            --stamp "${HANDSHAKE_STAMP}" \
-            --artifact "${HANDSHAKE_ARTIFACT}" \
-            --manifest-rel "${HANDSHAKE_MANIFEST_REL}" \
-            --manifest-abs "${HANDSHAKE_MANIFEST_ABS}" \
-            --ubuntu-pointer "${UBUNTU_POINTER_PATH}"
+          $args = @(
+            'scripts/workflows/update_handshake_pointer.py',
+            '--pointer', $env:HANDSHAKE_POINTER,
+            '--stamp', $env:HANDSHAKE_STAMP,
+            '--artifact', $env:HANDSHAKE_ARTIFACT,
+            '--manifest-rel', $env:HANDSHAKE_MANIFEST_REL,
+            '--manifest-abs', $env:HANDSHAKE_MANIFEST_ABS,
+            '--ubuntu-pointer', $env:UBUNTU_POINTER_PATH
+          )
+          python3 @args
         env:
           HANDSHAKE_POINTER: handshake/pointer.json
           HANDSHAKE_STAMP: ${{ steps.capture-meta.outputs.stamp }}
@@ -294,11 +318,12 @@ jobs:
 
       - name: Update GitHub handshake pointer
         if: ${{ always() }}
+        shell: pwsh
         run: |
-          python3 scripts/workflows/update_handshake_pointer.py \
-            --pointer handshake/pointer.json \
-            --windows-run "$LOCALCI_WINDOWS_RUN" \
-            --windows-runner "$COMPUTERNAME" \
+          python3 scripts/workflows/update_handshake_pointer.py`
+            --pointer handshake/pointer.json `
+            --windows-run "$env:LOCALCI_WINDOWS_RUN" `
+            --windows-runner "$env:COMPUTERNAME" `
             --windows-job "${{ github.run_id }}"
       - name: Upload handshake pointer (control plane, updated)
         if: ${{ always() }}
@@ -325,7 +350,7 @@ jobs:
     steps:
       - run: |
           cat <<'MSG' >> "$GITHUB_STEP_SUMMARY"
-### Windows Consumer Blocked
+          ### Windows Consumer Blocked
 
-The \`windows-consumer\` job was cancelled (usually because a prior run was still using the Windows runner). Cancel the stuck job and rerun this workflow once the runner is free.
-MSG
+          The `windows-consumer` job was cancelled (usually because a prior run was still using the Windows runner). Cancel the stuck job and rerun this workflow once the runner is free.
+          MSG

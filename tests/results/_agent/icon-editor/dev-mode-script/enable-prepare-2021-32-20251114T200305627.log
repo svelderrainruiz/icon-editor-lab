@@ -1,0 +1,7 @@
+# Dev-mode Script Log
+timestamp: 2025-11-14T20:03:05.6272604-08:00
+stage: enable-prepare-2021-32
+script: C:\mnt\data\repo_local\vendor\labview-icon-editor\.github\actions\prepare-labview-source\Prepare_LabVIEW_source.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\mnt\data\repo_local\vendor\labview-icon-editor -LabVIEW_Project lv_icon_editor -Build_Spec Editor Packed Library
+exitCode: -1073741510
+

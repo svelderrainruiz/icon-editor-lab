@@ -1,0 +1,18 @@
+{
+  "schema": "icon-editor/vipm-package@v1",
+  "generatedAt": "2025-11-15T16:25:34.8335802Z",
+  "startedAt": "2025-11-15T16:25:34.8207632Z",
+  "completedAt": "2025-11-15T16:25:34.8214379Z",
+  "durationSeconds": 0.001,
+  "toolchain": "vipm",
+  "provider": "vipm-emulated",
+  "displayOnly": true,
+  "artifactCount": 0,
+  "artifacts": null,
+  "metadata": {
+    "emulated": true,
+    "scenarioFamily": "e2e.vipm-build-display-only",
+    "scenarioKind": "vipm.display-only",
+    "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab"
+  }
+}

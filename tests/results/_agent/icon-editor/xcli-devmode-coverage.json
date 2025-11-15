@@ -1,0 +1,268 @@
+{
+  "GeneratedAt": "2025-11-15T07:20:41.2410943-08:00",
+  "Root": "/mnt/data/repo_local",
+  "XCliRoot": "\\mnt\\data\\repo_local\\tools\\x-cli-develop",
+  "DevmodeDir": "\\mnt\\data\\repo_local\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode",
+  "TotalRecords": 67,
+  "DesiredScenarioFamilies": [
+    "happy-path",
+    "timeout",
+    "rogue",
+    "partial",
+    "timeout-soft",
+    "partial+timeout-soft",
+    "retry-success",
+    "lunit"
+  ],
+  "ByOperationVersionBitness": [
+    {
+      "Operation": "enable-addtoken-2021-32",
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "Total": 28,
+      "ScenarioFamilies": [
+        {
+          "Family": "'lunit",
+          "Count": 1
+        },
+        {
+          "Family": "happy-path",
+          "Count": 6
+        },
+        {
+          "Family": "lunit",
+          "Count": 1
+        },
+        {
+          "Family": "partial+timeout-soft",
+          "Count": 1
+        },
+        {
+          "Family": "retry-success",
+          "Count": 5
+        },
+        {
+          "Family": "rogue",
+          "Count": 6
+        },
+        {
+          "Family": "timeout",
+          "Count": 7
+        },
+        {
+          "Family": "timeout-soft",
+          "Count": 1
+        }
+      ],
+      "FamiliesMissing": [
+        "partial"
+      ],
+      "Scenarios": [
+        {
+          "Scenario": "'lunit.enable-addtoken-2025-64.v1','lunit.enable-prepare-2025-64.v1'",
+          "Count": 1
+        },
+        {
+          "Scenario": "happy-path",
+          "Count": 6
+        },
+        {
+          "Scenario": "lunit.enable-addtoken-2025-64.v1",
+          "Count": 1
+        },
+        {
+          "Scenario": "partial+timeout-soft.enable-addtoken-2021-32.v2",
+          "Count": 1
+        },
+        {
+          "Scenario": "retry-success.enable-addtoken-2021-32.v1",
+          "Count": 5
+        },
+        {
+          "Scenario": "rogue",
+          "Count": 6
+        },
+        {
+          "Scenario": "timeout",
+          "Count": 6
+        },
+        {
+          "Scenario": "timeout-soft.enable-addtoken-2021-32.v2",
+          "Count": 1
+        },
+        {
+          "Scenario": "timeout.enable-addtoken-2021-32.v2",
+          "Count": 1
+        }
+      ]
+    },
+    {
+      "Operation": "enable-addtoken-2021-64",
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "Total": 13,
+      "ScenarioFamilies": [
+        {
+          "Family": "'lunit",
+          "Count": 1
+        },
+        {
+          "Family": "happy-path",
+          "Count": 6
+        },
+        {
+          "Family": "lunit",
+          "Count": 1
+        },
+        {
+          "Family": "retry-success",
+          "Count": 4
+        },
+        {
+          "Family": "timeout-soft",
+          "Count": 1
+        }
+      ],
+      "FamiliesMissing": [
+        "timeout",
+        "rogue",
+        "partial",
+        "partial+timeout-soft"
+      ],
+      "Scenarios": [
+        {
+          "Scenario": "'lunit.enable-addtoken-2025-64.v1','lunit.enable-prepare-2025-64.v1'",
+          "Count": 1
+        },
+        {
+          "Scenario": "happy-path",
+          "Count": 6
+        },
+        {
+          "Scenario": "lunit.enable-addtoken-2025-64.v1",
+          "Count": 1
+        },
+        {
+          "Scenario": "retry-success.enable-addtoken-2021-32.v1",
+          "Count": 4
+        },
+        {
+          "Scenario": "timeout-soft.enable-addtoken-2021-32.v2",
+          "Count": 1
+        }
+      ]
+    },
+    {
+      "Operation": "enable-prepare-2021-32",
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "Total": 13,
+      "ScenarioFamilies": [
+        {
+          "Family": "'lunit",
+          "Count": 1
+        },
+        {
+          "Family": "happy-path",
+          "Count": 6
+        },
+        {
+          "Family": "lunit",
+          "Count": 1
+        },
+        {
+          "Family": "retry-success",
+          "Count": 4
+        },
+        {
+          "Family": "timeout-soft",
+          "Count": 1
+        }
+      ],
+      "FamiliesMissing": [
+        "timeout",
+        "rogue",
+        "partial",
+        "partial+timeout-soft"
+      ],
+      "Scenarios": [
+        {
+          "Scenario": "'lunit.enable-addtoken-2025-64.v1','lunit.enable-prepare-2025-64.v1'",
+          "Count": 1
+        },
+        {
+          "Scenario": "happy-path",
+          "Count": 6
+        },
+        {
+          "Scenario": "lunit.enable-addtoken-2025-64.v1",
+          "Count": 1
+        },
+        {
+          "Scenario": "retry-success.enable-addtoken-2021-32.v1",
+          "Count": 4
+        },
+        {
+          "Scenario": "timeout-soft.enable-addtoken-2021-32.v2",
+          "Count": 1
+        }
+      ]
+    },
+    {
+      "Operation": "enable-prepare-2021-64",
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "Total": 13,
+      "ScenarioFamilies": [
+        {
+          "Family": "'lunit",
+          "Count": 1
+        },
+        {
+          "Family": "happy-path",
+          "Count": 6
+        },
+        {
+          "Family": "lunit",
+          "Count": 1
+        },
+        {
+          "Family": "retry-success",
+          "Count": 4
+        },
+        {
+          "Family": "timeout-soft",
+          "Count": 1
+        }
+      ],
+      "FamiliesMissing": [
+        "timeout",
+        "rogue",
+        "partial",
+        "partial+timeout-soft"
+      ],
+      "Scenarios": [
+        {
+          "Scenario": "'lunit.enable-addtoken-2025-64.v1','lunit.enable-prepare-2025-64.v1'",
+          "Count": 1
+        },
+        {
+          "Scenario": "happy-path",
+          "Count": 6
+        },
+        {
+          "Scenario": "lunit.enable-addtoken-2025-64.v1",
+          "Count": 1
+        },
+        {
+          "Scenario": "retry-success.enable-addtoken-2021-32.v1",
+          "Count": 4
+        },
+        {
+          "Scenario": "timeout-soft.enable-addtoken-2021-32.v2",
+          "Count": 1
+        }
+      ]
+    }
+  ]
+}

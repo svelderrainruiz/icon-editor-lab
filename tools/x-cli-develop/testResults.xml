@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="5" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-09-26" time="07:55:49">
+  <environment nunit-version="2.5.8.0" clr-version="9.0.8" user="svelderr" os-version="10.0.22631" user-domain="NI" machine-name="USAUSLT-Z7DLW6G" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" cwd="C:\codex\home\runner\work\x-cli\x-cli" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="7.9829" asserts="0" description="Pester">
+    <results>
+      <test-suite type="TestFixture" name="C:\codex\home\runner\work\x-cli\x-cli\scripts\tests\TelemetryPublish.Tests.ps1" executed="True" result="Success" success="True" time="7.9829" asserts="0" description="C:\codex\home\runner\work\x-cli\x-cli\scripts\tests\TelemetryPublish.Tests.ps1">
+        <results>
+          <test-suite type="TestFixture" name="telemetry-publish.ps1 (dry-run and formatting)" executed="True" result="Success" success="True" time="1.5159" asserts="0" description="telemetry-publish.ps1 (dry-run and formatting)">
+            <results>
+              <test-case description="composes message with interpolation (braces-safe) and establishes baseline" name="telemetry-publish.ps1 (dry-run and formatting).composes message with interpolation (braces-safe) and establishes baseline" time="0.7823" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="produces comparison with deltas on subsequent run" name="telemetry-publish.ps1 (dry-run and formatting).produces comparison with deltas on subsequent run" time="0.6271" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="telemetry-publish.ps1 (Discord error handling)" executed="True" result="Success" success="True" time="6.9625" asserts="0" description="telemetry-publish.ps1 (Discord error handling)">
+            <results>
+              <test-case description="catches Discord post errors and suggests remediation" name="telemetry-publish.ps1 (Discord error handling).catches Discord post errors and suggests remediation" time="4.7906" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="falls back to DryRun when Discord secret is missing" name="telemetry-publish.ps1 (Discord error handling).falls back to DryRun when Discord secret is missing" time="0.6118" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="telemetry-publish.ps1 (attachment &amp; diagnostics, dry-run)" executed="True" result="Success" success="True" time="7.6216" asserts="0" description="telemetry-publish.ps1 (attachment &amp; diagnostics, dry-run)">
+            <results>
+              <test-case description="emits attachment dry-run notice, chunk diagnostics, and comment.md" name="telemetry-publish.ps1 (attachment &amp; diagnostics, dry-run).emits attachment dry-run notice, chunk diagnostics, and comment.md" time="0.6119" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

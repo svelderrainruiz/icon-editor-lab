@@ -1,6 +1,6 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+# Set-StrictMode -Version Latest
+# $ErrorActionPreference = 'Stop'
+# $PSModuleAutoLoadingPreference = 'None'
 #Requires -Version 7.0
 <#
 .SYNOPSIS
@@ -34,6 +34,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+# $PSModuleAutoLoadingPreference = 'None'
 
 <#
 .SYNOPSIS
@@ -43,14 +44,14 @@ Auto-seeded to satisfy help synopsis presence. Update with real details.
 #>
 function Resolve-ExistingFile {
 
-    # ShouldProcess guard: honor -WhatIf / -Confirm
-    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
-
     param(
         [string]$Path,
         [string]$Description
     )
+
+    # ShouldProcess guard: honor -WhatIf / -Confirm
+    if (-not $PSCmdlet.ShouldProcess($MyInvocation.MyCommand.Name, 'Execute')) { return }
 
     if ([string]::IsNullOrWhiteSpace($Path)) {
         throw "$Description path not provided."

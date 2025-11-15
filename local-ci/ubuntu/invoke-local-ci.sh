@@ -324,6 +324,7 @@ vi_head_commit = os.environ.get("LOCALCI_VI_HEAD_COMMIT") or None
 
 manifest = {
     "schema_version": "v1",
+    "runner": "ubuntu",
     "run_id": run_id,
     "created_utc": datetime.now(timezone.utc).isoformat(),
     "project": {

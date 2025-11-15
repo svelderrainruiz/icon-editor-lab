@@ -1,0 +1,25 @@
+{
+  "schema": "icon-editor/vipm-package@v1",
+  "generatedAt": "2025-11-15T16:26:20.6855374Z",
+  "startedAt": "2025-11-15T16:26:20.6704385Z",
+  "completedAt": "2025-11-15T16:26:20.6777214Z",
+  "durationSeconds": 0.007,
+  "toolchain": "vipb-gcli",
+  "provider": "vipb-gcli-emulated",
+  "displayOnly": false,
+  "artifactCount": 6,
+  "artifacts": {
+    "SourcePath": null,
+    "DestinationPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\vipm-cli-build\\Emulated_Icon_editor-0.0.0.0.vip",
+    "Name": "Emulated_Icon_editor-0.0.0.0.vip",
+    "Kind": "vip",
+    "SizeBytes": 24,
+    "LastWriteTimeUtc": "2025-11-15T16:26:20.6717815Z"
+  },
+  "metadata": {
+    "scenarioKind": "vipb-gcli.ok",
+    "scenarioFamily": "e2e.vipb-gcli-build",
+    "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+    "emulated": true
+  }
+}

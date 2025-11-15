@@ -62,3 +62,38 @@
 - Note which scenarios/runs are complete vs pending (link to artifacts).
 - Record outstanding CI failures or rogue PID findings.
 - Ensure `ICON_EDITOR_LAB_ROOT` is set in the environment when running scripts from the bundle (or note if you fell back to legacy paths).
+
+## Dev-Mode Workflow (agents)
+
+- Before changing any dev-mode behavior, read:
+  - `docs/DEV_MODE_WORKFLOW.md`
+  - `src/tests/_docs/Enable-Disable-DevMode.Tests.ps1.md`
+  - `src/tests/LvAddonDevMode.Tests.ps1` + `src/tests/IconEditorDevMode.Telemetry.Tests.ps1`
+- When asked to “run” or “debug” dev mode, prefer:
+  - VS Code tasks: `Local CI: Stage 25 DevMode (enable|disable|debug)`
+  - Script: `tests/tools/Run-DevMode-Debug.ps1`
+- On failures, do **not** edit vendor scripts first. Instead:
+  - Inspect telemetry via `tests/tools/Show-LastDevModeRun.ps1` or VS Code task `Local CI: Show last DevMode run`.
+  - Use `latest-run.json` under `tests/results/_agent/icon-editor/dev-mode-run/` as the source of truth.
+- Preserve the telemetry contract:
+  - Keep `schema`, `mode`, `operation`, `requestedVersions`, `requestedBitness`, `status`, `error`, `errorSummary`, `statePath` stable unless you also update tests + docs.
+  - If you extend the schema, add/adjust tests in the telemetry suite and update `DEV_MODE_WORKFLOW.md`.
+- Maintain path portability:
+  - Always resolve via `$env:WORKSPACE_ROOT` / repo root; never hard-code `C:\...` in new dev-mode helpers.
+  - Prefer `Join-Path -Path $RepoRoot -ChildPath 'rel/path'` over multi-segment `Join-Path` that might trigger `AdditionalChildPath` binding quirks.
+
+## LvAddon dev-mode learning loop (x-cli)
+
+- LvAddon dev mode uses x-cli as an optional simulation provider for LabVIEW/g-cli interactions.
+- When asked to "refine" or "learn from" LvAddon dev-mode behavior:
+  1. Run `tests/tools/Run-LvAddonLearningLoop.ps1` from the workspace root (uses WORKSPACE_ROOT when set).
+  2. This script:
+     - Summarizes x-cli `labview-devmode` invocations into `tests/results/_agent/icon-editor/xcli-devmode-summary.json`.
+     - Summarizes VI History runs into `tests/results/_agent/vi-history/vi-history-run-summary.json` and families into `tests/results/_agent/vi-history/vi-history-family-summary.json`.
+     - Summarizes VIPM installs into `tests/results/_agent/icon-editor/vipm-install-summary.json`.
+     - Emits a learning snippet at `tests/results/_agent/icon-editor/xcli-learning-snippet.json`.
+  3. Open the learning snippet and read `AgentInstructions` + `SampleRecords`:
+     - Use these to propose or implement LvAddon dev-mode x-cli simulation scenarios (e.g., timeout/rogue patterns).
+     - Incorporate VI History run/family summaries and VIPM install summaries to prioritize which scenarios, versions, or providers need better coverage or fixes.
+     - Keep stderr messages compatible with existing telemetry patterns (`Error: ... Timed out waiting for app to connect to g-cli`, `Rogue LabVIEW ...`). 
+  4. Apply scenario changes in `tools/x-cli-develop/src/XCli/Labview/LabviewDevmodeCommand.cs` and, if needed, extend tests under `src/tests` to verify the new behavior and updated summaries.

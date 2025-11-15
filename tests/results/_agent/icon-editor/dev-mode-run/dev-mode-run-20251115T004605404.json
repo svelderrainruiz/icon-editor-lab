@@ -1,0 +1,43 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251115T004605404",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-15T00:46:05.4034971-08:00",
+  "status": "failed",
+  "provider": "XCliSim",
+  "runId": "0fb2a06976ac499f95240867f7759136",
+  "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 1.\r\nError: [enable-addtoken-2021-32] No connection established with application.\r\nCaused by: Timed out waiting for app to connect to g-cli\r\n{\"timestampUtc\":\"2025-11-15T08:46:09.8941879Z\",\"pid\":12900,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"timeout\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"fd11dd68e9c5427bb24b8dfb0eea975c\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":1,\"message\":\"unspecified failure\",\"durationMs\":75}",
+  "errorSummary": "Error: [enable-addtoken-2021-32] No connection established with application.",
+  "completedAt": "2025-11-15T00:46:09.9897527-08:00",
+  "durationSeconds": 4.59,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-15T00:46:05.4161744-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-15T00:46:05.4308855-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-15T00:46:05.4367486-08:00",
+      "status": "failed",
+      "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 1.\r\nError: [enable-addtoken-2021-32] No connection established with application.\r\nCaused by: Timed out waiting for app to connect to g-cli\r\n{\"timestampUtc\":\"2025-11-15T08:46:09.8941879Z\",\"pid\":12900,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"timeout\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"fd11dd68e9c5427bb24b8dfb0eea975c\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":1,\"message\":\"unspecified failure\",\"durationMs\":75}",
+      "endedAt": "2025-11-15T00:46:09.9808806-08:00",
+      "durationSeconds": 4.54
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

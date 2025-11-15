@@ -1,0 +1,8 @@
+# Dev-mode Script Log
+timestamp: 2025-11-15T01:13:55.4078816-08:00
+stage: enable-prepare-2021-32
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\prepare-labview-source\Prepare_LabVIEW_source.ps1
+args: -MinimumSupportedLVVersion 2021 -SupportedBitness 32 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor -LabVIEW_Project lv_icon_editor -Build_Spec Editor Packed Library
+exitCode: 0
+
+{"timestampUtc":"2025-11-15T09:13:55.3374958Z","pid":16872,"os":"Windows","subcommand":"labview-devmode-enable","args":["--lvaddon-root","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor","--lv-version","2021","--bitness","32","--script","C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1","--args-json","[\r\n  \u0022-MinimumSupportedLVVersion\u0022,\r\n  \u00222021\u0022,\r\n  \u0022-SupportedBitness\u0022,\r\n  \u002232\u0022,\r\n  \u0022-RelativePath\u0022,\r\n  \u0022C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\u0022,\r\n  \u0022-LabVIEW_Project\u0022,\r\n  \u0022lv_icon_editor\u0022,\r\n  \u0022-Build_Spec\u0022,\r\n  \u0022Editor Packed Library\u0022\r\n]","--scenario","happy-path","--operation","enable-prepare-2021-32","--run-id","97fe03c1c0b644608e74aca87a09ae9b"],"env":{"XCLI_DEV_MODE_ROOT":"C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry"},"result":"success","exitCode":0,"message":"","durationMs":56}

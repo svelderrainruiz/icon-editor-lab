@@ -1,0 +1,33 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251114T192415627",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\mnt\\data\\repo_local",
+  "iconEditorRoot": "C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-14T19:24:15.6272211-08:00",
+  "status": "failed",
+  "error": "Icon editor dev-mode helper 'C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' was not found.",
+  "completedAt": "2025-11-14T19:24:15.6765645-08:00",
+  "durationSeconds": 0.05,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-14T19:24:15.6365299-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-14T19:24:15.6503449-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-14T19:24:15.6612573-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode helper 'C:\\mnt\\data\\repo_local\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' was not found.",
+      "endedAt": "2025-11-14T19:24:15.6735490-08:00",
+      "durationSeconds": 0.01
+    }
+  ]
+}

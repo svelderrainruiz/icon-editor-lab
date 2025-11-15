@@ -1,0 +1,43 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251115T064324536",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-15T06:43:24.5361488-08:00",
+  "status": "degraded",
+  "provider": "XCliSim",
+  "runId": "aa6c787d8e3c48e6bcccd2ffede13ee4",
+  "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 2.\r\n[x-cli] labview-devmode: partial failure for stage 'enable-addtoken-2021-32' (simulated, recoverable).\r\nWarning: [enable-addtoken-2021-32] Soft timeout while communicating with application (simulated).\r\nCaused by: Timed out waiting for app to connect to g-cli (soft)\r\n{\"timestampUtc\":\"2025-11-15T14:43:28.2203115Z\",\"pid\":39600,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"partial\\u002Btimeout-soft.enable-addtoken-2021-32.v2\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"8a7fd31cddd545c3a0098a77910f7896\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":2,\"message\":\"unspecified failure\",\"durationMs\":46}",
+  "errorSummary": "Caused by: Timed out waiting for app to connect to g-cli (soft)",
+  "completedAt": "2025-11-15T06:43:28.3177636-08:00",
+  "durationSeconds": 3.78,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-15T06:43:24.5472211-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-15T06:43:24.5619794-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-15T06:43:24.5680004-08:00",
+      "status": "failed",
+      "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 2.\r\n[x-cli] labview-devmode: partial failure for stage 'enable-addtoken-2021-32' (simulated, recoverable).\r\nWarning: [enable-addtoken-2021-32] Soft timeout while communicating with application (simulated).\r\nCaused by: Timed out waiting for app to connect to g-cli (soft)\r\n{\"timestampUtc\":\"2025-11-15T14:43:28.2203115Z\",\"pid\":39600,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"partial\\u002Btimeout-soft.enable-addtoken-2021-32.v2\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"8a7fd31cddd545c3a0098a77910f7896\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":2,\"message\":\"unspecified failure\",\"durationMs\":46}",
+      "endedAt": "2025-11-15T06:43:28.3091845-08:00",
+      "durationSeconds": 3.74
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

@@ -1,0 +1,6 @@
+{
+  "schema": "icon-editor/dev-mode-state@v1",
+  "updatedAt": "2025-11-09T10:52:10.5969518-08:00",
+  "active": false,
+  "source": "Disable-IconEditorDevelopmentMode:MissingInProject"
+}

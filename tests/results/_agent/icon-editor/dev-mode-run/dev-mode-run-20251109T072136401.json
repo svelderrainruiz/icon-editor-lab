@@ -1,0 +1,62 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251109T072136401",
+  "mode": "enable",
+  "operation": "MissingInProject",
+  "requestedVersions": [
+    2023
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+  "startedAt": "2025-11-09T07:21:36.4010094-08:00",
+  "status": "succeeded",
+  "rogueSnapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T072136483.json",
+  "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+  "updatedAt": "2025-11-09T07:22:58.1430231-08:00",
+  "verification": {
+    "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream",
+    "IconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor",
+    "Active": true,
+    "Entries": [
+      {
+        "Version": 2023,
+        "Bitness": 64,
+        "LabVIEWExePath": "C:\\Program Files\\National Instruments\\LabVIEW 2023\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files\\National Instruments\\LabVIEW 2023\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": "\"C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\vendor\\icon-editor\"",
+        "ContainsIconEditorPath": true
+      }
+    ]
+  },
+  "verificationSummary": {
+    "presentCount": 1,
+    "containsIconEditorCount": 1,
+    "active": true
+  },
+  "completedAt": "2025-11-09T07:23:11.2233064-08:00",
+  "durationSeconds": 94.82,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-09T07:21:36.4331778-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "snapshotPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-lv-enable-devmode-pre-20251109T072136483.json",
+      "exitCode": 0,
+      "endedAt": "2025-11-09T07:21:37.2071164-08:00",
+      "durationSeconds": 0.77
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-09T07:21:37.2491524-08:00",
+      "status": "ok",
+      "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+      "endedAt": "2025-11-09T07:23:11.1844967-08:00",
+      "durationSeconds": 93.94
+    }
+  ]
+}

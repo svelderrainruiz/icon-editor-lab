@@ -1,0 +1,13 @@
+{
+  "schema": "icon-editor/vi-analyzer@v1",
+  "tool": "LabVIEWCLI",
+  "labviewVersion": 2023,
+  "bitness": 64,
+  "cliPath": "C:\\fake\\LabVIEWCLI.exe",
+  "configPath": "configs/vi-analyzer/missing-in-project.viancfg",
+  "exitCode": 0,
+  "devModeLikelyDisabled": false,
+  "failureCount": 0,
+  "reportPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-emulated-20251115T081148\\vi-analyzer-report.html",
+  "cliLogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-analyzer\\vi-analyzer-emulated-20251115T081148\\vi-analyzer-cli.log"
+}

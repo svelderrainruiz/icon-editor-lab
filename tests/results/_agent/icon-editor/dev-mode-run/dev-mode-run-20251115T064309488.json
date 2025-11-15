@@ -1,0 +1,73 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251115T064309488",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-15T06:43:09.4874082-08:00",
+  "status": "succeeded",
+  "provider": "XCliSim",
+  "runId": "b56c6183853a4a56a664a98282b657de",
+  "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+  "updatedAt": "2025-11-15T06:43:23.4979301-08:00",
+  "verification": {
+    "RepoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+    "IconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+    "Active": true,
+    "Entries": [
+      {
+        "Version": 2021,
+        "Bitness": 32,
+        "LabVIEWExePath": "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": "\"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\"",
+        "ContainsIconEditorPath": true
+      },
+      {
+        "Version": 2021,
+        "Bitness": 64,
+        "LabVIEWExePath": "C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.exe",
+        "LabVIEWIniPath": "C:\\Program Files\\National Instruments\\LabVIEW 2021\\LabVIEW.ini",
+        "Present": true,
+        "TokenValue": "\"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\"",
+        "ContainsIconEditorPath": true
+      }
+    ]
+  },
+  "verificationSummary": {
+    "presentCount": 2,
+    "containsIconEditorCount": 2,
+    "active": true
+  },
+  "completedAt": "2025-11-15T06:43:23.5265039-08:00",
+  "durationSeconds": 14.04,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-15T06:43:09.4970505-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-15T06:43:09.5086416-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-15T06:43:09.5134574-08:00",
+      "status": "ok",
+      "statePath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-state.json",
+      "endedAt": "2025-11-15T06:43:23.5147755-08:00",
+      "durationSeconds": 14.0
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

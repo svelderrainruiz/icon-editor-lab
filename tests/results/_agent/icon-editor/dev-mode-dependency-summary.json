@@ -1,0 +1,16 @@
+{
+  "GeneratedAt": "2025-11-15T01:08:06.6111873-08:00",
+  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "TelemetryDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-run",
+  "Dependencies": [
+    {
+      "Operation": "BuildPackage",
+      "DependsOn": "Compare",
+      "TotalRuns": 32,
+      "SucceededWithDependency": 0,
+      "SucceededWithoutDependency": 6,
+      "FailedWithDependency": 0,
+      "FailedWithoutDependency": 26
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "icon-editor/report@v1",
+  "kind": "lvcompare",
+  "label": "lvcompare-emulated-20251115T081649",
+  "summary": "compare ok (emulated)",
+  "extra": {
+    "htmlReportPath": "C:\\fake\\lvcompare\\compare-report.html",
+    "capturePath": "C:\\fake\\lvcompare\\lvcompare-capture.json"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-run-8a991bf864cb46b4ac86c2a06fbe9f85",
+  "mode": "enable",
+  "status": "succeeded",
+  "requestedVersions": [
+    2021
+  ],
+  "requestedBitness": [
+    64
+  ],
+  "provider": "XCliSim-emulated",
+  "startedAt": "2025-11-15T08:13:42.7615637-08:00",
+  "completedAt": "2025-11-15T08:13:42.7631528-08:00"
+}

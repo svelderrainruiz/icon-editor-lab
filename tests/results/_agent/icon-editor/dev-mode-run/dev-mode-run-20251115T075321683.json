@@ -1,0 +1,35 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-off-20251115T075321683",
+  "mode": "disable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-15T07:53:21.6821473-08:00",
+  "status": "failed",
+  "provider": "XCliSim",
+  "runId": "98e40f3885ef4f2ea42088d07569d5bb",
+  "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\restore-setup-lv-source\\RestoreSetupLVSource.ps1' was not found.",
+  "errorSummary": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\restore-setup-lv-source\\RestoreSetupLVSource.ps1' was not found.",
+  "completedAt": "2025-11-15T07:53:22.9403860-08:00",
+  "durationSeconds": 1.26,
+  "stages": [
+    {
+      "name": "disable-dev-mode",
+      "startedAt": "2025-11-15T07:53:21.6935970-08:00",
+      "status": "failed",
+      "error": "Icon editor dev-mode helper 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\restore-setup-lv-source\\RestoreSetupLVSource.ps1' was not found.",
+      "endedAt": "2025-11-15T07:53:22.9257050-08:00",
+      "durationSeconds": 1.23
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

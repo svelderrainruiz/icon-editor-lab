@@ -1,0 +1,41 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251114T220231166",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-14T22:02:31.1662235-08:00",
+  "status": "failed",
+  "error": "Dev-mode script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1' exited with code 1.\r\nExecuting the following command:\r\ng-cli --lv-ver 2021 --arch 32 -v \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\lv_icon_editor.lvproj\" Editor Packed Library\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mG CLI Started - Verbose Mode\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mVersion 3.0.1\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mG CLI Arguments: \"C:\\Program Files\\G-CLI\\bin\\g-cli.exe\" \"--lv-ver\" \"2021\" \"--arch\" \"32\" \"-v\" \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\PrepareIESource.vi\" \"--\" \"LabVIEW\" \"Localhost.LibraryPaths\" \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\lv_icon_editor.lvproj\" \"Editor\" \"Packed\" \"Library\"\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mArguments passed to LabVIEW: \"LabVIEW Localhost.LibraryPaths C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\lv_icon_editor.lvproj Editor Packed Library\"\r\n06:03:01.791 \u001b[0m\u001b[36m[DEBUG] \u001b[0mDetected LabVIEW versions:\r\n2020 SP1 f1, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2020\\)\r\n2021 SP1 f6, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\)\r\n2021 SP1 f6, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2021\\)\r\n2023 Q3 Patch 7, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2023\\)\r\n2023 Q3 Patch 6, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2023\\)\r\n2025 Q1 Patch 2, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2025\\)\r\n2025 Q3 Patch 2, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2025\\)\r\n2026 Q1, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2026\\)\r\n\r\n06:03:03.839 \u001b[0m\u001b[36m[DEBUG] \u001b[0mLaunching: C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.exe \"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\Tooling\\\\PrepareIESource.vi -unattended -- -p:63310\"\r\n06:03:03.846 \u001b[0m\u001b[36m[DEBUG] \u001b[0mProcess launched with PID 19988\r\nError: No connection established with application.\r\n\r\nCaused by:\r\n    Timed out waiting for app to connect to g-cli\r\n\r\nLocation:\r\n    src\\main.rs:62:10\r\nWrite-Error: An error occurred during execution: Error: Command execution failed with exit code 1.\r\nWrite-Error: Please check the parameters and ensure the command is valid.",
+  "errorSummary": "Error: No connection established with application.",
+  "completedAt": "2025-11-14T22:04:37.3138039-08:00",
+  "durationSeconds": 126.15,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-14T22:02:31.1761020-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-14T22:02:31.1895959-08:00",
+      "durationSeconds": 0.01
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-14T22:02:31.1999525-08:00",
+      "status": "failed",
+      "error": "Dev-mode script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1' exited with code 1.\r\nExecuting the following command:\r\ng-cli --lv-ver 2021 --arch 32 -v \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\PrepareIESource.vi\" -- LabVIEW Localhost.LibraryPaths \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\lv_icon_editor.lvproj\" Editor Packed Library\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mG CLI Started - Verbose Mode\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mVersion 3.0.1\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mG CLI Arguments: \"C:\\Program Files\\G-CLI\\bin\\g-cli.exe\" \"--lv-ver\" \"2021\" \"--arch\" \"32\" \"-v\" \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\PrepareIESource.vi\" \"--\" \"LabVIEW\" \"Localhost.LibraryPaths\" \"C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\lv_icon_editor.lvproj\" \"Editor\" \"Packed\" \"Library\"\r\n06:03:01.788 \u001b[0m\u001b[36m[DEBUG] \u001b[0mArguments passed to LabVIEW: \"LabVIEW Localhost.LibraryPaths C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\lv_icon_editor.lvproj Editor Packed Library\"\r\n06:03:01.791 \u001b[0m\u001b[36m[DEBUG] \u001b[0mDetected LabVIEW versions:\r\n2020 SP1 f1, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2020\\)\r\n2021 SP1 f6, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\)\r\n2021 SP1 f6, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2021\\)\r\n2023 Q3 Patch 7, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2023\\)\r\n2023 Q3 Patch 6, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2023\\)\r\n2025 Q1 Patch 2, 32bit (C:\\Program Files (x86)\\National Instruments\\LabVIEW 2025\\)\r\n2025 Q3 Patch 2, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2025\\)\r\n2026 Q1, 64bit (C:\\Program Files\\National Instruments\\LabVIEW 2026\\)\r\n\r\n06:03:03.839 \u001b[0m\u001b[36m[DEBUG] \u001b[0mLaunching: C:\\Program Files (x86)\\National Instruments\\LabVIEW 2021\\LabVIEW.exe \"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\Tooling\\\\PrepareIESource.vi -unattended -- -p:63310\"\r\n06:03:03.846 \u001b[0m\u001b[36m[DEBUG] \u001b[0mProcess launched with PID 19988\r\nError: No connection established with application.\r\n\r\nCaused by:\r\n    Timed out waiting for app to connect to g-cli\r\n\r\nLocation:\r\n    src\\main.rs:62:10\r\nWrite-Error: An error occurred during execution: Error: Command execution failed with exit code 1.\r\nWrite-Error: Please check the parameters and ensure the command is valid.",
+      "endedAt": "2025-11-14T22:04:37.3110261-08:00",
+      "durationSeconds": 126.11
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

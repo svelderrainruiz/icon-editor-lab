@@ -1,0 +1,43 @@
+{
+  "schema": "icon-editor/dev-mode-run@v1",
+  "label": "dev-mode-on-20251115T064255984",
+  "mode": "enable",
+  "operation": "BuildPackage",
+  "requestedVersions": null,
+  "requestedBitness": null,
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "iconEditorRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "startedAt": "2025-11-15T06:42:55.9819143-08:00",
+  "status": "failed",
+  "provider": "XCliSim",
+  "runId": "85ab3a74dda3487abc695ede89c69420",
+  "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 1.\r\nRogue LabVIEW processes detected during stage 'enable-addtoken-2021-32'. See temp_telemetry/labview-devmode/rogue-sim.log for details.\r\n{\"timestampUtc\":\"2025-11-15T14:43:01.2452411Z\",\"pid\":41420,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"rogue\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"cf9f830648884940bf7ebe94dc3ff27d\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":1,\"message\":\"unspecified failure\",\"durationMs\":75}",
+  "errorSummary": "Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-32'. See temp_telemetry/labview-devmode/rogue-sim.log for details.",
+  "completedAt": "2025-11-15T06:43:01.3788157-08:00",
+  "durationSeconds": 5.4,
+  "stages": [
+    {
+      "name": "rogue-check",
+      "startedAt": "2025-11-15T06:42:56.0091329-08:00",
+      "status": "ok",
+      "stage": "enable-devmode-pre",
+      "endedAt": "2025-11-15T06:42:56.0319388-08:00",
+      "durationSeconds": 0.02
+    },
+    {
+      "name": "enable-dev-mode",
+      "startedAt": "2025-11-15T06:42:56.0406096-08:00",
+      "status": "failed",
+      "error": "Dev-mode simulation via x-cli for script 'C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1' exited with code 1.\r\nRogue LabVIEW processes detected during stage 'enable-addtoken-2021-32'. See temp_telemetry/labview-devmode/rogue-sim.log for details.\r\n{\"timestampUtc\":\"2025-11-15T14:43:01.2452411Z\",\"pid\":41420,\"os\":\"Windows\",\"subcommand\":\"labview-devmode-enable\",\"args\":[\"--lvaddon-root\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\",\"--lv-version\",\"2021\",\"--bitness\",\"32\",\"--script\",\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\vendor\\\\labview-icon-editor\\\\.github\\\\actions\\\\add-token-to-labview\\\\AddTokenToLabVIEW.ps1\",\"--args-json\",\"[\\r\\n  \\u0022-MinimumSupportedLVVersion\\u0022,\\r\\n  \\u00222021\\u0022,\\r\\n  \\u0022-SupportedBitness\\u0022,\\r\\n  \\u002232\\u0022,\\r\\n  \\u0022-RelativePath\\u0022,\\r\\n  \\u0022C:\\\\\\\\codex\\\\\\\\home\\\\\\\\runner\\\\\\\\work\\\\\\\\icon-editor-lab\\\\\\\\vendor\\\\\\\\labview-icon-editor\\u0022\\r\\n]\",\"--scenario\",\"rogue\",\"--operation\",\"enable-addtoken-2021-32\",\"--run-id\",\"cf9f830648884940bf7ebe94dc3ff27d\"],\"env\":{\"XCLI_DEV_MODE_ROOT\":\"C:\\\\codex\\\\home\\\\runner\\\\work\\\\icon-editor-lab\\\\tools\\\\x-cli-develop\\\\temp_telemetry\"},\"result\":\"failure\",\"exitCode\":1,\"message\":\"unspecified failure\",\"durationMs\":75}",
+      "endedAt": "2025-11-15T06:43:01.3666277-08:00",
+      "durationSeconds": 5.33
+    }
+  ],
+  "lvAddonRootPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+  "lvAddonRootSource": "parameter",
+  "lvAddonRootMode": "Relaxed",
+  "lvAddonRootOrigin": "https://github.com/svelderrainruiz/labview-icon-editor.git",
+  "lvAddonRootHost": "github.com",
+  "lvAddonRootIsLVAddonLab": true,
+  "lvAddonRootContributor": "svelderrainruiz"
+}

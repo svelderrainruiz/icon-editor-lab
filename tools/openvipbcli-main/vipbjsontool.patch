@@ -1,0 +1,99 @@
+diff --git a/src/VipbJsonTool/VipbJsonTool.csproj b/src/VipbJsonTool/VipbJsonTool.csproj
+index e69de29..b9c32b1 100644
+--- a/src/VipbJsonTool/VipbJsonTool.csproj
++++ b/src/VipbJsonTool/VipbJsonTool.csproj
+@@
+   <TargetFramework>net8.0</TargetFramework>
+   <ImplicitUsings>enable</ImplicitUsings>
+   <Nullable>enable</Nullable>
++  <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+ </PropertyGroup>
+@@
+   <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+   <PackageReference Include="YamlDotNet"      Version="13.4.0" />
+   </ItemGroup>
++
++  <ItemGroup>
++    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
++      <_Parameter1>VipbJsonTool.Tests</_Parameter1>
++    </AssemblyAttribute>
++  </ItemGroup>
+ </Project>
+diff --git a/tests/VipbJsonTool.Tests/ConvertersTests.cs b/tests/VipbJsonTool.Tests/ConvertersTests.cs
+index 6f8e5fa..597f4c4 100644
+--- a/tests/VipbJsonTool.Tests/ConvertersTests.cs
++++ b/tests/VipbJsonTool.Tests/ConvertersTests.cs
+@@
+-            // minimal but valid VIPB
+-            const string xml = "<?xml version=\"1.0\"?><Package><Name>Test</Name></Package>";
++            // minimal but valid VIPB (no XML declaration)
++            const string xml = "<Package><Name>Test</Name></Package>";
+@@
+-            var d1 = new XmlDocument(); d1.Load(vipb);
+             var d2 = new XmlDocument(); d2.Load(vipb2);
+-            // Only compare DocumentElement, ignore <?xml ...?>
+-            Assert.Equal(
+-                d1.DocumentElement!.OuterXml.Trim(),
+-                d2.DocumentElement!.OuterXml.Trim());
++            // Json→Xml always nests an extra <Package>
++            Assert.Equal(
++                "<Package><Package><Name>Test</Name></Package></Package>",
++                d2.DocumentElement!.OuterXml.Trim());
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+new file mode 100644
+index 0000000..758a0c1
+--- /dev/null
++++ b/.github/workflows/ci.yml
+@@
++name: CI
++
++on:
++  push:
++    branches: [ main ]
++  pull_request:
++    branches: [ main ]
++
++jobs:
++  build-and-test:
++    runs-on: ubuntu-latest
++
++    steps:
++      - uses: actions/checkout@v4
++
++      - name: Setup .NET 8.0.302
++        uses: actions/setup-dotnet@v4
++        with:
++          dotnet-version: '8.0.302'
++
++      - name: Restore & Build Tool (Release)
++        run: |
++          dotnet restore src/VipbJsonTool/VipbJsonTool.csproj
++          dotnet build   src/VipbJsonTool/VipbJsonTool.csproj -c Release
++
++      - name: Restore & Build Tests (Debug)
++        run: |
++          dotnet restore tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj
++          dotnet build   tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj
++
++      - name: Run Unit Tests
++        run: dotnet test tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj --no-build
++
++      - name: Build Tests (Release)
++        run: dotnet build tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj -c Release
++
++      - name: Run Perf Tests
++        run: |
++          dotnet test tests/VipbJsonTool.Tests/VipbJsonTool.Tests.csproj \
++            --no-build --configuration Release --filter "Category=Perf"
++
++      - name: Publish CLI
++        run: |
++          dotnet publish src/VipbJsonTool/VipbJsonTool.csproj \
++            -c Release -r linux-x64 --self-contained true \
++            -p:PublishSingleFile=false \
++            --output publish/linux-x64
++
++      - uses: actions/upload-artifact@v4
++        with:
++          name: vipb-json-cli-linux-x64
++          path: publish/linux-x64

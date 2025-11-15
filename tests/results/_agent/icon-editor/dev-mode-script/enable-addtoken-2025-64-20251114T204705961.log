@@ -1,0 +1,35 @@
+# Dev-mode Script Log
+timestamp: 2025-11-14T20:47:05.9619280-08:00
+stage: enable-addtoken-2025-64
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\add-token-to-labview\AddTokenToLabVIEW.ps1
+args: -MinimumSupportedLVVersion 2025 -SupportedBitness 64 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor
+exitCode: 0
+
+Executing the following command:
+g-cli --lv-ver 2025 --arch 64 -v "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" -- "LabVIEW" "Localhost.LibraryPaths" "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor"
+04:46:49.142 [0m[36m[DEBUG] [0mG CLI Started - Verbose Mode
+04:46:49.142 [0m[36m[DEBUG] [0mVersion 3.0.1
+04:46:49.142 [0m[36m[DEBUG] [0mG CLI Arguments: "C:\Program Files\G-CLI\bin\g-cli.exe" "--lv-ver" "2025" "--arch" "64" "-v" "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\Tooling\deployment\Create_LV_INI_Token.vi" "--" "LabVIEW" "Localhost.LibraryPaths" "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor"
+04:46:49.142 [0m[36m[DEBUG] [0mArguments passed to LabVIEW: "LabVIEW Localhost.LibraryPaths C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+04:46:49.147 [0m[36m[DEBUG] [0mDetected LabVIEW versions:
+2020 SP1 f1, 64bit (C:\Program Files\National Instruments\LabVIEW 2020\)
+2021 SP1 f6, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2021\)
+2021 SP1 f6, 64bit (C:\Program Files\National Instruments\LabVIEW 2021\)
+2023 Q3 Patch 7, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2023\)
+2023 Q3 Patch 6, 64bit (C:\Program Files\National Instruments\LabVIEW 2023\)
+2025 Q1 Patch 2, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2025\)
+2025 Q3 Patch 2, 64bit (C:\Program Files\National Instruments\LabVIEW 2025\)
+2026 Q1, 64bit (C:\Program Files\National Instruments\LabVIEW 2026\)
+
+04:46:51.203 [0m[36m[DEBUG] [0mLaunching: C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\deployment\\Create_LV_INI_Token.vi -unattended -- -p:56756"
+04:46:51.211 [0m[36m[DEBUG] [0mProcess launched with PID 27764
+04:47:04.691 [0m[36m[DEBUG] [0mComms reader stopped.
+04:47:04.783 [0m[36m[DEBUG] [0mSignal Handler Stopped.
+04:47:04.784 [0m[36m[DEBUG] [0mAction loop stopped.
+04:47:04.784 [0m[36m[DEBUG] [0mWaiting on monitoring thread to complete
+04:47:05.915 [0m[36m[DEBUG] [0mMonitoring complete and kill not requested.
+04:47:05.915 [0m[36m[DEBUG] [0mStopping LabVIEW monitoring due to stop command from application
+04:47:05.915 [0m[36m[DEBUG] [0mMonitoring thread completed
+04:47:05.915 [0m[36m[DEBUG] [0mExiting G-CLI with exit code 0
+Create localhost.library path from ini file
+

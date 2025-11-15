@@ -1,0 +1,7 @@
+<!-- Directory.Build.props  (repo root) -->
+<Project>
+  <PropertyGroup>
+    <RestoreUseStaticGraphEvaluation>false</RestoreUseStaticGraphEvaluation>
+    <RestoreDisableParallel>true</RestoreDisableParallel>
+  </PropertyGroup>
+</Project>

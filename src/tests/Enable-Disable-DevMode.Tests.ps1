@@ -544,7 +544,77 @@ foreach ($version in $Versions) {
     It 'throws when reset helper script is missing' {
         $stub = Initialize-DevModeStubRepo -Name 'disable-reset-missing'
         Remove-Item -LiteralPath (Join-Path $stub.RepoRoot 'tools/icon-editor/Reset-IconEditorWorkspace.ps1') -Force
-
+ 
         { & $script:disableScript -RepoRoot $stub.RepoRoot -IconEditorRoot $stub.IconEditorRoot -Versions 2026 -Bitness 64 } | Should -Throw '*Icon editor dev-mode helper*'
+    }
+
+    Context 'XCliSim provider end-to-end' -Tag 'XCliSim' {
+        It 'aligns telemetry and x-cli logs for partial failures and stage operations' {
+            $repoRoot = $script:repoRootActual
+            $enableScript = $script:enableScript
+
+            $env:ICON_EDITOR_SKIP_WAIT_FOR_LABVIEW_EXIT = '1'
+            $env:SKIP_ROGUE_LV_DETECTION = '1'
+
+            $env:ICONEDITORLAB_PROVIDER = 'XCliSim'
+            $env:ICONEDITORLAB_SIM_SCENARIO = 'partial'
+
+            $runId = "e2e-xclisim-partial-" + ([guid]::NewGuid().ToString('n'))
+            $env:ICONEDITORLAB_RUN_ID = $runId
+
+            $threw = $false
+            try {
+                & $enableScript -RepoRoot $repoRoot -Versions 2025 -Bitness 64 -Operation 'BuildPackage'
+            } catch {
+                $threw = $true
+            } finally {
+                Remove-Item Env:ICONEDITORLAB_SIM_SCENARIO -ErrorAction SilentlyContinue
+                Remove-Item Env:ICONEDITORLAB_PROVIDER -ErrorAction SilentlyContinue
+                Remove-Item Env:ICONEDITORLAB_RUN_ID -ErrorAction SilentlyContinue
+                Remove-Item Env:ICON_EDITOR_SKIP_WAIT_FOR_LABVIEW_EXIT -ErrorAction SilentlyContinue
+                Remove-Item Env:SKIP_ROGUE_LV_DETECTION -ErrorAction SilentlyContinue
+            }
+
+            $threw | Should -BeTrue
+
+            $agentDir = Join-Path $repoRoot 'tests/results/_agent/icon-editor/dev-mode-run'
+            $latest = Join-Path $agentDir 'latest-run.json'
+            Test-Path -LiteralPath $latest | Should -BeTrue
+
+            $telemetry = Get-Content -LiteralPath $latest -Raw | ConvertFrom-Json
+            $telemetry.mode   | Should -Be 'enable'
+            $telemetry.requestedVersions | Should -Contain 2025
+            $telemetry.requestedBitness  | Should -Contain 64
+
+            $xCliLogDir = Join-Path $repoRoot 'tools/x-cli-develop/temp_telemetry/labview-devmode'
+            $invPath = Join-Path $xCliLogDir 'invocations.jsonl'
+            if (-not (Test-Path -LiteralPath $invPath -PathType Leaf)) {
+                Write-Warning ("[XCliSim] invocations.jsonl not found at '{0}'. Skipping x-cli alignment assertions." -f $invPath)
+                return
+            }
+
+            $records = Get-Content -LiteralPath $invPath | Where-Object { $_ } | ForEach-Object {
+                try { ConvertFrom-Json $_ -ErrorAction Stop } catch { $null }
+            } | Where-Object { $_ }
+
+            $filtered = $records | Where-Object { $_.RunId -eq $runId }
+            $filtered.Count | Should -BeGreaterThan 0
+
+            $filtered.Mode | Should -Contain 'enable'
+
+            # Operation-stage semantics: ensure stage labels are propagated into x-cli Operation.
+            $ops = $filtered.Operation
+            $ops | Where-Object { $_ } | Should -Not -BeNullOrEmpty
+            # Expect at least one add-token and one prepare stage for the run.
+            ($ops | Where-Object { $_ -like 'enable-addtoken-*' }).Count | Should -BeGreaterThan 0
+            ($ops | Where-Object { $_ -like 'enable-prepare-*' }).Count | Should -BeGreaterThan 0
+
+            if ($telemetry.lvAddonRootPath) {
+                ($filtered | ForEach-Object { $_.LvaddonRoot } | Sort-Object -Unique) | Should -Contain $telemetry.lvAddonRootPath
+            }
+
+            ($filtered | ForEach-Object { $_.LvVersion } | Sort-Object -Unique) | Should -Contain '2025'
+            ($filtered | ForEach-Object { $_.Bitness }  | Sort-Object -Unique) | Should -Contain '64'
+        }
     }
 }

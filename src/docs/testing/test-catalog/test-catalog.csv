@@ -3,7 +3,7 @@ tests/Enable-Disable-DevMode.Tests.ps1,Enable/Disable dev mode scripts,"IconEdit
 tests/IconEditorDevMode.Integration.Tests.ps1,IconEditor development mode (integration),"IconEditor, Integration, DevMode",1,5,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
 tests/IconEditorDevMode.Stability.Tests.ps1,IconEditor dev-mode stability harness,"IconEditor, DevMode, Stability",6,29,tools/icon-editor/Test-DevModeStability.ps1
 tests/IconEditorDevMode.Telemetry.Tests.ps1,IconEditor dev-mode telemetry helpers,"IconEditor, DevMode, Telemetry",4,22,tools/icon-editor/IconEditorDevMode.psm1
-tests/IconEditorDevMode.Tests.ps1,IconEditor dev mode helpers,IconEditor,12,28,
+tests/LvAddonDevMode.Tests.ps1,LvAddon dev mode helpers,"LvAddon, DevMode",12,28,
 tests/IconEditorMissingInProject.CompareOnly.Tests.ps1,MissingInProject compare-only suite,"IconEditor, Integration, MissingInProject, CompareOnly",1,5,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
 tests/IconEditorMissingInProject.DevMode.Tests.ps1,MissingInProject honours dev-mode token,"IconEditor, Integration, MissingInProject",4,15,"tools/icon-editor/Disable-DevMode.ps1, tools/icon-editor/Enable-DevMode.ps1"
 tests/IconEditorPackage.Tests.ps1,IconEditorPackage helpers,,12,35,"tools/GCli.psm1, tools/Vipm.psm1, tools/icon-editor/IconEditorPackage.psm1"

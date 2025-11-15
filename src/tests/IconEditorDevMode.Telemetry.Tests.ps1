@@ -126,6 +126,36 @@ Set-Content -LiteralPath '$closeLog' -Value (Get-Date).ToString('o') -Encoding u
         $payload.stages.Count | Should -Be 1
     }
 
+    It 'persists lv-addon root metadata to telemetry output' {
+        $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
+        New-Item -ItemType Directory -Force -Path $repoRoot | Out-Null
+
+        $context = Initialize-IconEditorDevModeTelemetry -Mode 'enable' -RepoRoot $repoRoot -IconEditorRoot $repoRoot -Versions 2024 -Bitness 32 -Operation 'UnitTest'
+        $summary = [pscustomobject]@{
+            Path = 'C:\icon-editor'
+            Source = 'parameter'
+            Mode = 'Strict'
+            Origin = 'https://github.com/contributor/labview-icon-editor.git'
+            Host = 'github.com'
+            IsLVAddonLab = $true
+            Contributor = 'telemetry-user'
+        }
+
+        $module = Get-Module -Name IconEditorDevMode
+        & $module { param($ctx,$sum) Set-LvAddonRootTelemetry -TelemetryContext $ctx -Summary $sum } $context $summary
+
+        Complete-IconEditorDevModeTelemetry -Context $context -Status 'succeeded'
+
+        $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
+        $payload.lvAddonRootPath | Should -Be $summary.Path
+        $payload.lvAddonRootSource | Should -Be $summary.Source
+        $payload.lvAddonRootMode | Should -Be $summary.Mode
+        $payload.lvAddonRootOrigin | Should -Be $summary.Origin
+        $payload.lvAddonRootHost | Should -Be $summary.Host
+        $payload.lvAddonRootIsLVAddonLab | Should -BeTrue
+        $payload.lvAddonRootContributor | Should -Be $summary.Contributor
+    }
+
     It 'records failures once and preserves settle errors' {
         $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
         New-Item -ItemType Directory -Force -Path $repoRoot | Out-Null
@@ -154,6 +184,116 @@ Set-Content -LiteralPath '$closeLog' -Value (Get-Date).ToString('o') -Encoding u
         $payload.error | Should -Be 'boom'
         $payload.settleSummary.failedEvents | Should -Be 1
         $payload.settleSummary.failedStages | Should -Be 'failing-settle'
+    }
+
+    It 'derives a concise errorSummary from multi-line error text' {
+        $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
+        New-Item -ItemType Directory -Force -Path $repoRoot | Out-Null
+
+        $context = Initialize-IconEditorDevModeTelemetry -Mode 'enable' -RepoRoot $repoRoot -IconEditorRoot $repoRoot -Versions 2021 -Bitness 32 -Operation 'UnitTest'
+        $errorText = @"
+Dev-mode script 'AddTokenToLabVIEW.ps1' exited with code 1.
+Error: No connection established with application.
+Caused by: Timed out waiting for app to connect to g-cli
+"@
+        Complete-IconEditorDevModeTelemetry -Context $context -Status 'failed' -Error $errorText
+
+        $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
+        $payload.error | Should -Be $errorText.TrimEnd()
+        $payload.errorSummary | Should -Be 'Error: No connection established with application.'
+    }
+
+    It 'supports degraded status outcomes for partial failures' {
+        $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
+        New-Item -ItemType Directory -Force -Path $repoRoot | Out-Null
+
+        $context = Initialize-IconEditorDevModeTelemetry -Mode 'enable' -RepoRoot $repoRoot -IconEditorRoot $repoRoot -Versions 2025 -Bitness 64 -Operation 'UnitTest'
+        $errorText = @"
+Dev-mode simulation via x-cli for script 'AddTokenToLabVIEW.ps1' exited with code 2.
+[x-cli] labview-devmode: partial failure for stage 'enable-addtoken-2025-64' (simulated, recoverable).
+"@
+        Complete-IconEditorDevModeTelemetry -Context $context -Status 'degraded' -Error $errorText
+
+        $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
+        $expectedOutcome = @{ Mode = 'enable'; Status = 'degraded' }
+        Assert-TelemetryOutcome -Payload $payload -ExpectedMode $expectedOutcome.Mode -ExpectedStatus $expectedOutcome.Status
+        $payload.error | Should -Be $errorText.TrimEnd()
+    }
+
+    It 'classifies and summarizes x-cli timeout and partial-soft failures in telemetry' {
+        $repoRoot = Join-Path $TestDrive ([guid]::NewGuid().ToString('n'))
+        New-Item -ItemType Directory -Force -Path $repoRoot | Out-Null
+
+        $scenarios = @(
+            [pscustomobject]@{
+                Name = 'partial-soft'
+                ErrorText = @"
+Dev-mode simulation via x-cli for script 'AddTokenToLabVIEW.ps1' exited with code 2.
+[x-cli] labview-devmode: partial failure for stage 'enable-addtoken-2025-64' (simulated, recoverable).
+"@
+                ExpectedStatus = 'degraded'
+                ExpectedSummary = 'Dev-mode simulation via x-cli for script ''AddTokenToLabVIEW.ps1'' exited with code 2.'
+            },
+            [pscustomobject]@{
+                Name = 'timeout'
+                ErrorText = @"
+Dev-mode simulation via x-cli for script 'AddTokenToLabVIEW.ps1' exited with code 1.
+Error: No connection established with application.
+Caused by: Timed out waiting for app to connect to g-cli
+"@
+                ExpectedStatus = 'failed'
+                ExpectedSummary = 'Error: No connection established with application.'
+            }
+        )
+
+        foreach ($scenario in $scenarios) {
+            $context = Initialize-IconEditorDevModeTelemetry -Mode 'enable' -RepoRoot $repoRoot -IconEditorRoot $repoRoot -Versions 2025 -Bitness 64 -Operation 'UnitTest'
+            $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $scenario.ErrorText
+            Complete-IconEditorDevModeTelemetry -Context $context -Status $status -Error $scenario.ErrorText
+
+            Test-Path -LiteralPath $context.TelemetryPath | Should -BeTrue
+            $payload = Get-Content -LiteralPath $context.TelemetryPath -Raw | ConvertFrom-Json
+
+            $payload.status | Should -Be $scenario.ExpectedStatus
+            $payload.error | Should -Be $scenario.ErrorText.TrimEnd()
+            $payload.errorSummary | Should -Be $scenario.ExpectedSummary
+        }
+    }
+
+    Context 'Outcome classification helper' {
+        It 'classifies x-cli partial failures as degraded' {
+            $msg = @"
+Dev-mode simulation via x-cli for script 'AddTokenToLabVIEW.ps1' exited with code 2.
+[x-cli] labview-devmode: partial failure for stage 'enable-addtoken-2025-64' (simulated, recoverable).
+"@
+            $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $msg
+            $status | Should -Be 'degraded'
+        }
+
+        It 'classifies timeout errors as failed' {
+            $msg = @"
+Dev-mode simulation via x-cli for script 'AddTokenToLabVIEW.ps1' exited with code 1.
+Error: No connection established with application.
+Caused by: Timed out waiting for app to connect to g-cli
+"@
+            $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $msg
+            $status | Should -Be 'failed'
+        }
+
+        It 'classifies rogue-process errors as failed' {
+            $msg = @"
+Dev-mode simulation via x-cli for script 'Close_LabVIEW.ps1' exited with code 1.
+Rogue LabVIEW processes detected during stage 'disable-close-2025-64'. See temp_telemetry/labview-devmode/rogue-sim.log for details.
+"@
+            $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $msg
+            $status | Should -Be 'failed'
+        }
+
+        It 'classifies generic simulated failures as failed' {
+            $msg = "[x-cli] labview-devmode: failure in stage 'enable-addtoken-2025-64' (simulated)"
+            $status = Get-IconEditorDevModeOutcomeStatus -ErrorMessage $msg
+            $status | Should -Be 'failed'
+        }
     }
 
     Context 'Invoke-LabVIEWRogueSweep' {

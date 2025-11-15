@@ -1,0 +1,18 @@
+{
+  "schema": "icon-editor/vipm-package@v1",
+  "generatedAt": "2025-11-15T16:24:58.3066291Z",
+  "startedAt": "2025-11-15T16:24:58.2976353Z",
+  "completedAt": "2025-11-15T16:24:58.2983183Z",
+  "durationSeconds": 0.001,
+  "toolchain": "vipb-gcli",
+  "provider": "vipb-gcli-emulated",
+  "displayOnly": false,
+  "artifactCount": 0,
+  "artifacts": null,
+  "metadata": {
+    "scenarioFamily": "e2e.vipb-gcli-build",
+    "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+    "emulated": true,
+    "scenarioKind": "vipb-gcli.ok"
+  }
+}

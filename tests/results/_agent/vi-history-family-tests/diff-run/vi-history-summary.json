@@ -1,0 +1,12 @@
+{
+  "schema": "pr-vi-history-summary@v1",
+  "totals": {
+    "targets": 2,
+    "completed": 2,
+    "diffTargets": 2,
+    "comparisons": 2,
+    "diffs": 5,
+    "errors": 0,
+    "skippedEntries": 0
+  }
+}

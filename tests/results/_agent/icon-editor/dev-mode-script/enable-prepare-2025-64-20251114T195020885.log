@@ -1,0 +1,37 @@
+# Dev-mode Script Log
+timestamp: 2025-11-14T19:50:20.8858108-08:00
+stage: enable-prepare-2025-64
+script: C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\.github\actions\prepare-labview-source\Prepare_LabVIEW_source.ps1
+args: -MinimumSupportedLVVersion 2025 -SupportedBitness 64 -RelativePath C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor -LabVIEW_Project lv_icon_editor -Build_Spec Editor Packed Library
+exitCode: 1
+
+Executing the following command:
+g-cli --lv-ver 2025 --arch 64 -v "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\Tooling\PrepareIESource.vi" -- LabVIEW Localhost.LibraryPaths "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\lv_icon_editor.lvproj" Editor Packed Library
+03:48:44.669 [0m[36m[DEBUG] [0mG CLI Started - Verbose Mode
+03:48:44.669 [0m[36m[DEBUG] [0mVersion 3.0.1
+03:48:44.669 [0m[36m[DEBUG] [0mG CLI Arguments: "C:\Program Files\G-CLI\bin\g-cli.exe" "--lv-ver" "2025" "--arch" "64" "-v" "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\Tooling\PrepareIESource.vi" "--" "LabVIEW" "Localhost.LibraryPaths" "C:\codex\home\runner\work\icon-editor-lab\vendor\labview-icon-editor\lv_icon_editor.lvproj" "Editor" "Packed" "Library"
+03:48:44.669 [0m[36m[DEBUG] [0mArguments passed to LabVIEW: "LabVIEW Localhost.LibraryPaths C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\lv_icon_editor.lvproj Editor Packed Library"
+03:48:44.673 [0m[36m[DEBUG] [0mDetected LabVIEW versions:
+2020 SP1 f1, 64bit (C:\Program Files\National Instruments\LabVIEW 2020\)
+2021 SP1 f6, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2021\)
+2021 SP1 f6, 64bit (C:\Program Files\National Instruments\LabVIEW 2021\)
+2023 Q3 Patch 7, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2023\)
+2023 Q3 Patch 6, 64bit (C:\Program Files\National Instruments\LabVIEW 2023\)
+2025 Q1 Patch 2, 32bit (C:\Program Files (x86)\National Instruments\LabVIEW 2025\)
+2025 Q3 Patch 2, 64bit (C:\Program Files\National Instruments\LabVIEW 2025\)
+2026 Q1, 64bit (C:\Program Files\National Instruments\LabVIEW 2026\)
+
+03:48:46.733 [0m[36m[DEBUG] [0mLaunching: C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\Tooling\\PrepareIESource.vi -unattended -- -p:58790"
+03:48:46.741 [0m[36m[DEBUG] [0mProcess launched with PID 6804
+03:49:40.969 [0m[34m[INFO] [0mProcess Lost
+03:49:40.969 [0m[36m[DEBUG] [0mThe LabVIEW process appears to have closed down
+Error: No connection established with application.
+
+Caused by:
+    Timed out waiting for app to connect to g-cli
+
+Location:
+    src\main.rs:62:10
+Write-Error: An error occurred during execution: Error: Command execution failed with exit code 1.
+Write-Error: Please check the parameters and ensure the command is valid.
+

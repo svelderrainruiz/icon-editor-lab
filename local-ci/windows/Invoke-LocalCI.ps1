@@ -1,6 +1,8 @@
 #Requires -Version 7.0
 [CmdletBinding()]
 param(
+    [ValidateSet('Run','Ready')]
+    [string]$Mode = 'Run',
     [string]$ConfigPath = (Join-Path $PSScriptRoot 'profile.psd1'),
     [string[]]$OnlyStages,
     [string[]]$SkipStages,
@@ -194,6 +196,15 @@ function Get-LabVIEWBitnessPlan {
 }
 
 $repoRoot   = Get-RepoRoot
+
+if ($Mode -ieq 'Ready') {
+    $readinessScript = Join-Path $repoRoot 'tools/Test-LocalCiReadiness.ps1'
+    if (-not (Test-Path -LiteralPath $readinessScript)) {
+        throw "Readiness helper not found at $readinessScript"
+    }
+    & $readinessScript
+    return
+}
 $config     = Import-LocalCIConfig -ConfigPath $ConfigPath
 $stagesRoot = Join-Path $PSScriptRoot 'stages'
 $stages     = Get-StageList -StagesRoot $stagesRoot

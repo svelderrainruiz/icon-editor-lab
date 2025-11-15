@@ -1,0 +1,232 @@
+{
+  "GeneratedAt": "2025-11-15T09:26:31.1131433-08:00",
+  "WorkspaceRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
+  "XCliRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop",
+  "SourceLogPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode\\invocations.jsonl",
+  "SampleRecords": [
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-prepare-2021-64",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "64",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+        "-LabVIEW_Project",
+        "lv_icon_editor",
+        "-Build_Spec",
+        "Editor Packed Library"
+      ],
+      "Scenario": "lunit.enable-addtoken-2025-64.v1",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-addtoken-2021-32",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "32",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-prepare-2021-32",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "32",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+        "-LabVIEW_Project",
+        "lv_icon_editor",
+        "-Build_Spec",
+        "Editor Packed Library"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-addtoken-2021-64",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "64",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-prepare-2021-64",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "64",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+        "-LabVIEW_Project",
+        "lv_icon_editor",
+        "-Build_Spec",
+        "Editor Packed Library"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-addtoken-2021-32",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "32",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-prepare-2021-32",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "32",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+        "-LabVIEW_Project",
+        "lv_icon_editor",
+        "-Build_Spec",
+        "Editor Packed Library"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-addtoken-2021-64",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "64",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-prepare-2021-64",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "64",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\prepare-labview-source\\Prepare_LabVIEW_source.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "64",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+        "-LabVIEW_Project",
+        "lv_icon_editor",
+        "-Build_Spec",
+        "Editor Packed Library"
+      ],
+      "Scenario": "happy-path",
+      "ExitCode": 0
+    },
+    {
+      "Kind": "labview-devmode",
+      "Mode": "enable",
+      "Operation": "enable-addtoken-2021-32",
+      "Schema": null,
+      "LvVersion": "2021",
+      "Bitness": "32",
+      "LvAddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
+      "Script": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor\\.github\\actions\\add-token-to-labview\\AddTokenToLabVIEW.ps1",
+      "Args": [
+        "-MinimumSupportedLVVersion",
+        "2021",
+        "-SupportedBitness",
+        "32",
+        "-RelativePath",
+        "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor"
+      ],
+      "Scenario": "partial+timeout-soft",
+      "ExitCode": 2
+    }
+  ],
+  "SchemaVersions": "<none>",
+  "Hint": "Use this snippet to help refine LvAddon dev-mode x-cli simulation scenarios.",
+  "AgentInstructions": "You are assisting with LvAddon dev-mode simulation for the labview-icon-editor stack.\n\n- Look at SampleRecords[*].Operation, Mode, LvVersion, Bitness, LvAddonRoot, Script, and Args.\n- Propose meaningful scenario names (e.g., 'timeout.add-token-2025-64', 'rogue.disable-compare').\n- For each scenario, suggest:\n  - The stderr text x-cli should emit (matching existing timeout/rogue patterns when applicable).\n  - Exit code and whether it should be treated as success or failure.\n- Keep suggestions compatible with existing PowerShell telemetry, which looks for:\n  - 'Error:' lines and 'Timed out waiting for app to connect to g-cli' for timeouts.\n  - 'Rogue LabVIEW' text for rogue-process detection.",
+  "ProviderSummaryPath": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\icon-editor\\dev-mode-provider-summary.json"
+}

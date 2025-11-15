@@ -1,0 +1,54 @@
+# Build directories
+bin/
+obj/
+
+# VS Code settings
+.vscode/
+
+# Rider IDE settings
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+
+# Visual Studio directories
+.vs/
+
+# NuGet packages
+*.nupkg
+# The packages folder can be ignored because of PackageReference
+packages/
+
+# Dotnet Local Tools
+.toolstools/
+
+# Resharper
+_ReSharper*/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test results
+TestResults/
+*.trx
+
+# Publish output
+publish/
+
+# Logs
+*.log
+
+# Global tools
+.tool-versions
+
+# GitHub Actions artifacts
+.github/actions/**/node_modules/# Node modules
+tooling/vscode-seed-insight/node_modules/
+# Telemetry logs (rotated/outdated)
+telemetry/insight.log
+telemetry/insight.log.*
+# Pester test results
+TestResults.xml

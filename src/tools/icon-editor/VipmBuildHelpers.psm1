@@ -35,6 +35,14 @@ function Write-VipmBuildTelemetry {
     }
 
     $artifactsToPersist = if ($Artifacts) { $Artifacts } else { @() }
+    $artifactCount = 0
+    if ($null -ne $artifactsToPersist) {
+        if ($artifactsToPersist -is [System.Collections.ICollection]) {
+            $artifactCount = $artifactsToPersist.Count
+        } elseif ($artifactsToPersist) {
+            $artifactCount = 1
+        }
+    }
     $payload = [ordered]@{
         schema          = 'icon-editor/vipm-package@v1'
         generatedAt     = (Get-Date).ToUniversalTime().ToString('o')
@@ -44,7 +52,7 @@ function Write-VipmBuildTelemetry {
         toolchain       = $Toolchain
         provider        = $Provider
         displayOnly     = [bool]$DisplayOnly
-        artifactCount   = $artifactsToPersist.Count
+        artifactCount   = $artifactCount
         artifacts       = $artifactsToPersist
         metadata        = $Metadata
     }
