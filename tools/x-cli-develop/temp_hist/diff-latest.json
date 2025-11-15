@@ -1,0 +1,12 @@
+{
+  "run_id": null,
+  "commit": null,
+  "ts": "20250926T171356Z",
+  "baseline": true,
+  "metrics": {
+    "pass": null,
+    "fail": null,
+    "skipped": null,
+    "duration_seconds": null
+  }
+}
