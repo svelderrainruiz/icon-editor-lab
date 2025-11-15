@@ -101,6 +101,7 @@ jobs:
           python3 scripts/workflows/read_pointer.py "$POINTER" "$GITHUB_OUTPUT"
 
       - name: Write GitHub handshake pointer
+        shell: pwsh
         run: |
           python3 scripts/workflows/update_handshake_pointer.py `
             --pointer "${HANDSHAKE_POINTER}" `
@@ -294,6 +295,7 @@ jobs:
 
       - name: Update GitHub handshake pointer
         if: ${{ always() }}
+        shell: pwsh
         run: |
           python3 scripts/workflows/update_handshake_pointer.py `
             --pointer handshake/pointer.json `
