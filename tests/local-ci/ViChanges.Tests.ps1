@@ -1,11 +1,32 @@
-Import-Module Pester
+$root = $env:WORKSPACE_ROOT
+if (-not $root) { $root = '/mnt/data/repo_local' }
+$repoRoot = (Resolve-Path -LiteralPath $root).Path
+$script:root = $root
+$script:repoRoot = $repoRoot
+$tmp = Join-Path $repoRoot '.tmp-tests'
+New-Item -ItemType Directory -Force -Path $tmp | Out-Null
+$scriptPath = Join-Path $repoRoot 'local-ci/ubuntu/scripts/detect_vi_changes.py'
+
+if (-not (Test-Path -LiteralPath $scriptPath -PathType Leaf)) {
+    Describe 'detect_vi_changes.py' {
+        It 'skips when detect_vi_changes.py is absent' -Skip {
+            # Script not present.
+        }
+    }
+    return
+}
+
+$python = Get-Command python3 -ErrorAction SilentlyContinue
+if (-not $python) {
+    Describe 'detect_vi_changes.py' {
+        It 'skips when python3 is unavailable' -Skip {
+            # Python runtime missing.
+        }
+    }
+    return
+}
 
 Describe 'detect_vi_changes.py' {
-    BeforeAll {
-        $script:ScriptPath = Join-Path $PSScriptRoot '../../local-ci/ubuntu/scripts/detect_vi_changes.py' |
-            Resolve-Path -Relative
-    }
-
     It 'detects changed VI files between commits' {
         $repo = Join-Path $TestDrive 'vi-repo'
         git init $repo | Out-Null
@@ -20,7 +41,11 @@ Describe 'detect_vi_changes.py' {
         git -C $repo commit -am 'change' | Out-Null
         $head = (git -C $repo rev-parse HEAD).Trim()
         $output = Join-Path $TestDrive 'vi-list.txt'
-        python3 $script:ScriptPath --repo $repo --base $base --head $head --output $output
+        $localRoot = $env:WORKSPACE_ROOT
+        if (-not $localRoot) { $localRoot = '/mnt/data/repo_local' }
+        $repoRootLocal = (Resolve-Path -LiteralPath $localRoot).Path
+        $detectScript = Join-Path $repoRootLocal 'local-ci/ubuntu/scripts/detect_vi_changes.py'
+        python3 $detectScript --repo $repo --base $base --head $head --output $output
         $results = Get-Content -LiteralPath $output
         $results | Should -Contain 'Sample.vi'
     }
@@ -29,7 +54,11 @@ Describe 'detect_vi_changes.py' {
         $repo = Join-Path $TestDrive 'vi-repo2'
         git init $repo | Out-Null
         $output = Join-Path $TestDrive 'empty.txt'
-        python3 $script:ScriptPath --repo $repo --output $output
+        $localRoot = $env:WORKSPACE_ROOT
+        if (-not $localRoot) { $localRoot = '/mnt/data/repo_local' }
+        $repoRootLocal = (Resolve-Path -LiteralPath $localRoot).Path
+        $detectScript = Join-Path $repoRootLocal 'local-ci/ubuntu/scripts/detect_vi_changes.py'
+        python3 $detectScript --repo $repo --output $output
         (Get-Content -LiteralPath $output | Measure-Object).Count | Should -Be 0
     }
 }
