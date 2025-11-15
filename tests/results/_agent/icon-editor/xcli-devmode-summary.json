@@ -1,8 +1,8 @@
 {
-  "GeneratedAt": "2025-11-15T09:26:30.9945422-08:00",
-  "Root": "C:\\codex\\home\\runner\\work\\icon-editor-lab",
-  "XCliRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop",
-  "DevmodeDir": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode",
+  "GeneratedAt": "2025-11-15T10:38:53.0683628-08:00",
+  "Root": "/mnt/data/repo_local",
+  "XCliRoot": "\\mnt\\data\\repo_local\\tools\\x-cli-develop",
+  "DevmodeDir": "\\mnt\\data\\repo_local\\tools\\x-cli-develop\\temp_telemetry\\labview-devmode",
   "TotalRecords": 76,
   "ByOperation": [
     {
@@ -613,7 +613,7 @@
   "LvaddonRoots": [
     {
       "LvaddonRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\labview-icon-editor",
-      "InWorkspace": true,
+      "InWorkspace": false,
       "Count": 76
     }
   ],

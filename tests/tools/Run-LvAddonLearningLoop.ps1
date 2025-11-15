@@ -42,6 +42,13 @@ if (-not (Test-Path -LiteralPath $vipmSummaryScript -PathType Leaf)) {
     & $vipmSummaryScript -ErrorAction Stop
 }
 
+$handshakeSummaryScript = Join-Path $PSScriptRoot 'Summarize-Handshakes.ps1'
+if (-not (Test-Path -LiteralPath $handshakeSummaryScript -PathType Leaf)) {
+    Write-Warning "[lvaddon/learn] Summarize-Handshakes.ps1 not found; skipping handshake summary."
+} else {
+    & $handshakeSummaryScript -ErrorAction Stop
+}
+
 $viHistoryAnomalyScript = Join-Path $PSScriptRoot 'Find-VIHistoryAnomalies.ps1'
 if (-not (Test-Path -LiteralPath $viHistoryAnomalyScript -PathType Leaf)) {
     Write-Warning "[lvaddon/learn] Find-VIHistoryAnomalies.ps1 not found; skipping VI history anomaly scan."

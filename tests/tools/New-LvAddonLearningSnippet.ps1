@@ -182,6 +182,17 @@ VIPM install summaries are available:
 "@
 }
 
+$handshakeSummaryPath = Join-Path $root 'tests/results/_agent/icon-editor/handshake-summary.json'
+if (Test-Path -LiteralPath $handshakeSummaryPath -PathType Leaf) {
+    $snippet | Add-Member -NotePropertyName 'HandshakeSummaryPath' -NotePropertyValue $handshakeSummaryPath -Force
+    $snippet.AgentInstructions += @"
+
+Handshake summaries are available:
+- Open HandshakeSummaryPath to see how Ubuntu and Windows local-ci handshake runs align (Prep/VICompare statuses, imported coverage, pointer status).
+- Use this to detect mismatches between Ubuntu runs and Windows consumers, and to prioritize scenarios that harden cross-runner parity.
+"@
+}
+
 if (-not $OutputPath) {
     $OutputPath = Join-Path $root 'tests/results/_agent/icon-editor/xcli-learning-snippet.json'
 }

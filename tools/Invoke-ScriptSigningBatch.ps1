@@ -18,6 +18,10 @@
 .PARAMETER MaxFiles
   Upper bound on the number of scripts to sign this run. Files are processed in alphabetical order.
 
+.PARAMETER MaxFilesPerBatch
+  Optional per-run cap when operating in fork mode. When SamplingMode is not 'None',
+  this limits how many files are actually signed from the discovered set.
+
 .PARAMETER TimeoutSeconds
   Timeout applied to each timestamped signing attempt. Ignored when -UseTimestamp is not supplied.
 
@@ -34,6 +38,13 @@
 .PARAMETER SummaryPath
   Optional path to append a bullet point (e.g., $env:GITHUB_STEP_SUMMARY) summarizing the signing run.
 
+.PARAMETER SamplingMode
+  Controls how fork mode subsamples candidates when MaxFilesPerBatch > 0. Allowed values:
+  'None' (default, no sampling), 'First' (first N files), or 'Random' (random N files).
+
+.PARAMETER EmitMetrics
+  When set, emits a compact JSON metrics object capturing discovery, sampling, and timing data.
+
 #>
 
 [CmdletBinding()]
@@ -41,14 +52,19 @@ param(
   [Parameter(Mandatory)][string]$Root,
   [Parameter(Mandatory)][string]$CertificateThumbprint,
   [int]$MaxFiles = 500,
-[int]$PerFileTimeoutSeconds = 20,
-[switch]$UseTimestamp,
-[string]$TimestampServer = 'https://timestamp.digicert.com',
-[string]$Mode = 'fork',
-[string]$SummaryPath,
-[switch]$SimulateTimestampFailure,
-[switch]$SkipAlreadySigned,
-[int]$VerboseEvery = 25
+  [int]$MaxFilesPerBatch = 0,
+  [Alias('TimeoutSeconds')]
+  [int]$PerFileTimeoutSeconds = 20,
+  [switch]$UseTimestamp,
+  [string]$TimestampServer = 'https://timestamp.digicert.com',
+  [string]$Mode = 'fork',
+  [string]$SummaryPath,
+  [switch]$SimulateTimestampFailure,
+  [switch]$SkipAlreadySigned,
+  [int]$VerboseEvery = 25,
+  [ValidateSet('None','First','Random')]
+  [string]$SamplingMode = 'None',
+  [switch]$EmitMetrics
 )
 
 Set-StrictMode -Version Latest
@@ -61,8 +77,12 @@ if (-not $allScripts) {
   return
 }
 
+$certPath = "Cert:\CurrentUser\My\$CertificateThumbprint"
+$cert = Get-ChildItem -LiteralPath $certPath -ErrorAction Stop
+
+$totalDiscovered = $allScripts.Count
 $selected = $allScripts | Select-Object -First $MaxFiles
-$capHit = ($selected.Count -lt $allScripts.Count)
+$capHit = ($selected.Count -lt $totalDiscovered)
 $files = @()
 $skippedExisting = 0
 foreach ($candidate in $selected) {
@@ -83,12 +103,23 @@ if ($files.Count -eq 0) {
   Write-Host ("[$Mode] All scripts already signed with thumbprint {0}; nothing to do." -f $cert.Thumbprint)
   return
 }
-if ($capHit) {
-  Write-Warning ("[$Mode] Script list truncated to {0} of {1}. Increase MAX_SIGN_FILES to cover all files." -f $files.Count,$allScripts.Count)
+
+if ($SamplingMode -ne 'None' -and $Mode -eq 'fork' -and $MaxFilesPerBatch -gt 0) {
+  $preSample = $files.Count
+  $sampleCount = if ($MaxFilesPerBatch -lt $preSample) { $MaxFilesPerBatch } else { $preSample }
+  if ($sampleCount -lt $preSample) {
+    switch ($SamplingMode) {
+      'First'  { $files = $files | Select-Object -First $sampleCount }
+      'Random' { $files = Get-Random -InputObject $files -Count $sampleCount }
+      default  { }
+    }
+    Write-Host ("[$Mode] Sampling: {0} of {1} candidate scripts using '{2}' mode." -f $files.Count,$preSample,$SamplingMode)
+  }
 }
 
-$certPath = "Cert:\CurrentUser\My\$CertificateThumbprint"
-$cert = Get-ChildItem -LiteralPath $certPath -ErrorAction Stop
+if ($capHit) {
+  Write-Warning ("[$Mode] Script list truncated to {0} of {1}. Increase MAX_SIGN_FILES to cover all files." -f $files.Count,$totalDiscovered)
+}
 
 function Invoke-SignInline {
   param([string]$Path,[System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate)
@@ -220,6 +251,36 @@ if ($SummaryPath) {
     Add-Content -LiteralPath $SummaryPath -Value "- $summary" -ErrorAction Stop
   } catch {
     Write-Warning ("Failed to write summary to {0}: {1}" -f $SummaryPath,$_.Exception.Message)
+  }
+}
+
+if ($EmitMetrics) {
+  try {
+    $metrics = [ordered]@{
+      mode               = $Mode
+      totalDiscovered    = $totalDiscovered
+      maxFilesConfigured = $MaxFiles
+      maxFilesPerBatch   = $MaxFilesPerBatch
+      selectedBeforeSkip = $selected.Count
+      skippedExisting    = $skippedExisting
+      processed          = $files.Count
+      samplingMode       = $SamplingMode
+      capHit             = $capHit
+      completed          = $completed
+      failed             = $fail
+      avgMs              = $avgMs
+      totalSeconds       = [math]::Round($totalWatch.Elapsed.TotalSeconds,2)
+      timeouts           = $timeoutUsed
+      fallbacks          = $fallbackUsed
+    }
+    $metricsJson = $metrics | ConvertTo-Json -Depth 4 -Compress
+    if ($SummaryPath) {
+      Add-Content -LiteralPath $SummaryPath -Value "- [$Mode] metrics: $metricsJson" -ErrorAction Stop
+    } else {
+      Write-Host ("[$Mode] metrics: {0}" -f $metricsJson)
+    }
+  } catch {
+    Write-Warning ("Failed to emit metrics: {0}" -f $_.Exception.Message)
   }
 }
 

@@ -248,6 +248,8 @@ jobs:
         env:
           TS_TIMEOUT_SEC: 20
           MAX_SIGN_FILES: 500
+          FORK_SIGN_SAMPLE: 150
+          FORK_SIGN_SAMPLING_MODE: First
         run: |
           $ErrorActionPreference = 'Stop'
           Set-StrictMode -Version Latest
@@ -262,10 +264,13 @@ jobs:
             -Root 'unsigned' `
             -CertificateThumbprint $thumb `
             -MaxFiles ([int]$env:MAX_SIGN_FILES) `
+            -MaxFilesPerBatch ([int]$env:FORK_SIGN_SAMPLE) `
+            -SamplingMode $env:FORK_SIGN_SAMPLING_MODE `
             -PerFileTimeoutSeconds ([int]$env:TS_TIMEOUT_SEC) `
             -Mode 'fork' `
             -SkipAlreadySigned `
             -VerboseEvery 25 `
+            -EmitMetrics `
             -SummaryPath $env:GITHUB_STEP_SUMMARY
 
       - name: Sign scripts (Authenticode) - upstream (timestamp + timeout + fallback)
