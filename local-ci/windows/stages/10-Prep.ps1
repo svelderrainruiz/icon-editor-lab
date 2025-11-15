@@ -149,7 +149,16 @@ if ($importHint) {
         if ($importResult.Manifest.coverage) {
             $coverageText = "$($importResult.Manifest.coverage.percent)% (min $($importResult.Manifest.coverage.min_percent)%)"
         }
-        Write-Host ("Imported Ubuntu run {0} with coverage {1}" -f $importResult.Manifest.timestamp, $coverageText)
+        $runLabel = $null
+        if ($importResult.Manifest.PSObject.Properties['run_id']) {
+            $runLabel = $importResult.Manifest.run_id
+        } elseif ($importResult.Manifest.PSObject.Properties['created_utc']) {
+            $runLabel = $importResult.Manifest.created_utc
+        } elseif ($importResult.Manifest.PSObject.Properties['timestamp']) {
+            $runLabel = $importResult.Manifest.timestamp
+        }
+        if (-not $runLabel) { $runLabel = '<unknown>' }
+        Write-Host ("Imported Ubuntu run {0} with coverage {1}" -f $runLabel, $coverageText)
     }
 } else {
     Write-Host '[10-Prep] Ubuntu import skipped (no manifest selected).'

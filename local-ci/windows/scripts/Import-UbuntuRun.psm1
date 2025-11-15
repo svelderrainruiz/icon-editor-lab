@@ -141,6 +141,24 @@ function Invoke-UbuntuRunImport {
     $coveragePayload = $manifest.coverage
     $coveragePercent = if ($coveragePayload) { $coveragePayload.percent } else { $null }
 
+    $runId      = $null
+    $createdUtc = $null
+    $timestamp  = $null
+
+    if ($manifest.PSObject.Properties.Match('run_id').Count -gt 0) {
+        $runId = $manifest.run_id
+    }
+    if ($manifest.PSObject.Properties.Match('created_utc').Count -gt 0) {
+        $createdUtc = $manifest.created_utc
+    }
+    if ($manifest.PSObject.Properties.Match('timestamp').Count -gt 0) {
+        $timestamp = $manifest.timestamp
+    } elseif ($runId) {
+        $timestamp = $runId
+    } elseif ($createdUtc) {
+        $timestamp = $createdUtc
+    }
+
     $summary = [ordered]@{
         ManifestPath  = $manifestPath
         ImportedZip   = $zipPath
@@ -148,7 +166,9 @@ function Invoke-UbuntuRunImport {
         GitCommit     = $manifest.git.commit
         GitBranch     = $manifest.git.branch
         Coverage      = $coveragePayload
-        Timestamp     = $manifest.timestamp
+        RunId         = $runId
+        CreatedUtc    = $createdUtc
+        Timestamp     = $timestamp
     }
     $summaryPath = Join-Path $RunRoot 'ubuntu-import.json'
     $summary | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $summaryPath -Encoding UTF8
