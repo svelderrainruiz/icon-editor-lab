@@ -104,12 +104,12 @@ jobs:
         shell: pwsh
         run: |
           python3 scripts/workflows/update_handshake_pointer.py`
-            --pointer "${HANDSHAKE_POINTER}" `
-            --stamp "${HANDSHAKE_STAMP}" `
-            --artifact "${HANDSHAKE_ARTIFACT}" `
-            --manifest-rel "${HANDSHAKE_MANIFEST_REL}" `
-            --manifest-abs "${HANDSHAKE_MANIFEST_ABS}" `
-            --ubuntu-pointer "${UBUNTU_POINTER_PATH}"
+            --pointer "$env:HANDSHAKE_POINTER" `
+            --stamp "$env:HANDSHAKE_STAMP" `
+            --artifact "$env:HANDSHAKE_ARTIFACT" `
+            --manifest-rel "$env:HANDSHAKE_MANIFEST_REL" `
+            --manifest-abs "$env:HANDSHAKE_MANIFEST_ABS" `
+            --ubuntu-pointer "$env:UBUNTU_POINTER_PATH"
         env:
           HANDSHAKE_POINTER: handshake/pointer.json
           HANDSHAKE_STAMP: ${{ steps.capture-meta.outputs.stamp }}
@@ -299,8 +299,8 @@ jobs:
         run: |
           python3 scripts/workflows/update_handshake_pointer.py`
             --pointer handshake/pointer.json `
-            --windows-run "$LOCALCI_WINDOWS_RUN" `
-            --windows-runner "$COMPUTERNAME" `
+            --windows-run "$env:LOCALCI_WINDOWS_RUN" `
+            --windows-runner "$env:COMPUTERNAME" `
             --windows-job "${{ github.run_id }}"
       - name: Upload handshake pointer (control plane, updated)
         if: ${{ always() }}
