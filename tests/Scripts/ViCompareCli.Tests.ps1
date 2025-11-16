@@ -154,6 +154,82 @@ Describe 'Invoke-ViCompareLabVIEWCli.ps1' {
             (Get-Content -LiteralPath (Join-Path $pairRoot 'lvcompare-capture.json') -Raw) | Should -Match 'error'
         }
     }
+
+    Context 'Script execution (integration)' {
+        if (-not $IsWindows) {
+            It 'skips script execution on non-Windows hosts' -Skip {
+                # local-ci/windows script expects Windows CLI paths.
+            }
+            return
+        }
+
+        It 'generates a summary in dry-run mode' {
+            $workRoot = Join-Path $tmp ("vi-coverage-" + [guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Force -Path $workRoot | Out-Null
+            $baseline = Join-Path $workRoot 'baseline.vi'
+            $candidate = Join-Path $workRoot 'candidate.vi'
+            'baseline' | Set-Content -LiteralPath $baseline -Encoding UTF8
+            'candidate' | Set-Content -LiteralPath $candidate -Encoding UTF8
+            $requestsPath = Join-Path $workRoot 'requests.json'
+            $payload = @{
+                requests = @(
+                    @{
+                        pairId   = 'pair-1'
+                        baseline = @{ path = (Convert-Path $baseline) }
+                        candidate = @{ path = (Convert-Path $candidate) }
+                    }
+                )
+            } | ConvertTo-Json -Depth 4
+            Set-Content -LiteralPath $requestsPath -Value $payload -Encoding UTF8
+            $outputRoot = Join-Path $workRoot 'out'
+            $summary = & $scriptPath -RepoRoot $repoRoot -RequestsPath $requestsPath -OutputRoot $outputRoot -DryRun
+            $summary | Should -Not -BeNullOrEmpty
+            $summary.counts.dryRun | Should -BeGreaterThan 0
+            Test-Path -LiteralPath (Join-Path $outputRoot 'vi-comparison-summary.json') | Should -BeTrue
+        }
+
+        It 'invokes the CLI when not in dry-run mode' {
+            $workRoot = Join-Path $tmp ("vi-cli-" + [guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Force -Path $workRoot | Out-Null
+            $baseline = Join-Path $workRoot 'baseline.vi'
+            $candidate = Join-Path $workRoot 'candidate.vi'
+            'baseline' | Set-Content -LiteralPath $baseline -Encoding UTF8
+            'candidate' | Set-Content -LiteralPath $candidate -Encoding UTF8
+            $requestsPath = Join-Path $workRoot 'requests.json'
+            $payload = @{
+                requests = @(
+                    @{
+                        pairId = 'pair-1'
+                        baseline = @{ path = 'baseline.vi' }
+                        candidate = @{ path = 'candidate.vi' }
+                    }
+                )
+            } | ConvertTo-Json -Depth 4
+            Set-Content -LiteralPath $requestsPath -Value $payload -Encoding UTF8
+            $harness = Join-Path $workRoot 'Harness.ps1'
+            "param()" | Set-Content -LiteralPath $harness -Encoding UTF8
+            $labviewExe = Join-Path $workRoot 'LabVIEW.exe'
+            Set-Content -LiteralPath $labviewExe -Encoding UTF8 -Value 'stub'
+            $outputRoot = Join-Path $workRoot 'captures'
+
+            Mock -CommandName Start-Process -MockWith {
+                param([string]$FilePath,[object[]]$ArgumentList,[switch]$Wait,[switch]$PassThru)
+                [pscustomobject]@{ ExitCode = 1 }
+            }
+
+            $summary = & $scriptPath `
+                -RepoRoot $repoRoot `
+                -RequestsPath $requestsPath `
+                -OutputRoot $outputRoot `
+                -ProbeRoots @($workRoot) `
+                -HarnessScript $harness `
+                -LabVIEWExePath $labviewExe
+
+            Assert-MockCalled -CommandName Start-Process -Times 1
+            $summary.counts.different | Should -Be 1
+            Test-Path -LiteralPath (Join-Path $outputRoot 'vi-comparison-summary.json') | Should -BeTrue
+        }
+    }
 }
 
 

@@ -1,61 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="20" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-11-15" time="19:49:27">
-  <environment os-version="10.0.22631" nunit-version="2.5.8.0" machine-name="USAUSLT-Z7DLW6G" user-domain="NI" cwd="C:\mnt\data\repo_local" clr-version="9.0.8" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" user="svelderr" />
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="3" errors="0" failures="3" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-11-15" time="20:29:23">
+  <environment platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" nunit-version="2.5.8.0" cwd="C:\mnt\data\repo_local" user="svelderr" user-domain="NI" os-version="10.0.22631" machine-name="USAUSLT-Z7DLW6G" clr-version="9.0.8" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="9.555" asserts="0" description="Pester">
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Failure" success="False" time="0.8512" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\sample.tests.ps1" executed="True" result="Success" success="True" time="8.6198" asserts="0" description="C:\mnt\data\repo_local\tests\sample.tests.ps1">
+      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Script.Tests.ps1" executed="True" result="Failure" success="False" time="0.8512" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Script.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="sample" executed="True" result="Success" success="True" time="0.2018" asserts="0" description="sample">
+          <test-suite type="TestFixture" name="Check-WorkflowDrift.ps1 (script run)" executed="True" result="Failure" success="False" time="0.2176" asserts="0" description="Check-WorkflowDrift.ps1 (script run)">
             <results>
-              <test-case description="passes" name="sample.passes" time="0.1355" asserts="0" success="True" result="Success" executed="True" />
-            </results>
-          </test-suite>
-          <test-suite type="TestFixture" name="Critical scripts" executed="True" result="Success" success="True" time="7.7853" asserts="0" description="Critical scripts">
-            <results>
-              <test-case description="Check-DocsLinks validates a small doc tree and helper functions" name="Critical scripts.Check-DocsLinks validates a small doc tree and helper functions" time="0.6899" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Check-WorkflowDrift completes when python/git are stubbed" name="Critical scripts.Check-WorkflowDrift completes when python/git are stubbed" time="5.3451" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Agent-Wait start/end roundtrip writes markers" name="Critical scripts.Agent-Wait start/end roundtrip writes markers" time="0.655" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Invoke-ViCompareLabVIEWCli handles dry-run requests" name="Critical scripts.Invoke-ViCompareLabVIEWCli handles dry-run requests" time="0.1474" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Validate-Paths module enforces safe paths" name="Critical scripts.Validate-Paths module enforces safe paths" time="0.0366" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Validate-Config enforces JSON + schema" name="Critical scripts.Validate-Config enforces JSON + schema" time="0.0594" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Hash-Artifacts writes checksum manifest" name="Critical scripts.Hash-Artifacts writes checksum manifest" time="0.0643" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="Export-SemverBundle copies required assets" name="Critical scripts.Export-SemverBundle copies required assets" time="0.5599" asserts="0" success="True" result="Success" executed="True" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1" executed="True" result="Success" success="True" time="0.9352" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Check-DocsLinks.ps1" executed="True" result="Success" success="True" time="0.629" asserts="0" description="Check-DocsLinks.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Test-ValidLabel" executed="True" result="Success" success="True" time="0.0478" asserts="0" description="Check-DocsLinks.ps1.Test-ValidLabel">
-                <results>
-                  <test-case description="accepts simple labels with safe characters" name="Check-DocsLinks.ps1.Test-ValidLabel.accepts simple labels with safe characters" time="0.0046" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="allows dots and hyphens in varying positions" name="Check-DocsLinks.ps1.Test-ValidLabel.allows dots and hyphens in varying positions" time="0.0043" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="rejects values with reserved characters" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects values with reserved characters" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="rejects labels that exceed the maximum length" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects labels that exceed the maximum length" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Match-Any helper" executed="True" result="Success" success="True" time="0.0773" asserts="0" description="Check-DocsLinks.ps1.Match-Any helper">
-                <results>
-                  <test-case description="detects matches when patterns align" name="Check-DocsLinks.ps1.Match-Any helper.detects matches when patterns align" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="does not match when patterns do not apply" name="Check-DocsLinks.ps1.Match-Any helper.does not match when patterns do not apply" time="0.0039" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="matches when later patterns include recursive wildcards" name="Check-DocsLinks.ps1.Match-Any helper.matches when later patterns include recursive wildcards" time="0.0025" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Invoke-WithTimeout" executed="True" result="Success" success="True" time="0.5176" asserts="0" description="Check-DocsLinks.ps1.Invoke-WithTimeout">
-                <results>
-                  <test-case description="invokes Start-Job and Receive-Job when the work finishes before the timeout" name="Check-DocsLinks.ps1.Invoke-WithTimeout.invokes Start-Job and Receive-Job when the work finishes before the timeout" time="0.3658" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="stops the job and surfaces a timeout error when Wait-Job expires" name="Check-DocsLinks.ps1.Invoke-WithTimeout.stops the job and surfaces a timeout error when Wait-Job expires" time="0.0547" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Write-Info helper" executed="True" result="Success" success="True" time="0.611" asserts="0" description="Check-DocsLinks.ps1.Write-Info helper">
-                <results>
-                  <test-case description="writes to the host when Quiet is disabled" name="Check-DocsLinks.ps1.Write-Info helper.writes to the host when Quiet is disabled" time="0.0389" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="suppresses host writes when Quiet is enabled" name="Check-DocsLinks.ps1.Write-Info helper.suppresses host writes when Quiet is enabled" time="0.0342" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
+              <test-case description="completes staging flow when python succeeds" name="Check-WorkflowDrift.ps1 (script run).completes staging flow when python succeeds" time="0.1218" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                  <stack-trace>at &lt;ScriptBlock&gt;, C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Script.Tests.ps1:132</stack-trace>
+                </failure>
+              </test-case>
+              <test-case description="applies auto-fix path when python returns exit code 3" name="Check-WorkflowDrift.ps1 (script run).applies auto-fix path when python returns exit code 3" time="0.0096" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                  <stack-trace>at &lt;ScriptBlock&gt;, C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Script.Tests.ps1:148</stack-trace>
+                </failure>
+              </test-case>
+              <test-case description="propagates failure exit codes from python" name="Check-WorkflowDrift.ps1 (script run).propagates failure exit codes from python" time="0.0102" asserts="0" success="False" result="Failure" executed="True">
+                <failure>
+                  <message>RuntimeException: The expression after '&amp;' in a pipeline element produced an object that was not valid. It must result in a command name, a script block, or a CommandInfo object.</message>
+                  <stack-trace>at &lt;ScriptBlock&gt;, C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Script.Tests.ps1:166</stack-trace>
+                </failure>
+              </test-case>
             </results>
           </test-suite>
         </results>
