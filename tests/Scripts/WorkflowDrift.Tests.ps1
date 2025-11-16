@@ -22,7 +22,7 @@ New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 $scriptPath = Join-Path $repoRoot 'src/tools/Check-WorkflowDrift.ps1'
 $scriptExists = Test-Path -LiteralPath $scriptPath -PathType Leaf
 if ($scriptExists) {
-    Import-ScriptFunctions -Path $scriptPath -FunctionNames @('Resolve-PythonExe','Process-Staging','Test-ValidLabel') | Out-Null
+    Import-ScriptFunctions -Path $scriptPath -FunctionNames @('Resolve-PythonExe','Process-Staging','Test-ValidLabel','Invoke-WithTimeout') | Out-Null
 }
 
 Describe 'Check-WorkflowDrift.ps1' {
@@ -143,6 +143,45 @@ Describe 'Check-WorkflowDrift.ps1' {
 
             { Process-Staging -ChangedFiles @('workflows/a.yml') } | Should -Not -Throw
             $script:gitAddCount | Should -Be 0
+        }
+    }
+
+    Context 'Test-ValidLabel helper' {
+        It 'accepts labels that satisfy the allowed pattern' {
+            { Test-ValidLabel -Label 'workflow_123-ABC' } | Should -Not -Throw
+        }
+
+        It 'throws when labels contain invalid characters' {
+            try {
+                Test-ValidLabel -Label 'bad label!'
+                throw 'Expected an Invalid label error.'
+            } catch {
+                $_.Exception.Message | Should -Match 'Invalid label'
+            }
+        }
+    }
+
+    Context 'Invoke-WithTimeout helper' {
+        BeforeEach {
+            $script:existingJobIds = @(Get-Job -ErrorAction SilentlyContinue | ForEach-Object { $_.Id })
+        }
+
+        AfterEach {
+            $currentJobs = @(Get-Job -ErrorAction SilentlyContinue)
+            foreach ($job in $currentJobs) {
+                if ($script:existingJobIds -notcontains $job.Id) {
+                    Remove-Job -Job $job -Force -ErrorAction SilentlyContinue
+                }
+            }
+        }
+
+        It 'returns the job output when the task completes in time' {
+            $result = Invoke-WithTimeout -ScriptBlock { 'workflow-complete' } -TimeoutSec 5
+            $result | Should -Be 'workflow-complete'
+        }
+
+        It 'throws when the timeout elapses and the job keeps running' {
+            { Invoke-WithTimeout -ScriptBlock { Start-Sleep -Seconds 3 } -TimeoutSec 1 } | Should -Throw -ErrorId *
         }
     }
 }

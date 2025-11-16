@@ -22,6 +22,12 @@ New-Item -ItemType Directory -Force -Path $tmp | Out-Null
 $scriptPath = Join-Path $repoRoot 'src/tools/Check-DocsLinks.ps1'
 $scriptExists = Test-Path -LiteralPath $scriptPath -PathType Leaf
 if ($scriptExists) {
+    foreach ($fn in @('Match-Any','Write-Info','Test-ValidLabel','Invoke-WithTimeout')) {
+        $functionPath = "Function:\$fn"
+        if (Test-Path -LiteralPath $functionPath) {
+            Remove-Item -Path $functionPath -ErrorAction SilentlyContinue
+        }
+    }
     Import-ScriptFunctions -Path $scriptPath -FunctionNames @('Match-Any','Write-Info','Test-ValidLabel','Invoke-WithTimeout') | Out-Null
 }
 
@@ -135,6 +141,39 @@ Describe 'Check-DocsLinks.ps1' {
                 $_.Exception.Message | Should -Match 'timed out'
             }
             Assert-MockCalled -CommandName Receive-Job -Times 0
+        }
+    }
+
+    Context 'Write-Info helper' {
+        BeforeEach {
+            Remove-Variable -Name Quiet -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        AfterEach {
+            Remove-Variable -Name Quiet -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'writes to the host when Quiet is disabled' {
+            Set-Variable -Name Quiet -Scope Global -Value $false
+            Mock -CommandName Write-Host -MockWith {
+                param([string]$Object,[System.ConsoleColor]$ForegroundColor)
+                $ForegroundColor | Should -Be ([System.ConsoleColor]::DarkGray)
+            }
+
+            Write-Info 'docs status nominal'
+
+            Assert-MockCalled -CommandName Write-Host -Times 1 -ParameterFilter { $Object -eq 'docs status nominal' -and $ForegroundColor -eq [System.ConsoleColor]::DarkGray }
+        }
+
+        It 'suppresses host writes when Quiet is enabled' {
+            Set-Variable -Name Quiet -Scope Global -Value $true
+            Mock -CommandName Write-Host -MockWith {
+                throw 'Write-Host should not fire when Quiet is enabled.'
+            }
+
+            { Write-Info 'should be hidden' } | Should -Not -Throw
+
+            Assert-MockCalled -CommandName Write-Host -Times 0
         }
     }
 }

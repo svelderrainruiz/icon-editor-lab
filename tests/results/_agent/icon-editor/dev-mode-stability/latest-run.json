@@ -1,33 +1,19 @@
 {
-  "labview": {
-    "version": 2021,
-    "bitness": 64,
-    "operation": "Reliability"
+  "status": "succeeded",
+  "scenario": "success",
+  "requirements": {
+    "met": true
   },
   "iterations": [
     {
-      "iteration": 1,
-      "startedAt": "2025-11-09T07:47:29.8849627-08:00",
-      "status": "failed",
-      "enable": {},
-      "analyzer": {},
-      "disable": {},
-      "error": "Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-64'. See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-sweep-20251109T074821358.json for details."
+      "status": "ok",
+      "enable": {
+        "devModeVerified": true,
+        "settleSeconds": 1.1
+      },
+      "disable": {
+        "settleSeconds": 1.1
+      }
     }
-  ],
-  "generatedAt": "2025-11-09T07:48:54.6025592-08:00",
-  "failure": {
-    "iteration": 1,
-    "reason": "Rogue LabVIEW processes detected during stage 'enable-addtoken-2021-64'. See C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results\\_agent\\icon-editor\\rogue-lv\\rogue-sweep-20251109T074821358.json for details."
-  },
-  "label": "dev-mode-stability-20251109T074729879",
-  "schema": "icon-editor/dev-mode-stability@v1",
-  "status": "failed",
-  "iterationsRequested": 3,
-  "resultsRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab-upstream\\tests\\results",
-  "requirements": {
-    "consecutiveVerifiedRequired": 3,
-    "maxConsecutiveVerified": 0,
-    "met": false
-  }
+  ]
 }

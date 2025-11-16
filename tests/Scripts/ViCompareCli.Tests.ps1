@@ -58,6 +58,21 @@ Describe 'Invoke-ViCompareLabVIEWCli.ps1' {
         }
     }
 
+    Context 'Get-PropertyValue' {
+        It 'returns the property value when present' {
+            $obj = [pscustomobject]@{ Name = 'delta'; Version = '1.0.0' }
+
+            Get-PropertyValue -Object $obj -Name 'Version' | Should -Be '1.0.0'
+        }
+
+        It 'returns null for missing names or null objects' {
+            $obj = [pscustomobject]@{ Name = 'delta' }
+
+            Get-PropertyValue -Object $obj -Name 'Unknown' | Should -Be $null
+            Get-PropertyValue -Object $null -Name 'Name' | Should -Be $null
+        }
+    }
+
     Context 'Read-ViDiffPairs' {
         It 'parses request files with the requests schema' {
             $requestPath = Join-Path $TestDrive 'requests.json'

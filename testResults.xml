@@ -1,329 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="84" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="2" invalid="0" date="2025-11-14" time="17:03:00">
-  <environment user="svelderr" clr-version="9.0.8" user-domain="NI" nunit-version="2.5.8.0" machine-name="USAUSLT-Z7DLW6G" cwd="C:\mnt\data\repo_local" os-version="10.0.22631" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="20" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2025-11-15" time="19:49:27">
+  <environment os-version="10.0.22631" nunit-version="2.5.8.0" machine-name="USAUSLT-Z7DLW6G" user-domain="NI" cwd="C:\mnt\data\repo_local" clr-version="9.0.8" platform="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" user="svelderr" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Ignored" success="True" time="13.6125" asserts="0" description="Pester">
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="9.555" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\ConfigSchema.Tests.ps1" executed="True" result="Success" success="True" time="0.9665" asserts="0" description="C:\mnt\data\repo_local\tests\ConfigSchema.Tests.ps1">
+      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\sample.tests.ps1" executed="True" result="Success" success="True" time="8.6198" asserts="0" description="C:\mnt\data\repo_local\tests\sample.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Config schema validation" executed="True" result="Success" success="True" time="0.317" asserts="0" description="Config schema validation">
+          <test-suite type="TestFixture" name="sample" executed="True" result="Success" success="True" time="0.2018" asserts="0" description="sample">
             <results>
-              <test-case description="validates the example config against the schema" name="Config schema validation.validates the example config against the schema" time="0.2124" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="rejects labels longer than 64 chars" name="Config schema validation.rejects labels longer than 64 chars" time="0.0298" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="rejects path traversal in inputs" name="Config schema validation.rejects path traversal in inputs" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="rejects dangerous metacharacters in inputs" name="Config schema validation.rejects dangerous metacharacters in inputs" time="0.0068" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="passes" name="sample.passes" time="0.1355" asserts="0" success="True" result="Success" executed="True" />
+            </results>
+          </test-suite>
+          <test-suite type="TestFixture" name="Critical scripts" executed="True" result="Success" success="True" time="7.7853" asserts="0" description="Critical scripts">
+            <results>
+              <test-case description="Check-DocsLinks validates a small doc tree and helper functions" name="Critical scripts.Check-DocsLinks validates a small doc tree and helper functions" time="0.6899" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Check-WorkflowDrift completes when python/git are stubbed" name="Critical scripts.Check-WorkflowDrift completes when python/git are stubbed" time="5.3451" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Agent-Wait start/end roundtrip writes markers" name="Critical scripts.Agent-Wait start/end roundtrip writes markers" time="0.655" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Invoke-ViCompareLabVIEWCli handles dry-run requests" name="Critical scripts.Invoke-ViCompareLabVIEWCli handles dry-run requests" time="0.1474" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Validate-Paths module enforces safe paths" name="Critical scripts.Validate-Paths module enforces safe paths" time="0.0366" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Validate-Config enforces JSON + schema" name="Critical scripts.Validate-Config enforces JSON + schema" time="0.0594" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Hash-Artifacts writes checksum manifest" name="Critical scripts.Hash-Artifacts writes checksum manifest" time="0.0643" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="Export-SemverBundle copies required assets" name="Critical scripts.Export-SemverBundle copies required assets" time="0.5599" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
       </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\sample.tests.ps1" executed="True" result="Success" success="True" time="0.2044" asserts="0" description="C:\mnt\data\repo_local\tests\sample.tests.ps1">
+      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1" executed="True" result="Success" success="True" time="0.9352" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="sample" executed="True" result="Success" success="True" time="0.0417" asserts="0" description="sample">
+          <test-suite type="TestFixture" name="Check-DocsLinks.ps1" executed="True" result="Success" success="True" time="0.629" asserts="0" description="Check-DocsLinks.ps1">
             <results>
-              <test-case description="passes" name="sample.passes" time="0.0236" asserts="0" success="True" result="Success" executed="True" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Sanity.Tests.ps1" executed="True" result="Success" success="True" time="0.1875" asserts="0" description="C:\mnt\data\repo_local\tests\Sanity.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Repo Sanity" executed="True" result="Success" success="True" time="0.0364" asserts="0" description="Repo Sanity">
-            <results>
-              <test-case description="has a docs folder" name="Repo Sanity.has a docs folder" time="0.0186" asserts="0" success="True" result="Success" executed="True" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\local-ci\ViChanges.Tests.ps1" executed="True" result="Success" success="True" time="2.1121" asserts="0" description="C:\mnt\data\repo_local\tests\local-ci\ViChanges.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="detect_vi_changes.py" executed="True" result="Success" success="True" time="1.9592" asserts="0" description="detect_vi_changes.py">
-            <results>
-              <test-case description="detects changed VI files between commits" name="detect_vi_changes.py.detects changed VI files between commits" time="1.2525" asserts="0" success="True" result="Success" executed="True" />
-              <test-case description="emits empty list when base is missing" name="detect_vi_changes.py.emits empty list when base is missing" time="0.4874" asserts="0" success="True" result="Success" executed="True" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Modules\CompareVI.Tools.Tests.ps1" executed="True" result="Success" success="True" time="1.2312" asserts="0" description="C:\mnt\data\repo_local\tests\Modules\CompareVI.Tools.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="CompareVI.Tools module" executed="True" result="Success" success="True" time="1.0607" asserts="0" description="CompareVI.Tools module">
-            <results>
-              <test-suite type="TestFixture" name="CompareVI.Tools module.Get-CompareVIScriptPath" executed="True" result="Success" success="True" time="0.0445" asserts="0" description="CompareVI.Tools module.Get-CompareVIScriptPath">
+              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Test-ValidLabel" executed="True" result="Success" success="True" time="0.0478" asserts="0" description="Check-DocsLinks.ps1.Test-ValidLabel">
                 <results>
-                  <test-case description="resolves the path for an existing script" name="CompareVI.Tools module.Get-CompareVIScriptPath.resolves the path for an existing script" time="0.0198" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the script does not exist" name="CompareVI.Tools module.Get-CompareVIScriptPath.throws when the script does not exist" time="0.0081" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="accepts simple labels with safe characters" name="Check-DocsLinks.ps1.Test-ValidLabel.accepts simple labels with safe characters" time="0.0046" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="allows dots and hyphens in varying positions" name="Check-DocsLinks.ps1.Test-ValidLabel.allows dots and hyphens in varying positions" time="0.0043" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="rejects values with reserved characters" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects values with reserved characters" time="0.0063" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="rejects labels that exceed the maximum length" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects labels that exceed the maximum length" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
-              <test-suite type="TestFixture" name="CompareVI.Tools module.Invoke-CompareVIHistory" executed="True" result="Success" success="True" time="0.2796" asserts="0" description="CompareVI.Tools module.Invoke-CompareVIHistory">
-                <results>
-                  <test-case description="invokes the helper script and clears COMPAREVI_SCRIPTS_ROOT" name="CompareVI.Tools module.Invoke-CompareVIHistory.invokes the helper script and clears COMPAREVI_SCRIPTS_ROOT" time="0.1928" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="clears the scripts root environment variable even when helper script fails" name="CompareVI.Tools module.Invoke-CompareVIHistory.clears the scripts root environment variable even when helper script fails" time="0.0216" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="CompareVI.Tools module.Invoke-CompareRefsToTemp" executed="True" result="Success" success="True" time="0.3504" asserts="0" description="CompareVI.Tools module.Invoke-CompareRefsToTemp">
-                <results>
-                  <test-case description="passes arguments through to the comparison script" name="CompareVI.Tools module.Invoke-CompareRefsToTemp.passes arguments through to the comparison script" time="0.0233" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="supports invoking comparisons by VI name rather than explicit path" name="CompareVI.Tools module.Invoke-CompareRefsToTemp.supports invoking comparisons by VI name rather than explicit path" time="0.0225" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="CompareVI.Tools module.Test-ValidLabel" executed="True" result="Success" success="True" time="0.38" asserts="0" description="CompareVI.Tools module.Test-ValidLabel">
-                <results>
-                  <test-case description="accepts labels composed of safe characters" name="CompareVI.Tools module.Test-ValidLabel.accepts labels composed of safe characters" time="0.0041" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the label contains invalid characters" name="CompareVI.Tools module.Test-ValidLabel.throws when the label contains invalid characters" time="0.0091" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="CompareVI.Tools module.Invoke-WithTimeout" executed="True" result="Success" success="True" time="1.0415" asserts="0" description="CompareVI.Tools module.Invoke-WithTimeout">
-                <results>
-                  <test-case description="returns the output of the script block before the timeout" name="CompareVI.Tools module.Invoke-WithTimeout.returns the output of the script block before the timeout" time="0.3818" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the script block exceeds the timeout" name="CompareVI.Tools module.Invoke-WithTimeout.throws when the script block exceeds the timeout" time="0.2587" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Modules\Core.Tests.ps1" executed="True" result="Ignored" success="True" time="0.1962" asserts="0" description="C:\mnt\data\repo_local\tests\Modules\Core.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="src/Core.psm1" executed="True" result="Ignored" success="True" time="0.0172" asserts="0" description="src/Core.psm1">
-            <results>
-              <test-case description="skips when Core.psm1 is absent" name="src/Core.psm1.skips when Core.psm1 is absent" time="0.0015" asserts="0" success="False" result="Ignored" executed="False" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Modules\IconEditorPackage.Tests.ps1" executed="True" result="Success" success="True" time="1.4878" asserts="0" description="C:\mnt\data\repo_local\tests\Modules\IconEditorPackage.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="IconEditorPackage module" executed="True" result="Success" success="True" time="1.161" asserts="0" description="IconEditorPackage module">
-            <results>
-              <test-suite type="TestFixture" name="IconEditorPackage module.Get-IconEditorPackageName" executed="True" result="Success" success="True" time="0.0406" asserts="0" description="IconEditorPackage module.Get-IconEditorPackageName">
-                <results>
-                  <test-case description="returns a trimmed package name from the VIPB file" name="IconEditorPackage module.Get-IconEditorPackageName.returns a trimmed package name from the VIPB file" time="0.0148" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the package name node is missing" name="IconEditorPackage module.Get-IconEditorPackageName.throws when the package name node is missing" time="0.0075" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="IconEditorPackage module.Get-IconEditorPackagePath" executed="True" result="Success" success="True" time="0.6467" asserts="0" description="IconEditorPackage module.Get-IconEditorPackagePath">
-                <results>
-                  <test-case description="generates the expected package path under the workspace root" name="IconEditorPackage module.Get-IconEditorPackagePath.generates the expected package path under the workspace root" time="0.0131" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="honors an absolute output directory even when workspace root is omitted" name="IconEditorPackage module.Get-IconEditorPackagePath.honors an absolute output directory even when workspace root is omitted" time="0.0711" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="uses the current working directory when workspace root is not provided" name="IconEditorPackage module.Get-IconEditorPackagePath.uses the current working directory when workspace root is not provided" time="0.0296" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="IconEditorPackage module.Confirm-IconEditorPackageArtifact" executed="True" result="Success" success="True" time="0.8346" asserts="0" description="IconEditorPackage module.Confirm-IconEditorPackageArtifact">
-                <results>
-                  <test-case description="returns metadata for the package file" name="IconEditorPackage module.Confirm-IconEditorPackageArtifact.returns metadata for the package file" time="0.021" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the package path is empty" name="IconEditorPackage module.Confirm-IconEditorPackageArtifact.throws when the package path is empty" time="0.0048" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the package path does not resolve to a file" name="IconEditorPackage module.Confirm-IconEditorPackageArtifact.throws when the package path does not resolve to a file" time="0.0073" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the resolved path is a directory instead of a file" name="IconEditorPackage module.Confirm-IconEditorPackageArtifact.throws when the resolved path is a directory instead of a file" time="0.0583" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="IconEditorPackage module.Get-IconEditorViServerSnapshot" executed="True" result="Success" success="True" time="1.0777" asserts="0" description="IconEditorPackage module.Get-IconEditorViServerSnapshot">
-                <results>
-                  <test-case description="reports vendor-tools-missing when helper modules cannot be imported" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.reports vendor-tools-missing when helper modules cannot be imported" time="0.0364" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="surfaces errors thrown while resolving the LabVIEW executable" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.surfaces errors thrown while resolving the LabVIEW executable" time="0.032" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="marks snapshots missing when LabVIEW cannot be located" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.marks snapshots missing when LabVIEW cannot be located" time="0.0163" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="captures ini resolution errors with the exe path in the payload" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.captures ini resolution errors with the exe path in the payload" time="0.029" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="reports missing-ini when the INI cannot be found" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.reports missing-ini when the INI cannot be found" time="0.0195" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="parses server enablement and port values when present" name="IconEditorPackage module.Get-IconEditorViServerSnapshot.parses server enablement and port values when present" time="0.0865" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="IconEditorPackage module.Get-IconEditorViServerSnapshots" executed="True" result="Success" success="True" time="1.1425" asserts="0" description="IconEditorPackage module.Get-IconEditorViServerSnapshots">
-                <results>
-                  <test-case description="returns a snapshot per requested bitness" name="IconEditorPackage module.Get-IconEditorViServerSnapshots.returns a snapshot per requested bitness" time="0.0315" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="records error entries when a snapshot call throws" name="IconEditorPackage module.Get-IconEditorViServerSnapshots.records error entries when a snapshot call throws" time="0.0154" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\AgentWait.Tests.ps1" executed="True" result="Success" success="True" time="2.148" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\AgentWait.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Agent-Wait.ps1" executed="True" result="Success" success="True" time="1.9333" asserts="0" description="Agent-Wait.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Agent-Wait.ps1.Invoke-ProcessCapture" executed="True" result="Success" success="True" time="0.5276" asserts="0" description="Agent-Wait.ps1.Invoke-ProcessCapture">
-                <results>
-                  <test-case description="captures stdout, stderr, and exit code from a child process" name="Agent-Wait.ps1.Invoke-ProcessCapture.captures stdout, stderr, and exit code from a child process" time="0.5122" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Agent-Wait.ps1.Get-AgentRunContext" executed="True" result="Success" success="True" time="0.656" asserts="0" description="Agent-Wait.ps1.Get-AgentRunContext">
-                <results>
-                  <test-case description="derives missing fields using git when environment variables are absent" name="Agent-Wait.ps1.Get-AgentRunContext.derives missing fields using git when environment variables are absent" time="0.0795" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="uses existing environment metadata when available" name="Agent-Wait.ps1.Get-AgentRunContext.uses existing environment metadata when available" time="0.0193" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Agent-Wait.ps1.Start-AgentWait and End-AgentWait" executed="True" result="Success" success="True" time="1.9158" asserts="0" description="Agent-Wait.ps1.Start-AgentWait and End-AgentWait">
-                <results>
-                  <test-case description="writes a wait marker and records the final result" name="Agent-Wait.ps1.Start-AgentWait and End-AgentWait.writes a wait marker and records the final result" time="0.605" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="returns null when a marker is not found" name="Agent-Wait.ps1.Start-AgentWait and End-AgentWait.returns null when a marker is not found" time="0.0043" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="marks results as outside tolerance when elapsed time drifts" name="Agent-Wait.ps1.Start-AgentWait and End-AgentWait.marks results as outside tolerance when elapsed time drifts" time="0.4745" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\Build.Tests.ps1" executed="True" result="Ignored" success="True" time="0.1445" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\Build.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="tools/Build.ps1" executed="True" result="Ignored" success="True" time="0.0159" asserts="0" description="tools/Build.ps1">
-            <results>
-              <test-case description="skips when Build.ps1 is absent" name="tools/Build.ps1.skips when Build.ps1 is absent" time="0.0004" asserts="0" success="False" result="Ignored" executed="False" />
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1" executed="True" result="Success" success="True" time="0.358" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\DocsLinks.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Check-DocsLinks.ps1" executed="True" result="Success" success="True" time="0.1894" asserts="0" description="Check-DocsLinks.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Test-ValidLabel" executed="True" result="Success" success="True" time="0.0242" asserts="0" description="Check-DocsLinks.ps1.Test-ValidLabel">
-                <results>
-                  <test-case description="accepts simple labels with safe characters" name="Check-DocsLinks.ps1.Test-ValidLabel.accepts simple labels with safe characters" time="0.0026" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="allows dots and hyphens in varying positions" name="Check-DocsLinks.ps1.Test-ValidLabel.allows dots and hyphens in varying positions" time="0.002" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="rejects values with reserved characters" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects values with reserved characters" time="0.002" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="rejects labels that exceed the maximum length" name="Check-DocsLinks.ps1.Test-ValidLabel.rejects labels that exceed the maximum length" time="0.0033" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Match-Any helper" executed="True" result="Success" success="True" time="0.0488" asserts="0" description="Check-DocsLinks.ps1.Match-Any helper">
+              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Match-Any helper" executed="True" result="Success" success="True" time="0.0773" asserts="0" description="Check-DocsLinks.ps1.Match-Any helper">
                 <results>
                   <test-case description="detects matches when patterns align" name="Check-DocsLinks.ps1.Match-Any helper.detects matches when patterns align" time="0.0045" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="does not match when patterns do not apply" name="Check-DocsLinks.ps1.Match-Any helper.does not match when patterns do not apply" time="0.0018" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="matches when later patterns include recursive wildcards" name="Check-DocsLinks.ps1.Match-Any helper.matches when later patterns include recursive wildcards" time="0.0014" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="does not match when patterns do not apply" name="Check-DocsLinks.ps1.Match-Any helper.does not match when patterns do not apply" time="0.0039" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="matches when later patterns include recursive wildcards" name="Check-DocsLinks.ps1.Match-Any helper.matches when later patterns include recursive wildcards" time="0.0025" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
-              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Invoke-WithTimeout" executed="True" result="Success" success="True" time="0.1726" asserts="0" description="Check-DocsLinks.ps1.Invoke-WithTimeout">
+              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Invoke-WithTimeout" executed="True" result="Success" success="True" time="0.5176" asserts="0" description="Check-DocsLinks.ps1.Invoke-WithTimeout">
                 <results>
-                  <test-case description="invokes Start-Job and Receive-Job when the work finishes before the timeout" name="Check-DocsLinks.ps1.Invoke-WithTimeout.invokes Start-Job and Receive-Job when the work finishes before the timeout" time="0.0783" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="stops the job and surfaces a timeout error when Wait-Job expires" name="Check-DocsLinks.ps1.Invoke-WithTimeout.stops the job and surfaces a timeout error when Wait-Job expires" time="0.0297" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="invokes Start-Job and Receive-Job when the work finishes before the timeout" name="Check-DocsLinks.ps1.Invoke-WithTimeout.invokes Start-Job and Receive-Job when the work finishes before the timeout" time="0.3658" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="stops the job and surfaces a timeout error when Wait-Job expires" name="Check-DocsLinks.ps1.Invoke-WithTimeout.stops the job and surfaces a timeout error when Wait-Job expires" time="0.0547" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\Packaging.Tests.ps1" executed="True" result="Success" success="True" time="3.0135" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\Packaging.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Hash-Artifacts.ps1" executed="True" result="Success" success="True" time="0.4907" asserts="0" description="Hash-Artifacts.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Hash-Artifacts.ps1.happy path" executed="True" result="Success" success="True" time="0.1867" asserts="0" description="Hash-Artifacts.ps1.happy path">
+              <test-suite type="TestFixture" name="Check-DocsLinks.ps1.Write-Info helper" executed="True" result="Success" success="True" time="0.611" asserts="0" description="Check-DocsLinks.ps1.Write-Info helper">
                 <results>
-                  <test-case description="writes deterministic checksums for files under the root" name="Hash-Artifacts.ps1.happy path.writes deterministic checksums for files under the root" time="0.1049" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="writes to the host when Quiet is disabled" name="Check-DocsLinks.ps1.Write-Info helper.writes to the host when Quiet is disabled" time="0.0389" asserts="0" success="True" result="Success" executed="True" />
+                  <test-case description="suppresses host writes when Quiet is enabled" name="Check-DocsLinks.ps1.Write-Info helper.suppresses host writes when Quiet is enabled" time="0.0342" asserts="0" success="True" result="Success" executed="True" />
                 </results>
               </test-suite>
-              <test-suite type="TestFixture" name="Hash-Artifacts.ps1.error cases" executed="True" result="Success" success="True" time="0.4736" asserts="0" description="Hash-Artifacts.ps1.error cases">
-                <results>
-                  <test-case description="returns a non-zero exit code when the root directory does not exist" name="Hash-Artifacts.ps1.error cases.returns a non-zero exit code when the root directory does not exist" time="0.0865" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="fails when the checksums file cannot be written because it is locked" name="Hash-Artifacts.ps1.error cases.fails when the checksums file cannot be written because it is locked" time="0.1227" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-          <test-suite type="TestFixture" name="Export-SemverBundle.ps1" executed="True" result="Success" success="True" time="2.8356" asserts="0" description="Export-SemverBundle.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Export-SemverBundle.ps1.bundle creation" executed="True" result="Success" success="True" time="1.389" asserts="0" description="Export-SemverBundle.ps1.bundle creation">
-                <results>
-                  <test-case description="creates bundle metadata and optional zip" name="Export-SemverBundle.ps1.bundle creation.creates bundle metadata and optional zip" time="0.7709" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when a required source file is missing" name="Export-SemverBundle.ps1.bundle creation.throws when a required source file is missing" time="0.4449" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Export-SemverBundle.ps1.copy to target repo" executed="True" result="Success" success="True" time="2.3126" asserts="0" description="Export-SemverBundle.ps1.copy to target repo">
-                <results>
-                  <test-case description="fails when the target repo layout blocks copying bundle artifacts" name="Export-SemverBundle.ps1.copy to target repo.fails when the target repo layout blocks copying bundle artifacts" time="0.2572" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="copies bundle contents into the provided target repo root" name="Export-SemverBundle.ps1.copy to target repo.copies bundle contents into the provided target repo root" time="0.3011" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\Validate.Tests.ps1" executed="True" result="Success" success="True" time="0.5057" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\Validate.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Validate-Paths.psm1" executed="True" result="Success" success="True" time="0.2036" asserts="0" description="Validate-Paths.psm1">
-            <results>
-              <test-suite type="TestFixture" name="Validate-Paths.psm1.Test-PathSafe" executed="True" result="Success" success="True" time="0.0508" asserts="0" description="Validate-Paths.psm1.Test-PathSafe">
-                <results>
-                  <test-case description="accepts an existing absolute path" name="Validate-Paths.psm1.Test-PathSafe.accepts an existing absolute path" time="0.0246" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="rejects unsafe traversal paths" name="Validate-Paths.psm1.Test-PathSafe.rejects unsafe traversal paths" time="0.0023" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Validate-Paths.psm1.Validate-PathSafe" executed="True" result="Success" success="True" time="0.181" asserts="0" description="Validate-Paths.psm1.Validate-PathSafe">
-                <results>
-                  <test-case description="returns the resolved path when valid" name="Validate-Paths.psm1.Validate-PathSafe.returns the resolved path when valid" time="0.0463" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the path violates validation rules" name="Validate-Paths.psm1.Validate-PathSafe.throws when the path violates validation rules" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-          <test-suite type="TestFixture" name="Validate-Config.ps1" executed="True" result="Success" success="True" time="0.3552" asserts="0" description="Validate-Config.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Validate-Config.ps1.Invocation" executed="True" result="Success" success="True" time="0.1351" asserts="0" description="Validate-Config.ps1.Invocation">
-                <results>
-                  <test-case description="prints a success message for valid JSON input" name="Validate-Config.ps1.Invocation.prints a success message for valid JSON input" time="0.0249" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the JSON content is invalid" name="Validate-Config.ps1.Invocation.throws when the JSON content is invalid" time="0.044" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="succeeds gracefully when the referenced schema file is missing" name="Validate-Config.ps1.Invocation.succeeds gracefully when the referenced schema file is missing" time="0.0145" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="returns a failure when the schema file is malformed JSON" name="Validate-Config.ps1.Invocation.returns a failure when the schema file is malformed JSON" time="0.0332" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\ViCompareCli.Tests.ps1" executed="True" result="Success" success="True" time="0.5908" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\ViCompareCli.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Invoke-ViCompareLabVIEWCli.ps1" executed="True" result="Success" success="True" time="0.4319" asserts="0" description="Invoke-ViCompareLabVIEWCli.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath" executed="True" result="Success" success="True" time="0.1853" asserts="0" description="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath">
-                <results>
-                  <test-case description="resolves relative files using the provided probe roots" name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.resolves relative files using the provided probe roots" time="0.0076" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="returns null when the candidate cannot be resolved" name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.returns null when the candidate cannot be resolved" time="0.002" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="normalizes and resolves existing absolute paths verbatim" name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.normalizes and resolves existing absolute paths verbatim" time="0.0163" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs" executed="True" result="Success" success="True" time="0.2486" asserts="0" description="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs">
-                <results>
-                  <test-case description="parses request files with the requests schema" name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.parses request files with the requests schema" time="0.0181" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="supports the legacy pairs schema layout" name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.supports the legacy pairs schema layout" time="0.0067" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the JSON payload lacks supported nodes" name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.throws when the JSON payload lacks supported nodes" time="0.0145" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="throws when the JSON is malformed" name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.throws when the JSON is malformed" time="0.0052" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts" executed="True" result="Success" success="True" time="0.4111" asserts="0" description="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts">
-                <results>
-                  <test-case description="writes capture, session, and report files for a dry-run pair" name="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts.writes capture, session, and report files for a dry-run pair" time="0.0101" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="HTML-encodes the reason text inside the stub report" name="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts.HTML-encodes the reason text inside the stub report" time="0.0089" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Tests.ps1" executed="True" result="Success" success="True" time="0.3123" asserts="0" description="C:\mnt\data\repo_local\tests\Scripts\WorkflowDrift.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Check-WorkflowDrift.ps1" executed="True" result="Success" success="True" time="0.1338" asserts="0" description="Check-WorkflowDrift.ps1">
-            <results>
-              <test-suite type="TestFixture" name="Check-WorkflowDrift.ps1.Resolve-PythonExe" executed="True" result="Success" success="True" time="0.0572" asserts="0" description="Check-WorkflowDrift.ps1.Resolve-PythonExe">
-                <results>
-                  <test-case description="returns the first available python executable" name="Check-WorkflowDrift.ps1.Resolve-PythonExe.returns the first available python executable" time="0.0262" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="falls back to py.exe when python.exe is unavailable" name="Check-WorkflowDrift.ps1.Resolve-PythonExe.falls back to py.exe when python.exe is unavailable" time="0.0085" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="returns null when no candidates are available" name="Check-WorkflowDrift.ps1.Resolve-PythonExe.returns null when no candidates are available" time="0.0067" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-              <test-suite type="TestFixture" name="Check-WorkflowDrift.ps1.Process-Staging" executed="True" result="Success" success="True" time="0.12" asserts="0" description="Check-WorkflowDrift.ps1.Process-Staging">
-                <results>
-                  <test-case description="adds and commits changes when only workflow files are staged" name="Check-WorkflowDrift.ps1.Process-Staging.adds and commits changes when only workflow files are staged" time="0.0077" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="avoids committing when unrelated files are staged" name="Check-WorkflowDrift.ps1.Process-Staging.avoids committing when unrelated files are staged" time="0.0295" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="emits a notice and skips work when no files are staged" name="Check-WorkflowDrift.ps1.Process-Staging.emits a notice and skips work when no files are staged" time="0.0077" asserts="0" success="True" result="Success" executed="True" />
-                  <test-case description="skips staging entirely when Stage is disabled and no commit message is provided" name="Check-WorkflowDrift.ps1.Process-Staging.skips staging entirely when Stage is disabled and no commit message is provided" time="0.0032" asserts="0" success="True" result="Success" executed="True" />
-                </results>
-              </test-suite>
-            </results>
-          </test-suite>
-        </results>
-      </test-suite>
-      <test-suite type="TestFixture" name="C:\mnt\data\repo_local\tests\smoke\Smoke.Tests.ps1" executed="True" result="Success" success="True" time="0.154" asserts="0" description="C:\mnt\data\repo_local\tests\smoke\Smoke.Tests.ps1">
-        <results>
-          <test-suite type="TestFixture" name="Smoke" executed="True" result="Success" success="True" time="0.0157" asserts="0" description="Smoke">
-            <results>
-              <test-case description="true is true" name="Smoke.true is true" time="0.0016" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>

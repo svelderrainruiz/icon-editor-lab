@@ -1,7 +1,7 @@
 {
-  "GeneratedAt": "2025-11-15T08:07:36.1490839-08:00",
-  "Root": "/mnt/data/repo_local",
-  "SummaryRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-history-family-tests",
+  "GeneratedAt": "2025-11-15T19:35:17.4758122-08:00",
+  "Root": "C:\\mnt\\data\\repo_local",
+  "SummaryRoot": "C:\\mnt\\data\\repo_local\\tests\\results\\_agent\\vi-history-family-tests",
   "TotalRuns": 4,
   "ByFamily": [
     {
@@ -24,7 +24,7 @@
   "Runs": [
     {
       "Family": "vihistory.diff",
-      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-history-family-tests\\diff-run\\vi-history-summary.json",
+      "Path": "C:\\mnt\\data\\repo_local\\tests\\results\\_agent\\vi-history-family-tests\\diff-run\\vi-history-summary.json",
       "Targets": 2,
       "DiffTargets": 2,
       "Errors": 0,
@@ -32,7 +32,7 @@
     },
     {
       "Family": "vihistory.error",
-      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-history-family-tests\\error-run\\vi-history-summary.json",
+      "Path": "C:\\mnt\\data\\repo_local\\tests\\results\\_agent\\vi-history-family-tests\\error-run\\vi-history-summary.json",
       "Targets": 2,
       "DiffTargets": 1,
       "Errors": 1,
@@ -40,7 +40,7 @@
     },
     {
       "Family": "vihistory.ok",
-      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-history-family-tests\\ok-run\\vi-history-summary.json",
+      "Path": "C:\\mnt\\data\\repo_local\\tests\\results\\_agent\\vi-history-family-tests\\ok-run\\vi-history-summary.json",
       "Targets": 3,
       "DiffTargets": 0,
       "Errors": 0,
@@ -48,7 +48,7 @@
     },
     {
       "Family": "vihistory.skipped",
-      "Path": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\tests\\results\\_agent\\vi-history-family-tests\\skipped-run\\vi-history-summary.json",
+      "Path": "C:\\mnt\\data\\repo_local\\tests\\results\\_agent\\vi-history-family-tests\\skipped-run\\vi-history-summary.json",
       "Targets": 1,
       "DiffTargets": 0,
       "Errors": 0,
