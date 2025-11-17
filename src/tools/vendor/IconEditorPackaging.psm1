@@ -26,7 +26,7 @@ function Invoke-IconEditorVipPackaging {
     [string[]]$CloseArguments = @(),
     [string]$VipbRelativePath,
     [string]$ReleaseNotesPath,
-    [string]$Toolchain = 'gcli',
+    [string]$Toolchain = 'g-cli',
     [string]$Provider,
     [string]$ArtifactFilter = '*.vip'
   )

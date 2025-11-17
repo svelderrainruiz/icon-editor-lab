@@ -33,7 +33,7 @@ function Test-VipmCliReady {
     try {
         $null = Get-VipmInvocation -Operation 'InstallVipc' -Params $params -ProviderName $ProviderName
     } catch {
-        throw "VIPM provider '$ProviderName' is not ready: $($_.Exception.Message)"
+        throw "vipmcli/g-cli provider '$ProviderName' is not ready: $($_.Exception.Message)"
     }
 
     return [pscustomobject]@{

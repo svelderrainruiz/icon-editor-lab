@@ -1,0 +1,54 @@
+{
+  "schema": "icon-editor/vi-diff-summary@v1",
+  "generatedAt": "2025-11-15T18:08:24.4284748+00:00",
+  "counts": {
+    "total": 3,
+    "compared": 0,
+    "same": 0,
+    "different": 0,
+    "skipped": 0,
+    "dryRun": 3,
+    "errors": 0
+  },
+  "requests": [
+    {
+      "name": "module_1.vi",
+      "relPath": "src/VIs/module_1.vi",
+      "category": "sample",
+      "pairId": "src/VIs/module_1.vi",
+      "status": "dry-run",
+      "message": "Dry-run mode: LabVIEW CLI execution skipped.",
+      "artifacts": {
+        "sessionIndex": "captures/pair-001/session-index.json",
+        "captureJson": "captures/pair-001/lvcompare-capture.json",
+        "reportHtml": "captures/pair-001/compare-report.html"
+      }
+    },
+    {
+      "name": "module_2.vi",
+      "relPath": "src/VIs/module_2.vi",
+      "category": "sample",
+      "pairId": "src/VIs/module_2.vi",
+      "status": "dry-run",
+      "message": "Dry-run mode: LabVIEW CLI execution skipped.",
+      "artifacts": {
+        "sessionIndex": "captures/pair-002/session-index.json",
+        "captureJson": "captures/pair-002/lvcompare-capture.json",
+        "reportHtml": "captures/pair-002/compare-report.html"
+      }
+    },
+    {
+      "name": "module_3.vi",
+      "relPath": "src/VIs/module_3.vi",
+      "category": "sample",
+      "pairId": "src/VIs/module_3.vi",
+      "status": "dry-run",
+      "message": "Dry-run mode: LabVIEW CLI execution skipped.",
+      "artifacts": {
+        "sessionIndex": "captures/pair-003/session-index.json",
+        "captureJson": "captures/pair-003/lvcompare-capture.json",
+        "reportHtml": "captures/pair-003/compare-report.html"
+      }
+    }
+  ]
+}

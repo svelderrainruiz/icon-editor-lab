@@ -15,6 +15,7 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 | Snapshot staging (IELA-SRS-INT-001) | `tools/icon-editor/Stage-IconEditorSnapshot.ps1`, `tools/Ensure-SessionIndex.ps1` | Captures a staged copy of `vendor/icon-editor`, fixture manifests, and a `session-index.json` (`icon-editor/snapshot-session@v1`). |
 | LVCompare smoke / Scenario 1-4 | `tools/Run-HeadlessCompare.ps1`, `tools/TestStand-CompareHarness.ps1` | Writes `compare-report.html`, `lvcompare-capture.json`, and `session-index.json` under the chosen output root. Pair with `tools/report/Analyze-CompareReportImages.ps1` to validate screenshots. |
 | Bundle export / downstream consumption | `tools/Export-LabTooling.ps1`, `tools/Get-IconEditorLabTooling.ps1`, `Resolve-IconEditorLabPath.ps1` | Creates `artifacts/icon-editor-lab-tooling.zip`, then rehydrates bundle consumers under `vendor/icon-editor-lab/bundle/`. |
+| Release candidate validation gate | `tools/validation/Invoke-AgentValidation.ps1` (plan: `configs/validation/agent-validation-plan.json`) | Runs the LabVIEW/vipmcli validation matrix via x-cli. Produces `.tmp-tests/validation/agent-validation-*.json`; used by the VS Code task and GitHub Actions gate. |
 
 ### Common paths & environment hints
 
@@ -26,6 +27,36 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 - Every script in `tools/` also has a short-form Markdown reference under
   `tools/_docs/<script>.md`. Open those files (or run `Get-Help .\tools\<script>.ps1 -Full`) when
   you need parameter descriptions beyond the table below.
+- For a local pre-push gate, use `tools/Run-PrePushChecks.ps1` (or VS Code task **Tools: Pre-push checks (actionlint + guards)**) to run actionlint and enforce the LabVIEW.exe/VIPM.exe guardrails before creating a release/RC PR.
+
+When running on Ubuntu via Docker or devcontainers, the recommended base is the **icon-editor-lab tooling image** described in ADR-0003 (built from `tools/Dockerfile.icon-editor-lab-tooling-ubuntu` and published to GHCR). It bundles x-cli, the LabVIEW CI/CD seed CLI (VipbJsonTool plus `vipb2json`/`json2vipb` wrappers), PowerShell, and the lab’s `src/tools` scripts so Codex and CI jobs can exercise icon-editor-lab workflows without re-installing toolchains.
+
+### x-cli workflow playbook (Codex friendly)
+
+| Scenario | x-cli command / helper | Request / task | Required env |
+| --- | --- | --- | --- |
+| VI compare replay | `pwsh tools/codex/Invoke-XCliWorkflow.ps1 -Workflow vi-compare-run -RequestPath configs/vi-compare-run-request.json` | VS Code: `Tools: Run VI Compare (x-cli)` / `Tools: Replay VI compare scenario` | `XCLI_ALLOW_PROCESS_START=1`, `XCLI_REPO_ROOT`, LabVIEW 2025 on PATH, `XCLI_LABVIEW_INI_PATH` & `XCLI_LOCALHOST_REQUIRED_PATH` for real runs |
+| VI compare verification | `dotnet run … -- vi-compare-verify --summary <json>` | VS Code: `Tools: Verify VI compare (x-cli)` | `XCLI_REPO_ROOT` |
+| VI Analyzer run | `pwsh tools/codex/Invoke-XCliWorkflow.ps1 -Workflow vi-analyzer-run -RequestPath configs/vi-analyzer-request.json` | VS Code: `Tools: Run VI Analyzer (x-cli)` | `XCLI_ALLOW_PROCESS_START=1`, LabVIEW CLI path, optionally `XCLI_PWSH` |
+| VI Analyzer verify | `dotnet run … -- vi-analyzer-verify --labview-path <LabVIEW.exe>` | `Tools: Verify VI Analyzer (x-cli)` | LabVIEW CLI binaries installed |
+| vipmcli dependency apply | `dotnet run … -- vipm-apply-vipc --request configs/vipm-apply-request.json` | `Tools: Smoke vipmcli apply` (prepare-only/execute) | vipmcli/g-cli on PATH; `.github/actions/apply-vipc/ApplyVIPC.ps1` stub present until action vendored |
+| vipmcli package replay | `dotnet run … -- vipm-build-vip --request configs/vipm-build-request.json` | `Tools: Smoke vipmcli package` | Same as above |
+| vipmcli build | `dotnet run … -- vipmcli-build --request configs/vipmcli-build-request.json` | `Tools: Smoke vipmcli build` | vipmcli, g-cli, LabVIEW 2023 installs |
+| PPL build | `dotnet run … -- ppl-build --request configs/ppl-build-request.json` | `Tools: PPL Build (x-cli)` | LabVIEW 2021 (32/64) |
+| Stage/Test/Promote/Upload | `Tools: Stage x-cli artifact`, `Validate x-cli artifact`, `Promote…`, `Upload…` | publish-plan tasks or discrete VS Code tasks | `XCLI_STAGE_CHANNEL`, `XCLI_QA_DESTINATION`, `XCLI_UPLOAD_MODE`, plus `XCLI_ALLOW_PROCESS_START=1` |
+
+Set the following environment variables before calling `Invoke-XCliWorkflow.ps1` directly:
+
+```
+ $env:XCLI_ALLOW_PROCESS_START = '1'          # required for real LabVIEW runs
+ $env:XCLI_REPO_ROOT           = $PWD.ProviderPath
+ $env:XCLI_LABVIEW_INI_PATH    = 'C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.ini'
+ $env:XCLI_LOCALHOST_REQUIRED_PATH = $env:XCLI_REPO_ROOT
+```
+
+Codex tasks already inject these vars, but documenting them here keeps the playbook explicit.
+
+> Root-agent helper: `tools/codex/Invoke-LabVIEWOperation.ps1 -Operation <scenario> -RequestPath <json>` wraps the table above and automatically calls `Invoke-XCliWorkflow.ps1`. Use it when Codex receives a generic “LabVIEW operation” request — it only needs to build the JSON payload and point this helper at it.
 
 ## Index
 
@@ -211,8 +242,8 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 | `Provider.psm1` | — | `Value` (bool) | [tools/providers/labviewcli/Provider.psm1](./providers/labviewcli/Provider.psm1) |
 | `Provider.psm1` | — | `Value` (bool) | [tools/providers/labviewcli/Provider.psm1](./providers/labviewcli/Provider.psm1) |
 | `Publish-Cli.ps1` | Use system tar; on Windows this is bsdtar. Permissions for linux/osx binaries | — | [tools/Publish-Cli.ps1](./Publish-Cli.ps1) |
-| `Publish-LocalArtifacts.ps1` | Requires -Version 7.0 | `ArtifactsRoot` (string), `GhTokenPath` (string), `ReleaseTag` (string), `ReleaseName` (string), `SkipUpload` (switch) | [tools/icon-editor/Publish-LocalArtifacts.ps1](./icon-editor/Publish-LocalArtifacts.ps1) |
-| `Publish-LocalArtifacts.ps1` | Requires -Version 7.0 | `ArtifactsRoot` (string), `GhTokenPath` (string), `ReleaseTag` (string), `ReleaseName` (string), `SkipUpload` (switch) | [tools/icon-editor/Publish-LocalArtifacts.ps1](./icon-editor/Publish-LocalArtifacts.ps1) |
+| `Publish-LocalArtifacts.ps1` | **Retired** – use Stage/Test/Promote/Upload helpers | — | [tools/icon-editor/Publish-LocalArtifacts.ps1](./icon-editor/Publish-LocalArtifacts.ps1) |
+| `Publish-LocalArtifacts.ps1` | **Retired** – use Stage/Test/Promote/Upload helpers | — | [tools/icon-editor/Publish-LocalArtifacts.ps1](./icon-editor/Publish-LocalArtifacts.ps1) |
 | `Publish-VICompareSummary.ps1` | — | — | [tools/Publish-VICompareSummary.ps1](./Publish-VICompareSummary.ps1) |
 | `Quick-DispatcherSmoke.ps1` | Quick local smoke test for Invoke-PesterTests.ps1. | — | [tools/Quick-DispatcherSmoke.ps1](./Quick-DispatcherSmoke.ps1) |
 | `Quick-VerifyCompare.ps1` | Quick local verification of Compare VI action outputs (seconds + nanoseconds) without running full Pester. | `Base` (string), `Head` (string), `Same` (switch), `ShowSummary` (switch) | [tools/Quick-VerifyCompare.ps1](./Quick-VerifyCompare.ps1) |
@@ -303,7 +334,7 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 | `Validate-Fixtures.ps1` | Validates canonical fixture VIs (Phase 1 + Phase 2 hash manifest, refined schema & JSON support). | `Json`, `TestAllowFixtureUpdate` | [tools/Validate-Fixtures.ps1](./Validate-Fixtures.ps1) |
 | `VendorTools.psm1` | Requires -Version 7.0 | `StartPath` (string) | [tools/VendorTools.psm1](./VendorTools.psm1) |
 | `Verify-FixtureCompare.ps1` | Do not re-run compare; use existing exec JSON (copy when different path) | — | [tools/Verify-FixtureCompare.ps1](./Verify-FixtureCompare.ps1) |
-| `Verify-LVCompareSetup.ps1` | Requires -Version 7.0 | `ProbeCli` (switch) | [tools/Verify-LVCompareSetup.ps1](./Verify-LVCompareSetup.ps1) |
+| `Verify-LVCompareSetup.ps1` | Requires -Version 7.0; `-ProbeCli` is guarded — use x-cli verify workflows via `tools/codex/Invoke-LabVIEWOperation.ps1` instead of invoking LabVIEWCLI.exe directly. | `ProbeCli` (switch) | [tools/Verify-LVCompareSetup.ps1](./Verify-LVCompareSetup.ps1) |
 | `Verify-LocalDiffSession.ps1` | Requires -Version 7.0 | — | [tools/Verify-LocalDiffSession.ps1](./Verify-LocalDiffSession.ps1) |
 | `Vipm.psm1` | Requires -Version 7.0 | — | [tools/Vipm.psm1](./Vipm.psm1) |
 | `VipmBuildHelpers.psm1` | Requires -Version 7.0 | — | [tools/icon-editor/VipmBuildHelpers.psm1](./icon-editor/VipmBuildHelpers.psm1) |
@@ -313,7 +344,7 @@ documented in `docs/requirements/Icon-Editor-Lab_SRS.md`.
 | `Wait-InvokerReady.ps1` | Requires -Version 7.0 | — | [tools/RunnerInvoker/Wait-InvokerReady.ps1](./RunnerInvoker/Wait-InvokerReady.ps1) |
 | `Wait-InvokerReady.ps1` | Requires -Version 7.0 | — | [tools/RunnerInvoker/Wait-InvokerReady.ps1](./RunnerInvoker/Wait-InvokerReady.ps1) |
 | `Warmup-LabVIEW.ps1` | Compatibility wrapper for Warmup-LabVIEWRuntime.ps1 (deprecated entry point). | `LabVIEWPath` (string), `MinimumSupportedLVVersion` (string), `SupportedBitness` (string), `TimeoutSeconds` (int), `IdleWaitSeconds` (int), `JsonLogPath` (string)… | [tools/Warmup-LabVIEW.ps1](./Warmup-LabVIEW.ps1) |
-| `Warmup-LabVIEWRuntime.ps1` | Deterministic LabVIEW runtime warmup for self-hosted Windows runners. | `StopAfterWarmup` | [tools/Warmup-LabVIEWRuntime.ps1](./Warmup-LabVIEWRuntime.ps1) |
+| `Warmup-LabVIEWRuntime.ps1` | Deterministic LabVIEW runtime warmup for self-hosted Windows runners; direct LabVIEW.exe launches are now guarded — prefer LabVIEW operations driven via `tools/codex/Invoke-LabVIEWOperation.ps1` and x-cli workflows. | `StopAfterWarmup` | [tools/Warmup-LabVIEWRuntime.ps1](./Warmup-LabVIEWRuntime.ps1) |
 | `Watch-OrchestratedRest.ps1` | Wrapper for the REST watcher that writes watcher-rest.json and merges it into session-index.json. | `RunId` (int), `Branch` (string), `Workflow` (string), `PollMs` (int), `ErrorGraceMs` (int), `NotFoundGraceMs` (int)… | [tools/Watch-OrchestratedRest.ps1](./Watch-OrchestratedRest.ps1) |
 | `Watch-Pester.ps1` | Lightweight session naming for observability | `Path` (string), `Filter` (string), `DebounceMilliseconds` (int), `RunAllOnStart` (switch), `NoSummary` (switch), `TestPath` (string)… | [tools/Watch-Pester.ps1](./Watch-Pester.ps1) |
 | `Watch-RunAndTrack.ps1` | Dispatch a GitHub workflow and monitor its jobs until completion. | `Workflow` (string), `Ref` (string), `Repo` (string), `PollSeconds` (int), `MonitorPollSeconds` (int), `TimeoutSeconds` (int)… | [tools/Watch-RunAndTrack.ps1](./Watch-RunAndTrack.ps1) |

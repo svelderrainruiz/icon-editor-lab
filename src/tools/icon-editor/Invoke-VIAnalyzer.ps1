@@ -1,13 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
 #Requires -Version 7.0
 <#
 .SYNOPSIS
@@ -221,46 +211,7 @@ if ($structuredConfigInfo -and $structuredConfigInfo.sourcePath) {
   $configSourceResolved = $structuredConfigInfo.sourcePath
 }
 
-if (-not $LabVIEWCLIPath) {
-  $LabVIEWCLIPath = Resolve-LabVIEWCliPath -Version $LabVIEWVersion -Bitness $Bitness
-}
-if (-not $LabVIEWCLIPath) {
-  throw "Unable to resolve LabVIEWCLI.exe for version $LabVIEWVersion ($Bitness-bit)."
-}
-$cliResolved = Resolve-Path -LiteralPath $LabVIEWCLIPath -ErrorAction Stop
-$cliResolved = $cliResolved.Path
-
-$portNumber = $null
-$labviewExePath = $null
-if (Get-Command -Name Find-LabVIEWVersionExePath -ErrorAction SilentlyContinue) {
-  try {
-    $labviewExePath = Find-LabVIEWVersionExePath -Version $LabVIEWVersion -Bitness $Bitness
-  } catch {
-    $labviewExePath = $null
-  }
-}
-if ($labviewExePath) {
-  try {
-    $iniPath = Get-LabVIEWIniPath -LabVIEWExePath $labviewExePath
-    if ($iniPath -and (Test-Path -LiteralPath $iniPath -PathType Leaf)) {
-      $enabledValue = $null
-      try { $enabledValue = Get-LabVIEWIniValue -LabVIEWExePath $labviewExePath -LabVIEWIniPath $iniPath -Key 'server.tcp.enabled' } catch {}
-      if ($enabledValue -and $enabledValue.Trim().ToLowerInvariant() -notin @('1','true')) {
-        Write-Warning ("VI Analyzer: LabVIEW VI Server appears disabled in {0} (server.tcp.enabled={1}). CLI connections may fail." -f $iniPath, $enabledValue)
-      }
-      $portValue = $null
-      try { $portValue = Get-LabVIEWIniValue -LabVIEWExePath $labviewExePath -LabVIEWIniPath $iniPath -Key 'server.tcp.port' } catch {}
-      if ($portValue) {
-        $parsedPort = 0
-        if ([int]::TryParse($portValue.Trim(), [ref]$parsedPort) -and $parsedPort -gt 0) {
-          $portNumber = $parsedPort
-        }
-      }
-    }
-  } catch {
-    Write-Verbose ("VI Analyzer: Failed to inspect LabVIEW.ini for VI Server port: {0}" -f $_.Exception.Message)
-  }
-}
+Import-Module (Join-Path (Split-Path -Parent $PSScriptRoot) 'LabVIEWCli.psm1') -Force
 
 $outputRootResolved = if ([System.IO.Path]::IsPathRooted($OutputRoot)) {
   $OutputRoot
@@ -297,69 +248,58 @@ if ($ResultsPath) {
   $ResultsPath = [System.IO.Path]::GetFullPath($ResultsPath)
 }
 
-$argumentList = New-Object System.Collections.Generic.List[string]
-if ($AdditionalArguments) {
-  foreach ($arg in $AdditionalArguments) { $argumentList.Add($arg) }
+$invokeParams = @{
+  ConfigPath     = $configResolved
+  ReportPath     = $reportResolved
+  ReportSaveType = $ReportSaveType
 }
-if ($portNumber -and -not ($argumentList -contains '-PortNumber')) {
-  $argumentList.Add('-PortNumber')
-  $argumentList.Add([string]$portNumber)
-}
-if ($labviewExePath -and -not ($argumentList -contains '-LabVIEWPath')) {
-  $argumentList.Add('-LabVIEWPath')
-  $argumentList.Add($labviewExePath)
-}
-$argumentList.Add('-OperationName')
-$argumentList.Add('RunVIAnalyzer')
-$argumentList.Add('-ConfigPath')
-$argumentList.Add($configResolved)
-$argumentList.Add('-ReportPath')
-$argumentList.Add($reportResolved)
-$argumentList.Add('-ReportSaveType')
-$argumentList.Add($ReportSaveType)
 if ($ConfigPassword) {
-  $argumentList.Add('-ConfigPassword')
-  $argumentList.Add($ConfigPassword)
+  $invokeParams.ConfigPassword = $ConfigPassword
 }
-if ($ReportSort) {
-  $argumentList.Add('-ReportSort')
-  $argumentList.Add($ReportSort)
-}
-if ($ReportInclude) {
-  foreach ($include in $ReportInclude) {
-    if (-not [string]::IsNullOrWhiteSpace($include)) {
-      $argumentList.Add('-ReportInclude')
-      $argumentList.Add($include)
-    }
+
+$cliResult = $null
+try {
+  $invokeArgs = @{
+    Operation = 'RunVIAnalyzer'
+    Params    = $invokeParams
+    Provider  = 'labviewcli'
+    Preview   = $false
   }
-}
-if ($ResultsPath) {
-  $argumentList.Add('-ResultsPath')
-  $argumentList.Add($ResultsPath)
+  $cliResult = Invoke-LVOperation @invokeArgs
+  $exitCode = $cliResult.exitCode
+  $stdOut   = $cliResult.stdout
+  $stdErr   = $cliResult.stderr
+} catch {
+  $exitCode = -1
+  $stdOut   = @()
+  $stdErr   = @($_.Exception.Message)
 }
 
-$psi = New-Object System.Diagnostics.ProcessStartInfo
-$psi.FileName = $cliResolved
-foreach ($arg in $argumentList) {
-  [void]$psi.ArgumentList.Add($arg)
+function Get-CliResultProperty {
+  param(
+    [psobject]$Result,
+    [string]$Name
+  )
+  if ($null -eq $Result) { return $null }
+  $prop = $Result.PSObject.Properties[$Name]
+  if ($prop) { return $prop.Value }
+  return $null
 }
-$psi.WorkingDirectory = Split-Path $configResolved -Parent
-$psi.UseShellExecute = $false
-$psi.RedirectStandardOutput = $true
-$psi.RedirectStandardError = $true
 
-$process = [System.Diagnostics.Process]::Start($psi)
-if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
-  try { $process.Kill() } catch {}
-  throw "VI Analyzer invocation timed out after $TimeoutSeconds seconds."
+if (-not $cliResult) {
+  $cliResult = [pscustomobject]@{}
 }
-$stdOut = $process.StandardOutput.ReadToEnd()
-$stdErr = $process.StandardError.ReadToEnd()
-$exitCode = $process.ExitCode
+$cliProvider = Get-CliResultProperty -Result $cliResult -Name 'provider'
+if (-not $cliProvider) { $cliProvider = $invokeArgs.Provider }
+$cliBinary = Get-CliResultProperty -Result $cliResult -Name 'binary'
+$cliArgs   = Get-CliResultProperty -Result $cliResult -Name 'args'
+if (-not $cliArgs) { $cliArgs = @() }
 
 $cliLogPath = Join-Path $runDir 'vi-analyzer-cli.log'
 $cliLogContent = @(
-  "Command: `"$cliResolved`" $($argumentList -join ' ')",
+  ("Provider: {0}" -f $cliProvider)
+  ("Binary  : {0}" -f $cliBinary)
+  ("Args    : {0}" -f (($cliArgs) -join ' '))
   '',
   '--- stdout ---',
   $stdOut,

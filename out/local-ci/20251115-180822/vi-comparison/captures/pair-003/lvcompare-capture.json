@@ -1,0 +1,6 @@
+{
+  "schema": "labview-cli-capture@v1",
+  "status": "dry-run",
+  "reason": "Dry-run mode: LabVIEW CLI execution skipped.",
+  "at": "2025-11-15T18:08:24.4247490+00:00"
+}

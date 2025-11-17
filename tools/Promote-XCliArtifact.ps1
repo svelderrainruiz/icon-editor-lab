@@ -57,6 +57,24 @@ function Resolve-StagedArtifact {
     return $latest?.FullName
 }
 
+function Get-StageAssetValue {
+    param(
+        [object]$StageInfo,
+        [string]$Name
+    )
+
+    if (-not $StageInfo.PSObject.Properties['assets']) {
+        return $null
+    }
+
+    $assets = $StageInfo.assets
+    if ($assets -is [System.Collections.IDictionary]) {
+        return $assets[$Name]
+    }
+
+    return $assets.$Name
+}
+
 $StageChannel = if ($StageChannel) { $StageChannel } elseif ($env:XCLI_STAGE_CHANNEL) { $env:XCLI_STAGE_CHANNEL } else { 'local' }
 $stageFullPath = Resolve-StagedArtifact -RepoRoot $RepoRoot -PathCandidate $StagePath -Channel $StageChannel
 if (-not $stageFullPath) {
@@ -108,11 +126,23 @@ if ($validatedDiagnostics -and (Test-Path -LiteralPath $validatedDiagnostics -Pa
     $targetDiagPath = $null
 }
 
+$qaSessionPath = $null
+$sessionAsset = Get-StageAssetValue -StageInfo $stageInfo -Name 'viCompareSession'
+if ($sessionAsset -and (Test-Path -LiteralPath $sessionAsset -PathType Leaf)) {
+    $targetSessionName = "{0}-vi-compare-session.zip" -f $stageName
+    $qaSessionPath = Join-Path $qaChannelDir $targetSessionName
+    Copy-Item -LiteralPath $sessionAsset -Destination $qaSessionPath -Force
+    Write-Host ("[[xcli]] Copied vi-compare session bundle to {0}" -f $qaSessionPath)
+}
+
 $stageInfo.statuses.qaPromoted = [ordered]@{
     status      = 'passed'
     promotedAt  = (Get-Date).ToString('o')
     destination = $targetArtifactPath
     diagnostics = $targetDiagPath
+}
+if ($qaSessionPath) {
+    $stageInfo.statuses.qaPromoted.viCompareSession = $qaSessionPath
 }
 $stageInfo | ConvertTo-Json -Depth 8 | Out-File -FilePath $stageInfoPath -Encoding UTF8
 

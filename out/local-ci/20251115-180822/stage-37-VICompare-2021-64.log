@@ -1,0 +1,37 @@
+**********************
+PowerShell transcript start
+Start time: 20251115180824
+Username: runnervmg1sw1\runner
+RunAs User: runnervmg1sw1\runner
+Configuration Name: 
+Machine: runnervmg1sw1 (Unix 6.11.0.1018)
+Host Application: /opt/microsoft/powershell/7/pwsh.dll -command . '/home/runner/work/_temp/b3433d7f-92b9-45de-8d7c-ae73a521481f.ps1'
+Process ID: 2372
+PSVersion: 7.4.13
+PSEdition: Core
+GitCommitId: 7.4.13
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Using Ubuntu vi-comparison payload '20251115-180740'
+[vi-compare] Invoking LabVIEW CLI helper for requests at /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison/vi-diff-requests.json
+WARNING: [vi-compare] LabVIEW executable not found at ''. Falling back to dry-run mode.
+[vi-compare] LabVIEW CLI summary written to /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison/vi-comparison-summary.json
+
+Name                           Value
+----                           -----
+schema                         icon-editor/vi-diff-summary@v1
+generatedAt                    2025-11-15T18:08:24.4284748+00:00
+counts                         {[total, 3], [compared, 0], [same, 0], [differe…
+requests                       {@{name=module_1.vi; relPath=src/VIs/module_1.v…
+Windows vi-comparison artifacts prepared at /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison
+Shared copy: /home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/windows/20251115-180822
+Publish summary: /home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/windows/20251115-180822/publish.json
+**********************
+PowerShell transcript end
+End time: 20251115180824
+**********************

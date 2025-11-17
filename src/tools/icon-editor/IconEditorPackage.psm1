@@ -306,7 +306,7 @@ function Invoke-IconEditorVipBuild {
         [Parameter(Mandatory)][string]$ReleaseNotesPath,
         [string]$WorkspaceRoot,
         [string]$OutputDirectory = '.github/builds/VI Package',
-        [ValidateSet('gcli','vipm')][string]$Provider = 'gcli',
+        [ValidateSet('g-cli','vipm')][string]$Provider = 'g-cli',
         [string]$GCliProviderName,
         [string]$VipmProviderName,
         [int]$TimeoutSeconds = 300,
@@ -330,7 +330,7 @@ function Invoke-IconEditorVipBuild {
 
     $providerKey = $Provider.ToLowerInvariant()
     switch ($providerKey) {
-        'gcli' {
+        'g-cli' {
             if (-not (Invoke-IconEditorGCliImport -WorkspaceRoot $WorkspaceRoot)) {
                 throw 'Unable to import g-cli provider module (tools/GCli.psm1).'
             }
@@ -388,7 +388,7 @@ function Invoke-IconEditorVipBuild {
     $versionString = '{0}.{1}.{2}.{3}' -f $Major, $Minor, $Patch, $Build
 
     switch ($providerKey) {
-        'gcli' {
+        'g-cli' {
             $operationParams = @{
                 labviewVersion   = $MinimumSupportedLVVersion.ToString()
                 architecture     = $SupportedBitness.ToString()

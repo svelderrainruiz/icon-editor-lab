@@ -399,7 +399,7 @@ jobs:
         shell: pwsh
         run: |
           Import-Module "$PWD\tools\Vipm.psm1" -Force
-          $vipbPath = Join-Path $PWD '.github\actions\build-vi-package\NI Icon editor.vipb'
+          $vipbPath = Join-Path $PWD '.github\actions\build-vi-package\NI_Icon_editor.vipb'
           $invocation = Get-VipmInvocation -Operation 'BuildVip' -Params @{
             vipbPath        = $vipbPath
             outputDirectory = (Join-Path $PWD '.github\actions\build-vi-package\_temp')
@@ -439,7 +439,7 @@ jobs:
         with:
           supported_bitness: 64
           relative_path: ${{ github.workspace }}
-          vipb_path: .github/actions/build-vi-package/NI Icon editor.vipb
+          vipb_path: .github/actions/build-vi-package/NI_Icon_editor.vipb
           minimum_supported_lv_version: 2026
           labview_minor_revision: 3
           major: ${{ needs.version.outputs.MAJOR }}

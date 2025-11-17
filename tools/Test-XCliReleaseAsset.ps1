@@ -114,29 +114,6 @@ if (Test-Path -LiteralPath $extractDir) {
 }
 New-Item -ItemType Directory -Force -Path $extractDir | Out-Null
 
-Write-Host ("[[xcli]] Extracting {0}…" -f $stageFullPath)
-Expand-Archive -LiteralPath $stageFullPath -DestinationPath $extractDir -Force
-
-$binary = Get-ChildItem -LiteralPath $extractDir -Filter 'XCli.exe' -Recurse | Select-Object -First 1
-if (-not $binary) {
-    throw "[xcli] Extracted archive does not contain XCli.exe."
-}
-
-Write-Host ("[[xcli]] Validating XCli binary at {0}" -f $binary.FullName)
-$versionOutput = & $binary.FullName --version
-if ($LASTEXITCODE -ne 0) {
-    throw "[[xcli]] x-cli version command failed."
-}
-Write-Host ("[[xcli]] Binary version: {0}" -f $versionOutput)
-
-$runnerProfile = Get-RunnerProfileSafe -Root $RepoRoot
-$hasRealTools = Test-RunnerProfileHasRealTools -RunnerProfile $runnerProfile
-if (-not $hasRealTools) {
-    Write-Warning "[[xcli]] RunnerProfile does not advertise 'real-tools'; telemetry/real-tool gates are not enforced in this run."
-} else {
-    Write-Host ("[[xcli]] RunnerProfile '{0}' has 'real-tools' capability." -f ($runnerProfile.name ?? '<unknown>'))
-}
-
 $stageDir = Split-Path -Parent $stageFullPath
 $stageInfoPath = Join-Path $stageDir 'stage-info.json'
 if (-not (Test-Path -LiteralPath $stageInfoPath -PathType Leaf)) {
@@ -145,73 +122,208 @@ if (-not (Test-Path -LiteralPath $stageInfoPath -PathType Leaf)) {
 
 $stageInfo = Get-Content -LiteralPath $stageInfoPath -Raw | ConvertFrom-Json
 
+function Set-ValidationStatus {
+    param(
+        [object]$StageInfo,
+        [string]$StageInfoPath,
+        [hashtable]$StatusDetails
+    )
+
+    $StageInfo.statuses.validated = $StatusDetails
+    $StageInfo | ConvertTo-Json -Depth 8 | Out-File -FilePath $StageInfoPath -Encoding UTF8
+}
+
+function Get-StageAssetsReference {
+    param([object]$StageInfo)
+
+    if (-not $StageInfo.PSObject.Properties['assets']) {
+        $StageInfo | Add-Member -NotePropertyName assets -NotePropertyValue ([ordered]@{}) -Force
+    }
+
+    $assets = $StageInfo.assets
+    if ($assets -is [System.Collections.IDictionary]) {
+        return $assets
+    }
+
+    $ordered = [ordered]@{}
+    foreach ($prop in $assets.PSObject.Properties) {
+        $ordered[$prop.Name] = $prop.Value
+    }
+    $StageInfo.assets = $ordered
+    return $StageInfo.assets
+}
+
+function New-ViCompareSessionZip {
+    param(
+        [string]$SourceRoot,
+        [string]$StageDir
+    )
+
+    if (-not (Test-Path -LiteralPath $SourceRoot -PathType Container)) {
+        return $null
+    }
+
+    $summaryPath = Join-Path $SourceRoot 'vi-comparison-summary.json'
+    if (-not (Test-Path -LiteralPath $summaryPath -PathType Leaf)) {
+        return $null
+    }
+
+    $items = Get-ChildItem -LiteralPath $SourceRoot -Force -ErrorAction SilentlyContinue
+    if (-not $items) {
+        return $null
+    }
+
+    $zipName = "{0}-vi-compare-session.zip" -f (Split-Path -Leaf $StageDir)
+    $zipPath = Join-Path $StageDir $zipName
+    if (Test-Path -LiteralPath $zipPath -PathType Leaf) {
+        Remove-Item -LiteralPath $zipPath -Force
+    }
+
+    Push-Location -LiteralPath $SourceRoot
+    try {
+        Compress-Archive -Path * -DestinationPath $zipPath -Force
+    } finally {
+        Pop-Location
+    }
+
+    return $zipPath
+}
+
 $diagName = "xcli-diagnostics-{0}.json" -f (Split-Path -Leaf $stageDir)
 $diagPath = Join-Path $stageDir $diagName
-$telemetrySummaryPath = $env:XCLI_TELEMETRY_SUMMARY_PATH
-if (-not $telemetrySummaryPath) {
-    $telemetrySummaryPath = Join-Path $RepoRoot 'tools/x-cli-develop/docs/telemetry/sample-summary.json'
-}
+$telemetrySummaryPath = $null
 $telemetryStatus = 'skipped'
-if ($telemetrySummaryPath -and (Test-Path -LiteralPath $telemetrySummaryPath -PathType Leaf)) {
-    $telemetryStatus = 'passed'
-} else {
-    if ($hasRealTools) {
-        throw "[[xcli]] Telemetry summary not found (XCLI_TELEMETRY_SUMMARY_PATH or default sample). Required on real-tools profiles."
+$matrixProfile = $null
+$runnerProfile = $null
+$hasRealTools = $false
+$labviewSummary = @()
+$resultObject = $null
+$viSessionZipPath = $null
+
+try {
+    Write-Host ("[[xcli]] Extracting {0}…" -f $stageFullPath)
+    Expand-Archive -LiteralPath $stageFullPath -DestinationPath $extractDir -Force
+
+    $binary = Get-ChildItem -LiteralPath $extractDir -Filter 'XCli.exe' -Recurse | Select-Object -First 1
+    if (-not $binary) {
+        throw "[xcli] Extracted archive does not contain XCli.exe."
+    }
+
+    Write-Host ("[[xcli]] Validating XCli binary at {0}" -f $binary.FullName)
+    $versionOutput = & $binary.FullName --version
+    if ($LASTEXITCODE -ne 0) {
+        throw "[[xcli]] x-cli version command failed."
+    }
+    Write-Host ("[[xcli]] Binary version: {0}" -f $versionOutput)
+
+    $runnerProfile = Get-RunnerProfileSafe -Root $RepoRoot
+    $hasRealTools = Test-RunnerProfileHasRealTools -RunnerProfile $runnerProfile
+    if (-not $hasRealTools) {
+        Write-Warning "[[xcli]] RunnerProfile does not advertise 'real-tools'; telemetry/real-tool gates are not enforced in this run."
     } else {
-        Write-Warning "[[xcli]] Telemetry summary not found; skipping telemetry validation."
-        $telemetrySummaryPath = $null
+        Write-Host ("[[xcli]] RunnerProfile '{0}' has 'real-tools' capability." -f ($runnerProfile.name ?? '<unknown>'))
     }
-}
 
-$matrixProfile = if ($env:XCLI_LABVIEW_FIXTURE_MATRIX) { $env:XCLI_LABVIEW_FIXTURE_MATRIX } else { 'emulated' }
-$fixturesList = @('bd-cosmetic','connector-pane','control-rename','fp-cosmetic','fp-window')
-$modesList = if ($matrixProfile -eq 'full') { @('emulated','real') } else { @('emulated') }
-$totalRuns = $fixturesList.Count * $modesList.Count
-$labviewSummary = @(
-    [ordered]@{
-        fixtures = $fixturesList
-        modes    = $modesList
-        passed   = $totalRuns
-        total    = $totalRuns
-        status   = if ($matrixProfile -eq 'full') { 'passed' } else { 'partial' }
+    $telemetrySummaryPath = $env:XCLI_TELEMETRY_SUMMARY_PATH
+    if (-not $telemetrySummaryPath) {
+        $telemetrySummaryPath = Join-Path $RepoRoot 'tools/x-cli-develop/docs/telemetry/sample-summary.json'
     }
-)
-if ($hasRealTools -and $matrixProfile -ne 'full') {
-    throw "[[xcli]] Real-tools profiles require XCLI_LABVIEW_FIXTURE_MATRIX=full."
-}
-
-$diagnostics = [ordered]@{
-    schema      = 'icon-editor/xcli-validation@v1'
-    validatedAt = (Get-Date).ToString('o')
-    stageDir    = $stageDir
-    channel     = $StageChannel
-    artifact    = $stageFullPath
-    version     = $versionOutput
-    runnerProfile = $runnerProfile
-    telemetry   = [ordered]@{
-        status  = $telemetryStatus
-        summary = $telemetrySummaryPath
+    if ($telemetrySummaryPath -and (Test-Path -LiteralPath $telemetrySummaryPath -PathType Leaf)) {
+        $telemetryStatus = 'passed'
+    } else {
+        if ($hasRealTools) {
+            throw "[[xcli]] Telemetry summary not found (XCLI_TELEMETRY_SUMMARY_PATH or default sample). Required on real-tools profiles."
+        } else {
+            Write-Warning "[[xcli]] Telemetry summary not found; skipping telemetry validation."
+            $telemetrySummaryPath = $null
+            $telemetryStatus = 'skipped'
+        }
     }
-    matrixProfile = $matrixProfile
-    labviewSmoke = $labviewSummary
+
+    $matrixProfile = if ($env:XCLI_LABVIEW_FIXTURE_MATRIX) { $env:XCLI_LABVIEW_FIXTURE_MATRIX } else { 'emulated' }
+    $fixturesList = @('bd-cosmetic','connector-pane','control-rename','fp-cosmetic','fp-window')
+    if ($matrixProfile -eq 'full') {
+        $modesList = @('emulated','real')
+    } else {
+        $modesList = @('emulated')
+    }
+    $totalRuns = $fixturesList.Count * $modesList.Count
+    $labviewSummary = @(
+        [ordered]@{
+            fixtures = $fixturesList
+            modes    = $modesList
+            passed   = $totalRuns
+            total    = $totalRuns
+            status   = if ($matrixProfile -eq 'full') { 'passed' } else { 'partial' }
+        }
+    )
+    if ($hasRealTools -and $matrixProfile -ne 'full') {
+        throw "[[xcli]] Real-tools profiles require XCLI_LABVIEW_FIXTURE_MATRIX=full."
+    }
+
+    $diagnostics = [ordered]@{
+        schema      = 'icon-editor/xcli-validation@v1'
+        validatedAt = (Get-Date).ToString('o')
+        stageDir    = $stageDir
+        channel     = $StageChannel
+        artifact    = $stageFullPath
+        version     = $versionOutput
+        runnerProfile = $runnerProfile
+        telemetry   = [ordered]@{
+            status  = $telemetryStatus
+            summary = $telemetrySummaryPath
+        }
+        matrixProfile = $matrixProfile
+        labviewSmoke = $labviewSummary
+    }
+
+    $diagnostics | ConvertTo-Json -Depth 6 | Out-File -FilePath $diagPath -Encoding UTF8
+    Write-Host ("[[xcli]] Validation diagnostics written to {0}" -f $diagPath)
+
+    $sessionRootPath = Join-Path $RepoRoot '.tmp-tests/xcli-labview-smoke/output'
+    $viSessionZipPath = New-ViCompareSessionZip -SourceRoot $sessionRootPath -StageDir $stageDir
+    if ($viSessionZipPath) {
+        $assetsRef = Get-StageAssetsReference -StageInfo $stageInfo
+        $assetsRef['viCompareSession'] = $viSessionZipPath
+        Write-Host ("[[xcli]] Vi-compare session bundle written to {0}" -f $viSessionZipPath)
+    } elseif ($hasRealTools) {
+        throw "[[xcli]] Vi-compare session bundle not produced; required on real-tools profiles."
+    }
+
+    $successStatus = [ordered]@{
+        status        = 'passed'
+        validatedAt   = (Get-Date).ToString('o')
+        diagnostics   = $diagPath
+        runnerProfile = $runnerProfile
+        telemetry     = $telemetryStatus
+        matrixProfile = $matrixProfile
+    }
+    if ($viSessionZipPath) {
+        $successStatus.viCompareSession = $viSessionZipPath
+    }
+    Set-ValidationStatus -StageInfo $stageInfo -StageInfoPath $stageInfoPath -StatusDetails $successStatus
+
+    $resultObject = [pscustomobject]@{
+        StagePath     = $stageFullPath
+        StageDir      = $stageDir
+        Diagnostics   = $diagPath
+        RunnerProfile = $runnerProfile
+    }
+} catch {
+    $failureStatus = [ordered]@{
+        status        = 'failed'
+        failedAt      = (Get-Date).ToString('o')
+        reason        = $_.Exception.Message
+        runnerProfile = $runnerProfile
+        telemetry     = $telemetryStatus
+        matrixProfile = $matrixProfile
+    }
+    try {
+        Set-ValidationStatus -StageInfo $stageInfo -StageInfoPath $stageInfoPath -StatusDetails $failureStatus
+    } catch {
+        Write-Warning ("[[xcli]] Failed to update stage-info validation status: {0}" -f $_.Exception.Message)
+    }
+    throw
 }
 
-$diagnostics | ConvertTo-Json -Depth 6 | Out-File -FilePath $diagPath -Encoding UTF8
-Write-Host ("[[xcli]] Validation diagnostics written to {0}" -f $diagPath)
-
-$stageInfo.statuses.validated = [ordered]@{
-    status        = 'passed'
-    validatedAt   = (Get-Date).ToString('o')
-    diagnostics   = $diagPath
-    runnerProfile = $runnerProfile
-    telemetry     = $telemetryStatus
-    matrixProfile = $matrixProfile
-}
-$stageInfo | ConvertTo-Json -Depth 8 | Out-File -FilePath $stageInfoPath -Encoding UTF8
-
-[pscustomobject]@{
-    StagePath     = $stageFullPath
-    StageDir      = $stageDir
-    Diagnostics   = $diagPath
-    RunnerProfile = $runnerProfile
-}
+return $resultObject

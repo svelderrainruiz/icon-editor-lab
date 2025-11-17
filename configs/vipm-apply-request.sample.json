@@ -1,0 +1,10 @@
+{
+  "repoRoot": "${workspaceFolder}",
+  "workspace": "${workspaceFolder}",
+  "vipcPath": ".github/actions/apply-vipc/runner_dependencies.vipc",
+  "minimumSupportedLVVersion": "2025",
+  "vipLabVIEWVersion": "2025",
+  "supportedBitness": 64,
+  "toolchain": "g-cli",
+  "jobName": "Apply VIPC Dependencies"
+}

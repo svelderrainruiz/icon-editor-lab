@@ -103,20 +103,28 @@
     {
       "label": "Tools: Agent validation (tooling image)",
       "type": "shell",
-      "command": "bash",
+      "command": "pwsh",
       "args": [
-        "-lc",
-        "docker run --rm -v ${workspaceFolder}:/work -w /work icon-editor-lab/tooling-ubuntu:local pwsh -NoLogo -NoProfile -File tools/validation/Invoke-AgentValidation.ps1 -PlanPath configs/validation/agent-validation-plan.json"
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tools/Run-AgentValidationDocker.ps1",
+        "-Image",
+        "icon-editor-lab/tooling-ubuntu:local"
       ],
       "problemMatcher": []
     },
     {
       "label": "Tools: Agent validation (tooling image, GHCR)",
       "type": "shell",
-      "command": "bash",
+      "command": "pwsh",
       "args": [
-        "-lc",
-        "docker run --rm -v ${workspaceFolder}:/work -w /work ghcr.io/svelderrainruiz/icon-editor-lab/tooling-ubuntu:latest pwsh -NoLogo -NoProfile -File tools/validation/Invoke-AgentValidation.ps1 -PlanPath configs/validation/agent-validation-plan.json"
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "tools/Run-AgentValidationDocker.ps1",
+        "-Image",
+        "ghcr.io/svelderrainruiz/icon-editor-lab/tooling-ubuntu:latest"
       ],
       "problemMatcher": []
     },

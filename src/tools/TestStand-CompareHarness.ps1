@@ -50,6 +50,21 @@ param(
   Selects which LVCompare ignore bundle to apply when -ReplaceFlags is omitted.
   Defaults to 'full' for complete compare detail; pass 'legacy' to restore the historical suppression bundle.
 
+.PARAMETER IgnoreAttributes
+  Adds the LVCompare `-noattr` flag regardless of NoiseProfile.
+
+.PARAMETER IgnoreFrontPanel
+  Adds the LVCompare `-nofp` flag.
+
+.PARAMETER IgnoreFrontPanelPosition
+  Adds the LVCompare `-nofppos` flag.
+
+.PARAMETER IgnoreBlockDiagram
+  Adds the LVCompare `-nobd` flag.
+
+.PARAMETER IgnoreBlockDiagramCosmetics
+  Adds the LVCompare `-nobdcosm` flag.
+
 .PARAMETER CloseLabVIEW
   Attempt graceful LabVIEW close via tools/Close-LabVIEW.ps1 at the end.
 
@@ -81,6 +96,11 @@ param(
 [switch]$ReplaceFlags,
 [ValidateSet('full','legacy')]
 [string]$NoiseProfile = 'full',
+[switch]$IgnoreAttributes,
+[switch]$IgnoreFrontPanel,
+[switch]$IgnoreFrontPanelPosition,
+[switch]$IgnoreBlockDiagram,
+[switch]$IgnoreBlockDiagramCosmetics,
 [switch]$RenderReport,
 [switch]$CloseLabVIEW,
 [switch]$CloseLVCompare,
@@ -348,6 +368,11 @@ try {
     if ($LVComparePath) { $invokeParams.LVComparePath = $LVComparePath }
     if ($Flags) { $invokeParams.Flags = $Flags }
     if ($ReplaceFlags) { $invokeParams.ReplaceFlags = $true }
+    if ($IgnoreAttributes) { $invokeParams.IgnoreAttributes = $true }
+    if ($IgnoreFrontPanel) { $invokeParams.IgnoreFrontPanel = $true }
+    if ($IgnoreFrontPanelPosition) { $invokeParams.IgnoreFrontPanelPosition = $true }
+    if ($IgnoreBlockDiagram) { $invokeParams.IgnoreBlockDiagram = $true }
+    if ($IgnoreBlockDiagramCosmetics) { $invokeParams.IgnoreBlockDiagramCosmetics = $true }
     if ($AllowSameLeaf.IsPresent) { $invokeParams.AllowSameLeaf = $true }
     $compareRunner = {
       param($invokePath, $invokeParameters)

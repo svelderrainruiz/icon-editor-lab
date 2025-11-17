@@ -24,6 +24,24 @@ function Resolve-RepoRoot {
 
 $RepoRoot = Resolve-RepoRoot -Root $RepoRoot
 
+function Get-StageAssetValue {
+    param(
+        [object]$StageInfo,
+        [string]$Name
+    )
+
+    if (-not $StageInfo.PSObject.Properties['assets']) {
+        return $null
+    }
+
+    $assets = $StageInfo.assets
+    if ($assets -is [System.Collections.IDictionary]) {
+        return $assets[$Name]
+    }
+
+    return $assets.$Name
+}
+
 function Resolve-StagedArtifact {
     param(
         [string]$RepoRoot,
@@ -44,13 +62,21 @@ function Resolve-StagedArtifact {
         return $null
     }
 
-    $latest = Get-ChildItem -LiteralPath $stageRoot -Recurse -Filter 'xcli-win-x64.zip' |
-        Sort-Object LastWriteTime -Descending |
-        Select-Object -First 1
-    return $latest?.FullName
+    $candidates = Get-ChildItem -LiteralPath $stageRoot -Recurse -Filter 'xcli-win-x64.zip' |
+        Sort-Object LastWriteTime -Descending
+    foreach ($candidate in $candidates) {
+        $candidateDir = Split-Path -Parent $candidate.FullName
+        $infoPath = Join-Path $candidateDir 'stage-info.json'
+        if (Test-Path -LiteralPath $infoPath -PathType Leaf) {
+            return $candidate.FullName
+        }
+    }
+
+    return $null
 }
 
 $stageFullPath = Resolve-StagedArtifact -RepoRoot $RepoRoot -PathCandidate $StagePath
+Write-Host ("[[xcli]] Upload helper resolved stage: {0}" -f ($stageFullPath ?? '<none>'))
 if (-not $stageFullPath) {
     throw '[xcli] No staged artifact found. Run the staging task first.'
 }
@@ -73,6 +99,7 @@ if ($stageInfo.statuses.uploaded -and $stageInfo.statuses.uploaded.status -eq 'p
 }
 
 $runnerProfile = $stageInfo.statuses.validated.runnerProfile
+$sessionAsset = Get-StageAssetValue -StageInfo $stageInfo -Name 'viCompareSession'
 function Test-RunnerProfileHasRealTools {
     param([object]$RunnerProfile)
     if (-not $RunnerProfile) { return $false }
@@ -93,12 +120,18 @@ switch ($Mode) {
             Write-Warning ("[[xcli]] RunnerProfile lacks 'real-tools'; GitHub upload is proceeding but does not satisfy the real-tools gate (tag: {0})." -f $tag)
         }
         Write-Host ("[[xcli]] (dry-run) Uploading {0} to {1}/{2} via gh (not implemented in local helper)." -f $stageFullPath, $ReleaseRepo, $tag)
+        if ($sessionAsset -and (Test-Path -LiteralPath $sessionAsset -PathType Leaf)) {
+            Write-Host ("[[xcli]] (dry-run) Would upload vi-compare session {0} to {1}/{2}." -f (Split-Path -Leaf $sessionAsset), $ReleaseRepo, $tag)
+        }
         $uploadDetails = [ordered]@{
             status     = 'passed'
             uploadedAt = (Get-Date).ToString('o')
             mode       = 'github'
             releaseRepo = $ReleaseRepo
             releaseTag  = $tag
+        }
+        if ($sessionAsset) {
+            $uploadDetails.viCompareSession = Split-Path -Leaf $sessionAsset
         }
     }
     'folder' {
@@ -117,11 +150,21 @@ switch ($Mode) {
         $targetPath = Join-Path $destinationFullPath $targetFileName
         Copy-Item -LiteralPath $stageFullPath -Destination $targetPath -Force
         Write-Host ("[[xcli]] Copied staged artifact to {0}" -f $targetPath)
+        $sessionCopyPath = $null
+        if ($sessionAsset -and (Test-Path -LiteralPath $sessionAsset -PathType Leaf)) {
+            $sessionLeaf = Split-Path -Leaf $sessionAsset
+            $sessionCopyPath = Join-Path $destinationFullPath $sessionLeaf
+            Copy-Item -LiteralPath $sessionAsset -Destination $sessionCopyPath -Force
+            Write-Host ("[[xcli]] Copied vi-compare session bundle to {0}" -f $sessionCopyPath)
+        }
         $uploadDetails = [ordered]@{
             status      = 'passed'
             uploadedAt  = (Get-Date).ToString('o')
             mode        = 'folder'
             destination = $targetPath
+        }
+        if ($sessionCopyPath) {
+            $uploadDetails.viCompareSession = $sessionCopyPath
         }
     }
 }

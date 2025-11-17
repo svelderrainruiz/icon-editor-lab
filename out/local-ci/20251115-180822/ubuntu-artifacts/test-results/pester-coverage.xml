@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<testsuites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="junit_schema_4.xsd" name="Pester" tests="138" errors="0" failures="0" disabled="134" time="1.782">
+  <testsuite name="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" tests="4" errors="0" failures="0" hostname="runnervmg1sw1" id="0" skipped="0" disabled="0" package="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" time="0.937">
+    <properties>
+      <property name="user-domain" value="" />
+      <property name="junit-version" value="4" />
+      <property name="platform" value="Linux" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="runnervmg1sw1" />
+      <property name="clr-version" value="8.0.21" />
+      <property name="cwd" value="/home/runner/work/icon-editor-lab/icon-editor-lab" />
+      <property name="os-version" value="6.11.0-1018-azure" />
+      <property name="user" value="runner" />
+    </properties>
+    <testcase name="Config schema validation.validates the example config against the schema" status="Passed" classname="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" assertions="0" time="0.493" />
+    <testcase name="Config schema validation.rejects labels longer than 64 chars" status="Passed" classname="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" assertions="0" time="0.084" />
+    <testcase name="Config schema validation.rejects path traversal in inputs" status="Passed" classname="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="Config schema validation.rejects dangerous metacharacters in inputs" status="Passed" classname="/home/runner/work/icon-editor-lab/icon-editor-lab/tests/ConfigSchema.Tests.ps1" assertions="0" time="0.013" />
+  </testsuite>
+</testsuites>

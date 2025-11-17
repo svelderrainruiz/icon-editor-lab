@@ -3,7 +3,7 @@
 Tooling, pipelines, and tests that support the Icon Editor lab experience:
 
 - LabVIEW dev-mode, VI Analyzer, and VI compare workflows.
-- VIPC/VIPB packaging via vipmcli/g-cli and openvipbcli.
+- VIPC/VIPB packaging via vipmcli/g-cli and the LabVIEW CI/CD seed CLI.
 - x-cli orchestration and agent-friendly JSON workflows.
 
 This README is meant to be readable by both humans and GPT-style agents. For detailed tool-by-tool docs, see `src/tools/README.md` and the ADRs under `architecture/adr/`.
@@ -17,7 +17,7 @@ At a high level, the lab is split into three layers:
 1. **Tooling & scripts** (this repo):
    - PowerShell modules and scripts under `src/tools` and `tools/`.
    - x-cli (`tools/x-cli-develop`) as the JSON-driven orchestrator.
-   - openvipbcli (`tools/openvipbcli-main`) for VIPB operations.
+   - LabVIEW CI/CD seed 2.2.1 (`tools/seed-2.2.1`) for VIPB operations.
 
 2. **Providers & external tools**:
    - LabVIEW/LabVIEWCLI/LVCompare (Windows only, not in this repo).
@@ -57,7 +57,7 @@ flowchart TB
     dotnet[.NET runtime]
     pwsh[PowerShell 7]
     xcli[x-cli (published from tools/x-cli-develop)]
-    openvipbcli[openvipbcli (published from tools/openvipbcli-main)]
+    seed[seed CLI (VipbJsonTool published from tools/seed-2.2.1)]
     scripts[src/tools/*.ps1, tools/*.ps1]
   end
 
@@ -68,11 +68,11 @@ flowchart TB
 Key properties:
 
 - Built via `tools/Dockerfile.icon-editor-lab-tooling-ubuntu`:
-  - `dotnet publish` for x-cli and openvipbcli **inside the container**.
+  - `dotnet publish` for x-cli and the seed VipbJsonTool **inside the container**.
 - Runtime includes:
   - PowerShell 7 (`pwsh`),
   - .NET runtime,
-  - shims `x-cli` and `openvipbcli` on `PATH`,
+  - shims `x-cli` and `VipbJsonTool`/`vipb2json`/`json2vipb` on `PATH`,
   - and expects a bound repo at `/work`.
 - Does **not** contain LabVIEW, LabVIEWCLI, LVCompare, vipmcli, or g-cli—those live on Windows hosts.
 
@@ -109,7 +109,7 @@ For a deeper tool-level playbook (including exact commands and env vars), see:
 
 - `src/tools/README.md` (x-cli workflow table, validation gates, pre-push checks).
 - `architecture/adr/ADR-0002-xcli-staged-publish-and-vi-compare.md`.
-- `architecture/adr/ADR-0003-xcli-tooling-image-and-openvipbcli.md`.
+- `architecture/adr/ADR-0003-icon-editor-lab-tooling-image.md`.
 
 ### Example: CI job using the tooling image
 

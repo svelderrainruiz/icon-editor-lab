@@ -1,0 +1,951 @@
+{
+  "VI_Package_Builder_Settings": {
+    "@Version": "2020.1",
+    "@Created_Date": "2024-11-13 13:58:09",
+    "@Modified_Date": "2025-07-21 16:33:38",
+    "@Creator": "svelderr",
+    "@Comments": "",
+    "@ID": "3b584450cdea4374f225443577f6ec16",
+    "#whitespace": [
+      "\r\n  ",
+      "\r\n  ",
+      "\r\n  ",
+      "\r\n"
+    ],
+    "Library_General_Settings": {
+      "#whitespace": [
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n  "
+      ],
+      "Package_File_Name": "NI_Icon_editor",
+      "Library_Version": "21.0.0.12",
+      "Auto_Increment_Version": "false",
+      "Library_Source_Folder": "..\\..",
+      "Library_Output_Folder": "..\\..\\builds\\VI Package",
+      "Company_Name": "NI",
+      "Library_Summary": null,
+      "Library_License": "MIT",
+      "Package_LabVIEW_Version": "23.3 (64-bit)",
+      "Community_Edition": "true",
+      "Package_Icon": "00000CFC002900000012000000020000000D01000000000100000000000A000000080000000000240024002900000012000000020000000D00FAFAFA00010000000000100000001000000002002300000000000000000023002900000012000000020000000D00FFFFFF00010000000000100000001000000002002200010001000100010022002900000012000000020000000D00FAFAFA00010000000000100000001000000002000000240024002400240000002900000012000000020000000D00F8F8F800010000000000100000001000000002000100230023002300230001001D00000C1800000C00000200020022002200180000000000FFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000FFFFFF000000FFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFF000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF000000000000FFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF6C00006C0000CCCCFFCCCCFF6C0000CCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF6C0000CCCCFF6C0000CCCCFF6C0000CCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF6C0000CCCCFF6C0000CCCCFF6C0000CCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF6C0000CCCCFF6C0000CCCCFF6C0000CCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF6C0000CCCCFF6C0000CCCCFF6C0000CCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFFCCCCFF",
+      "Product_Name": "Icon Editor",
+      "Was_Built": "true",
+      "Target": "LabVIEW"
+    },
+    "Advanced_Settings": {
+      "#whitespace": [
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n    ",
+        "\r\n  "
+      ],
+      "Package_Dependencies": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Additional_External_Dependencies": [
+          "oglib_array >=6.0.1.20",
+          "oglib_error >=6.0.0.26",
+          "oglib_file >=6.0.2.28",
+          "oglib_lvzip >=5.0.9"
+        ]
+      },
+      "Custom_Action_VIs": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Pre-Build_VI": null,
+        "Post-Build_VI": null,
+        "Pre-Install_VI": "VIP_Pre-Install Custom Action 2021.vi",
+        "Post-Install_VI": "VIP_Post-Install Custom Action 2021.vi",
+        "Pre-Uninstall_VI": "VIP_Pre-Uninstall Custom Action 2021.vi",
+        "Post-Uninstall_VI": "VIP_Post-Uninstall Custom Action 2021.vi"
+      },
+      "VI_Package_Configuration_File": "NI_Icon_editor.vipc",
+      "Description": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "One_Line_Description_Summary": null,
+        "Description": null,
+        "Copyright": null,
+        "Packager": "Sergio Velderrain",
+        "URL": null,
+        "Release_Notes": null
+      },
+      "Destinations": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Toolkit_VIs": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": "<OS Boot Volume Root>"
+        },
+        "Examples": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Custom_Probes": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Custom_Errors": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Help_Files": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Template_VIs": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "File_Menu": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Tools_Menu": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Help_Menu": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Project_Templates": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Project_Provider": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "QuickDrop_Plugins": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "LLB": "false",
+          "Preserve_Hierarchy": "true",
+          "Path": null
+        },
+        "Additional_Destination": [
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Name": "LVAddons",
+            "LLB": "false",
+            "Preserve_Hierarchy": "false",
+            "Path": "<OS Application Files>\\NI\\LVAddons\\niiconeditor64"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Name": "Install artifacts",
+            "LLB": "false",
+            "Preserve_Hierarchy": "true",
+            "Path": "<OS Public Documents>\\National Instruments\\LabVIEW Icon Editor\\install"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Name": "Uninstall artifacts",
+            "LLB": "false",
+            "Preserve_Hierarchy": "true",
+            "Path": "<OS Public Documents>\\National Instruments\\LabVIEW Icon Editor\\uninstall"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Name": "Install artifacts temp",
+            "LLB": "false",
+            "Preserve_Hierarchy": "false",
+            "Path": "<OS Public Documents>\\National Instruments\\LabVIEW Icon Editor\\install\\temp"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Name": "Icon editor public documents",
+            "LLB": "false",
+            "Preserve_Hierarchy": "true",
+            "Path": "<OS Public Documents>\\National Instruments\\LabVIEW Icon Editor"
+          }
+        ]
+      },
+      "Source_Files": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Destination_Overrides": [
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": ".",
+            "Destination": "0",
+            "Additional_Destination": "true",
+            "Additional_Destination_Index": "4"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/lv_icon_versions/lv_icon_uninstall_backup.zip",
+            "Destination": "0",
+            "Additional_Destination": "true",
+            "Additional_Destination_Index": "2"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins",
+            "Destination": "0",
+            "Additional_Destination": "true",
+            "Additional_Destination_Index": "3"
+          }
+        ],
+        "Password_Overrides": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Path": ".",
+          "Password": null,
+          "Locked_Only": "false"
+        },
+        "Namespace_Overrides": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Path": ".",
+          "Namespace_Type": "Prefix",
+          "Namespace": null
+        },
+        "Exclusions": [
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": ".github"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Antidoc-Output"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "pipeline/templates"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "vi.lib"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": ".gitattributes"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": ".gitignore"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "CODE_OF_CONDUCT.md"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "CONTRIBUTING.md"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "LICENSE"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "lv_icon_editor.lvproj"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "README.md"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "pipeline"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins/NIIconEditor"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins/lv_icon.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins/lv_icon.vit"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins/lv_IconEditor.lvlib"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins/SAMPLE_lv_icon.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/ApplyVIPC.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/BuildVIPackage.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/Create_LV_INI_Token.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/CreateLVAddonJSONfile.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/Destroy_LV_INI_Token.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/ModifyProjectBuildOutput.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/NIP Post uninstall.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/VIP_Post-Install Custom Action.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/VIP_Post-Uninstall Custom Action.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/VIP_Pre-Install Custom Action.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/VIP_Pre-Uninstall Custom Action.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/support"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/CI CD.lvproj"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Force Icon Editor to Unload.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Post Build Icon Editor PPL.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Pre Build Icon Editor PPL.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Prepare LV to Use Icon Editor Source.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/PrepareIESource.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Run all tests CLI.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/Run all tests.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/RestoreSetupLVSource.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "docs"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "GOVERNANCE.md"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "requirements.txt"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/Modify_VIPB_Display_Information.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/PrepareIESourceCore.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/RestoreSetupLVSourceCore.vi"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/VI Package Tooling.lvproj"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/VIP_Post-Install Custom Action.vi"
+          }
+        ],
+        "Compile_Exclusions": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Path": "."
+        },
+        "Place_Folder_Contents": [
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": null
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "pipeline/lv_icon_versions"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "Tooling/deployment/lv_icon_versions"
+          },
+          {
+            "#whitespace": [
+              "\r\n        ",
+              "\r\n      "
+            ],
+            "Path": "resource/plugins"
+          }
+        ]
+      },
+      "License_Agreement_Filepath": null,
+      "Licensing_and_Activation": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "License_LF_file_path": null,
+        "Licensed_library_file_path": null,
+        "Perform_License_Binding": "false",
+        "Purchase_URL": null,
+        "License_File_Password": null,
+        "Web_Activation_URL": null,
+        "Phone_Activation_Number": null,
+        "Auto_Activation_URL": null,
+        "Library_Protection_Password": "<random:32>",
+        "Enable_Deactivation": "false",
+        "Encryption_key_id": null,
+        "Client_key": null,
+        "Server_key": null,
+        "License_Sublibraries": "false"
+      },
+      "Palette_Sets": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Palette_Set_Name": "Default",
+        "Use_Custom_Category": "false",
+        "Custom_Category_Name": null,
+        "Custom_Category_Icon": "00000176002900000012000000020000000D00FFFFFF000100000000000A00000008000000000020002000280000008F000000690000000E0007001300180000000000FFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF000000000000FFFFFF000000FFFFFF000000000000FFFFFF000000FFFFFF000000000000FFFFFF000000FFFFFF000000000000FFFFFF000000FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF07FFCFFFAFFFAFFFAFFFAFFF07FF002900000012000000020000000D00CCCCFF000100000000000A00000008001900000020002000280000008F000000690019000E0020001300180000000000FFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF6C00006C0000FFFFFFFFFFFF6C00006C0000FFFFFF6C0000FFFFFF6C00006C0000FFFFFF6C0000FFFFFF6C00006C0000FFFFFF6C0000FFFFFF6C00006C0000FFFFFF6C0000FFFFFF6C0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF07FFCFFFAFFFAFFFAFFFAFFF07FF",
+        "Controls_Palette_Information": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Virtual_Palette_Base_Path": "Controls",
+          "Palette_Disk_Base_Path": "<menus>\\Controls",
+          "Syncing_MNU_file": null
+        },
+        "Functions_Palette_Information": {
+          "#whitespace": [
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n        ",
+            "\r\n      "
+          ],
+          "Virtual_Palette_Base_Path": "Functions",
+          "Palette_Disk_Base_Path": "<menus>\\Categories",
+          "Syncing_MNU_file": null
+        },
+        "Apply_Short_Names_to_VI_Titles": "false",
+        "Apply_Short_Names_to_VI_Titles_2": "false",
+        "Library_or_Class_Nmae": null
+      },
+      "Install_Requirements": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "All_Windows": "true",
+        "Windows_7": "true",
+        "Windows_Vista": "true",
+        "Windows_XP": "true",
+        "Mac_OS": "false",
+        "Linux": "false",
+        "Built_LV_Version": "false",
+        "Built_LV_Version_or_greater": "true",
+        "Windows_8": "true",
+        "OS_32-Bit": "true",
+        "OS_64-Bit": "true",
+        "LV_32-Bit": "true",
+        "LV_64-Bit": "true"
+      },
+      "LabVIEW": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "close_labview_before_install": "true",
+        "restart_labview_after_install": "true",
+        "skip_mass_compile_after_install": "true",
+        "install_into_global_environment": "false"
+      },
+      "VI_Docs": {
+        "#whitespace": [
+          "\r\n      ",
+          "\r\n      ",
+          "\r\n    "
+        ],
+        "Edit_VI_Description": "false",
+        "Text_to_Add": "{product_name} {version_number}\r\n{author_name} - {company_name}\r\n{copyright}"
+      },
+      "System_Destinations": null
+    },
+    "Library_Palette_Definition": null
+  }
+}

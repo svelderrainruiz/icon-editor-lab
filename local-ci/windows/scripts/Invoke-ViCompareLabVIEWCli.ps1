@@ -10,6 +10,14 @@ param(
     [int]$MaxPairs = 25,
     [int]$TimeoutSeconds = 900,
     [string]$NoiseProfile = 'full',
+    [switch]$IgnoreAttributes,
+    [switch]$IgnoreFrontPanel,
+    [switch]$IgnoreFrontPanelPosition,
+    [switch]$IgnoreBlockDiagram,
+    [switch]$IgnoreBlockDiagramCosmetics,
+    [string]$SessionRoot,
+    [switch]$DisableSessionCapture,
+    [switch]$RequireSession,
     [switch]$DisableCli,
     [switch]$DryRun
 )
@@ -22,6 +30,25 @@ if ($env:LOCALCI_DEBUG_VICOMPARE -eq '1') {
     Write-Host ("[vicompare-cli] Args: {0}" -f ($boundSummary -join ', '))
     if ($args -and $args.Count -gt 0) {
         Write-Host ("[vicompare-cli] Extra args: {0}" -f ($args -join ' '))
+    }
+}
+
+function Resolve-ToggleValue {
+    param(
+        [string]$Value,
+        [bool]$Current
+    )
+    if ([string]::IsNullOrWhiteSpace($Value)) { return $Current }
+    switch ($Value.Trim().ToLowerInvariant()) {
+        '1' { return $true }
+        'true' { return $true }
+        'yes' { return $true }
+        'on' { return $true }
+        '0' { return $false }
+        'false' { return $false }
+        'no' { return $false }
+        'off' { return $false }
+        default { return $Current }
     }
 }
 
@@ -160,13 +187,166 @@ function Write-StubArtifacts {
     $html | Set-Content -LiteralPath (Join-Path $PairRoot 'compare-report.html') -Encoding UTF8
 }
 
+function Test-LabVIEWCliAvailability {
+    param([string]$ExePath)
+
+    if (-not $ExePath -or -not (Test-Path -LiteralPath $ExePath -PathType Leaf)) {
+        Write-Warning ("[vi-compare] LabVIEW executable not found at '{0}'. Falling back to dry-run mode (LabVIEW 2025+ required for VI Comparison)." -f $ExePath)
+        return $false
+    }
+
+    $cliPath = Join-Path (Split-Path -Parent $ExePath) 'LabVIEWCLI.exe'
+    if (-not (Test-Path -LiteralPath $cliPath -PathType Leaf)) {
+        Write-Warning ("[vi-compare] LabVIEWCLI.exe not found next to '{0}'. Install LabVIEW 2025+ to enable real compares." -f $ExePath)
+        return $false
+    }
+
+    # Do not invoke LabVIEWCLI.exe directly; version and readiness checks are
+    # handled by provider-based helpers (LabVIEWCli.psm1/x-cli workflows).
+    Write-Host ("[vi-compare] LabVIEWCLI.exe detected at '{0}' (probe-only; CLI invocation is handled by providers/x-cli)." -f $cliPath) -ForegroundColor DarkGray
+    return $true
+}
+
+function Start-ViCompareSession {
+    param(
+        [string]$RepoRoot,
+        [string]$SessionsRoot,
+        [bool]$RequireArtifacts
+    )
+
+    $helperPath = Join-Path $RepoRoot 'tools/New-ViCompareSession.ps1'
+    if (-not (Test-Path -LiteralPath $helperPath -PathType Leaf)) {
+        Write-Warning ("[vi-compare] New-ViCompareSession helper missing at {0}; skipping session capture." -f $helperPath)
+        return $null
+    }
+
+    if (-not $SessionsRoot) {
+        $SessionsRoot = $RepoRoot
+    }
+    if (-not [System.IO.Path]::IsPathRooted($SessionsRoot)) {
+        $SessionsRoot = Join-Path $RepoRoot $SessionsRoot
+    }
+
+    try {
+        return & $helperPath -RepoRoot $RepoRoot -SessionsRoot $SessionsRoot -RequireArtifacts:$RequireArtifacts
+    } catch {
+        Write-Warning ("[vi-compare] Failed to initialize session capture: {0}" -f $_.Exception.Message)
+        return $null
+    }
+}
+
+function Complete-ViCompareSession {
+    param(
+        [psobject]$Session,
+        [string]$RequestsPath,
+        [string]$SummaryPath,
+        [string]$OutputRoot,
+        [psobject]$SummaryObject
+    )
+    if (-not $Session) { return }
+
+    $outputs = [ordered]@{}
+    if ($RequestsPath -and (Test-Path -LiteralPath $RequestsPath -PathType Leaf)) {
+        $requestsTarget = Join-Path $Session.SessionPath 'vi-diff-requests.json'
+        Copy-Item -LiteralPath $RequestsPath -Destination $requestsTarget -Force
+        $outputs.requests = Split-Path -Leaf $requestsTarget
+    } elseif ($Session.RequireArtifacts) {
+        throw "[vi-compare] Requests payload missing; cannot finalize session."
+    }
+
+    if ($SummaryPath -and (Test-Path -LiteralPath $SummaryPath -PathType Leaf)) {
+        $summaryTarget = Join-Path $Session.SessionPath 'vi-comparison-summary.json'
+        Copy-Item -LiteralPath $SummaryPath -Destination $summaryTarget -Force
+        $outputs.summary = Split-Path -Leaf $summaryTarget
+    } elseif ($Session.RequireArtifacts) {
+        throw "[vi-compare] VI comparison summary missing; cannot finalize session."
+    }
+
+    $capturesSource = Join-Path $OutputRoot 'captures'
+    if (Test-Path -LiteralPath $capturesSource -PathType Container) {
+        $capturesExisting = Join-Path $Session.SessionPath 'captures'
+        if (Test-Path -LiteralPath $capturesExisting) {
+            Remove-Item -LiteralPath $capturesExisting -Recurse -Force
+        }
+        $destParent = $Session.SessionPath
+        Copy-Item -LiteralPath $capturesSource -Destination $destParent -Recurse -Force
+        $outputs.captures = 'captures'
+    }
+
+    $manifest = [ordered]@{
+        schema           = 'icon-editor/vi-compare-session@v1'
+        session          = $Session.SessionName
+        runId            = $Session.SessionId
+        createdAt        = $Session.CreatedAt
+        completedAt      = (Get-Date).ToString('o')
+        requireArtifacts = $Session.RequireArtifacts
+        status           = 'completed'
+        outputs          = $outputs
+        counts           = $null
+    }
+    if ($SummaryObject -and $SummaryObject.PSObject.Properties['counts']) {
+        $manifest.counts = $SummaryObject.counts
+    }
+    $manifest | ConvertTo-Json -Depth 6 | Out-File -FilePath $Session.InfoPath -Encoding UTF8
+}
+
+if (-not (Test-Path -LiteralPath $RepoRoot -PathType Container)) {
+    throw "RepoRoot not found: $RepoRoot"
+}
+$RepoRoot = (Resolve-Path -LiteralPath $RepoRoot -ErrorAction Stop).Path
+
+$probeHelperPath = Join-Path $RepoRoot 'tools/icon-editor/LabVIEWCliProbe.ps1'
+if (-not (Test-Path -LiteralPath $probeHelperPath -PathType Leaf)) {
+    throw "LabVIEW CLI probe helper not found at $probeHelperPath"
+}
+. $probeHelperPath
+
+$labviewProbe = Invoke-LabVIEWCliProbe -LabVIEWExePath $LabVIEWExePath -MinimumVersionYear 2025 -RepoRoot $RepoRoot
+if (-not $labviewProbe) {
+    $labviewProbe = [pscustomobject]@{
+        LabVIEWExePath       = $LabVIEWExePath
+        LabVIEWCliPath       = $null
+        Status               = 'probe-unavailable'
+        Message              = 'LabVIEW CLI probe failed to initialize.'
+        IsAvailable          = $false
+        IsSupportedVersion   = $false
+        LogPath              = $null
+        Version              = $null
+        VersionYear          = $null
+        ExitCode             = $null
+    }
+}
+if ($labviewProbe.LabVIEWExePath) {
+    $LabVIEWExePath = $labviewProbe.LabVIEWExePath
+}
+$labviewReady = [bool]($labviewProbe.IsAvailable -and $labviewProbe.IsSupportedVersion)
+if ($labviewProbe.Message) {
+    $prefix = '[vi-compare]'
+    if ($labviewReady) {
+        Write-Host ("{0} {1}" -f $prefix, $labviewProbe.Message)
+    } else {
+        Write-Warning ("{0} {1}" -f $prefix, $labviewProbe.Message)
+    }
+}
+$labviewReady = $labviewProbe.IsAvailable -and $labviewProbe.IsSupportedVersion -and $labviewProbe.DevModeReady
+if ($labviewProbe.DevMode -and $labviewProbe.DevMode.message) {
+    $prefix = '[vi-compare]'
+    if ($labviewProbe.DevModeReady) {
+        Write-Host ("{0} {1}" -f $prefix, $labviewProbe.DevMode.message)
+    } else {
+        Write-Warning ("{0} {1}" -f $prefix, $labviewProbe.DevMode.message)
+    }
+}
+
 if (-not (Test-Path -LiteralPath $RequestsPath -PathType Leaf)) {
     throw "Requests file not found: $RequestsPath"
 }
+$requestsFullPath = (Resolve-Path -LiteralPath $RequestsPath -ErrorAction Stop).Path
 
 if (-not (Test-Path -LiteralPath $OutputRoot -PathType Container)) {
     New-Item -ItemType Directory -Path $OutputRoot -Force | Out-Null
 }
+$OutputRoot = (Resolve-Path -LiteralPath $OutputRoot -ErrorAction Stop).Path
 
 $ProbeRoots = $ProbeRoots | Where-Object { $_ }
 if (-not $ProbeRoots) {
@@ -177,7 +357,27 @@ if (-not $HarnessScript) {
     $HarnessScript = Join-Path $RepoRoot 'src/tools/TestStand-CompareHarness.ps1'
 }
 
-$pairs = Read-ViDiffPairs -RequestsPath $RequestsPath
+$sessionBaseRoot = $SessionRoot
+if (-not $sessionBaseRoot -and $env:VI_COMPARE_SESSION_ROOT) {
+    $sessionBaseRoot = $env:VI_COMPARE_SESSION_ROOT
+}
+
+$sessionGateEnabled = Resolve-ToggleValue -Value $env:VI_COMPARE_SESSION_GATE -Current $RequireSession.IsPresent
+$sessionCaptureEnabled = Resolve-ToggleValue -Value $env:VI_COMPARE_SESSION_ENABLED -Current (-not $DisableSessionCapture.IsPresent)
+
+if ($sessionGateEnabled -and -not $sessionCaptureEnabled) {
+    throw "[vi-compare] Session capture gate enabled but session capture is disabled."
+}
+
+$sessionContext = $null
+if ($sessionCaptureEnabled) {
+    $sessionContext = Start-ViCompareSession -RepoRoot $RepoRoot -SessionsRoot $sessionBaseRoot -RequireArtifacts:$sessionGateEnabled
+    if (-not $sessionContext -and $sessionGateEnabled) {
+        throw "[vi-compare] Session capture failed to initialize while the gate was enabled."
+    }
+}
+
+$pairs = Read-ViDiffPairs -RequestsPath $requestsFullPath
 if (-not $pairs -or $pairs.Count -eq 0) {
     Write-Warning "[vi-compare] No entries found in $RequestsPath"
     return
@@ -190,14 +390,20 @@ if (Test-Path -LiteralPath $capturesRoot) {
 New-Item -ItemType Directory -Path $capturesRoot -Force | Out-Null
 
 $forceDryRun = $DryRun.IsPresent -or $DisableCli.IsPresent
-if (-not $forceDryRun) {
-    if (-not $LabVIEWExePath -or -not (Test-Path -LiteralPath $LabVIEWExePath -PathType Leaf)) {
-        Write-Warning "[vi-compare] LabVIEW executable not found at '$LabVIEWExePath'. Falling back to dry-run mode."
-        $forceDryRun = $true
+if (-not $forceDryRun -and -not $labviewReady) {
+    $reason = if ($labviewProbe.Message) { $labviewProbe.Message } else { 'LabVIEW CLI probe did not pass readiness checks.' }
+    if ($labviewProbe.DevMode -and -not $labviewProbe.DevModeReady -and $labviewProbe.DevMode.message) {
+        $reason = $labviewProbe.DevMode.message
     }
+    Write-Warning ("[vi-compare] LabVIEW CLI not ready: {0} Falling back to dry-run mode." -f $reason)
+    $forceDryRun = $true
+}
+if (-not $forceDryRun) {
     if (-not (Test-Path -LiteralPath $HarnessScript -PathType Leaf)) {
         Write-Warning "[vi-compare] Harness script '$HarnessScript' not found. Falling back to dry-run mode."
         $forceDryRun = $true
+    } else {
+        $HarnessScript = (Resolve-Path -LiteralPath $HarnessScript -ErrorAction Stop).Path
     }
 }
 
@@ -248,8 +454,13 @@ foreach ($pair in $pairs | Select-Object -First $MaxPairs) {
                 '-CloseLVCompare'
             )
             if ($TimeoutSeconds -gt 0) {
-                $cliArgs += @('-TimeoutSeconds', $TimeoutSeconds)
-            }
+            $cliArgs += @('-TimeoutSeconds', $TimeoutSeconds)
+        }
+        if ($IgnoreAttributes) { $cliArgs += '-IgnoreAttributes' }
+        if ($IgnoreFrontPanel) { $cliArgs += '-IgnoreFrontPanel' }
+        if ($IgnoreFrontPanelPosition) { $cliArgs += '-IgnoreFrontPanelPosition' }
+        if ($IgnoreBlockDiagram) { $cliArgs += '-IgnoreBlockDiagram' }
+        if ($IgnoreBlockDiagramCosmetics) { $cliArgs += '-IgnoreBlockDiagramCosmetics' }
 
             Write-Host ("[vi-compare] Running LabVIEW CLI for pair {0} ({1} vs {2})" -f $pairLabel, $baselinePath, $candidatePath)
             $startParams = @{
@@ -319,9 +530,47 @@ $summary = [ordered]@{
     generatedAt = (Get-Date).ToString('o')
     counts      = $counts
     requests    = $results
+    suppression = [ordered]@{
+        noiseProfile                = $NoiseProfile
+        ignoreAttributes            = $IgnoreAttributes.IsPresent
+        ignoreFrontPanel            = $IgnoreFrontPanel.IsPresent
+        ignoreFrontPanelPosition    = $IgnoreFrontPanelPosition.IsPresent
+        ignoreBlockDiagram          = $IgnoreBlockDiagram.IsPresent
+        ignoreBlockDiagramCosmetics = $IgnoreBlockDiagramCosmetics.IsPresent
+    }
+    labview    = [ordered]@{
+        exePath            = $labviewProbe.LabVIEWExePath ?? $LabVIEWExePath
+        cliPath            = $labviewProbe.LabVIEWCliPath
+        iniPath            = $labviewProbe.LabVIEWIniPath
+        status             = $labviewProbe.Status
+        message            = $labviewProbe.Message
+        logPath            = $labviewProbe.LogPath
+        version            = $labviewProbe.Version
+        versionYear        = $labviewProbe.VersionYear
+        exitCode           = $labviewProbe.ExitCode
+        isAvailable        = [bool]$labviewProbe.IsAvailable
+        isSupportedVersion = [bool]$labviewProbe.IsSupportedVersion
+        dryRunRequested    = $DryRun.IsPresent
+        cliDisabled        = $DisableCli.IsPresent
+        forceDryRun        = $forceDryRun
+        ready              = (-not $forceDryRun)
+        devMode            = $labviewProbe.DevMode
+        devModeReady       = [bool]$labviewProbe.DevModeReady
+    }
 }
 $summaryPath = Join-Path $OutputRoot 'vi-comparison-summary.json'
 $summary | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $summaryPath -Encoding UTF8
+
+if ($sessionContext) {
+    try {
+        Complete-ViCompareSession -Session $sessionContext -RequestsPath $requestsFullPath -SummaryPath $summaryPath -OutputRoot $OutputRoot -SummaryObject $summary
+    } catch {
+        if ($sessionContext.RequireArtifacts) {
+            throw
+        }
+        Write-Warning ("[vi-compare] Session capture incomplete: {0}" -f $_.Exception.Message)
+    }
+}
 
 Write-Host ("[vi-compare] LabVIEW CLI summary written to {0}" -f $summaryPath)
 return $summary

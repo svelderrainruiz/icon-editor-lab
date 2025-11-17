@@ -5,7 +5,7 @@ Describe 'Update-VipbDisplayInfo.ps1' {
     BeforeAll {
         $script:RepoRoot = Split-Path -Parent $PSScriptRoot
         $script:ScriptPath = Join-Path $RepoRoot '.github\actions\modify-vipb-display-info\Update-VipbDisplayInfo.ps1'
-        $script:FixtureVipb = Join-Path $RepoRoot '.github\actions\build-vi-package\NI Icon editor.vipb'
+        $script:FixtureVipb = Join-Path $RepoRoot '.github\actions\build-vi-package\NI_Icon_editor.vipb'
 
         if (-not (Test-Path -LiteralPath $script:ScriptPath -PathType Leaf)) {
             throw "Update-VipbDisplayInfo.ps1 not found at '$ScriptPath'."

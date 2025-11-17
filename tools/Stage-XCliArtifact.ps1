@@ -95,6 +95,7 @@ $stageInfo = [ordered]@{
     stagePath = $stagePath
     createdAt = (Get-Date).ToString('o')
     source    = $artifactFullPath
+    assets    = [ordered]@{}
     statuses  = [ordered]@{
         validated  = $null
         qaPromoted = $null

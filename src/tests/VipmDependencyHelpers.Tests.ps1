@@ -66,7 +66,7 @@ Describe 'VipmDependencyHelpers core contracts' -Tag 'Vipm','VipmDependencies','
       }
     }
 
-    It 'throws when Get-VipmInvocation indicates provider is not ready' {
+    It 'throws when Get-VipmInvocation indicates vipmcli/g-cli provider is not ready' {
       InModuleScope VipmDependencyHelpers {
         function Import-Module { }
         function Resolve-VipmApplyVipcPath {
@@ -87,7 +87,7 @@ Describe 'VipmDependencyHelpers core contracts' -Tag 'Vipm','VipmDependencies','
         }
 
         { Test-VipmCliReady -LabVIEWVersion '2023' -LabVIEWBitness '32' -RepoRoot 'C:\repo' -ProviderName 'vipm-gcli' -VipcPath 'C:\deps\icon-editor.vipc' } |
-          Should -Throw "*VIPM provider 'vipm-gcli' is not ready: provider not configured*"
+          Should -Throw "*vipmcli/g-cli provider 'vipm-gcli' is not ready: provider not configured*"
       }
     }
 

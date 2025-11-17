@@ -1,0 +1,74 @@
+{
+  "schema": "lvcompare-capture-v1",
+  "timestamp": "2025-11-06T01:08:03.1437439Z",
+  "base": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\base-single\\Base.vi",
+  "head": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\head\\Icon Editor\\Head.vi",
+  "cliPath": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+  "args": [
+    "-OperationName",
+    "CreateComparisonReport",
+    "-VI1",
+    "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\base-single\\Base.vi",
+    "-VI2",
+    "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\head\\Icon Editor\\Head.vi",
+    "-ReportPath",
+    "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report.html",
+    "-ReportType",
+    "HTML",
+    "-LabVIEWPath",
+    "C:\\Program Files\\National Instruments\\LabVIEW 2025\\LabVIEW.exe"
+  ],
+  "exitCode": 0,
+  "seconds": 51.275,
+  "stdoutLen": 466,
+  "stderrLen": 0,
+  "command": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe -OperationName CreateComparisonReport -VI1 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\base-single\\Base.vi -VI2 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\head\\Icon Editor\\Head.vi -ReportPath C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report.html -ReportType HTML -LabVIEWPath C:\\Program Files\\National Instruments\\LabVIEW 2025\\LabVIEW.exe",
+  "stdout": null,
+  "stderr": null,
+  "environment": {
+    "compareMode": null,
+    "comparePolicy": null,
+    "cli": {
+      "path": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+      "reportFormat": "html",
+      "version": "26.1.0d164",
+      "reportPath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report.html",
+      "message": "CreateComparisonReport operation succeeded.",
+      "artifacts": {
+        "reportSizeBytes": 8123,
+        "imageCount": 4,
+        "images": [
+          {
+            "index": 0,
+            "dataLength": 30,
+            "source": "compare-report_files/0_0_1.png",
+            "resolvedSource": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report_files\\0_0_1.png",
+            "savedPath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\cli-images\\cli-image-00.png"
+          },
+          {
+            "index": 1,
+            "dataLength": 30,
+            "source": "compare-report_files/0_0_2.png",
+            "resolvedSource": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report_files\\0_0_2.png",
+            "savedPath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\cli-images\\cli-image-01.png"
+          },
+          {
+            "index": 2,
+            "dataLength": 37,
+            "source": "compare-report_files/1_0_0_3849_1.png",
+            "resolvedSource": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report_files\\1_0_0_3849_1.png",
+            "savedPath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\cli-images\\cli-image-02.png"
+          },
+          {
+            "index": 3,
+            "dataLength": 37,
+            "source": "compare-report_files/1_0_0_3849_2.png",
+            "resolvedSource": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report_files\\1_0_0_3849_2.png",
+            "savedPath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\cli-images\\cli-image-03.png"
+          }
+        ],
+        "exportDir": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\cli-images"
+      }
+    }
+  }
+}

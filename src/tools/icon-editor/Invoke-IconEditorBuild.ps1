@@ -27,8 +27,8 @@ param(
   [switch]$RunUnitTests,
   [switch]$SkipMissingInProject,
   [string]$ResultsRoot,
-  [ValidateSet('gcli','vipm')]
-  [string]$BuildToolchain = 'gcli',
+  [ValidateSet('g-cli','vipm')]
+  [string]$BuildToolchain = 'g-cli',
   [string]$BuildProvider,
   [string]$PackageMinimumSupportedLVVersion = '2026',
   [int]$PackageLabVIEWMinorRevision = 0,
@@ -409,7 +409,7 @@ try {
   if ($packagingRequested) {
     Write-Host 'Packaging icon editor VIP...' -ForegroundColor Cyan
 
-    $vipbRelativePath = 'Tooling\deployment\NI Icon editor.vipb'
+    $vipbRelativePath = 'Tooling\deployment\NI_Icon_editor.vipb'
     $releaseNotesPath = Join-Path $IconEditorRoot 'Tooling\deployment\release_notes.md'
 
     $modifyVipbArguments = @(

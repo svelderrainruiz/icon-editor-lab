@@ -46,6 +46,21 @@ param(
   Default 'full' adds no suppression; 'legacy' restores the historical ignores
   (-noattr -nofp -nofppos -nobd -nobdcosm).
 
+.PARAMETER IgnoreAttributes
+  Adds the LVCompare `-noattr` flag irrespective of NoiseProfile.
+
+.PARAMETER IgnoreFrontPanel
+  Adds the LVCompare `-nofp` flag.
+
+.PARAMETER IgnoreFrontPanelPosition
+  Adds the LVCompare `-nofppos` flag.
+
+.PARAMETER IgnoreBlockDiagram
+  Adds the LVCompare `-nobd` flag.
+
+.PARAMETER IgnoreBlockDiagramCosmetics
+  Adds the LVCompare `-nobdcosm` flag.
+
 .PARAMETER OutputDir
   Target directory for artifacts (default: tests/results/single-compare).
 
@@ -96,6 +111,11 @@ param(
   [switch]$AllowSameLeaf,
   [ValidateSet('full','legacy')]
   [string]$NoiseProfile = 'full',
+  [switch]$IgnoreAttributes,
+  [switch]$IgnoreFrontPanel,
+  [switch]$IgnoreFrontPanelPosition,
+  [switch]$IgnoreBlockDiagram,
+  [switch]$IgnoreBlockDiagramCosmetics,
     [string]$OutputDir = 'tests/results/single-compare',
     [switch]$RenderReport,
 [ValidateSet('html','html-single','xml','text')]
@@ -824,11 +844,22 @@ $defaultFlags = switch ($NoiseProfile) {
   'legacy' { @('-noattr','-nofp','-nofppos','-nobd','-nobdcosm') }
   default  { @() }
 }
+$customNoiseFlags = @()
+if ($IgnoreAttributes) { $customNoiseFlags += '-noattr' }
+if ($IgnoreFrontPanel) { $customNoiseFlags += '-nofp' }
+if ($IgnoreFrontPanelPosition) { $customNoiseFlags += '-nofppos' }
+if ($IgnoreBlockDiagram) { $customNoiseFlags += '-nobd' }
+if ($IgnoreBlockDiagramCosmetics) { $customNoiseFlags += '-nobdcosm' }
+if ($customNoiseFlags.Count -gt 0) {
+  $customNoiseFlags = $customNoiseFlags | Select-Object -Unique
+}
 $effectiveFlags = @()
 if ($LabVIEWExePath) { $effectiveFlags += @('-lvpath', $LabVIEWExePath) }
 if ($ReplaceFlags.IsPresent) {
   if ($Flags) { $effectiveFlags += $Flags }
+  if ($customNoiseFlags) { $effectiveFlags += $customNoiseFlags }
 } else {
+  $defaultFlags = @($defaultFlags + $customNoiseFlags | Select-Object -Unique)
   $effectiveFlags += $defaultFlags
   if ($Flags) { $effectiveFlags += $Flags }
 }

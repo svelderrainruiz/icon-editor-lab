@@ -1,0 +1,2074 @@
+﻿{
+  "schema": "vi-diff-manifest@v1",
+  "generatedAt": "2025-11-05T17:07:05.1125411-08:00",
+  "baseRef": "a03952387a5a508df5c8b68ad57071d2f60ce68f",
+  "headRef": "7171035fe6eb1f3fda90017cc1655545e3684a60",
+  "ignore": [],
+  "pairs": [
+    {
+      "changeType": "modified",
+      "basePath": "vendor/icon-editor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MenuSelection(User).vi",
+      "headPath": "vendor/icon-editor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MenuSelection(User).vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/lv_icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/GET/GET_AntsLine.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/GET/GET_DelayRestartTL.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/GET/GET_DelayTL.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/GET/GET_Notifier.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/GET/GET_Picture.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/Initialization/Ants Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/Misc/CheckBoundsAndIncrement.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/Misc/FireAntsEvent.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/Misc/InsideBoundaries.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Ants/Misc/RunningAnts.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_ActiveData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_AllData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_RowsCols.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_Scrollbar Position.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/GET/GET_SupportData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Initialization/Initialize FakedArray.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Initialization/ResetColor.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Initialization/SetActiveData_LoadedFromVI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/ArrowUpDown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Ensure Visible.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Get Cluster Label Number.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Get Pointer From Label.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/GetReference.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Layer_Get Active Clusters.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Layer_Set Active Data BG Color.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Process Template Graphics.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Set active Layer programmatically.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/SetActiveGraphic.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/Templates_Set Active Data BG Color.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/UpdateScrollbar.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/UpdateSelectedData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/Misc/UpdateVisibleData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/SET/SET_ActiveData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/SET/SET_Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/SET/SET_ScrollbarPosition.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/FakedArray/ToMoreSpecificClass/ClusterRef_2_DisplayTemplatesRef.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/GET/GET_ActiveGlyph.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/GET/GET_Glyphs [].vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/Initialization/Glyphs Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/Misc/FilterGlyphs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/Misc/SearchGlyphs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/SET/SET_ActiveGlyph.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Icon Library/SET/SET_Glyphs [].vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/GET/GET_3rd party Templates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/GET/GET_Save_Layers_with_VI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/GET/GET_Show.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/GET/GET_Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/Initialization/Settings Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/SET/SET_3rdPartyTemplates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/SET/SET_SaveLayersWithVI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/SET/SET_Show.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Settings/SET/SET_Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Circle.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Dropper.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Eraser.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Fill.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/GET/GET_ActiveTool.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Line.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Misc/DoubleClick.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Move.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Pen.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Rectangle.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/Selection.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Class/Tools/SET/SET_ActiveTool.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Delete Icon Editor Source Files.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Editor Position/Read Editor Position from INI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Editor Position/Save Editor Position to INI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Editor Position/Set Editor Position.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Get Callers of Icon Editor Packed Library.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Get Callers of Icon Editor Source Files.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Get Icon Editor Source Paths.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Global Variables/Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/INI/Read Data From LabVIEW INI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/INI/Write Data to LabVIEW INI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Launch Icon Editor From String.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/AssessRectangle.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Buffer for lossless tracking.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/CalculateAntsRect.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Classes Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Clipboard/IE Read from Clipboard.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Clipboard/IE Write to Clipboard.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Connector Pane Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/CoordinatesCorrection.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Create new class icon user layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Create new layer_LayerName_Picture.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/DealWithScrollbars.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Def FP Updates/Defer_FP_Updates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/Const Temp Coordinate 2 points.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/Const Temp Coordinate 4 points.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/DrawIcon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/IsCoordinateConstant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/Origin_or_TempCoordinate.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Draw/PixelValue.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Extract LV Icon Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Finalize Movement.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Finalize Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Flip color refs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Font/Linux.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Font/Mac.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Font/Populate Font ComboBox.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Font/Windows.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Get Monochrome Icon from Caller.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/GetComparisonResult4Graphis.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/Glyph_MouseDown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/Populate Graphics.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/Prepare Glyphs for Display.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/SET_Glyph.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/SET_ToolGraphic.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Glyphs/TemporaryGlyphView.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/BuildCategories.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/ChangeRefreshGraphicsState.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/CorruptIconErrorMessage.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/Filter Graphics by File Name.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/Filter Graphics by Folder Name.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/Launch Dynamically Load Graphics.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/LoadGraphics.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/LoadTemplates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/Populate Tree with Categories.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Graphics/Pull data from disc.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Add new Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Alignment Value Change.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Call Keep IE in Memory.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Change Behavior IE window.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Change Mouse Cursor.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Clear User Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Delete Selected Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Escape.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Fire Body Text Change event.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Get Icon Editor Context.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Icon Editor Help.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Icon Editor Init Refs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Icon Editor Properties Help.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Icon Initialization.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/IE Save dialog build path.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Keep IE in Memory.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/LayerCluster_ValueChange.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MenuSelection(User).vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Mouse Down_Glyphs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Mouse Down_Templates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Mouse Down_Tree.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Mouse Down_User Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MouseDown_Body Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MouseDown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/MouseMove.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/PictureControl_MouseUp.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/populate tree.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Reset layer template selection.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/RotateFlip.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Save Graphic Overwrite.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Save Graphic.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Template_MouseDown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Update glyph path string.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/UpdateLayerView_ScrollbarChanged.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Value Change_Body Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Icon Editor/Value Change_Top or Bottom Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/IEGlyphFolderConstant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/IETemplateLibraryFolderConstant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/IETemplateVIFolderConstant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ImageDataToIconPreview.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/IsAntsRectValid.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Key Down Up/Key Down Up Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Key Down Up/KeyDown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Key Down Up/KeyUp.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Key Down Up/Move Selected Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Key Down Up/Process Active Data Shift Key.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Launch_VI_Asynchronously.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/DeleteLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/DeselectLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/LayerGraphicManipulation.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/Separate Selected Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/Split_Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Layer/ViewLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ListGlyphsAndTemplates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Glyph from File.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Export_Clipboard.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Flatten Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Flatten Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Get Color Icon from Caller.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Import_Clipboard.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Load.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Read Data from Caller.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Read Glyphs from  File.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Reset Layer VI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Return MutationCode Folder.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Unflatten Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Unflatten Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Write Data to Caller.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Write Glyphs to  File.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Load Unload/Write INI Tokens and VI Tags.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Magic Active Layer Constant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Menubar/EnableDisable Combine Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Menubar/ShowTerminals.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/MoveLayers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/Analyze XML stream.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/Check whether installed.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/Download iconlibrary files.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/ExtractDataFromXML.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/GET HTTP.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/IconlibraryStuffInProgress.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/Install Glyphs.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/Manual User Input.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/ni.com_iconlibrary.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/ni.com_iconlibrary/ResolveURLbyUsingInfoCode.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/PrepareData4HTML.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/PrepareTemporaryView.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Process Temporary View Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Remove invalid characters.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/SetCursor.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Settings Init.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Settings Requested Path.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Settings Shutdown.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Specify Path Enum.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/Get Color Not In Image.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/Mouse Down.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/Selection_PrepareIcon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/Selection_SetNewData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/Value Change_Tools.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/ValueSignalingTool.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/VisibleTextMarker.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Tools/WriteText.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Truncate string.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Undo Redo/Add Data to History.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Undo Redo/FGV_Undo Redo.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Undo Redo/Replay Data from History.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/User Events/Initialization_UserEvents.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Miscellaneous/Write Error to File.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/ApplyLibIconOverlayToVIIcon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Call Keep ApplyLib in Memory.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Create or Substitute NI_Layer layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/DefaultIconGlyphData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Get 32x32 Image Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Get VI Library.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/GetLibIconForVIIconOverlay.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/GetLibIconForVIIconOverlayFromVI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/GetOffsetRWIcon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Icon Editor First Call.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/IE_Open Help Link.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/IE_Resolve Symbolic Paths.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/Support/Keep ApplyLib in Memory.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/User Dialogs/IconEditorSettings.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/User Dialogs/SubVIs/Center Dialog on Caller.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/User Dialogs/SubVIs/Initialize_IconEditorSettings_Tree.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/NIIconEditor/User Dialogs/Verify Cancel.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/resource/plugins/SAMPLE_lv_icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Adjust Position.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Assert Windows Bounds.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Backup INI Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/INI Position Removed.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/INI Use Position Size.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Invalid INI Read.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Position Invalid Test.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Position Out of Bounds Test.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Position Set Test.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Restore INI Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Size Test.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Standard INI Write Read.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Test Position INI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Editor Position/Test Window Position.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Text-Based VI Icon Tests/Test Split Text into Words.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Undo Redo Core/Initial States.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Undo Redo Core/Test Add and Undo All.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Undo Redo Core/Test Add Clears Redo.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Undo Redo Core/Test Overflow.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Test/Unit Tests/Undo Redo Core/Undo States.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/ApplyVIPC.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/BuildVIPackage.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/Create_LV_INI_Token.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/CreateLVAddonJSONfile.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/Destroy_LV_INI_Token.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/Modify_VIPB_Display_Information.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/ModifyProjectBuildOutput.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/NIP Post uninstall.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Post-Install Custom Action 2021.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Post-Install Custom Action.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Post-Uninstall Custom Action 2021.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Post-Uninstall Custom Action.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Pre-Install Custom Action 2021.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Pre-Install Custom Action.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Pre-Uninstall Custom Action 2021.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/deployment/VIP_Pre-Uninstall Custom Action.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Force Icon Editor to Unload.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Post Build Icon Editor PPL.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Pre Build Icon Editor PPL.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Prepare LV to Use Icon Editor Source.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/PrepareIESource.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/PrepareIESourceCore.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/RestoreSetupLVSource.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/RestoreSetupLVSourceCore.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Run all tests CLI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/Run all tests.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Add dev dist if present.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Add Files to Archive.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Delete Icon Editor from LV Installation.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Get Paths to Icon Editor Files in LV Installation.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Prompt to Confirm Archival.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/support/Set LibraryPaths to Include Icon Editor.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/Tooling/VIP_Post-Install Custom Action.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Examples/Advanced Generate LV Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Examples/Basic Generate LV Icon Template Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Examples/Basic Generate LV Icon Text Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Examples/Modify VI Icon Template Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Examples/Modify VI Icon Text Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Generate LV Icon Template Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Generate LV Icon Text Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Generate LV Icon User Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Get Flattened Image.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Get Library Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Get VI Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Launch Icon Editor.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/Apply Body Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/BodyTextCoordinates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/CreateBodyText.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/GET_BodyText.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/GET_Path.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/SET_BodyText.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon Framework/SET_Path.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/CreateNewLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/DeleteLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/Get_Active User Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/GET_All User Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/GET_IconTextClass.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/GET_LayersLocked_ActiveLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/GET_TemplateClass.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/GET_UserLayers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/SET_ActiveLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/SET_IconTextClass.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/SET_Locked_ActiveLayer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/SET_TemplateClass.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Icon/SET_UserLayers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/GET_LayerData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/GET_Origin.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/SET_Layer_Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/SET_LayerType.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/SET_Origin.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/Substitute Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Layer/UpdateLayerData.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Load_Unload/GET Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Classes/Load_Unload/SET Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Adjust temporary rotate and flip rectangle.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Apply Opacity.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Apply Transparency.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/ApplyLVClassIconOverlayToVIIcon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Average Grayscale of Line.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Calculate Body Text Position.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Check Color.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Create Color Array.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Create default Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Create default LV Icon Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Create Icon Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Create Layer from Image.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Deserialize Picture Control Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Draw Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Draw Picture based on Origin.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Extract Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Extract Default Icon Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Extract Icon Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Fill.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/FilterEmptyLayerIcons.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Find BG Color Peak.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Find Neighbours.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Find Start and Endpoint Body Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Flatten Load & Unload.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Flood Glyph.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get Grayscale Value.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get Image Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get LV Glyph Path.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get SubPicture Coordinate.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get SubPicture Coordinates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Get_VI_Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Join Layers.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/LabVIEW Fonts.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Magic Transparent Color Constant.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Read Icon Data from Library.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Read Icon Data from VI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Remove Duplicates from Color Array.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Remove Icon Data from VI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Replace Color.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Restore original Coordinates.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Return MutationCode Folder.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Rotate Flip Image.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Serialize Icon Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Text.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Unflatten Load & Unload.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Write Icon Data to Library.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/lv_icon/Support/Write Icon Data to VI.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Library Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Adjust Text to Fit Rectangle.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Calculate Number of Text Rows.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Configure Named Icons.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Does the Text Fit.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Filter Words.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Generate Non Text Layer(s).vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Generate Pretty Icon Text Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Group 1-Character Tokens.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Qualify Library Icon Core.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Read 1D Strings From Config.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Read 2D Strings From Config.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Set Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Split First and Other Strings.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/Split Text Into Words.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set Text Icon/User Visible Strings.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Set VI Icon.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Apply Transparency.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Create Icon Framework.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Draw Template Glyph.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Generate Border User Layer.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Get Data from Icon Class.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Get Icon Class from Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Populate Body Text Data.vi"
+    },
+    {
+      "changeType": "added",
+      "basePath": null,
+      "headPath": "vendor/vi.lib/LabVIEW Icon API/Support/Rotate Flip Layer.vi"
+    }
+  ]
+}

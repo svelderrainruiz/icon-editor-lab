@@ -18,14 +18,14 @@ and `tests/` that:
 - manage **development mode** for LabVIEW;
 - run **VI Analyzer** non-interactively;
 - perform **LVCompare**-based VI diffs and render reports;
-- stage **snapshots** and build **VIPM packages**; and
+- stage **snapshots** and build **vipmcli packages**; and
 - export a **portable bundle** consumed by downstream repos.
 It does not specify the VS Code extension or other auxiliary developer UX beyond their CLI interfaces. fileciteturn1file7
 
 ## 3 Definitions, Acronyms, Abbreviations
 **LVCompare** – LabVIEW VI comparison utility.  
 **VI Analyzer** – LabVIEW static analysis tooling.  
-**VIPM** – VI Package Manager.  
+**vipmcli** – JKI’s g-cli interface for applying `.vipc` bundles and packaging (desktop VIPM is never driven directly).  
 **Bundle** – Zipped export of lab scripts/configs for downstream consumption.  
 Terminology is kept consistent and unambiguous per 29148 language criteria. fileciteturn1file10
 
@@ -40,7 +40,7 @@ This tooling is an element of a larger CI ecosystem. Downstream consumers (e.g.,
 
 ### 5.1 System Interfaces
 - LabVIEW (2021/2023/2025) and **LVCompare** executable paths.  
-- **VIPM** CLI and dependency bundles (`*.vipc`).  
+- **vipmcli** CLI and dependency bundles (`*.vipc`).  
 - Windows process model for pre/post-run **rogue** process detection.  
 Interface requirements must be traceable on both sides of the interface. fileciteturn1file12
 
@@ -52,7 +52,7 @@ None.
 
 ### 5.4 Software Interfaces
 - LabVIEW CLI / LVCompare; TestStand-based compare harness.  
-- VIPM CLI; g-cli as applicable in packaging flows.  
+- vipmcli CLI; g-cli as applicable in packaging flows.  
 For each interface, message formats and paths are defined by the tool owners and referenced in this SRS. fileciteturn1file19
 
 ### 5.5 Communications Interfaces
@@ -62,26 +62,26 @@ Local file system; optional Git remote access in repo sync helpers.
 Supports fully unattended operation with environment flags such as `LV_SUPPRESS_UI=1`, `LV_NO_ACTIVATE=1`. Normal operation is headless compare/analyze/package runs; recovery entails closing or killing rogue LabVIEW/LVCompare instances. fileciteturn1file19
 
 ### 5.7 Site Adaptation
-Paths (e.g., LabVIEW/VIPM locations) and labels are site-configurable via parameters and environment variables. fileciteturn1file19
+Paths (e.g., LabVIEW/vipmcli locations) and labels are site-configurable via parameters and environment variables. fileciteturn1file19
 
 ## 6 Product Functions (Summary)
 - Manage **dev mode** lifecycle for LabVIEW.  
 - Run **VI Analyzer** headlessly and summarize results.  
 - Perform **LVCompare** with timeout and noise-profile controls; render **compare-report.html** and session indices.  
 - Generate **fixture** and **snapshot** reports.  
-- Build **VIPM** packages and publish artifacts.  
+- Build **vipmcli** packages and publish artifacts.  
 - Export a reusable **bundle** for downstream repos.  
 (Detail requirements follow.) fileciteturn1file1
 
 ## 7 Constraints
 - **OS:** Windows host runners.  
 - **PowerShell:** 7.0+.  
-- **LabVIEW:** 2021 (PPL builds), 2023 (VIPM packaging), **2025 x64** for LVCompare HTML/reporting flows.  
+- **LabVIEW:** 2021 (PPL builds), 2023 (vipmcli packaging), **2025 x64** for LVCompare HTML/reporting flows.  
 - **Timeouts:** default **600 s** for warmup and compare stages.  
 Constraints bound feasible solutions per 29148. fileciteturn1file13
 
 ## 8 Assumptions and Dependencies
-- LabVIEW and VIPM are installed and licensed on the host and discoverable by the tooling.  
+- LabVIEW and vipmcli are installed and licensed on the host and discoverable by the tooling.  
 - Self-hosted runner has permission to spawn/kill LabVIEW/LVCompare processes.  
 - Downstream consumers adhere to the bundle’s published structure.  
 Assumptions/dependencies are recorded per 29148. fileciteturn1file0
@@ -95,7 +95,7 @@ All requirements are **necessary, unambiguous, singular, feasible, and verifiabl
 **IELA-SRS-F-003 (VI Analyzer):** Given a `.viancfg`/VI/folder, the system **shall** run VI Analyzer headlessly and **shall** emit an HTML report and a `latest-run.json` summary containing counts of analyzed VIs and test outcomes under `tests/results/_agent/vi-analyzer/<label>/`. *Verification:* Test + Inspection.  
 **IELA-SRS-F-004 (VI Compare & Reporting):** Given a base VI and a head VI, the system **shall** run a deterministic LVCompare, apply the requested noise profile, and when `-RenderReport` is set **shall** emit `compare-report.html` plus a `session-index.json` that records inputs, tool paths, and logs under `tests/results/_agent/reports/lvcompare/<label>/`. *Verification:* Test + Inspection.  
 **IELA-SRS-F-005 (Fixture & Snapshot Reports):** The system **shall** render Markdown reports for fixture/snapshot descriptions that include file lists and linkable artifacts. *Verification:* Test + Inspection.  
-**IELA-SRS-F-006 (VIPM Packaging):** The system **shall** build Icon Editor packages using PPL builds for LabVIEW 2021 (x86/x64) and **shall** package via VIPM using LabVIEW 2023 (x86/x64), emitting versioned `.vip` files. *Verification:* Test + Demonstration.  
+**IELA-SRS-F-006 (vipmcli Packaging):** The system **shall** build Icon Editor packages using PPL builds for LabVIEW 2021 (x86/x64) and **shall** package via vipmcli using LabVIEW 2023 (x86/x64), emitting versioned `.vip` files. *Verification:* Test + Demonstration.  
 **IELA-SRS-F-007 (Bundle Export):** The system **shall** export a portable zip bundle containing `tools/`, `configs/`, and selected `docs/` to `artifacts/icon-editor-lab-tooling.zip`. *Verification:* Demonstration + Inspection.  
 **IELA-SRS-F-008 (MissingInProject Suite Telemetry):** The system **shall** orchestrate the MissingInProject suite by running VI Analyzer (with dev-mode recovery heuristics) before invoking the MissingInProject CLI/Pester harness, and for each label **shall** emit both `_agent/reports/missing-in-project/<label>.json` and `<runRoot>/missing-in-project-session.json` (schema `missing-in-project/run@v1`) that capture analyzer inputs/results, CLI command, compare artifacts, and telemetry paths. *Verification:* Test + Inspection.
 

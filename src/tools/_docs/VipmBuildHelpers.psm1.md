@@ -12,4 +12,4 @@ Telemetry + orchestration helpers for VIPM package builds driven by icon-editor 
 
 ## Related
 - `tools/icon-editor/Invoke-VipmDependencies.ps1`
-- `tools/icon-editor/Publish-LocalArtifacts.ps1`
+- Stage → Validate → QA → Upload helpers (`tools/Stage-XCliArtifact.ps1`, `tools/Test-XCliReleaseAsset.ps1`, `tools/Promote-XCliArtifact.ps1`, `tools/Upload-XCliArtifact.ps1`)

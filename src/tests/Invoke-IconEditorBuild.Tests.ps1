@@ -36,7 +36,7 @@ Describe 'Invoke-IconEditorBuild.ps1' -Tag 'IconEditor','Build','Unit' {
 
     $null = New-Item -ItemType Directory -Path (Join-Path $script:iconRoot 'resource\plugins') -Force
     $null = New-Item -ItemType Directory -Path (Join-Path $script:iconRoot 'Tooling\deployment') -Force
-    $null = New-Item -ItemType File -Path (Join-Path $script:iconRoot 'Tooling\deployment\NI Icon editor.vipb') -Force
+    $null = New-Item -ItemType File -Path (Join-Path $script:iconRoot 'Tooling\deployment\NI_Icon_editor.vipb') -Force
     $null = New-Item -ItemType File -Path (Join-Path $script:iconRoot 'lv_icon_editor.lvproj') -Force
 
     function New-StubScript {
@@ -427,7 +427,7 @@ $reportPath = Join-Path $PSScriptRoot 'UnitTestReport.xml'
     $manifest.packagingRequested | Should -BeTrue
     $manifest.dependenciesApplied | Should -BeTrue
     $manifest.developmentMode.toggled | Should -BeTrue
-    $manifest.packaging.requestedToolchain | Should -Be 'gcli'
+    $manifest.packaging.requestedToolchain | Should -Be 'g-cli'
     $manifest.packaging.packedLibVersion   | Should -Be 2023
     $manifest.packaging.packagingLabviewVersion | Should -Be 2026
     [string]::IsNullOrEmpty($manifest.packaging.requestedProvider) | Should -BeTrue
@@ -466,7 +466,7 @@ $reportPath = Join-Path $PSScriptRoot 'UnitTestReport.xml'
 
     $manifest = Get-Content -LiteralPath (Join-Path $script:resultsRoot 'manifest.json') -Raw | ConvertFrom-Json
     $manifest.packagingRequested | Should -BeFalse
-    $manifest.packaging.requestedToolchain | Should -Be 'gcli'
+    $manifest.packaging.requestedToolchain | Should -Be 'g-cli'
     @($manifest.artifacts | Where-Object { $_.kind -eq 'vip' }).Count | Should -Be 0
     $manifest.packageSmoke.status | Should -Be 'skipped'
   }

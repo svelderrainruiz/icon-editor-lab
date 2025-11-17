@@ -1,0 +1,19 @@
+{
+  "repoRoot": "${workspaceFolder}",
+  "iconEditorRoot": "${workspaceFolder}/vendor/icon-editor",
+  "repoSlug": "LabVIEW-Community-CI-CD/labview-icon-editor",
+  "minimumSupportedLVVersion": 2023,
+  "packageMinimumSupportedLVVersion": 2026,
+  "packageSupportedBitness": 64,
+  "skipSync": true,
+  "skipVipcApply": true,
+  "skipBuild": true,
+  "skipRogueCheck": true,
+  "skipClose": true,
+  "major": 1,
+  "minor": 4,
+  "patch": 1,
+  "build": 25001,
+  "resultsRoot": ".tmp-tests/vipm-cli-build",
+  "verboseOutput": false
+}

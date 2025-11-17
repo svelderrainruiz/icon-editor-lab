@@ -1,0 +1,21 @@
+{
+  "repoRoot": "${workspaceFolder}",
+  "configPath": "src/configs/vi-analyzer/missing-in-project.viancfg",
+  "outputRoot": ".tmp-tests/vi-analyzer",
+  "label": "vi-analyzer-sample",
+  "reportSaveType": "HTML",
+  "labVIEWVersion": 2025,
+  "bitness": 64,
+  "labVIEWCLIPath": "C:/Program Files/National Instruments/LabVIEW 2025/LabVIEWCLI.exe",
+  "captureResultsFile": true,
+  "reportPath": ".tmp-tests/vi-analyzer/sample-report.html",
+  "resultsPath": ".tmp-tests/vi-analyzer/sample-results.rsl",
+  "timeoutSeconds": 900,
+  "additionalArguments": [],
+  "configPassword": "",
+  "reportSort": "VI",
+  "reportInclude": [
+    "FAILED",
+    "SKIPPED"
+  ]
+}

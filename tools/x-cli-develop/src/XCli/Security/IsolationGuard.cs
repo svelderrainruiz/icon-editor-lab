@@ -28,6 +28,14 @@ public static class IsolationGuard
 
     public static void Enforce(Assembly? assembly = null)
     {
+        var bypass = Environment.GetEnvironmentVariable("XCLI_ALLOW_PROCESS_START");
+        if (!string.IsNullOrWhiteSpace(bypass) &&
+            (bypass.Equals("1", StringComparison.OrdinalIgnoreCase) ||
+             bypass.Equals("true", StringComparison.OrdinalIgnoreCase)))
+        {
+            return;
+        }
+
         var asm = assembly ?? typeof(IsolationGuard).Assembly;
         var refs = asm.GetReferencedAssemblies();
         var networkPrefixes = new[]

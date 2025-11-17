@@ -1,14 +1,19 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
+﻿#Requires -Version 7.0
+
 [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
 param(
   [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
   [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
   [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
+  [Parameter()][int]$TimeoutSec = 600,
+  [string]$ActionlintVersion = '1.7.7',
+  [bool]$InstallIfMissing = $true
 )
-﻿#Requires -Version 7.0
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
+
 <#
 .SYNOPSIS
   Local pre-push checks: run actionlint against workflows.
@@ -20,11 +25,6 @@ param(
 .PARAMETER InstallIfMissing
   Attempt to install actionlint if not found (default: true).
 #>
-param(
-  [string]$ActionlintVersion = '1.7.7',
-  [bool]$InstallIfMissing = $true
-)
-
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 Import-Module (Join-Path (Split-Path -Parent $PSCommandPath) 'VendorTools.psm1') -Force
@@ -187,10 +187,49 @@ if ($code -ne 0) {
   Write-Error "actionlint reported issues (exit=$code)."
   exit $code
 }
-Write-Host '[pre-push] actionlint OK' -ForegroundColor Green
+  Write-Host '[pre-push] actionlint OK' -ForegroundColor Green
 
 Assert-NoDirectLabVIEWExeInvocation -RepoRoot $root
 Write-Host '[pre-push] verified no direct LabVIEW.exe invocations' -ForegroundColor Green
+
+<#
+.SYNOPSIS
+Assert-NoDirectVipmExeInvocation: brief description (TODO: refine).
+.DESCRIPTION
+Auto-seeded to satisfy help synopsis presence. Update with real details.
+#>
+function Assert-NoDirectVipmExeInvocation {
+    [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
+
+  param([Parameter(Mandatory)][string]$RepoRoot)
+
+  $scripts = Get-ChildItem -Path $RepoRoot -Recurse -Include *.ps1 -File
+  $violations = New-Object System.Collections.Generic.List[object]
+  foreach ($script in $scripts) {
+    $lineNumber = 0
+    foreach ($line in Get-Content -LiteralPath $script.FullName) {
+      $lineNumber++
+      if ($line -match '(?i)start-process\s+.+(VIPM\.exe|VI Package Manager\.exe)') {
+        $violations.Add([pscustomobject]@{ Path = $script.FullName; Line = $lineNumber; Text = $line.Trim() }) | Out-Null
+        continue
+      }
+      if ($line -match '(?i)(?:^|\s)&\s*(?:(?:"[^"]*(VIPM\.exe|VI Package Manager\.exe)[^"]*")|(?:''[^'']*(VIPM\.exe|VI Package Manager\.exe)[^'']*'')|(?:\S*(VIPM\.exe|VI Package Manager\.exe)))') {
+        $violations.Add([pscustomobject]@{ Path = $script.FullName; Line = $lineNumber; Text = $line.Trim() }) | Out-Null
+      }
+    }
+  }
+
+  if ($violations.Count -gt 0) {
+    Write-Error "Direct VIPM desktop executable invocation detected. Use vipmcli/g-cli providers instead (vipm-gcli, g-cli) via x-cli or VipmDependencyHelpers."
+    foreach ($violation in $violations) {
+      Write-Host (" - {0}:{1}: {2}" -f $violation.Path, $violation.Line, $violation.Text) -ForegroundColor Red
+    }
+    exit 1
+  }
+}
+
+Assert-NoDirectVipmExeInvocation -RepoRoot $root
+Write-Host '[pre-push] verified no direct VIPM.exe invocations' -ForegroundColor Green
 
 
 

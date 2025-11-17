@@ -33,7 +33,7 @@ jobs:
 
       - name: Build icon-editor-lab tooling image
         run: |
-          IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/icon-editor-lab/tooling-ubuntu"
+          IMAGE_BASE="ghcr.io/${{ toLower(github.repository_owner) }}/icon-editor-lab/tooling-ubuntu"
           TAG_SHA="${IMAGE_BASE}:sha-${{ steps.meta.outputs.sha_short }}"
           TAG_LATEST="${IMAGE_BASE}:latest"
 
@@ -56,7 +56,7 @@ jobs:
           docker push "${TAG_SHA}"
 
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/icon-editor-lab/tooling-ubuntu"
+            IMAGE_BASE="ghcr.io/${{ toLower(github.repository_owner) }}/icon-editor-lab/tooling-ubuntu"
             TAG_LATEST="${IMAGE_BASE}:latest"
             docker push "${TAG_LATEST}"
           fi

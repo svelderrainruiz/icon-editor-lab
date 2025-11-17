@@ -219,6 +219,10 @@ Write-Host ''
 
 if ($ProbeCli.IsPresent) {
     Write-Host 'Probing LabVIEW CLI...'
+    $cliLeaf = [System.IO.Path]::GetFileName($paths.LabVIEWCLIPath)
+    if ($cliLeaf -eq 'LabVIEWCLI.exe') {
+        throw "Direct LabVIEWCLI.exe probes are not allowed here. Route CLI verification through tools/codex/Invoke-LabVIEWOperation.ps1 and the corresponding x-cli workflow (for example, vi-compare-verify or vi-analyzer-verify)."
+    }
     $psi = [System.Diagnostics.ProcessStartInfo]::new()
     $psi.FileName = $paths.LabVIEWCLIPath
     $psi.ArgumentList.Add('--help')

@@ -1,0 +1,32 @@
+name: labview-agent-validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - release/**
+      - rc/**
+  push:
+    branches:
+      - release/**
+      - rc/**
+
+jobs:
+  validate:
+    runs-on:
+      - self-hosted
+      - Windows
+      - X64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run labview agent validation
+        shell: pwsh
+        run: pwsh -NoLogo -NoProfile -File tools/validation/Invoke-AgentValidation.ps1 -PlanPath configs/validation/agent-validation-plan.json -SummaryPath out/agent-validation/agent-validation-${{ github.run_id }}.json
+      - name: Upload validation artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-validation-${{ github.run_id }}
+          path: |
+            out/agent-validation/
+            .tmp-tests/validation/

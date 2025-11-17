@@ -1,0 +1,61 @@
+{
+  "schema": "labview-pid-tracker/v1",
+  "updatedAt": "2025-11-06T01:08:03.1959223Z",
+  "pid": null,
+  "running": false,
+  "reused": false,
+  "source": "invoke-lvcompare:summary",
+  "observations": [
+    {
+      "at": "2025-11-06T01:07:07.4136982Z",
+      "action": "initialize",
+      "pid": null,
+      "running": false,
+      "reused": false,
+      "source": "invoke-lvcompare:init",
+      "note": "labview-not-running",
+      "candidates": []
+    },
+    {
+      "at": "2025-11-06T01:08:03.1959223Z",
+      "action": "finalize",
+      "pid": null,
+      "running": false,
+      "reused": false,
+      "source": "invoke-lvcompare:summary",
+      "note": "no-tracked-pid",
+      "context": {
+        "autoCli": false,
+        "capturePath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\lvcompare-capture.json",
+        "command": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe -OperationName CreateComparisonReport -VI1 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\base-single\\Base.vi -VI2 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\head\\Icon Editor\\Head.vi -ReportPath C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report.html -ReportType HTML -LabVIEWPath C:\\Program Files\\National Instruments\\LabVIEW 2025\\LabVIEW.exe",
+        "compareExitCode": 0,
+        "didCli": true,
+        "diffDetected": false,
+        "exitCode": 0,
+        "mode": "labview-cli",
+        "policy": "cli-only",
+        "processExitCode": 0,
+        "reportGenerated": true,
+        "stage": "lvcompare:summary",
+        "status": "ok"
+      },
+      "contextSource": "invoke-lvcompare:summary"
+    }
+  ],
+  "context": {
+    "autoCli": false,
+    "capturePath": "C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\lvcompare-capture.json",
+    "command": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe -OperationName CreateComparisonReport -VI1 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\base-single\\Base.vi -VI2 C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-staging-work\\comparevi-stage-2f83d9a156fc4c77a7f7f2f0897c94a2\\head\\Icon Editor\\Head.vi -ReportPath C:\\actions-runner\\_work\\compare-vi-cli-action\\compare-vi-cli-action\\vi-compare-artifacts\\compare\\pair-01\\compare-report.html -ReportType HTML -LabVIEWPath C:\\Program Files\\National Instruments\\LabVIEW 2025\\LabVIEW.exe",
+    "compareExitCode": 0,
+    "didCli": true,
+    "diffDetected": false,
+    "exitCode": 0,
+    "mode": "labview-cli",
+    "policy": "cli-only",
+    "processExitCode": 0,
+    "reportGenerated": true,
+    "stage": "lvcompare:summary",
+    "status": "ok"
+  },
+  "contextSource": "invoke-lvcompare:summary"
+}
