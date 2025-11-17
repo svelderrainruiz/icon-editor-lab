@@ -51,6 +51,76 @@
       "problemMatcher": []
     },
     {
+      "label": "Tests: x-cli workflows (Pester)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "Invoke-Pester ${workspaceFolder}/tests/Codex.XCli.Tests.ps1 -Output Detailed"
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Pre-push checks (actionlint + guards)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Run-PrePushChecks.ps1"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Build icon-editor-lab tooling image (Ubuntu)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "docker build -f tools/Dockerfile.icon-editor-lab-tooling-ubuntu -t icon-editor-lab/tooling-ubuntu:local ."
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Shell in icon-editor-lab tooling image",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "docker run --rm -it -v ${workspaceFolder}:/work -w /work icon-editor-lab/tooling-ubuntu:local pwsh"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Agent validation (tooling image)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "docker run --rm -v ${workspaceFolder}:/work -w /work icon-editor-lab/tooling-ubuntu:local pwsh -NoLogo -NoProfile -File tools/validation/Invoke-AgentValidation.ps1 -PlanPath configs/validation/agent-validation-plan.json"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Agent validation (tooling image, GHCR)",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "docker run --rm -v ${workspaceFolder}:/work -w /work ghcr.io/svelderrainruiz/icon-editor-lab/tooling-ubuntu:latest pwsh -NoLogo -NoProfile -File tools/validation/Invoke-AgentValidation.ps1 -PlanPath configs/validation/agent-validation-plan.json"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Local CI: Stage 25 DevMode (enable)",
       "type": "shell",
       "command": "pwsh",
@@ -334,6 +404,27 @@
       "problemMatcher": []
     },
     {
+      "label": "Tools: Bundle vi-compare session",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Bundle-ViCompareSession.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-StageChannel",
+        "${input:xcliStageChannel}",
+        "-OutputDirectory",
+        "${input:viCompareBundleOutput}"
+      ],
+      "dependsOn": [
+        "Tools: Upload x-cli artifact"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Tools: Publish x-cli",
       "dependsOn": [
         "Tools: Build x-cli",
@@ -341,7 +432,8 @@
         "Tools: Stage x-cli artifact",
         "Tools: Validate x-cli release asset",
         "Tools: Promote x-cli to QA",
-        "Tools: Upload x-cli artifact"
+        "Tools: Upload x-cli artifact",
+        "Tools: Bundle vi-compare session"
       ],
       "dependsOrder": "sequence",
       "command": "pwsh",
@@ -351,6 +443,419 @@
         "-Command",
         "Write-Host \"[[xcli]] Build → package → stage → validate → QA → upload complete.\""
       ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Publish-plan (matrix-emulated)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Invoke-XCliTestPlanScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-Scenario",
+        "matrix-emulated",
+        "-StageChannel",
+        "${input:xcliStageChannel}"
+      ],
+      "options": {
+        "env": {
+          "XCLI_QA_DESTINATION": "${input:xcliQaDestination}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Publish-plan (matrix-full)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Invoke-XCliTestPlanScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-Scenario",
+        "matrix-full",
+        "-StageChannel",
+        "${input:xcliStageChannel}"
+      ],
+      "options": {
+        "env": {
+          "XCLI_QA_DESTINATION": "${input:xcliQaDestination}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Publish-plan (release-lock-fail)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Invoke-XCliTestPlanScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-Scenario",
+        "release-lock-fail",
+        "-StageChannel",
+        "${input:xcliStageChannel}"
+      ],
+      "options": {
+        "env": {
+          "XCLI_QA_DESTINATION": "${input:xcliQaDestination}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Publish-plan (override-success)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Invoke-XCliTestPlanScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-Scenario",
+        "override-success",
+        "-StageChannel",
+        "${input:xcliStageChannel}",
+        "-ReleaseTagOverride",
+        "${input:xcliOverrideReleaseTag}"
+      ],
+      "options": {
+        "env": {
+          "XCLI_QA_DESTINATION": "${input:xcliQaDestination}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Publish-plan (qa-only)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/Invoke-XCliTestPlanScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-Scenario",
+        "qa-only",
+        "-StageChannel",
+        "${input:xcliStageChannel}"
+      ],
+      "options": {
+        "env": {
+          "XCLI_QA_DESTINATION": "${input:xcliQaDestination}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Replay VI compare scenario",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Replay-ViCompareScenario.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-ScenarioPath",
+        "${input:viCompareScenarioPath}",
+        "-OutputRoot",
+        "${input:viCompareOutputRoot}",
+        "-BundleOutputDirectory",
+        "${input:viCompareBundleOutputDir}",
+        "-LabVIEWExePath",
+        "${input:viCompareLabVIEWExePath}",
+        "-NoiseProfile",
+        "${input:viCompareNoiseProfile}",
+        "-IgnoreAttributes:${input:viCompareIgnoreAttributes}",
+        "-IgnoreFrontPanel:${input:viCompareIgnoreFrontPanel}",
+        "-IgnoreFrontPanelPosition:${input:viCompareIgnoreFrontPanelPosition}",
+        "-IgnoreBlockDiagram:${input:viCompareIgnoreBlockDiagram}",
+        "-IgnoreBlockDiagramCosmetics:${input:viCompareIgnoreBlockDiagramCosmetics}",
+        "-DryRun:${input:viCompareDryRun}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tests: VI compare dev-mode guard",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Test-ViCompareDevMode.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-LabVIEWExePath",
+        "${input:viCompareLabVIEWExePath}",
+        "-DryRun"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Verify VI Analyzer (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vi-analyzer-verify --labview-path \"${input:viCompareLabVIEWExePath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Run VI Analyzer (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vi-analyzer-run --request \"${input:viAnalyzerRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Apply VIPC (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vipm-apply-vipc --request \"${input:vipmApplyRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Build VIP (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vipm-build-vip --request \"${input:vipmBuildRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: vipmcli build (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vipmcli-build --request \"${input:vipmCliBuildRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: PPL Build (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- ppl-build --request \"${input:pplBuildRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Smoke vipmcli apply",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Test-VipmCliApplySmoke.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-VipcPath",
+        "${input:vipmApplyVipcPath}",
+        "-MinimumSupportedLVVersion",
+        "${input:vipmApplyLvVersion}",
+        "-SupportedBitness",
+        "${input:vipmApplyBitness}",
+        "-Toolchain",
+        "g-cli",
+        "-PrepareOnly:${input:vipmApplyPrepareOnly}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Smoke vipmcli package",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Test-VipmCliPackageSmoke.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-ReleaseNotesPath",
+        "${input:vipmBuildReleaseNotesPath}",
+        "-BuildToolchain",
+        "${input:vipmBuildToolchain}",
+        "-JobName",
+        "${input:vipmBuildJobName}",
+        "-Execute:${input:vipmBuildExecute}",
+        "-CloseLabVIEW:${input:vipmBuildCloseLabVIEW}",
+        "-DownloadArtifacts:${input:vipmBuildDownloadArtifacts}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Smoke vipmcli build",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Test-VipmCliBuildSmoke.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-IconEditorRoot",
+        "${input:vipmCliSmokeIconEditorRoot}",
+        "-MinimumSupportedLVVersion",
+        "${input:vipmCliSmokeMinLv}",
+        "-PackageMinimumSupportedLVVersion",
+        "${input:vipmCliSmokePackageMinLv}",
+        "-PackageSupportedBitness",
+        "${input:vipmCliSmokePackageBitness}",
+        "-Major",
+        "${input:vipmCliSmokeMajor}",
+        "-Minor",
+        "${input:vipmCliSmokeMinor}",
+        "-Patch",
+        "${input:vipmCliSmokePatch}",
+        "-Build",
+        "${input:vipmCliSmokeBuild}",
+        "-Execute:${input:vipmCliSmokeExecute}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Release: Validate LabVIEW agent",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/validation/Invoke-AgentValidation.ps1",
+        "-PlanPath",
+        "${workspaceFolder}/configs/validation/agent-validation-plan.json"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Smoke PPL build",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/icon-editor/Test-PplBuildSmoke.ps1",
+        "-RepoRoot",
+        "${workspaceFolder}",
+        "-IconEditorRoot",
+        "${input:pplSmokeIconEditorRoot}",
+        "-MinimumSupportedLVVersion",
+        "${input:pplSmokeMinLv}",
+        "-PackageMinimumSupportedLVVersion",
+        "${input:pplSmokePackageMinLv}",
+        "-PackageSupportedBitness",
+        "${input:pplSmokePackageBitness}",
+        "-Major",
+        "${input:pplSmokeMajor}",
+        "-Minor",
+        "${input:pplSmokeMinor}",
+        "-Patch",
+        "${input:pplSmokePatch}",
+        "-Build",
+        "${input:pplSmokeBuild}",
+        "-Commit",
+        "${input:pplSmokeCommit}",
+        "-Execute:${input:pplSmokeExecute}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Run VI Compare (x-cli)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-Command",
+        "dotnet run --project \"${workspaceFolder}/tools/x-cli-develop/src/XCli/XCli.csproj\" -- vi-compare-run --request \"${input:viCompareRunRequestPath}\""
+      ],
+      "options": {
+        "env": {
+          "XCLI_ALLOW_PROCESS_START": "1",
+          "XCLI_REPO_ROOT": "${workspaceFolder}"
+        }
+      },
       "problemMatcher": []
     }
   ],
@@ -406,6 +911,378 @@
       "type": "promptString",
       "description": "Optional file name override when copying to a folder (leave blank to keep zip name)",
       "default": ""
+    },
+    {
+      "id": "xcliOverrideReleaseTag",
+      "type": "promptString",
+      "description": "ReleaseTagOverride passed to the override-success publish-plan scenario",
+      "default": "xcli-v0.1.0+build.2"
+    },
+    {
+      "id": "viCompareBundleOutput",
+      "type": "promptString",
+      "description": "Output directory for bundled vi-compare session zips",
+      "default": ".tmp-tests/vi-compare-bundles"
+    },
+    {
+      "id": "viCompareNoiseProfile",
+      "type": "pickString",
+      "description": "Noise profile for VI compare replay",
+      "options": [
+        {
+          "label": "Full (default)",
+          "value": "full"
+        },
+        {
+          "label": "Reduced noise",
+          "value": "reduced"
+        },
+        {
+          "label": "None",
+          "value": "none"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "id": "viCompareIgnoreAttributes",
+      "type": "pickString",
+      "description": "Force LVCompare -noattr flag?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes (-noattr)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viCompareIgnoreFrontPanel",
+      "type": "pickString",
+      "description": "Force LVCompare -nofp flag?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes (-nofp)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viCompareIgnoreFrontPanelPosition",
+      "type": "pickString",
+      "description": "Force LVCompare -nofppos flag?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes (-nofppos)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viCompareIgnoreBlockDiagram",
+      "type": "pickString",
+      "description": "Force LVCompare -nobd flag?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes (-nobd)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viCompareIgnoreBlockDiagramCosmetics",
+      "type": "pickString",
+      "description": "Force LVCompare -nobdcosm flag?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes (-nobdcosm)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viCompareScenarioPath",
+      "type": "promptString",
+      "description": "Path to vi-diff-requests.json to replay",
+      "default": "${workspaceFolder}/scenarios/vi-attr/vi-diff-requests.json"
+    },
+    {
+      "id": "viCompareOutputRoot",
+      "type": "promptString",
+      "description": "Output directory for replayed vi-compare artifacts",
+      "default": ".tmp-tests/vi-compare-replays/sample"
+    },
+    {
+      "id": "viCompareBundleOutputDir",
+      "type": "promptString",
+      "description": "Destination for replayed vi-compare bundles (zip)",
+      "default": ".tmp-tests/vi-compare-bundles"
+    },
+    {
+      "id": "viCompareLabVIEWExePath",
+      "type": "promptString",
+      "description": "LabVIEW.exe path to drive the replay (2025+ required for VI compare reports)",
+      "default": "C:\\\\Program Files\\\\National Instruments\\\\LabVIEW 2025\\\\LabVIEW.exe"
+    },
+    {
+      "id": "viCompareDryRun",
+      "type": "pickString",
+      "description": "Run vi-compare scenario in dry-run mode?",
+      "options": [
+        {
+          "label": "No (run LabVIEW CLI)",
+          "value": "False"
+        },
+        {
+          "label": "Yes (dry-run)",
+          "value": "True"
+        }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "viAnalyzerRequestPath",
+      "type": "promptString",
+      "description": "Path to vi-analyzer run request JSON",
+      "default": "${workspaceFolder}/configs/vi-analyzer-request.json"
+    },
+    {
+      "id": "vipmApplyRequestPath",
+      "type": "promptString",
+      "description": "Path to VIPC apply request JSON",
+      "default": "${workspaceFolder}/configs/vipm-apply-request.json"
+    },
+    {
+      "id": "vipmBuildRequestPath",
+      "type": "promptString",
+      "description": "Path to VIP build request JSON",
+      "default": "${workspaceFolder}/configs/vipm-build-request.json"
+    },
+    {
+      "id": "vipmCliBuildRequestPath",
+      "type": "promptString",
+      "description": "Path to vipmcli build request JSON",
+      "default": "${workspaceFolder}/configs/vipmcli-build-request.json"
+    },
+    {
+      "id": "pplBuildRequestPath",
+      "type": "promptString",
+      "description": "Path to PPL build request JSON",
+      "default": "${workspaceFolder}/configs/ppl-build-request.json"
+    },
+    {
+      "id": "viCompareRunRequestPath",
+      "type": "promptString",
+      "description": "Path to vi-compare run request JSON",
+      "default": "${workspaceFolder}/configs/vi-compare-run-request.json"
+    },
+    {
+      "id": "vipmApplyVipcPath",
+      "type": "promptString",
+      "description": "VIPC file path for smoke tests",
+      "default": ".github/actions/apply-vipc/runner_dependencies.vipc"
+    },
+    {
+      "id": "vipmApplyLvVersion",
+      "type": "promptString",
+      "description": "Minimum supported LabVIEW version for VIPC apply",
+      "default": "2025"
+    },
+    {
+      "id": "vipmApplyBitness",
+      "type": "pickString",
+      "description": "Bitness used for VIPC apply smoke",
+      "options": [
+        { "label": "32-bit", "value": "32" },
+        { "label": "64-bit", "value": "64" }
+      ],
+      "default": "64"
+    },
+    {
+      "id": "vipmApplyPrepareOnly",
+      "type": "pickString",
+      "description": "Run VIPC apply smoke in prepare-only mode?",
+      "options": [
+        { "label": "Prepare only (Skip execution)", "value": "True" },
+        { "label": "Execute (apply VIPC)", "value": "False" }
+      ],
+      "default": "True"
+    },
+    {
+      "id": "vipmBuildReleaseNotesPath",
+      "type": "promptString",
+      "description": "Release notes path for VIP build smoke",
+      "default": "Tooling/deployment/release_notes.md"
+    },
+    {
+      "id": "vipmBuildToolchain",
+      "type": "pickString",
+      "description": "Toolchain for VIP build smoke",
+      "options": [
+        { "label": "g-cli", "value": "g-cli" },
+        { "label": "vipmcli", "value": "vipm" }
+      ],
+      "default": "g-cli"
+    },
+    {
+      "id": "vipmBuildJobName",
+      "type": "promptString",
+      "description": "Replay job name shown in logs",
+      "default": "Build VI Package"
+    },
+    {
+      "id": "vipmBuildExecute",
+      "type": "pickString",
+      "description": "Execute VIP build smoke (skip build when False)",
+      "options": [
+        { "label": "Prepare only (Skip build)", "value": "False" },
+        { "label": "Execute (run build)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "vipmBuildCloseLabVIEW",
+      "type": "pickString",
+      "description": "Close LabVIEW after VIP build smoke?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "vipmBuildDownloadArtifacts",
+      "type": "pickString",
+      "description": "Download artifacts during VIP build smoke?",
+      "options": [
+        { "label": "No", "value": "False" },
+        { "label": "Yes", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "vipmCliSmokeIconEditorRoot",
+      "type": "promptString",
+      "description": "Icon editor root for vipmcli build smoke",
+      "default": "${workspaceFolder}/vendor/icon-editor"
+    },
+    {
+      "id": "vipmCliSmokeMinLv",
+      "type": "promptString",
+      "description": "Minimum supported LV version for vipmcli build smoke",
+      "default": "2023"
+    },
+    {
+      "id": "vipmCliSmokePackageMinLv",
+      "type": "promptString",
+      "description": "Packaging LV version for vipmcli build smoke",
+      "default": "2026"
+    },
+    {
+      "id": "vipmCliSmokePackageBitness",
+      "type": "pickString",
+      "description": "Packaging bitness for vipmcli build smoke",
+      "options": [
+        { "label": "32-bit", "value": "32" },
+        { "label": "64-bit", "value": "64" }
+      ],
+      "default": "64"
+    },
+    {
+      "id": "vipmCliSmokeMajor",
+      "type": "promptString",
+      "description": "Major version for vipmcli build smoke",
+      "default": "1"
+    },
+    {
+      "id": "vipmCliSmokeMinor",
+      "type": "promptString",
+      "description": "Minor version for vipmcli build smoke",
+      "default": "4"
+    },
+    {
+      "id": "vipmCliSmokePatch",
+      "type": "promptString",
+      "description": "Patch version for vipmcli build smoke",
+      "default": "1"
+    },
+    {
+      "id": "vipmCliSmokeBuild",
+      "type": "promptString",
+      "description": "Build metadata for vipmcli build smoke (optional)",
+      "default": ""
+    },
+    {
+      "id": "vipmCliSmokeExecute",
+      "type": "pickString",
+      "description": "Execute vipmcli build smoke?",
+      "options": [
+        { "label": "Prepare only (Skip build)", "value": "False" },
+        { "label": "Execute (run build chain)", "value": "True" }
+      ],
+      "default": "False"
+    },
+    {
+      "id": "pplSmokeIconEditorRoot",
+      "type": "promptString",
+      "description": "Icon editor root for PPL smoke",
+      "default": "${workspaceFolder}/vendor/icon-editor"
+    },
+    {
+      "id": "pplSmokeMinLv",
+      "type": "promptString",
+      "description": "Minimum LV version for PPL smoke",
+      "default": "2025"
+    },
+    {
+      "id": "pplSmokePackageMinLv",
+      "type": "promptString",
+      "description": "Package LV version for PPL smoke",
+      "default": "2026"
+    },
+    {
+      "id": "pplSmokePackageBitness",
+      "type": "pickString",
+      "description": "Package bitness for PPL smoke",
+      "options": [
+        { "label": "32-bit", "value": "32" },
+        { "label": "64-bit", "value": "64" }
+      ],
+      "default": "64"
+    },
+    {
+      "id": "pplSmokeMajor",
+      "type": "promptString",
+      "description": "Major version for PPL smoke",
+      "default": "1"
+    },
+    {
+      "id": "pplSmokeMinor",
+      "type": "promptString",
+      "description": "Minor version for PPL smoke",
+      "default": "4"
+    },
+    {
+      "id": "pplSmokePatch",
+      "type": "promptString",
+      "description": "Patch version for PPL smoke",
+      "default": "1"
+    },
+    {
+      "id": "pplSmokeBuild",
+      "type": "promptString",
+      "description": "Build identifier for PPL smoke",
+      "default": ""
+    },
+    {
+      "id": "pplSmokeCommit",
+      "type": "promptString",
+      "description": "Commit label for PPL smoke",
+      "default": "local-smoke"
+    },
+    {
+      "id": "pplSmokeExecute",
+      "type": "pickString",
+      "description": "Execute PPL build smoke?",
+      "options": [
+        { "label": "Prepare only (Skip packaging)", "value": "False" },
+        { "label": "Execute (invoke build)", "value": "True" }
+      ],
+      "default": "False"
     }
   ]
 

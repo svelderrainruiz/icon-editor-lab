@@ -1,0 +1,60 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+
+WORKDIR /src
+
+# Copy the entire repo into the build context
+COPY . .
+
+# Build x-cli (self-contained, single file) for linux-x64
+RUN dotnet publish tools/x-cli-develop/src/XCli/XCli.csproj \
+    -c Release \
+    -r linux-x64 \
+    -o /out/xcli
+
+# Build openvipbcli (VipbJsonTool) for linux-x64
+RUN dotnet publish tools/openvipbcli-main/src/VipbJsonTool/VipbJsonTool.csproj \
+    -c Release \
+    -r linux-x64 \
+    --self-contained true \
+    -p:PublishSingleFile=true \
+    -o /out/openvipbcli
+
+
+FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+
+# Install PowerShell and basic tooling
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      wget \
+      apt-transport-https \
+      software-properties-common \
+      ca-certificates && \
+    wget -q https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb && \
+    dpkg -i packages-microsoft-prod.deb && \
+    rm packages-microsoft-prod.deb && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+      powershell \
+      git \
+      curl && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /work
+
+# Copy published binaries from build stage
+COPY --from=build /out/xcli /opt/xcli
+COPY --from=build /out/openvipbcli /opt/openvipbcli
+
+# Create lightweight shims on PATH
+RUN echo '#!/usr/bin/env bash\nexec /opt/xcli/XCli \"$@\"' > /usr/local/bin/x-cli && \
+    chmod +x /usr/local/bin/x-cli && \
+    echo '#!/usr/bin/env bash\nexec /opt/openvipbcli/VipbJsonTool \"$@\"' > /usr/local/bin/openvipbcli && \
+    chmod +x /usr/local/bin/openvipbcli
+
+# Default env for x-cli workflows; repo root is expected to be bind-mounted to /work
+ENV XCLI_ALLOW_PROCESS_START=1
+
+CMD [ "pwsh" ]
+

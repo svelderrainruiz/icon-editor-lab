@@ -13,3 +13,5 @@ Decision Owners: Architecture Council
 | 006 | Building a VI Package | Proposed | 2025-11-10 | Build Lead | RQ-0004, RQ-0006 |
 | 007 | MIP Suite | Proposed | 2025-11-10 | Arch Lead, Build Lead | RQ-0002–RQ-0006 |
 | 008 | Local integration reporting for AGENTS | Proposed | 2025-11-10 | QA Lead, Agents Lead | RQ-0002–RQ-0004 |
+| ADR-0002 | x-cli staged publish, RunnerProfile gating, and vi-compare artifacts | Accepted | 2025-11-16 | Build Lead, QA Lead | RQ-0001, RQ-0002–RQ-0004, RQ-0007–RQ-0008 |
+| ADR-0003 | icon-editor-lab tooling image (Ubuntu) | Proposed | 2025-11-17 | Build Lead, Agents Lead | (tooling support for icon-editor-lab CLIs such as x-cli/openvipbcli; no direct RTM row) |

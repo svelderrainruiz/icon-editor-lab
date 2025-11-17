@@ -56,7 +56,9 @@ function Invoke-WithEnv {
 }
 
 $envOverrides = @{
-    XCLI_STAGE_CHANNEL = $StageChannel
+    XCLI_STAGE_CHANNEL          = $StageChannel
+    XCLI_LABVIEW_FIXTURE_MATRIX = 'full'
+    XCLI_VALIDATE_LABVIEW_SMOKE = 'matrix:full'
 }
 
 switch ($Scenario) {

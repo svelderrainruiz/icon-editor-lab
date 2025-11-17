@@ -1,0 +1,63 @@
+name: Build icon-editor-lab tooling image (Ubuntu)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Docker build metadata
+        id: meta
+        run: |
+          SHA_SHORT="${GITHUB_SHA::7}"
+          echo "sha_short=${SHA_SHORT}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build icon-editor-lab tooling image
+        run: |
+          IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/icon-editor-lab/tooling-ubuntu"
+          TAG_SHA="${IMAGE_BASE}:sha-${{ steps.meta.outputs.sha_short }}"
+          TAG_LATEST="${IMAGE_BASE}:latest"
+
+          docker build \
+            -f tools/Dockerfile.icon-editor-lab-tooling-ubuntu \
+            -t "${TAG_SHA}" \
+            .
+
+          # Also tag :latest for main
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            docker tag "${TAG_SHA}" "${TAG_LATEST}"
+          fi
+
+          echo "tag_sha=${TAG_SHA}" >> "$GITHUB_OUTPUT"
+        id: build
+
+      - name: Push image tags
+        run: |
+          TAG_SHA="${{ steps.build.outputs.tag_sha }}"
+          docker push "${TAG_SHA}"
+
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/icon-editor-lab/tooling-ubuntu"
+            TAG_LATEST="${IMAGE_BASE}:latest"
+            docker push "${TAG_LATEST}"
+          fi
+
