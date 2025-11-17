@@ -1,0 +1,46 @@
+#!/bin/bash
+# Convert .vipb or .lvproj file to JSON format (auto-detect by extension)
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: buildspec2json --input <file.(vipb|lvproj)> --output <file.json>"
+    echo
+    echo "Converts a .vipb or .lvproj file to JSON (auto-detects the input type)."
+    exit 0
+fi
+
+input=""
+output=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--input)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --input" >&2
+                exit 1
+            fi
+            input="$2"
+            shift 2
+            ;;
+        -o|--output)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --output" >&2
+                exit 1
+            fi
+            output="$2"
+            shift 2
+            ;;
+        -*)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+        *)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$input" || -z "$output" ]]; then
+    echo "Usage: buildspec2json --input <file.(vipb|lvproj)> --output <file.json>" >&2
+    exit 1
+fi
+
+exec /usr/local/bin/VipbJsonTool buildspec2json "$input" "$output"

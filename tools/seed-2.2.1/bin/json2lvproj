@@ -1,0 +1,46 @@
+#!/bin/bash
+# Convert JSON file back to .lvproj (LabVIEW project) XML format
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: json2lvproj --input <file.json> --output <file.lvproj>"
+    echo
+    echo "Converts a JSON file to a LabVIEW .lvproj (XML) file."
+    exit 0
+fi
+
+input=""
+output=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--input)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --input" >&2
+                exit 1
+            fi
+            input="$2"
+            shift 2
+            ;;
+        -o|--output)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --output" >&2
+                exit 1
+            fi
+            output="$2"
+            shift 2
+            ;;
+        -*)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+        *)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$input" || -z "$output" ]]; then
+    echo "Usage: json2lvproj --input <file.json> --output <file.lvproj>" >&2
+    exit 1
+fi
+
+exec /usr/local/bin/LvprojJsonTool json2lvproj "$input" "$output"

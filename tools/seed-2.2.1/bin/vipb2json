@@ -1,0 +1,46 @@
+#!/bin/bash
+# Convert .vipb (VI Package Build spec) file to JSON format
+if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "Usage: vipb2json --input <file.vipb> --output <file.json>"
+    echo
+    echo "Converts a VI Package Build (.vipb) file to JSON format."
+    exit 0
+fi
+
+input=""
+output=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -i|--input)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --input" >&2
+                exit 1
+            fi
+            input="$2"
+            shift 2
+            ;;
+        -o|--output)
+            if [[ -z "$2" ]]; then
+                echo "ERROR: Missing value for --output" >&2
+                exit 1
+            fi
+            output="$2"
+            shift 2
+            ;;
+        -*)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+        *)
+            echo "ERROR: Unknown argument '$1'" >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -z "$input" || -z "$output" ]]; then
+    echo "Usage: vipb2json --input <file.vipb> --output <file.json>" >&2
+    exit 1
+fi
+
+exec /usr/local/bin/VipbJsonTool vipb2json "$input" "$output"

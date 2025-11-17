@@ -1,7 +1,7 @@
-# ADR-0002 — x-cli Staged Publish, RunnerProfile Gating, and VI Compare Artifacts
+# ADR-0002: x-cli Staged Publish, RunnerProfile Gating, and VI Compare Artifacts
 
-## Status
-Accepted — feature work tracked on `feature/adr-0002-xcli-staged-publish`.
+Status: Accepted  
+Date: 2025-11-17
 
 ## Context
 - The lab now routes LabVIEW, vipmcli, and g-cli orchestration through x-cli so PowerShell entry points can remain deterministic (emulated providers) while still allowing “real tools” validation paths.
