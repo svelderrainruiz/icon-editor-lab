@@ -10,7 +10,7 @@ End-to-end Icon Editor build orchestrator: runs g-cli/VIPM builds, optional unit
 - Validates g-cli installation and ensures all required LabVIEW versions/bitness combos are present (both dev-mode + packaging variants).
 - Steps (depending on switches):
   1. Install dependencies via VIPC if `InstallDependencies` is `$true`.
-  2. Run g-cli build sequences (`BuildToolchain = 'gcli'`) or VIPM builds (`'vipm'`), generating VIPs under `tests/results/_agent/icon-editor/packages`.
+  2. Run g-cli build sequences (`BuildToolchain = 'g-cli'`) or VIPM builds (`'vipm'`), generating VIPs under `tests/results/_agent/icon-editor/packages`.
   3. Optionally run MissingInProject and unit tests (`RunUnitTests`, `SkipMissingInProject`).
   4. Record telemetry via `Initialize-VipmBuildTelemetry` for packaging metadata, dev-mode toggles, and artifact locations.
 - Supports both “require packaging” workflows and build-only validation.
@@ -29,7 +29,7 @@ End-to-end Icon Editor build orchestrator: runs g-cli/VIPM builds, optional unit
 | `RunUnitTests` | switch | Off | Executes `.github/actions/run-unit-tests`. |
 | `SkipMissingInProject` | switch | Off | Skip the MissingInProject smoke after build. |
 | `ResultsRoot` | string | `tests/results/_agent/icon-editor` | Where telemetry/artifacts land. |
-| `BuildToolchain` | string (`gcli`/`vipm`) | `gcli` | Choose which build pipeline to invoke. |
+| `BuildToolchain` | string (`g-cli`/`vipm`) | `g-cli` | Choose which build pipeline to invoke. |
 | `BuildProvider` | string | — | When set, overrides the default g-cli provider. |
 | `PackageMinimumSupportedLVVersion` | string | `2026` | Minimum LabVIEW version baked into VIPs. |
 | `PackageLabVIEWMinorRevision` | int | `0` | Minor revision for packaging. |

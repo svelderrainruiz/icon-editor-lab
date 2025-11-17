@@ -7,7 +7,7 @@ Start (and optionally stop) LabVIEW to “warm up” the runtime, emitting telem
 
 ## Description
 - Resolves `LabVIEWPath`/version/bitness from CLI arguments or environment variables (`LABVIEW_PATH`, `MINIMUM_SUPPORTED_LV_VERSION`, etc.).
-- Launches LabVIEW with UI-suppression flags, waits for a heartbeat (`TimeoutSeconds`, `IdleWaitSeconds`), and records NDJSON events (`warmup-labview-v1`) plus optional process snapshots (`labview-process-snapshot/v1`).
+- Launches LabVIEW with UI-suppression flags, waits for a heartbeat (`TimeoutSeconds`, `IdleWaitSeconds`), and records NDJSON events (`warmup-labview-v1`) plus optional process snapshots (`labview-process-snapshot/v1`). Direct `LabVIEW.exe` launches are now guarded: the script will throw if asked to start LabVIEW directly, and callers are expected to route operations through `tools/codex/Invoke-LabVIEWOperation.ps1` and the appropriate x-cli workflow instead.
 - Supports dry-run mode, `StopAfterWarmup`, and `KillOnTimeout` to take down LabVIEW after warmup (guardrail step from `docs/LABVIEW_GATING.md`).
 
 ### Parameters

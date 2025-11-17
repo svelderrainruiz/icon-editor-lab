@@ -10,7 +10,7 @@ Describe 'IconEditorPackage helpers' {
         Import-Module (Join-Path $repoRoot 'tools\GCli.psm1') -Force
         Import-Module (Join-Path $repoRoot 'tools\Vipm.psm1') -Force
 
-        $script:VipbPath = Join-Path $repoRoot '.github\actions\build-vi-package\NI Icon editor.vipb'
+        $script:VipbPath = Join-Path $repoRoot '.github\actions\build-vi-package\NI_Icon_editor.vipb'
         if (-not (Test-Path -LiteralPath $script:VipbPath -PathType Leaf)) {
             throw "Fixture VIPB not found at '$script:VipbPath'."
         }
@@ -164,7 +164,7 @@ exit 0
                     -LabVIEWMinorRevision 3 `
                     -ReleaseNotesPath 'Tooling/deployment/release_notes.md' `
                     -WorkspaceRoot $script:WorkspaceRoot `
-                    -Provider 'gcli' `
+                    -Provider 'g-cli' `
                     -GCliProviderName 'mock-gcli'
 
                 Assert-MockCalled -CommandName Get-GCliInvocation -ModuleName IconEditorPackage -Times 1
@@ -291,7 +291,7 @@ exit 0
                     -LabVIEWMinorRevision 3 `
                     -ReleaseNotesPath 'Tooling/deployment/release_notes.md' `
                     -WorkspaceRoot $script:WorkspaceRoot `
-                    -Provider 'gcli'
+                    -Provider 'g-cli'
             } catch {
                 $threw = $true
                 $message = $_.Exception.Message
@@ -345,7 +345,7 @@ exit 0
                     -LabVIEWMinorRevision 3 `
                     -ReleaseNotesPath 'Tooling/deployment/release_notes.md' `
                     -WorkspaceRoot $script:WorkspaceRoot `
-                    -Provider 'gcli' `
+                    -Provider 'g-cli' `
                     -GCliProviderName 'mock-gcli'
             } finally {
                 if ($null -ne $prevEnv) {

@@ -34,8 +34,8 @@ pwsh -File tools/icon-editor/Invoke-OneShotTask.ps1 -Preset Robust
 ```
 
 and the script will invoke the same pipeline the VS Code task would have
-run.  Pass `-PublishArtifacts` to automatically zip (and optionally upload)
-the freshly produced VIP/PPL files after the build completes.
+run.  Artifact publishing flows (Stage → Validate → QA → Upload) are now
+handled by dedicated helpers instead of the legacy `-PublishArtifacts` flag.
 #>
 
 function Resolve-RepoRoot {
@@ -84,21 +84,16 @@ if ($oneShotExit -ne 0) {
   throw "Run-OneShotBuildAndTests.ps1 exited with $oneShotExit."
 }
 
-if ($PublishArtifacts) {
-  $publishScript = Join-Path $repoRoot 'tools/icon-editor/Publish-LocalArtifacts.ps1'
-  if (-not (Test-Path -LiteralPath $publishScript -PathType Leaf)) {
-    throw "Publish-LocalArtifacts.ps1 not found at '$publishScript'."
-  }
-
-  $publishArgs = @()
-  if ($GhTokenPath) { $publishArgs += @('-GhTokenPath', $GhTokenPath) }
-  if ($SkipUpload)  { $publishArgs += '-SkipUpload' }
-
-  Write-Host "[OneShot] Packaging local artifacts..." -ForegroundColor Cyan
-  & pwsh -NoLogo -NoProfile -File $publishScript @publishArgs
-  if ($LASTEXITCODE -ne 0) {
-    throw "Publish-LocalArtifacts.ps1 exited with $LASTEXITCODE."
-  }
+if ($PublishArtifacts -or $SkipUpload) {
+  $stageFlow = @"
+[OneShot] -PublishArtifacts/-SkipUpload have been retired.
+Use the staged pipeline instead:
+  1. tools/Stage-XCliArtifact.ps1
+  2. tools/Test-XCliReleaseAsset.ps1
+  3. tools/Promote-XCliArtifact.ps1
+  4. tools/Upload-XCliArtifact.ps1
+"@
+  throw $stageFlow
 }
 
 function Test-ValidLabel {

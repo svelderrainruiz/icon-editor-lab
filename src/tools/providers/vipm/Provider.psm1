@@ -3,6 +3,11 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+# NOTE: This is the classic VIPM (desktop/CLI) provider. New automation flows
+# (x-cli, Codex, CI) should prefer the vipm-gcli/vipmcli toolchains and
+# providers under tools/providers/vipm-gcli + tools/providers/gcli. This
+# provider is retained for legacy, display-only, or manual workflows.
+
 $toolsRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 Import-Module (Join-Path $toolsRoot 'VendorTools.psm1') -Force
 

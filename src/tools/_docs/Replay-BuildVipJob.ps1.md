@@ -7,7 +7,7 @@ Replays the “Build VI Package” GitHub Actions job locally, including release
 
 ## Description
 - Accepts a workflow `RunId` (downloads logs via `gh`) or a local `LogPath`. Parses the job log to recover the display-info payload, LabVIEW versions, bitness, and VIPB metadata.
-- Recreates the job sequence: regenerate release notes (unless `-SkipReleaseNotes`), run `Update-VipbDisplayInfo.ps1`, run `build_vip.ps1` via the chosen toolchain (`-BuildToolchain gcli|vipm`), optionally close LabVIEW and download artifacts.
+- Recreates the job sequence: regenerate release notes (unless `-SkipReleaseNotes`), run `Update-VipbDisplayInfo.ps1`, run `build_vip.ps1` via the chosen toolchain (`-BuildToolchain g-cli|vipm`), optionally close LabVIEW and download artifacts.
 - `-DownloadArtifacts` pulls the run’s artifacts to populate resource/plugins with the latest lvlibp files before replaying.
 
 ### Parameters (subset)
@@ -21,7 +21,7 @@ Replays the “Build VI Package” GitHub Actions job locally, including release
 | `SkipReleaseNotes`, `SkipVipbUpdate`, `SkipBuild` | switch | Skip individual phases. |
 | `CloseLabVIEW` | switch | Calls `.github/actions/close-labview/Close_LabVIEW.ps1` after replay. |
 | `DownloadArtifacts` | switch | Download run artifacts before replaying. |
-| `BuildToolchain` | string (`gcli`,`vipm`) | `gcli` |
+| `BuildToolchain` | string (`g-cli`,`vipm`) | `g-cli` |
 | `BuildProvider` | string | Provider name forwarded to the chosen toolchain. |
 
 ## Outputs

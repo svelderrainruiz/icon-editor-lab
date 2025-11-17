@@ -1,15 +1,4 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
 #Requires -Version 7.0
-
 <#
 .SYNOPSIS
     Replays the GitHub Actions "Build VI Package" job locally.
@@ -57,7 +46,7 @@ param(
     resource/plugins folder.
 
 .PARAMETER BuildToolchain
-    Toolchain used to rebuild the VIP. Defaults to 'gcli'; pass 'vipm' to route
+    Toolchain used to rebuild the VIP. Defaults to 'g-cli'; pass 'vipm' to route
     through the VIPM provider.
 
 .PARAMETER BuildProvider
@@ -65,7 +54,7 @@ param(
     specific g-cli or VIPM backend).
 #>
 
-[CmdletBinding(DefaultParameterSetName = 'Default')]
+[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low', DefaultParameterSetName = 'Default')]
 param(
     [Parameter(ParameterSetName = 'Run', Mandatory = $true)]
     [string]$RunId,
@@ -85,14 +74,17 @@ param(
     [switch]$CloseLabVIEW,
     [switch]$DownloadArtifacts,
 
-    [ValidateSet('gcli','vipm')]
-    [string]$BuildToolchain = 'gcli',
+    [ValidateSet('g-cli','vipm')]
+    [string]$BuildToolchain = 'g-cli',
 
     [string]$BuildProvider
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$null = Import-Module Microsoft.PowerShell.Management -ErrorAction Stop
+$null = Import-Module Microsoft.PowerShell.Utility -ErrorAction Stop
+$PSModuleAutoLoadingPreference = 'None'
 $PwshExecutable = (Get-Command pwsh).Source
 $packedLibLabVIEWVersion = 2023
 $packedLibLabVIEWMinorRevision = 3
@@ -274,7 +266,7 @@ $intBuild = [int]$packageVersion.build
 
 Push-Location $workspaceRoot
 try {
-    $vipbRelative = '.github/actions/build-vi-package/NI Icon editor.vipb'
+    $vipbRelative = '.github/actions/build-vi-package/NI_Icon_editor.vipb'
     $vipbFullPath = Resolve-WorkspacePath -Path (Join-Path $workspaceRoot $vipbRelative)
 
     if ([System.IO.Path]::IsPathRooted($ReleaseNotesPath)) {
@@ -338,7 +330,7 @@ try {
             Provider                  = $BuildToolchain
         }
 
-        if ($BuildToolchain -eq 'gcli' -and $BuildProvider) {
+        if ($BuildToolchain -eq 'g-cli' -and $BuildProvider) {
             $buildParams.GCliProviderName = $BuildProvider
         } elseif ($BuildToolchain -eq 'vipm' -and $BuildProvider) {
             $buildParams.VipmProviderName = $BuildProvider
@@ -394,7 +386,7 @@ if ($script:buildOutput) {
         Write-Warning ("{0} emitted warnings during build:" -f $warningSource)
         $script:buildWarnings | ForEach-Object { Write-Warning "  $_" }
 
-        if ($script:buildToolchain -eq 'gcli') {
+        if ($script:buildToolchain -eq 'g-cli') {
             $logHint = Join-Path $env:USERPROFILE 'Documents\LabVIEW Data\Logs'
             if (-not (Test-Path -LiteralPath $logHint -PathType Container)) {
                 $logHint = '%USERPROFILE%\Documents\LabVIEW Data\Logs'

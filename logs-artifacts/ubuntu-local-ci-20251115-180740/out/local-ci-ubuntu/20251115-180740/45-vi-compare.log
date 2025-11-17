@@ -1,0 +1,6 @@
+[vi-compare] No Windows publish found for run 20251115-180740; generating local stub.
+[vi-compare] Summary written to /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/vi-comparison/vi-comparison-summary.json
+[vi-compare] Markdown report written to /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/vi-comparison/vi-comparison-report.md
+[vi-compare] HTML report written to /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/vi-comparison/vi-comparison-report.html
+[vi-compare] Published rendered artifacts to /home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/20251115-180740
+[vi-compare] Completed VI comparison stage.

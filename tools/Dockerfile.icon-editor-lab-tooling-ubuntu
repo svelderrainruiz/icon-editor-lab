@@ -11,13 +11,13 @@ RUN dotnet publish tools/x-cli-develop/src/XCli/XCli.csproj \
     -r linux-x64 \
     -o /out/xcli
 
-# Build openvipbcli (VipbJsonTool) for linux-x64
-RUN dotnet publish tools/openvipbcli-main/src/VipbJsonTool/VipbJsonTool.csproj \
+# Build LabVIEW CI/CD seed VipbJsonTool for linux-x64
+RUN dotnet publish tools/seed-2.2.1/src/VipbJsonTool/VipbJsonTool.csproj \
     -c Release \
     -r linux-x64 \
     --self-contained true \
     -p:PublishSingleFile=true \
-    -o /out/openvipbcli
+    -o /out/seed
 
 
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
@@ -38,20 +38,24 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       powershell \
       git \
-      curl && \
+      curl \
+      dotnet-sdk-8.0 && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
 
 # Copy published binaries from build stage
 COPY --from=build /out/xcli /opt/xcli
-COPY --from=build /out/openvipbcli /opt/openvipbcli
+COPY --from=build /out/seed /opt/seed
+COPY --from=build /src/tools/seed-2.2.1/bin /opt/seed/bin
 
 # Create lightweight shims on PATH
 RUN echo '#!/usr/bin/env bash\nexec /opt/xcli/XCli \"$@\"' > /usr/local/bin/x-cli && \
     chmod +x /usr/local/bin/x-cli && \
-    echo '#!/usr/bin/env bash\nexec /opt/openvipbcli/VipbJsonTool \"$@\"' > /usr/local/bin/openvipbcli && \
-    chmod +x /usr/local/bin/openvipbcli
+    cp /opt/seed/VipbJsonTool /usr/local/bin/VipbJsonTool && \
+    chmod +x /usr/local/bin/VipbJsonTool && \
+    cp -a /opt/seed/bin/. /usr/local/bin/ && \
+    chmod +x /usr/local/bin/vipb2json /usr/local/bin/json2vipb /usr/local/bin/json2lvproj /usr/local/bin/lvproj2json /usr/local/bin/buildspec2json /usr/local/bin/json2buildspec
 
 # Default env for x-cli workflows; repo root is expected to be bind-mounted to /work
 ENV XCLI_ALLOW_PROCESS_START=1

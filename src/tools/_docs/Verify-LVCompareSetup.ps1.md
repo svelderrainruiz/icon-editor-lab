@@ -9,13 +9,13 @@ Validate that LabVIEW, LVCompare, and LabVIEWCLI paths are configured on Windows
 - Loads `configs/labview-paths.local.json` (falling back to `configs/labview-paths.json`) to discover versioned install roots. When configs are missing, scans canonical locations such as `C:\Program Files\National Instruments\LabVIEW 2023` and uses `Get-Command` to find `LabVIEWCLI.exe`.
 - Prints the resolved `LabVIEWExePath`, `LVComparePath`, `LabVIEWCLIPath`, and the config file that provided them. Missing or invalid paths result in warnings plus guidance to run `tools/New-LVCompareConfig.ps1`.
 - Returns a custom object containing the three resolved paths so calling scripts can consume them programmatically.
-- `-ProbeCli` launches `LabVIEWCLI.exe --help`, streaming stdout/stderr and failing if the exit code is non-zero—useful when verifying freshly provisioned runners.
+- `-ProbeCli` previously launched `LabVIEWCLI.exe --help`; this direct probe is now blocked by a guard that throws and points callers to the x-cli workflows instead (for example, `vi-compare-verify` or `vi-analyzer-verify` via `tools/codex/Invoke-LabVIEWOperation.ps1`).
 - Intended for self-hosted Windows agents; will throw immediately if run on non-Windows platforms.
 
 ### Parameters
 | Name | Type | Default | Notes |
 | --- | --- | --- | --- |
-| `ProbeCli` | switch | Off | After validating paths, execute `LabVIEWCLI.exe --help` and fail if it does not respond. |
+| `ProbeCli` | switch | Off | Retained for compatibility; now throws if used, instructing callers to route CLI checks through x-cli / `Invoke-LabVIEWOperation.ps1` instead of invoking `LabVIEWCLI.exe` directly. |
 
 ## Outputs
 - Console summary of resolved paths and config source.

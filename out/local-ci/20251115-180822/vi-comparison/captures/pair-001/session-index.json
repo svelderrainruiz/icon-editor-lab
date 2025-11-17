@@ -1,0 +1,6 @@
+{
+  "schema": "teststand-compare-session/v1",
+  "at": "2025-11-15T18:08:24.4103236+00:00",
+  "status": "dry-run",
+  "reason": "Dry-run mode: LabVIEW CLI execution skipped."
+}

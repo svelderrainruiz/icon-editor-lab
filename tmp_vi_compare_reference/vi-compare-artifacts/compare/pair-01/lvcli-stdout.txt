@@ -1,0 +1,10 @@
+LabVIEWCLI started logging in file:  C:\Windows\Temp\lvtemporary_946975.log
+Using LabVIEW: "C:\Program Files\National Instruments\LabVIEW 2025\LabVIEW.exe"
+LabVIEW launched successfully.
+Connection established with LabVIEW at port number 3363.
+
+Operation output: 
+Report can be found at C:\actions-runner\_work\compare-vi-cli-action\compare-vi-cli-action\vi-compare-artifacts\compare\pair-01\compare-report.html
+CreateComparisonReport operation succeeded.
+
+

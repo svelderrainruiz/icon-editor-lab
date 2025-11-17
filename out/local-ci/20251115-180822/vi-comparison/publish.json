@@ -1,0 +1,19 @@
+{
+  "schema": "vi-compare/publish@v1",
+  "ubuntuPayload": "20251115-180740",
+  "windowsRun": "20251115-180822",
+  "generatedAtUtc": "2025-11-15T18:08:24.4431979Z",
+  "paths": {
+    "runRoot": {
+      "root": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison",
+      "requests": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison/vi-diff-requests.json",
+      "summary": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/vi-comparison/vi-comparison-summary.json"
+    },
+    "shared": {
+      "relative": "out/vi-comparison/windows/20251115-180822",
+      "root": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/windows/20251115-180822",
+      "requests": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/windows/20251115-180822/vi-diff-requests.json",
+      "summary": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/vi-comparison/windows/20251115-180822/vi-comparison-summary.json"
+    }
+  }
+}

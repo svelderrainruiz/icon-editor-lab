@@ -8,7 +8,7 @@ Replays the “Apply VIPC Dependencies” GitHub job locally by downloading its 
 ## Description
 - Takes either a workflow `RunId`/`JobName` (downloads logs via `gh api`) or a local `LogPath`, parses the log to determine LabVIEW version/bitness and VIPM settings, then replays the job inside your workspace.
 - Calls `.github/actions/apply-vipc/ApplyVIPC.ps1` with the resolved parameters (`-MinimumSupportedLVVersion`, `-VIP_LVVersion`, `-SupportedBitness`, `-Toolchain`) so you can reproduce CI behaviour on your machine.
-- `-SkipExecution` prints the command without running it; `-Toolchain` lets you switch between `vipm` and `gcli`.
+- `-SkipExecution` prints the command without running it; `-Toolchain` now always uses the `g-cli` provider to match the enforced workflow.
 
 ### Parameters (subset)
 | Name | Type | Default | Notes |
@@ -21,7 +21,7 @@ Replays the “Apply VIPC Dependencies” GitHub job locally by downloading its 
 | `VipcPath` | string | `.github/actions/apply-vipc/runner_dependencies.vipc` |
 | `MinimumSupportedLVVersion` / `VipLabVIEWVersion` | string | auto | Override detection. |
 | `SupportedBitness` | int | auto | Override detection. |
-| `Toolchain` | string (`vipm`,`gcli`) | `vipm` |
+| `Toolchain` | string (`g-cli`) | `g-cli` |
 | `SkipExecution` | switch | Off | Print the replay command only. |
 
 ## Outputs

@@ -26,7 +26,15 @@ public record CliParseResult(bool ShowHelp, bool ShowVersion, string? Subcommand
         "telemetry",
         "foo",
         "labview-devmode-enable",
-        "labview-devmode-disable"
+        "labview-devmode-disable",
+        "vi-compare-verify",
+        "vi-analyzer-verify",
+        "vi-analyzer-run",
+        "vi-compare-run",
+        "vipm-apply-vipc",
+        "vipm-build-vip",
+        "vipmcli-build",
+        "ppl-build"
     };
 
     public static string HelpText =>

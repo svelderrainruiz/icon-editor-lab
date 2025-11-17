@@ -3,8 +3,7 @@
 ## Prerequisites (Windows)
 - PowerShell 7.4+
 - LabVIEW (2021/2023), matching bitness for your workflows
-- VIPM installed and running (required for dependency apply)
-- Optional: G CLI if your environment relies on it
+- vipmcli (JKI g-cli) installed and running so dependency apply tasks can invoke the CLI
 - Optional helper: `local-ci\windows\run-local-ci.cmd` lets you kick off the Windows runner directly from Command Prompt (`run-local-ci.cmd -SkipStages 40`).
 
 ## Prerequisites (WSL/Ubuntu)
@@ -45,7 +44,7 @@ Open the repo in VS Code and run any of the following from the Command Palette �
 - Repair LV Env (display dependencies)
 - Repair LV Env (apply VIPC)
 
-The “Repair LV Env” tasks wrap `src/tools/icon-editor/Invoke-VipmDependencies.ps1`. Display mode lists the VIPM packages expected; apply mode installs from a `.vipc` you provide.
+The “Repair LV Env” tasks wrap `src/tools/icon-editor/Invoke-VipmDependencies.ps1`. Display mode lists the vipmcli packages expected; apply mode installs from a `.vipc` you provide.
 
 ## Recommended Flow
 1) Ubuntu pre-checks: run “Local CI: Ubuntu (docker + tests)” to verify schema, smoke tests, and container tools.
@@ -64,14 +63,14 @@ The “Repair LV Env” tasks wrap `src/tools/icon-editor/Invoke-VipmDependencie
      | Windows retry | `pwsh -File local-ci/scripts/Invoke-FullHandshake.ps1 -SkipUbuntu` | Retry Windows stages after the Ubuntu run already produced `_READY`. |
      | Renderer-only | `pwsh -File local-ci/scripts/Invoke-FullHandshake.ps1 -SkipUbuntu -SkipWindows` | Re-render stage 45 from an existing publish when touching documentation or renderer logic. |
      | Watcher loop | `bash local-ci/ubuntu/watchers/watch-windows-vi-publish.sh` | Let Ubuntu watch the Windows publish directory for continuous replay instead of a single command. |
-4) Verify LV env: run “Verify LV Env (snapshot)” to confirm LabVIEW/LVCompare/LabVIEWCLI/VIPM paths and versions. Snapshot is saved under `out/windows-lvenv/<timestamp>/lv-env.snapshot.json`.
-5) Repair LV environment: ensure VIPM is running, then run “Repair LV Env (apply VIPC)” and point to your `.vipc` file (e.g., `.github/actions/apply-vipc/runner_dependencies.vipc`).
+4) Verify LV env: run “Verify LV Env (snapshot)” to confirm LabVIEW/LVCompare/LabVIEWCLI/vipmcli paths and versions. Snapshot is saved under `out/windows-lvenv/<timestamp>/lv-env.snapshot.json`.
+5) Repair LV environment: ensure vipmcli is running, then run “Repair LV Env (apply VIPC)” and point to your `.vipc` file (e.g., `.github/actions/apply-vipc/runner_dependencies.vipc`).
 6) Full Windows run: “Local CI: Windows (all stages)” (includes signing if configured).
 
 ## Notes
 - If you need to adjust Pester tags for Ubuntu runs, update `local-ci/ubuntu/config.yaml`.
 - Docker cache knobs and details are in `docs/local-ci-runner.md` (buildx cache, remote image, push/pull helpers).
 - Optional import toggles: `LOCALCI_IMPORT_SKIP_GITCHECK=true` bypasses the git SHA guard (only use when intentionally diverging), and `LOCALCI_IMPORT_NO_EXTRACT=true` keeps the ZIP untouched if you solely need the manifest metadata.
-- If VIPM is not running, the apply step will fail fast; you can run the “display” task to confirm dependencies first.
+- If vipmcli is not running, the apply step will fail fast; you can run the “display” task to confirm dependencies first.
 - VI comparison flow is two-step: Windows publishes raw LabVIEWCLI outputs to `out/vi-comparison/windows/<windows_stamp>`, and Ubuntu stage 45 consumes those when available (falling back to the dry-run payload otherwise). Adjust the behavior via `vi_compare.requests_template`, `vi_compare.windows_publish_root`, and `vi_compare.dry_run`.
 - Stage 37’s LabVIEW CLI run is configurable via `EnableViCompareCli` et al in `local-ci/windows/profile.psd1`. Toggle per run with `LOCALCI_VICOMPARE_CLI_ENABLED=true|false` and fall back to stub generation with `LOCALCI_VICOMPARE_FORCE_DRYRUN=true`.

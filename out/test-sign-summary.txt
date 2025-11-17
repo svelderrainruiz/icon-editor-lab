@@ -1,0 +1,1 @@
+- [test-run] Fork signing: 5/5 scripts in 0.19s (avg 29.6 ms, timeouts=0, skipped=0, cap=500).

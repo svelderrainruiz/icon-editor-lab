@@ -19,27 +19,6 @@ if (-not (Test-Path -LiteralPath $helperModule -PathType Leaf)) {
 }
 Import-Module $helperModule -Force
 
-$vipmProcessFilter = {
-    $_.ProcessName -like '*vipm*' -or $_.ProcessName -like '*package manager*'
-}
-$runningVipm = @(
-    Get-Process -ErrorAction SilentlyContinue |
-        Where-Object $vipmProcessFilter
-)
-if ($runningVipm.Count -eq 0) {
-    $runningVipm = @(
-        Get-CimInstance -ClassName Win32_Process -ErrorAction SilentlyContinue |
-            Where-Object {
-                $_.Name -like '*vipm*' -or $_.Name -like '*package manager*'
-            } |
-            Select-Object @{ Name = 'ProcessName'; Expression = { $_.Name } },
-                          @{ Name = 'Id'; Expression = { $_.ProcessId } }
-    )
-}
-if ($runningVipm.Count -eq 0) {
-    throw "VIPM must be running before applying dependencies via g-cli. Please launch VIPM manually and retry."
-}
-
 Write-Verbose "Parameters:"
 Write-Verbose " - MinimumSupportedLVVersion: $MinimumSupportedLVVersion"
 Write-Verbose " - VIP_LVVersion:             $VIP_LVVersion"
@@ -134,12 +113,12 @@ foreach ($bitness in $bitnessList) {
 }
 
 if ($DisplayOnly) {
-    Write-Host 'Displayed VIPM dependencies:'
+    Write-Host 'Displayed vipmcli/g-cli dependencies:'
 } else {
     Write-Host ("Successfully applied dependencies using provider '{0}'." -f $ProviderName)
 }
 
-Write-Host '=== VIPM Packages ==='
+Write-Host '=== vipmcli Packages ==='
 foreach ($entry in $collectedPackages) {
     Write-Host ("LabVIEW {0} ({1}-bit)" -f $entry.version, $entry.bitness)
     foreach ($pkg in $entry.packages) {

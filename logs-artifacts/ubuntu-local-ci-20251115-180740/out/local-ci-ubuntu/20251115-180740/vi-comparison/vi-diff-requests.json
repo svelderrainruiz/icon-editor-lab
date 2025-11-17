@@ -1,0 +1,9 @@
+{
+  "schema": "icon-editor/vi-diff-requests@v1",
+  "count": 3,
+  "requests": [
+    { "name": "module_1.vi", "relPath": "src/VIs/module_1.vi", "category": "sample" },
+    { "name": "module_2.vi", "relPath": "src/VIs/module_2.vi", "category": "sample" },
+    { "name": "module_3.vi", "relPath": "src/VIs/module_3.vi", "category": "sample" }
+  ]
+}

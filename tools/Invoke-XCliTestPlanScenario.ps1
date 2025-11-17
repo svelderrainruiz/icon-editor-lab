@@ -21,6 +21,11 @@ function Resolve-RepoRoot {
 }
 
 $RepoRoot = Resolve-RepoRoot -Root $RepoRoot
+
+if ([string]::IsNullOrWhiteSpace($QaDestination)) {
+    $QaDestination = '.tmp-tests/xcli-qa'
+}
+
 $artifactPath = Join-Path $RepoRoot 'artifacts/xcli-win-x64.zip'
 if (-not (Test-Path -LiteralPath $artifactPath -PathType Leaf)) {
     throw "[xcli] Packaged artifact not found at $artifactPath. Run the package task first."
@@ -34,7 +39,7 @@ function Invoke-WithEnv {
 
     $backup = @{}
     foreach ($key in $Overrides.Keys) {
-        $backup[$key] = if ($env:$key) { $env:$key } else { $null }
+        $backup[$key] = if (${env:$key}) { ${env:$key} } else { $null }
         if ($Overrides[$key] -eq $null) {
             Remove-Item -Path "Env:$key" -ErrorAction SilentlyContinue
         } else {
@@ -110,6 +115,11 @@ function Invoke-UploadStage {
         [string]$ReleaseTagOverride,
         [switch]$ExpectFailure
     )
+
+    if ($StagePath) {
+        $StagePath = $StagePath.Trim()
+    }
+    Write-Host ("[[xcli]] Upload request: stagePath={0}" -f $StagePath)
 
     try {
         & (Join-Path $RepoRoot 'tools/Upload-XCliArtifact.ps1') `

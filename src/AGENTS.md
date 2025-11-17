@@ -2,7 +2,7 @@
 
 ## Mission
 
-- Maintain the icon-editor lab tooling (dev-mode scripts, VI Analyzer configs, VIPM helpers).
+- Maintain the icon-editor lab tooling (dev-mode scripts, VI Analyzer configs, vipmcli/g-cli helpers).
 - Produce bundle exports for `compare-vi-cli-action` via `tools/Export-LabTooling.ps1`.
 - Verify the scenario matrix (1–6b) and reliability gates before publishing a bundle/PR.
 

@@ -1,6 +1,3 @@
-Set-StrictMode -Version Latest
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
 #Requires -Version 7.0
 
 [CmdletBinding()]
@@ -26,6 +23,9 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$null = Import-Module Microsoft.PowerShell.Management -ErrorAction Stop
+$null = Import-Module Microsoft.PowerShell.Utility -ErrorAction Stop
+$PSModuleAutoLoadingPreference = 'None'
 
 function Invoke-Step {
     param(
@@ -38,14 +38,14 @@ function Invoke-Step {
 }
 
 if (-not $RepoRoot) {
-    $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\')).ProviderPath
+    $RepoRoot = (Microsoft.PowerShell.Management\Resolve-Path (Join-Path $PSScriptRoot '..\..\')).ProviderPath
 }
 
 if (-not $IconEditorRoot) {
     $IconEditorRoot = Join-Path $RepoRoot 'vendor\icon-editor'
 }
 
-$IconEditorRoot = (Resolve-Path $IconEditorRoot -ErrorAction Stop).ProviderPath
+$IconEditorRoot = (Microsoft.PowerShell.Management\Resolve-Path $IconEditorRoot -ErrorAction Stop).ProviderPath
 
 if (-not $ResultsRoot) {
     $ResultsRoot = Join-Path $RepoRoot 'tests\results\_agent\icon-editor\vipm-cli-build'
@@ -75,7 +75,7 @@ $wrapperTemplate = @'
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-$repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).ProviderPath
+$repoRoot = (Microsoft.PowerShell.Management\Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).ProviderPath
 $targetModule = Join-Path $repoRoot 'tools' '{0}'
 
 if (-not (Test-Path -LiteralPath $targetModule -PathType Leaf)) {{

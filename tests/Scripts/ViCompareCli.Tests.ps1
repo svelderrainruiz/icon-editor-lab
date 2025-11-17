@@ -24,6 +24,34 @@ $scriptExists = Test-Path -LiteralPath $scriptPath -PathType Leaf
 if ($scriptExists) {
     Import-ScriptFunctions -Path $scriptPath -FunctionNames @('Resolve-ExistingPath','Read-ViDiffPairs','Write-StubArtifacts','Get-PropertyValue') | Out-Null
 }
+$sessionHelperPath = Join-Path $repoRoot 'tools/New-ViCompareSession.ps1'
+$sessionHelperExists = Test-Path -LiteralPath $sessionHelperPath -PathType Leaf
+
+Describe 'New-ViCompareSession.ps1' {
+    if (-not $sessionHelperExists) {
+        It 'skips when helper is absent' -Skip { }
+        return
+    }
+
+    BeforeAll {
+        $testsRoot = Split-Path -Parent $PSCommandPath
+        $repoRootLocal = (Resolve-Path -LiteralPath (Join-Path $testsRoot '..' '..')).Path
+        $helperPath = Join-Path $repoRootLocal 'tools/New-ViCompareSession.ps1'
+        $helperRepoRoot = $repoRootLocal
+    }
+
+    It 'creates session directories and metadata' {
+        $sessionsRoot = Join-Path $TestDrive 'sessions'
+        $helperFullPath = (Get-Item -LiteralPath $helperPath -ErrorAction Stop).FullName
+        $result = & $helperFullPath -RepoRoot $helperRepoRoot -SessionsRoot $sessionsRoot
+        $result | Should -Not -Be $null
+        Test-Path -LiteralPath $result.SessionPath | Should -BeTrue
+        $infoPath = Join-Path $result.SessionPath 'session-info.json'
+        Test-Path -LiteralPath $infoPath | Should -BeTrue
+        $info = Get-Content -LiteralPath $infoPath -Raw | ConvertFrom-Json -ErrorAction Stop
+        $info.session | Should -Match '^vi-compare-'
+    }
+}
 
 Describe 'Invoke-ViCompareLabVIEWCli.ps1' {
     if (-not $scriptExists) {
@@ -137,6 +165,48 @@ Describe 'Invoke-ViCompareLabVIEWCli.ps1' {
             $html = Get-Content -LiteralPath (Join-Path $pairRoot 'compare-report.html') -Raw
             $html | Should -Match '&lt;script&gt;alert\(1\)&lt;/script&gt;'
             (Get-Content -LiteralPath (Join-Path $pairRoot 'lvcompare-capture.json') -Raw) | Should -Match 'error'
+        }
+    }
+
+    Context 'Session capture' {
+        BeforeAll {
+            $testsRoot = Split-Path -Parent $PSCommandPath
+            $repoRootLocal = (Resolve-Path -LiteralPath (Join-Path $testsRoot '..' '..')).Path
+            $cliScriptUnderTest = Join-Path $repoRootLocal 'local-ci/windows/scripts/Invoke-ViCompareLabVIEWCli.ps1'
+            $cliRepoRoot = $repoRootLocal
+        }
+
+        It 'emits vi-compare sessions when enabled' {
+            $requestPath = Join-Path $TestDrive 'requests.json'
+@"
+{
+  "requests": [
+    {
+      "pairId": "ui/test.vi",
+      "baseline": "fixtures/base.vi",
+      "candidate": "fixtures/head.vi"
+    }
+  ]
+}
+"@ | Set-Content -LiteralPath $requestPath -Encoding UTF8
+
+            $outputRoot = Join-Path $TestDrive 'vi-output'
+            $sessionRoot = Join-Path $TestDrive 'sessions'
+            $scriptFullPath = (Get-Item -LiteralPath $cliScriptUnderTest -ErrorAction Stop).FullName
+            $summary = & $scriptFullPath `
+                -RepoRoot $cliRepoRoot `
+                -RequestsPath $requestPath `
+                -OutputRoot $outputRoot `
+                -ProbeRoots @($repoRoot) `
+                -DryRun `
+                -SessionRoot $sessionRoot
+
+            $summary | Should -Not -Be $null
+            $sessionDir = Get-ChildItem -LiteralPath $sessionRoot -Directory | Select-Object -First 1
+            $sessionDir | Should -Not -Be $null
+            Test-Path -LiteralPath (Join-Path $sessionDir.FullName 'vi-comparison-summary.json') | Should -BeTrue
+            $manifest = Get-Content -LiteralPath (Join-Path $sessionDir.FullName 'session-info.json') -Raw | ConvertFrom-Json -ErrorAction Stop
+            $manifest.outputs.summary | Should -Be 'vi-comparison-summary.json'
         }
     }
 }

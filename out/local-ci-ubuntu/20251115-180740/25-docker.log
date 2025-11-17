@@ -1,0 +1,5 @@
+[25-docker] Required source files are unavailable; skipping Docker build.
+  - missing: /home/runner/work/icon-editor-lab/icon-editor-lab/Directory.Build.props
+  - missing: /home/runner/work/icon-editor-lab/icon-editor-lab/src/CompareVi.Shared/CompareVi.Shared.csproj
+  - missing: /home/runner/work/icon-editor-lab/icon-editor-lab/src/CompareVi.Tools.Cli/CompareVi.Tools.Cli.csproj
+[25-docker] Provide CompareVi projects before enabling this stage.

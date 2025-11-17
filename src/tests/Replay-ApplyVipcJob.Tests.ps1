@@ -49,7 +49,7 @@ Describe 'Replay-ApplyVipcJob helpers' -Tag 'Unit' {
         $params.VipcPath | Should -Be '.github/actions/apply-vipc/runner_dependencies.vipc'
     }
 
-    It 'routes apply replay through vipm toolchain by default' {
+    It 'routes apply replay through g-cli toolchain by default' {
         $params = @{
             MinimumSupportedLVVersion = '2023'
             VipLabVIEWVersion         = '2026'
@@ -62,7 +62,7 @@ Describe 'Replay-ApplyVipcJob helpers' -Tag 'Unit' {
 
         Invoke-ReplayApplyVipcJob -InitialParameters $params
 
-        Assert-MockCalled Invoke-ApplyVipcReplay -Times 1 -ParameterFilter { $Toolchain -eq 'vipm' }
+        Assert-MockCalled Invoke-ApplyVipcReplay -Times 1 -ParameterFilter { $Toolchain -eq 'g-cli' }
     }
 
 }

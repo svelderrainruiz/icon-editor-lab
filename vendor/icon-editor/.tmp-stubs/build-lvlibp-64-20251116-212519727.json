@@ -1,0 +1,16 @@
+{
+  "schema": "icon-editor/build-lvlibp-stub@v1",
+  "timestamp": "2025-11-16T21:25:19.7243739-08:00",
+  "bitness": "64",
+  "repoRoot": "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor",
+  "commit": "local",
+  "version": {
+    "build": 25001,
+    "patch": 1,
+    "major": 1,
+    "minor": 4
+  },
+  "minimumLv": "2025",
+  "lvMinor": "",
+  "extraArgs": null
+}

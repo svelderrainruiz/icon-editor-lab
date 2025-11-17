@@ -77,13 +77,16 @@ Describe 'Invoke-VipmDependencies.ps1 argument handling' -Tag 'Unit','VipmDepend
         Assert-MockCalled Test-VipmCliReady -Times 2 -Exactly -ParameterFilter { $ProviderName -eq 'vipm' }
     }
 
-    It 'fails fast when VIPM is not running' {
-        Mock Get-Process { @() }
-        Mock Get-CimInstance { @() }
+    It 'fails fast when vipmcli/g-cli provider is not ready' {
+        $vipc = New-TemporaryFile
+        Set-Content -LiteralPath $vipc -Value 'stub vipc'
+
+        Mock Test-VipmCliReady { throw "vipmcli/g-cli provider 'vipm-gcli' is not ready: provider not configured" }
+        Mock Install-VipmVipc { throw 'Install should not be invoked when provider is not ready.' }
 
         {
-            & $script:scriptPath -MinimumSupportedLVVersion 2021 -VIP_LVVersion 2023 -SupportedBitness 64 -VIPCPath (New-TemporaryFile)
-        } | Should -Throw '*VIPM must be running*'
+            & $script:scriptPath -MinimumSupportedLVVersion 2021 -VIP_LVVersion 2023 -SupportedBitness 64 -VIPCPath $vipc
+        } | Should -Throw "*vipmcli/g-cli provider 'vipm-gcli' is not ready*"
     }
 }
 

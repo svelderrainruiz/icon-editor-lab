@@ -1,0 +1,46 @@
+**********************
+PowerShell transcript start
+Start time: 20251115180822
+Username: runnervmg1sw1\runner
+RunAs User: runnervmg1sw1\runner
+Configuration Name: 
+Machine: runnervmg1sw1 (Unix 6.11.0.1018)
+Host Application: /opt/microsoft/powershell/7/pwsh.dll -command . '/home/runner/work/_temp/b3433d7f-92b9-45de-8d7c-ae73a521481f.ps1'
+Process ID: 2372
+PSVersion: 7.4.13
+PSEdition: Core
+GitCommitId: 7.4.13
+OS: Ubuntu 24.04.3 LTS
+Platform: Unix
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1, 6.0, 7.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+WSManStackVersion: 3.0
+**********************
+Sign root : /home/runner/work/icon-editor-lab/icon-editor-lab/out
+Run root  : /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822
+Wrote git status to /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/git-status.txt
+Attempting to import Ubuntu run metadata from /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/ubuntu-run.json
+Imported Ubuntu run manifest at /home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/ubuntu-run.json (coverage: 100)
+Imported Ubuntu run 20251115-180740-c4e6a2ef with coverage 100% (min 75%)
+[10-Prep] Verifying environment profile 'labview-2021-x64'
+[EnvParity] Validating profile 'LabVIEW 2021 (64-bit)'
+WARNING: [EnvParity] Optional directory missing: Shared National Instruments data directory
+Exception: /home/runner/work/icon-editor-lab/icon-editor-lab/local-ci/windows/scripts/Test-EnvironmentParity.ps1:137
+Exception: /home/runner/work/icon-editor-lab/icon-editor-lab/local-ci/windows/scripts/Test-EnvironmentParity.ps1:137
+Line |
+Line |
+ 137 |      throw $message
+ 137 |      throw $message
+     |      ~~~~~~~~~~~~~~
+     |      ~~~~~~~~~~~~~~
+     | [EnvParity] Environment parity check failed:  - Missing file: LabVIEW
+     | [EnvParity] Environment parity check failed:  - Missing file: LabVIEW
+     | 2021 (64-bit) executable  - Missing file: LabVIEW CLI executable  -
+     | 2021 (64-bit) executable  - Missing file: LabVIEW CLI executable  -
+     | Command not found: g-cli
+     | Command not found: g-cli
+**********************
+PowerShell transcript end
+End time: 20251115180824
+**********************

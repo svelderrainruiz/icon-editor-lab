@@ -12,6 +12,10 @@ using XCli.Reverse;
 using XCli.Localci;
 using XCli.Upper;
 using XCli.Telemetry;
+using XCli.ViCompare;
+using XCli.ViAnalyzer;
+using XCli.Vipm;
+using XCli.Ppl;
 using XCli.Foo;
 
 namespace XCli;
@@ -120,6 +124,54 @@ public static class Program
             var devmodeResult = Labview.LabviewDevmodeCommand.Run(subcommand, parsed.PayloadArgs);
             logger.Log(subcommand, parsed.PayloadArgs, string.Empty, devmodeResult, sw.ElapsedMilliseconds);
             return devmodeResult.ExitCode;
+        }
+        if (subcommand == "vi-compare-verify")
+        {
+            var verifyResult = ViCompareVerifyCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, verifyResult, sw.ElapsedMilliseconds);
+            return verifyResult.ExitCode;
+        }
+        if (subcommand == "vi-analyzer-verify")
+        {
+            var analyzerResult = ViAnalyzerVerifyCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, analyzerResult, sw.ElapsedMilliseconds);
+            return analyzerResult.ExitCode;
+        }
+        if (subcommand == "vi-analyzer-run")
+        {
+            var analyzerRunResult = ViAnalyzerRunCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, analyzerRunResult, sw.ElapsedMilliseconds);
+            return analyzerRunResult.ExitCode;
+        }
+        if (subcommand == "vi-compare-run")
+        {
+            var compareRunResult = ViCompareRunCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, compareRunResult, sw.ElapsedMilliseconds);
+            return compareRunResult.ExitCode;
+        }
+        if (subcommand == "vipm-apply-vipc")
+        {
+            var applyResult = VipmApplyVipcCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, applyResult, sw.ElapsedMilliseconds);
+            return applyResult.ExitCode;
+        }
+        if (subcommand == "vipm-build-vip")
+        {
+            var buildResult = VipmBuildVipCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, buildResult, sw.ElapsedMilliseconds);
+            return buildResult.ExitCode;
+        }
+        if (subcommand == "vipmcli-build")
+        {
+            var vipmCliResult = VipmCliBuildCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, vipmCliResult, sw.ElapsedMilliseconds);
+            return vipmCliResult.ExitCode;
+        }
+        if (subcommand == "ppl-build")
+        {
+            var pplResult = PplBuildCommand.Run(parsed.PayloadArgs);
+            logger.Log(subcommand, parsed.PayloadArgs, string.Empty, pplResult, sw.ElapsedMilliseconds);
+            return pplResult.ExitCode;
         }
         var planResult = SimulationPlan.ForCommand(subcommand);
         var simulator = new Simulator();

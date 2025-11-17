@@ -1,0 +1,521 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<testsuites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="junit_schema_4.xsd" name="Pester" tests="284" errors="0" failures="0" disabled="0" time="52.552">
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\smoke\Smoke.Tests.ps1" tests="1" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="0" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\smoke\Smoke.Tests.ps1" time="0.762">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Smoke.true is true" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\smoke\Smoke.Tests.ps1" assertions="0" time="0.101" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" tests="9" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="1" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" time="3.089">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="sample.passes" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.028" />
+    <testcase name="Critical scripts.Check-DocsLinks validates a small doc tree and helper functions" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.880" />
+    <testcase name="Critical scripts.Check-WorkflowDrift completes when python/git are stubbed" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.186" />
+    <testcase name="Critical scripts.Agent-Wait start/end roundtrip writes markers" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.733" />
+    <testcase name="Critical scripts.Invoke-ViCompareLabVIEWCli handles dry-run requests" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.225" />
+    <testcase name="Critical scripts.Validate-Paths module enforces safe paths" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.052" />
+    <testcase name="Critical scripts.Validate-Config enforces JSON + schema" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.098" />
+    <testcase name="Critical scripts.Hash-Artifacts writes checksum manifest" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.055" />
+    <testcase name="Critical scripts.Export-SemverBundle copies required assets" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\sample.tests.ps1" assertions="0" time="0.563" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\Sanity.Tests.ps1" tests="1" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="2" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\Sanity.Tests.ps1" time="0.217">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Repo Sanity.has a docs folder" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Sanity.Tests.ps1" assertions="0" time="0.007" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" tests="4" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="3" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" time="1.983">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Check-DocsLinks coverage.Match-Any returns false when the pattern list is empty" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" assertions="0" time="0.013" />
+    <testcase name="Check-DocsLinks coverage.Test-ValidLabel rejects invalid characters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Check-DocsLinks coverage.Invoke-WithTimeout returns job output when the work completes before the timeout" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" assertions="0" time="0.428" />
+    <testcase name="Check-DocsLinks coverage.Invoke-WithTimeout throws when the job exceeds the timeout window" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\DocsLinks.Coverage.Tests.ps1" assertions="0" time="1.295" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" tests="14" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="4" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" time="2.878">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Check-WorkflowDrift.ps1.Resolve-PythonExe.returns the first available python executable" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.302" />
+    <testcase name="Check-WorkflowDrift.ps1.Resolve-PythonExe.falls back to py.exe when python.exe is unavailable" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.035" />
+    <testcase name="Check-WorkflowDrift.ps1.Resolve-PythonExe.returns null when no candidates are available" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.018" />
+    <testcase name="Check-WorkflowDrift.ps1.Process-Staging.adds and commits changes when only workflow files are staged" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.014" />
+    <testcase name="Check-WorkflowDrift.ps1.Process-Staging.avoids committing when unrelated files are staged" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.053" />
+    <testcase name="Check-WorkflowDrift.ps1.Process-Staging.emits a notice and skips work when no files are staged" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.022" />
+    <testcase name="Check-WorkflowDrift.ps1.Process-Staging.skips staging entirely when Stage is disabled and no commit message is provided" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="Check-WorkflowDrift.ps1.Test-ValidLabel helper.accepts labels that satisfy the allowed pattern" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="Check-WorkflowDrift.ps1.Test-ValidLabel helper.throws when labels contain invalid characters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="Check-WorkflowDrift.ps1.Invoke-WithTimeout helper.returns the job output when the task completes in time" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.443" />
+    <testcase name="Check-WorkflowDrift.ps1.Invoke-WithTimeout helper.throws when the timeout elapses and the job keeps running" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="1.287" />
+    <testcase name="Check-WorkflowDrift.ps1.Invoke-WorkflowDrift (unit).returns 0 when the check passes and no workflows are changed" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.053" />
+    <testcase name="Check-WorkflowDrift.ps1.Invoke-WorkflowDrift (unit).applies auto-fix and stages workflows when drift is detected" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.068" />
+    <testcase name="Check-WorkflowDrift.ps1.Script execution (CLI).exits successfully when Python is not available and emits a notice" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\WorkflowDrift.Tests.ps1" assertions="0" time="0.152" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" tests="23" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="5" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" time="5.026">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.resolves relative files using the provided probe roots" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.021" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.returns null when the candidate cannot be resolved" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Resolve-ExistingPath.normalizes and resolves existing absolute paths verbatim" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.038" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Get-PropertyValue.returns the property value when present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Get-PropertyValue.returns null for missing names or null objects" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.parses request files with the requests schema" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.supports the legacy pairs schema layout" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.104" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.throws when the JSON payload lacks supported nodes" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.016" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.throws when the JSON is malformed" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Read-ViDiffPairs.resolves baseline and candidate using base/head nodes when present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.020" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts.writes capture, session, and report files for a dry-run pair" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.013" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Write-StubArtifacts.HTML-encodes the reason text inside the stub report" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (dry-run mode).generates stub artifacts and summary without invoking LabVIEW CLI" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.185" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (dry-run mode).treats DisableCli as dry-run even when CLI tools are available" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.170" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (dry-run mode).maps capture, session, and report artifacts into the summary" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.148" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (dry-run mode).honors MaxPairs while keeping total count for reporting" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.311" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (dry-run mode).falls back to dry-run when the LabVIEW executable is missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.158" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (LabVIEW CLI path).maps LabVIEW CLI exit codes into summary counts and artifacts" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.409" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (LabVIEW CLI path).handles mixed same/different/error/skipped outcomes in a single run" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.394" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Script execution (skipped when paths are unresolved).marks pairs as skipped when baseline or candidate cannot be resolved" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.148" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.RequestsPath validation and empty payloads.throws when the requests file is missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.RequestsPath validation and empty payloads.logs a warning and returns when no diff pairs are present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.053" />
+    <testcase name="Invoke-ViCompareLabVIEWCli.ps1.Debug logging.emits argument summary when LOCALCI_DEBUG_VICOMPARE=1" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\tests\Scripts\ViCompareCli.Tests.ps1" assertions="0" time="0.138" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" tests="15" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="6" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" time="1.144">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="ConsoleUx diagnostics helpers.Get-DxLevel.defaults to normal when environment is not set" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.016" />
+    <testcase name="ConsoleUx diagnostics helpers.Get-DxLevel.returns explicit override when provided" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="ConsoleUx diagnostics helpers.Get-DxLevel.normalizes environment values" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="ConsoleUx diagnostics helpers.Get-DxLevel.handles quiet and detailed aliases from environment" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="ConsoleUx diagnostics helpers.Test-DxAtLeast ranking.returns true when level is at least requested threshold" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="ConsoleUx diagnostics helpers.Test-DxAtLeast ranking.returns false when level is below threshold" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-Dx output selection.emits info lines when console level allows it" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.022" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-Dx output selection.suppresses info when console level is quiet but still surfaces warnings" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.028" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-Dx output selection.emits errors and debug diagnostics via the appropriate channels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.026" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-Dx output selection.respects concise console mode when info level underflows normal" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-DxKV formatting.sorts keys and emits concise output" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.024" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-DxKV formatting.skips output when console level is quiet" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="ConsoleUx diagnostics helpers.Write-DxKV formatting.honors custom prefixes and ignores empty values" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="ConsoleUx diagnostics helpers.Utility helpers.validates labels with ASCII-safe pattern" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="ConsoleUx diagnostics helpers.Utility helpers.invokes script blocks with timeout guards" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleUx.Unit.Tests.ps1" assertions="0" time="0.690" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" tests="69" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="7" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" time="22.436">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVRepoRoot.returns git root when git succeeds" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.035" />
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVRepoRoot.falls back to the resolved path when git fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.039" />
+    <testcase name="LabVIEWCli utility helpers.Command-line formatting helpers.wraps tokens with quotes when whitespace present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="LabVIEWCli utility helpers.Command-line formatting helpers.builds command lines with formatted tokens" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="LabVIEWCli utility helpers.Command-line formatting helpers.converts relative paths to absolute paths" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.064" />
+    <testcase name="LabVIEWCli utility helpers.Operation metadata.returns operation specs from the bundled JSON" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="LabVIEWCli utility helpers.Operation metadata.throws for unknown operations" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVNormalizedParams edge cases.throws when a required parameter is missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVNormalizedParams edge cases.converts non-boolean values to bool" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.039" />
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVNormalizedParams edge cases.validates enum parameter values" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="LabVIEWCli utility helpers.Resolve-LVNormalizedParams edge cases.normalizes empty arrays when value is whitespace" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.019" />
+    <testcase name="LabVIEWCli utility helpers.Import-LVProviderModules.discovers providers from override root" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.161" />
+    <testcase name="LabVIEWCli utility helpers.Import-LVProviderModules.writes a warning when provider factory returns null" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.118" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation (preview).returns command details without launching process" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.056" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.registers providers and resolves explicit requests" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.rejects providers missing required methods" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.honors LVCLI_PROVIDER environment override for auto selection" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.skips providers with missing binaries when auto-selecting" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.throws when explicit provider is not registered" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.throws when no providers are registered" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.resolves absolute binary paths even when files are missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.resolves relative binary paths against the current directory when files are missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.060" />
+    <testcase name="LabVIEWCli utility helpers.Provider registration and selection.logs provider selection failures and throws when none can execute the operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.020" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation runtime behavior.injects PID tracker payload after a successful run" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.740" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation runtime behavior.throws on timeout and finalizes PID tracker with error context" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="1.057" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation runtime behavior.finalizes tracker with fallback context when initialization fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.033" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation runtime behavior.normalizes CloseLabVIEW parameters from environment when not provided (preview)" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.033" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVOperation runtime behavior.enforces sentinel TTL suppression with warning guards" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.036" />
+    <testcase name="LabVIEWCli utility helpers.Provider fallback resolution.resolves provider modules when selection only returns a name string" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.593" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.skips invocation when COMPAREVI_NO_CLI_CAPTURE is set" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.027" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.suppresses invocation in git contexts and emits a warning when configured" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.019" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.warns but continues when git warning enabled without suppression" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.604" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.creates sentinel entries when TTL is configured but no prior file exists" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="3.329" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.skips invocation when comparison sentinel TTL is active" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="2.599" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.refreshes sentinel timestamp once TTL window expires" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="3.144" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.touches the comparison sentinel after a successful run" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="3.069" />
+    <testcase name="LabVIEWCli utility helpers.CLI suppression guards.emits labview-cli:error finalize when Set-LVHeadlessEnv fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.034" />
+    <testcase name="LabVIEWCli utility helpers.Comparison suppression helpers.returns true when COMPAREVI_NO_CLI_CAPTURE is set" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="LabVIEWCli utility helpers.Comparison suppression helpers.uses sentinel TTLs to suppress duplicate comparisons" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="2.666" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.validates acceptable labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.rejects invalid labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.executes Invoke-WithTimeout successfully" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.416" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.throws when Invoke-WithTimeout exceeds the limit" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.295" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.Touch-CompareCliSentinel creates a sentinel file" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.097" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.Set-LVHeadlessEnv and Restore-LVHeadlessEnv round-trip values" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.Write-LVOperationEvent writes operation ndjson" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.047" />
+    <testcase name="LabVIEWCli utility helpers.Module utility functions.Get-LVOperationNames returns catalog entries" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="LabVIEWCli utility helpers.PID tracker payload injection.attaches payload objects to Invoke-LVOperation results" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.632" />
+    <testcase name="LabVIEWCli utility helpers.PID tracker payload injection.adds payload to dictionary results" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="LabVIEWCli utility helpers.PID tracker payload injection.overwrites existing labviewPidTracker property on objects" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="LabVIEWCli utility helpers.PID tracker payload injection.finalizes tracker state and exposes detailed payload after a successful stop" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.050" />
+    <testcase name="LabVIEWCli utility helpers.PID tracker payload injection.captures fallback context when tracker finalization fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.022" />
+    <testcase name="LabVIEWCli utility helpers.Initialize-LabVIEWCliPidTracker guards.returns early when tracker is not loaded or already initialized" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="LabVIEWCli utility helpers.Initialize-LabVIEWCliPidTracker guards.handles directory creation failures and disables the tracker" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.045" />
+    <testcase name="LabVIEWCli utility helpers.Initialize-LabVIEWCliPidTracker guards.initializes state when tracker starts successfully" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.022" />
+    <testcase name="LabVIEWCli utility helpers.Initialize-LabVIEWCliPidTracker guards.disables tracker when Start-LabVIEWPidTracker throws" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.037" />
+    <testcase name="LabVIEWCli utility helpers.Operational telemetry.writes operation events under tests/results/_cli" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.044" />
+    <testcase name="LabVIEWCli utility helpers.Operational telemetry.swallows write failures and logs a verbose message" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.060" />
+    <testcase name="LabVIEWCli utility helpers.Invoke-LVCreateComparisonReport wrapper.propagates report path and arguments into normalized params" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.019" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.Invoke-LVRunVI normalizes arguments and switches" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.Invoke-LVRunVIAnalyzer passes report type and password" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.014" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.Invoke-LVRunUnitTests normalizes junit path" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.can preview RunUnitTests through an x-cli style provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.014" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.can preview RunVI through an x-cli style provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.can preview RunVIAnalyzer through an x-cli style provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.can preview MassCompile through an x-cli style provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.032" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.can preview ExecuteBuildSpec through an x-cli style provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.015" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.Invoke-LVMassCompile forwards optional parameters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.017" />
+    <testcase name="LabVIEWCli utility helpers.Wrapper commands.Invoke-LVExecuteBuildSpec normalizes target name" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWCli.Utility.Tests.ps1" assertions="0" time="0.010" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" tests="24" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="8" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" time="3.153">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="LabVIEW PID tracker helpers.Resolve-LabVIEWPidContext.returns null when context parameter is missing or null" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="LabVIEW PID tracker helpers.Resolve-LabVIEWPidContext.orders hash tables and nested objects recursively" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="LabVIEW PID tracker helpers.Resolve-LabVIEWPidContext.normalizes enumerable contexts and preserves order" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="LabVIEW PID tracker helpers.Resolve-LabVIEWPidContext.orders PSCustomObject properties case-sensitively" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.records initialize observation with active LabVIEW process" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.072" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.reuses running pid captured in tracker file" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.076" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.records reused pid metadata when tracker is still running" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.057" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.notes when LabVIEW is not running" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.032" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.persists labview-not-running note in tracker file" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.030" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.finalizes tracker when tracked process is gone" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.075" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.propagates context data during stop observations" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.064" />
+    <testcase name="LabVIEW PID tracker helpers.Tracker lifecycle.records still-running note when tracked pid remains active" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.053" />
+    <testcase name="LabVIEW PID tracker helpers.Start-LabVIEWPidTracker edge cases.recovers from invalid tracker JSON state" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.061" />
+    <testcase name="LabVIEW PID tracker helpers.Start-LabVIEWPidTracker edge cases.sorts fresh LabVIEW processes by StartTime" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.036" />
+    <testcase name="LabVIEW PID tracker helpers.Start-LabVIEWPidTracker edge cases.continues when candidate sorting throws" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.034" />
+    <testcase name="LabVIEW PID tracker helpers.Start-LabVIEWPidTracker edge cases.records candidates-present when no PID is selected" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.038" />
+    <testcase name="LabVIEW PID tracker helpers.Start-LabVIEWPidTracker edge cases.handles LabVIEW process discovery failures" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.026" />
+    <testcase name="LabVIEW PID tracker helpers.Stop-LabVIEWPidTracker edge cases.ignores invalid tracker JSON content" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.052" />
+    <testcase name="LabVIEW PID tracker helpers.Stop-LabVIEWPidTracker edge cases.handles non-integer pid stored in tracker state" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.047" />
+    <testcase name="LabVIEW PID tracker helpers.Stop-LabVIEWPidTracker edge cases.creates parent directories when writing tracker records" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.029" />
+    <testcase name="LabVIEW PID tracker helpers.Module helper functions.Test-ValidLabel accepts good labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="LabVIEW PID tracker helpers.Module helper functions.Test-ValidLabel rejects bad labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="LabVIEW PID tracker helpers.Module helper functions.Invoke-WithTimeout returns scriptblock result" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.498" />
+    <testcase name="LabVIEW PID tracker helpers.Module helper functions.Invoke-WithTimeout throws when timeout exceeded" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWPidTracker.Unit.Tests.ps1" assertions="0" time="0.321" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" tests="6" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="9" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" time="1.307">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Invoke-Once guard.executes the action once and records a marker" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.047" />
+    <testcase name="Invoke-Once guard.creates scope directory when missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.024" />
+    <testcase name="Invoke-Once guard.respects WhatIf flag and still records completion metadata" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.083" />
+    <testcase name="Invoke-Once guard.rejects empty keys" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="Invoke-Once guard.Utility helpers.validates labels inside Once-Guard module scope" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="Invoke-Once guard.Utility helpers.wraps asynchronous execution with timeout handling" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Once-Guard.Unit.Tests.ps1" assertions="0" time="0.702" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" tests="27" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="10" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" time="1.615">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="RunnerProfile utility helpers.Get-EnvironmentValue.returns trimmed strings and null for missing values" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="RunnerProfile utility helpers.Parse-Labels.splits on commas/whitespace and de-duplicates" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabels.prefers RUNNER_LABELS environment variable" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabels caching and API fallback.hydrates from API when env is empty and caches the result" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.016" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabelsFromApi.selects jobs matching runner name and attempt when API returns data" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.015" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabelsFromApi.returns empty when repository metadata is missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabelsFromApi.falls back to job name and latest non-queued run when runner name is absent" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.024" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabelsFromApi.returns empty when candidate job has no labels array" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerLabelsFromApi.uses run attempt metadata when multiple candidates match" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="RunnerProfile utility helpers.Invoke-RunnerJobsApi.returns jobs from REST API when gh CLI is unavailable" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.037" />
+    <testcase name="RunnerProfile utility helpers.Invoke-RunnerJobsApi.returns empty when no tokens are present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="RunnerProfile utility helpers.Invoke-RunnerJobsApi.prefers gh CLI output when command is available" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.018" />
+    <testcase name="RunnerProfile utility helpers.Invoke-RunnerJobsApi.falls back to REST API when gh CLI exits with errors" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.015" />
+    <testcase name="RunnerProfile utility helpers.Invoke-RunnerJobsApi CLI path.parses gh cli output when available" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.017" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerProfile.combines env fields and cached labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerProfile.reuses cached profile unless ForceRefresh is specified" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerProfile.returns instrumentation-disabled profile when module toggle is off" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerProfile.respects the DisableInstrumentation switch" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerHostEnvironment.classifies GitHub-hosted CI and does not suggest dev mode" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.018" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerHostEnvironment.suggests dev mode when library paths are under repo root and not CI" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.093" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerHostEnvironment.does not suggest dev mode when library paths are outside repo root" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.089" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerHostEnvironment.classifies self-hosted runners when label present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="RunnerProfile utility helpers.Get-RunnerHostEnvironment.enables devModeSupported for local Windows pwsh sessions" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.094" />
+    <testcase name="RunnerProfile utility helpers.Module helper functions.Test-ValidLabel accepts good labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="RunnerProfile utility helpers.Module helper functions.Test-ValidLabel rejects bad labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="RunnerProfile utility helpers.Module helper functions.Invoke-WithTimeout returns script block result" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.422" />
+    <testcase name="RunnerProfile utility helpers.Module helper functions.Invoke-WithTimeout throws when timeout exceeded" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\RunnerProfile.Utility.Tests.ps1" assertions="0" time="0.268" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" tests="9" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="11" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" time="0.383">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Timing tick helpers.enforces minimum tick interval when starting counters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="Timing tick helpers.increments tick counts when waiting" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.038" />
+    <testcase name="Timing tick helpers.returns null when reading an uninitialized counter" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="Timing tick helpers.rounds elapsed milliseconds when reading counters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="Timing tick helpers.stops the stopwatch when Stop-TickCounter is invoked" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="Timing tick helpers.clamps wait intervals and respects instrumentation toggle" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.016" />
+    <testcase name="Timing tick helpers.handles null counter and missing stopwatch gracefully" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.027" />
+    <testcase name="Timing tick helpers.Support utilities.validates labels using Test-ValidLabel" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="Timing tick helpers.Support utilities.runs Invoke-WithTimeout successfully and handles timeouts" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Timing.Tick.Unit.Tests.ps1" assertions="0" time="0.079" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" tests="18" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="12" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" time="1.814">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="ConsoleWatch helpers.Write-ConsoleWatchRecord helper.captures metadata and writes to ndjson when target matches" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.043" />
+    <testcase name="ConsoleWatch helpers.Write-ConsoleWatchRecord helper.returns null and skips writing when process name not tracked" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.015" />
+    <testcase name="ConsoleWatch helpers.Write-ConsoleWatchRecord helper.marks hasWindow false when Get-Process fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.016" />
+    <testcase name="ConsoleWatch helpers.Write-ConsoleWatchRecord helper.skips parent resolution when parent process id is zero" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.018" />
+    <testcase name="ConsoleWatch helpers.Start-ConsoleWatch.registers CIM events and seeds ndjson when watcher succeeds" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.060" />
+    <testcase name="ConsoleWatch helpers.Start-ConsoleWatch.ensures snapshot summaries preserve pre-existing captures when no new events" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.063" />
+    <testcase name="ConsoleWatch helpers.Start-ConsoleWatch.falls back to snapshot mode when event registration fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.032" />
+    <testcase name="ConsoleWatch helpers.Start-ConsoleWatch.returns disabled sentinel when instrumentation flag is off" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="ConsoleWatch helpers.Start-ConsoleWatch.respects DisableInstrumentation switch" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="ConsoleWatch helpers.Stop-ConsoleWatch.aggregates event-mode records into a summary" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.053" />
+    <testcase name="ConsoleWatch helpers.Stop-ConsoleWatch.detects new processes in snapshot mode" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.037" />
+    <testcase name="ConsoleWatch helpers.Stop-ConsoleWatch.produces disabled summary when sentinel id is supplied" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.026" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Test-ValidLabel accepts good labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Test-ValidLabel rejects bad labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Invoke-WithTimeout returns script block result" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.394" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Invoke-WithTimeout throws when timeout exceeded" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.272" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Invoke-ConsoleWatchEventRecord records matching processes" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.029" />
+    <testcase name="ConsoleWatch helpers.Module helper functions.Invoke-ConsoleWatchEventRecord ignores non-target processes" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\ConsoleWatch.Unit.Tests.ps1" assertions="0" time="0.005" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" tests="20" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="13" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" time="2.451">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="VIPM tooling helpers.Register-VipmProvider.validates provider contract and registers case-insensitively" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.050" />
+    <testcase name="VIPM tooling helpers.Register-VipmProvider.throws when required methods are missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.042" />
+    <testcase name="VIPM tooling helpers.Register-VipmProvider.throws when provider Name() returns whitespace" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.047" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.returns invocation when provider supports operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.049" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.throws when no provider supports operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.098" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.throws when provider returns empty binary path" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.094" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.throws when ResolveBinaryPath raises an error" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.093" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.honors specific ProviderName filters" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.101" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.throws when requested provider does not exist" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.101" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.returns empty args when provider BuildArgs returns null" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.088" />
+    <testcase name="VIPM tooling helpers.Get-VipmInvocation.lists registered providers when none support the requested operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.084" />
+    <testcase name="VIPM tooling helpers.Import-VipmProviderModules.registers providers discovered via manifests and fallback scripts" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.211" />
+    <testcase name="VIPM tooling helpers.Import-VipmProviderModules.emits warnings when provider modules fail to register" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.180" />
+    <testcase name="VIPM tooling helpers.Import-VipmProviderModules.returns early when override root does not exist" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.089" />
+    <testcase name="VIPM tooling helpers.Import-VipmProviderModules.continues registering providers when one module throws" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.214" />
+    <testcase name="VIPM tooling helpers.Test-ValidLabel.accepts safe characters up to 64 chars" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.045" />
+    <testcase name="VIPM tooling helpers.Test-ValidLabel.rejects invalid symbols" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.050" />
+    <testcase name="VIPM tooling helpers.vipm-gcli provider integration.builds g-cli VipcInstall arguments via vipm-gcli provider" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.056" />
+    <testcase name="VIPM tooling helpers.vipm-gcli provider integration.surfaces a helpful error when vipm-gcli cannot resolve g-cli binary" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.043" />
+    <testcase name="VIPM tooling helpers.Support utilities.handles Invoke-WithTimeout success and timeout cases" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Vipm.Unit.Tests.ps1" assertions="0" time="0.109" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" tests="22" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="14" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" time="1.357">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="g-cli provider helpers.Register-GCliProvider.stores providers case-insensitively and exposes lookup helpers" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.033" />
+    <testcase name="g-cli provider helpers.Register-GCliProvider.throws when provider contract is incomplete" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="g-cli provider helpers.Register-GCliProvider.rejects providers whose Name() returns whitespace" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="g-cli provider helpers.Register-GCliProvider.allows filtering providers by manager" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.012" />
+    <testcase name="g-cli provider helpers.Register-GCliProvider.prefers provider Manager() output over explicit parameter" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="g-cli provider helpers.Import-GCliProviderModules.registers providers discovered via manifest and fallback scripts" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.135" />
+    <testcase name="g-cli provider helpers.Import-GCliProviderModules.writes a warning when provider initialization fails" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.124" />
+    <testcase name="g-cli provider helpers.Import-GCliProviderModules.returns early when override root does not exist" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="g-cli provider helpers.Import-GCliProviderModules.continues registering providers when one module throws" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.153" />
+    <testcase name="g-cli provider helpers.Provider loading guard.imports providers when cache is empty" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.032" />
+    <testcase name="g-cli provider helpers.Provider loading guard.skips import when providers already populated" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.builds command invocation for registered providers" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.029" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.throws when provider name is unknown" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.083" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.throws when provider ResolveBinaryPath returns empty" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.fails when no providers support an operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.filters providers by manager when requested" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.008" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.resolves provider by name and manager" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.returns empty arguments when provider BuildArgs outputs null" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.selects manager-specific provider when multiple candidates support the operation" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="g-cli provider helpers.Get-GCliInvocation.lists available providers when manager filter has no matches" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.013" />
+    <testcase name="g-cli provider helpers.Support utilities.validates labels using Test-ValidLabel" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="g-cli provider helpers.Support utilities.handles Invoke-WithTimeout success and timeout cases" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\GCli.Unit.Tests.ps1" assertions="0" time="0.063" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" tests="8" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="15" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" time="2.151">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Get-PesterVersion helpers.Get-PesterVersion.returns default when policy file is absent" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Get-PesterVersion helpers.Get-PesterVersion.loads version from policy json when present" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Get-PesterVersion helpers.GitHub Actions outputs.writes resolved version to GITHUB_ENV when EmitEnv is set" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="Get-PesterVersion helpers.GitHub Actions outputs.writes resolved version to GITHUB_OUTPUT when EmitOutput is set" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.009" />
+    <testcase name="Get-PesterVersion helpers.Test-ValidLabel.passes for valid labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="Get-PesterVersion helpers.Test-ValidLabel.throws for invalid labels" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.003" />
+    <testcase name="Get-PesterVersion helpers.Invoke-WithTimeout.returns job output when job completes in time" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="0.477" />
+    <testcase name="Get-PesterVersion helpers.Invoke-WithTimeout.stops job and throws when timeout elapses" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Tools.GetPesterVersion.Tests.ps1" assertions="0" time="1.362" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" tests="6" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="16" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" time="0.413">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="LabVIEWLabVIEWCLI module.Get-LabVIEWCliPath.respects env override" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+    <testcase name="LabVIEWLabVIEWCLI module.Get-LabVIEWCliPath.resolves a provided candidate file" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.022" />
+    <testcase name="LabVIEWLabVIEWCLI module.Get-LabVIEWCliPath.falls back to the candidate token on failure" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.046" />
+    <testcase name="LabVIEWLabVIEWCLI module.Invoke-LabVIEWCli.builds CLI arguments and returns metadata" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.032" />
+    <testcase name="LabVIEWLabVIEWCLI module.Invoke-LabVIEWCli.stops the process when timeout elapses" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.033" />
+    <testcase name="LabVIEWLabVIEWCLI module.Invoke-LabVIEWCliClose stub.returns metadata with the message" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\LabVIEWLabVIEWCli.Unit.Tests.ps1" assertions="0" time="0.005" />
+  </testsuite>
+  <testsuite name="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" tests="8" errors="0" failures="0" hostname="USAUSLT-Z7DLW6G" id="17" skipped="0" disabled="0" package="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" time="0.372">
+    <properties>
+      <property name="clr-version" value="9.0.8" />
+      <property name="cwd" value="C:\codex\home\runner\work\icon-editor-lab" />
+      <property name="os-version" value="10.0.22631" />
+      <property name="platform" value="Microsoft Windows 11 Enterprise|C:\WINDOWS|\Device\Harddisk0\Partition3" />
+      <property name="framework-version" value="5.7.1" />
+      <property name="machine-name" value="USAUSLT-Z7DLW6G" />
+      <property name="user" value="svelderr" />
+      <property name="user-domain" value="NI" />
+      <property name="junit-version" value="4" />
+    </properties>
+    <testcase name="Dev Dashboard helpers.Resolve-PathSafe.returns absolute path when input exists" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="Dev Dashboard helpers.Resolve-PathSafe.returns null when file is missing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.010" />
+    <testcase name="Dev Dashboard helpers.Read-JsonFile.loads json content and reports success" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.011" />
+    <testcase name="Dev Dashboard helpers.Read-JsonFile.captures parse errors when file contains invalid json" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.007" />
+    <testcase name="Dev Dashboard helpers.Read-JsonFile.reports missing files without throwing" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.004" />
+    <testcase name="Dev Dashboard helpers.Read-FileLines.returns line content when file exists" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.006" />
+    <testcase name="Dev Dashboard helpers.Read-FileLines.gracefully handles unreadable files" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.018" />
+    <testcase name="Dev Dashboard helpers.Read-NdjsonFile.collects objects separated by blank lines" status="Passed" classname="C:\codex\home\runner\work\icon-editor-lab\src\tests\tools\Dev-Dashboard.Unit.Tests.ps1" assertions="0" time="0.014" />
+  </testsuite>
+</testsuites>

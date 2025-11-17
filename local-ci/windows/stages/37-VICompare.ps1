@@ -112,6 +112,9 @@ $cliConfig = [ordered]@{
     MaxPairs      = 25
     Timeout       = 900
     NoiseProfile  = 'full'
+    SessionsRoot  = $repoRoot
+    RequireSession= $false
+    EnableSessions= $true
 }
 
 if ($config.PSObject.Properties['EnableViCompareCli']) {
@@ -132,9 +135,23 @@ if ($config.PSObject.Properties['ViCompareTimeoutSeconds']) {
 if ($config.PSObject.Properties['ViCompareNoiseProfile']) {
     $cliConfig.NoiseProfile = [string]$config.ViCompareNoiseProfile
 }
+if ($config.PSObject.Properties['ViCompareSessionsRoot']) {
+    $cliConfig.SessionsRoot = Resolve-RepoPath -Root $repoRoot -Path $config.ViCompareSessionsRoot
+}
+if ($config.PSObject.Properties['ViCompareRequireSession']) {
+    $cliConfig.RequireSession = [bool]$config.ViCompareRequireSession
+}
+if ($config.PSObject.Properties['ViCompareEnableSessions']) {
+    $cliConfig.EnableSessions = [bool]$config.ViCompareEnableSessions
+}
 
 $cliConfig.Enabled = Get-EnvToggle -Name 'LOCALCI_VICOMPARE_CLI_ENABLED' -Current $cliConfig.Enabled
 $cliConfig.ForceDryRun = Get-EnvToggle -Name 'LOCALCI_VICOMPARE_FORCE_DRYRUN' -Current $cliConfig.ForceDryRun
+if ($env:LOCALCI_VICOMPARE_SESSIONS_ROOT) {
+    $cliConfig.SessionsRoot = Resolve-RepoPath -Root $repoRoot -Path $env:LOCALCI_VICOMPARE_SESSIONS_ROOT
+}
+$cliConfig.EnableSessions = Get-EnvToggle -Name 'LOCALCI_VICOMPARE_SESSIONS_ENABLED' -Current $cliConfig.EnableSessions
+$cliConfig.RequireSession = Get-EnvToggle -Name 'LOCALCI_VICOMPARE_SESSION_GATE' -Current $cliConfig.RequireSession
 
 $requestsPath = Join-Path $outputRoot 'vi-diff-requests.json'
 $summaryPath  = Join-Path $outputRoot 'vi-comparison-summary.json'
@@ -170,6 +187,15 @@ if ($cliConfig.Enabled -and (Test-Path -LiteralPath $requestsPath -PathType Leaf
         $cliParams['HarnessScript'] = $harness
         if ($cliConfig.ForceDryRun) {
             $cliParams['DryRun'] = $true
+        }
+        if ($cliConfig.SessionsRoot) {
+            $cliParams['SessionRoot'] = $cliConfig.SessionsRoot
+        }
+        if (-not $cliConfig.EnableSessions) {
+            $cliParams['DisableSessionCapture'] = $true
+        }
+        if ($cliConfig.RequireSession) {
+            $cliParams['RequireSession'] = $true
         }
 
         Write-Host "[vi-compare] Invoking LabVIEW CLI helper for requests at $requestsPath"

@@ -1,0 +1,15 @@
+{
+  "ManifestPath": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/ubuntu-run.json",
+  "ImportedZip": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci-ubuntu/20251115-180740/local-ci-artifacts.zip",
+  "ExtractedPath": "/home/runner/work/icon-editor-lab/icon-editor-lab/out/local-ci/20251115-180822/ubuntu-artifacts",
+  "GitCommit": "c4e6a2ef27d22e7645c83ec2e770803c08b5f33a",
+  "GitBranch": "develop",
+  "Coverage": {
+    "percent": 100.0,
+    "min_percent": 75,
+    "report": "out/coverage/coverage.xml"
+  },
+  "RunId": "20251115-180740-c4e6a2ef",
+  "CreatedUtc": "2025-11-15T18:07:59.263577+00:00",
+  "Timestamp": "20251115-180740-c4e6a2ef"
+}

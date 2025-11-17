@@ -1,13 +1,3 @@
-Set-StrictMode -Version Latest
-[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Low')]
-param(
-  [Parameter()][ValidateSet('2021','2023','2025')][string]$LabVIEWVersion = '2023',
-  [Parameter()][ValidateSet(32,64)][int]$Bitness = 64,
-  [Parameter()][ValidateNotNullOrEmpty()][string]$Workspace = (Get-Location).Path,
-  [Parameter()][int]$TimeoutSec = 600
-)
-$ErrorActionPreference = 'Stop'
-$PSModuleAutoLoadingPreference = 'None'
 #Requires -Version 7.0
 
 <#
@@ -77,14 +67,16 @@ param(
 
     [int]$SupportedBitness,
 
-    [ValidateSet('gcli','vipm')]
-    [string]$Toolchain = 'vipm',
+    [ValidateSet('g-cli','vipm')]
+    [string]$Toolchain = 'g-cli',
 
     [switch]$SkipExecution
 )
 
-Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+$PSModuleAutoLoadingPreference = 'None'
+Set-StrictMode -Version Latest
+Import-Module Microsoft.PowerShell.Management -ErrorAction Stop
 $script:ReplayApplyVipcParameters = $PSBoundParameters
 
 function Invoke-GitHubCli {
@@ -320,7 +312,7 @@ function Invoke-ReplayApplyVipcJob {
         $skipExecutionFlag = [bool]$InitialParameters['SkipExecution']
     }
 
-    $toolchainValue = 'vipm'
+    $toolchainValue = 'g-cli'
     if ($InitialParameters.ContainsKey('Toolchain') -and $null -ne $InitialParameters['Toolchain']) {
         $toolchainValue = $InitialParameters['Toolchain']
     }

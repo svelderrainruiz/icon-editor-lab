@@ -342,6 +342,11 @@ if ($DryRun) {
   return
 }
 
+$leaf = [System.IO.Path]::GetFileName($LabVIEWPath)
+if ($leaf -eq 'LabVIEW.exe') {
+  throw "Direct LabVIEW.exe warmup is no longer allowed from Warmup-LabVIEWRuntime.ps1. Route LabVIEW operations through tools/codex/Invoke-LabVIEWOperation.ps1 and the appropriate x-cli workflow instead."
+}
+
 $psi = [System.Diagnostics.ProcessStartInfo]::new()
 $psi.FileName = $LabVIEWPath
 $psi.Arguments = ''

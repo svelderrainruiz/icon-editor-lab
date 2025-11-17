@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace XCli.Labview;
@@ -50,6 +53,69 @@ public static class LabviewDevmodeCommand
     private static bool _scenarioConfigLoaded;
     private static bool _scenarioConfigError;
     private static string? _scenarioConfigErrorDetail;
+
+    private static string? ValidateLocalHostRequirement(string? repoRoot)
+    {
+        var requiredPath = XCli.Util.Env.Get("XCLI_LOCALHOST_REQUIRED_PATH");
+        if (string.IsNullOrWhiteSpace(requiredPath))
+        {
+            requiredPath = repoRoot;
+        }
+        if (string.IsNullOrWhiteSpace(requiredPath))
+        {
+            return null;
+        }
+
+        var iniPath = XCli.Util.Env.Get("XCLI_LABVIEW_INI_PATH");
+        if (string.IsNullOrWhiteSpace(iniPath))
+        {
+            return "LocalHost.LibraryPaths enforcement requires XCLI_LABVIEW_INI_PATH.";
+        }
+        if (!File.Exists(iniPath))
+        {
+            return $"LabVIEW.ini not found at '{iniPath}'.";
+        }
+
+        static string NormalizePath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return string.Empty;
+            try
+            {
+                return Path.GetFullPath(path).TrimEnd('\\', '/');
+            }
+            catch
+            {
+                return path.Trim().TrimEnd('\\', '/');
+            }
+        }
+
+        var requiredNormalized = NormalizePath(requiredPath);
+        var lines = File.ReadAllLines(iniPath);
+        var entry = lines.FirstOrDefault(l => l.TrimStart()
+            .StartsWith("LocalHost.LibraryPaths", StringComparison.OrdinalIgnoreCase));
+        if (entry == null)
+        {
+            return "LocalHost.LibraryPaths entry not found in LabVIEW.ini.";
+        }
+
+        var idx = entry.IndexOf('=');
+        if (idx < 0)
+        {
+            return "LocalHost.LibraryPaths entry in LabVIEW.ini is malformed.";
+        }
+
+        var value = entry.Substring(idx + 1);
+        var paths = value.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var match = paths.Any(p => NormalizePath(p.Trim('"'))
+            .Equals(requiredNormalized, StringComparison.OrdinalIgnoreCase));
+        if (!match)
+        {
+            return $"LocalHost.LibraryPaths missing required path '{requiredNormalized}'.";
+        }
+
+        return null;
+    }
 
     private static ScenarioConfig? GetScenarioConfig()
     {
@@ -259,6 +325,13 @@ public static class LabviewDevmodeCommand
 
         var stage = string.IsNullOrWhiteSpace(operation) ? "dev-mode" : operation;
         var opTag = string.IsNullOrWhiteSpace(operation) ? string.Empty : $" [{operation}]";
+
+        var localhostError = ValidateLocalHostRequirement(lvaddonRoot);
+        if (localhostError != null)
+        {
+            Console.Error.WriteLine($"[x-cli] labview-devmode: {localhostError}");
+            return new XCli.Simulation.SimulationResult(false, 1);
+        }
 
         var handledByScenarioConfig = false;
         if (TryApplyScenarioOverride(scenarioKey, stage, opTag, ref success, ref exitCode))

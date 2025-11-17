@@ -1,0 +1,549 @@
+{
+  "schema": "labview-pid-tracker/v1",
+  "updatedAt": "2025-11-17T06:12:08.7975771Z",
+  "pid": 43812,
+  "running": true,
+  "reused": true,
+  "source": "labview-cli:operation",
+  "observations": [
+    {
+      "at": "2025-11-17T04:35:04.3298755Z",
+      "action": "finalize",
+      "pid": 20700,
+      "running": false,
+      "reused": false,
+      "source": "labview-cli:operation",
+      "note": "not-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.56,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T04:37:39.1979197Z",
+      "action": "initialize",
+      "pid": null,
+      "running": false,
+      "reused": false,
+      "source": "labview-cli:init",
+      "note": "labview-not-running",
+      "candidates": []
+    },
+    {
+      "at": "2025-11-17T04:38:41.8867154Z",
+      "action": "finalize",
+      "pid": null,
+      "running": false,
+      "reused": false,
+      "source": "labview-cli:operation",
+      "note": "no-tracked-pid",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.583,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T04:40:21.4106675Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": false,
+      "source": "labview-cli:init",
+      "note": "selected-from-scan",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T04:41:23.7130148Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": false,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.18,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T04:42:36.9696766Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T04:43:39.7464418Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.626,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T04:55:45.0022812Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T04:56:47.2111709Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.078,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:02:04.7090226Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:03:06.697318Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 61.876,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:05:36.2133854Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:06:38.4404346Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.117,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:07:40.7558054Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:08:43.0884533Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.203,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:09:50.8483918Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:10:53.3139616Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.339,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:11:47.8489724Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:12:50.1424451Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.177,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:18:59.5496632Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:20:02.112125Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.436,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T05:24:05.9520461Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T05:25:08.3858531Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.317,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    },
+    {
+      "at": "2025-11-17T06:11:06.2753388Z",
+      "action": "initialize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:init",
+      "note": "reused-existing",
+      "candidates": [
+        43812
+      ]
+    },
+    {
+      "at": "2025-11-17T06:12:08.7975771Z",
+      "action": "finalize",
+      "pid": 43812,
+      "running": true,
+      "reused": true,
+      "source": "labview-cli:operation",
+      "note": "still-running",
+      "context": {
+        "args": [
+          "-OperationName",
+          "RunVIAnalyzer",
+          "-ConfigPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+          "-ReportPath",
+          "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+          "-ReportSaveType",
+          "HTML"
+        ],
+        "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+        "elapsedSeconds": 62.409,
+        "exitCode": 1,
+        "operation": "RunVIAnalyzer",
+        "provider": "labviewcli",
+        "stage": "labview-cli:operation",
+        "timedOut": false
+      },
+      "contextSource": "labview-cli:operation"
+    }
+  ],
+  "context": {
+    "args": [
+      "-OperationName",
+      "RunVIAnalyzer",
+      "-ConfigPath",
+      "C:\\codex\\home\\runner\\work\\icon-editor-lab\\vendor\\icon-editor\\.github\\actions\\missing-in-project",
+      "-ReportPath",
+      "C:\\codex\\home\\runner\\work\\icon-editor-lab\\.tmp-tests\\vi-analyzer\\sample-report.html",
+      "-ReportSaveType",
+      "HTML"
+    ],
+    "binary": "C:\\Program Files (x86)\\National Instruments\\Shared\\LabVIEW CLI\\LabVIEWCLI.exe",
+    "elapsedSeconds": 62.409,
+    "exitCode": 1,
+    "operation": "RunVIAnalyzer",
+    "provider": "labviewcli",
+    "stage": "labview-cli:operation",
+    "timedOut": false
+  },
+  "contextSource": "labview-cli:operation"
+}
