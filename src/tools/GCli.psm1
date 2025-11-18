@@ -157,7 +157,10 @@ function Import-GCliProviderModules {
         if (-not $modulePath) { continue }
         try {
             $moduleInfo = Import-Module $modulePath -Force -PassThru
-            $command = Get-Command -Name 'New-GCliProvider' -Module $moduleInfo.Name -ErrorAction Stop
+            $command = Get-Command -Name 'New-GCliProvider' -Module $moduleInfo.Name -ErrorAction SilentlyContinue
+            if (-not $command) {
+                continue
+            }
             $provider = & $command
             if (-not $provider) { throw 'New-GCliProvider returned null.' }
             Register-GCliProvider -Provider $provider

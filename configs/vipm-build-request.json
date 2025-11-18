@@ -1,0 +1,14 @@
+{
+  "repoRoot": ".",
+  "workspace": ".",
+  "releaseNotesPath": "Tooling/deployment/release_notes.md",
+  "skipReleaseNotes": false,
+  "skipVipbUpdate": false,
+  "skipBuild": false,
+  "closeLabVIEW": false,
+  "downloadArtifacts": false,
+  "buildToolchain": "g-cli",
+  "buildProvider": "",
+  "jobName": "Build VI Package",
+  "logPath": "configs/logs/vipm-build-sample.log"
+}

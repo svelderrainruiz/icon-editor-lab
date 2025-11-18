@@ -87,9 +87,16 @@ public static class PplBuildCommand
             return new SimulationResult(false, 1);
         }
 
-        var iconEditorRoot = string.IsNullOrWhiteSpace(request.IconEditorRoot)
-            ? Path.Combine(repoRoot, "vendor", "icon-editor")
-            : ResolvePath(request.IconEditorRoot!, repoRoot);
+        string iconEditorRoot;
+        try
+        {
+            iconEditorRoot = ResolveIconEditorRoot(repoRoot, request.IconEditorRoot);
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"[x-cli] ppl-build: {ex.Message}");
+            return new SimulationResult(false, 1);
+        }
 
         if (!Directory.Exists(iconEditorRoot))
         {
@@ -195,5 +202,73 @@ public static class PplBuildCommand
     private static string ResolvePath(string path, string repoRoot)
     {
         return Path.GetFullPath(Path.IsPathRooted(path) ? path : Path.Combine(repoRoot, path));
+    }
+
+    private static string ResolveIconEditorRoot(string repoRoot, string? overridePath)
+    {
+        if (!string.IsNullOrWhiteSpace(overridePath))
+        {
+            var resolvedOverride = ResolvePath(overridePath!, repoRoot);
+            if (Directory.Exists(resolvedOverride))
+            {
+                return resolvedOverride;
+            }
+            throw new InvalidOperationException($"IconEditorRoot override '{resolvedOverride}' not found.");
+        }
+
+        var configPath = Path.Combine(repoRoot, "configs", "icon-editor-vendor.json");
+        if (File.Exists(configPath))
+        {
+            try
+            {
+                using var doc = JsonDocument.Parse(File.ReadAllText(configPath));
+                if (doc.RootElement.TryGetProperty("vendorRoot", out var prop) && prop.ValueKind == JsonValueKind.String)
+                {
+                    var raw = prop.GetString();
+                    if (!string.IsNullOrWhiteSpace(raw))
+                    {
+                        var expanded = ExpandWorkspacePlaceholder(raw!, repoRoot);
+                        if (Directory.Exists(expanded))
+                        {
+                            return expanded;
+                        }
+                        Console.Error.WriteLine($"[x-cli] ppl-build: vendorRoot '{expanded}' from config not found.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"[x-cli] ppl-build: failed to read icon-editor vendor config: {ex.Message}");
+            }
+        }
+
+        var fallback = FindVendorRootByScan(repoRoot);
+        if (!string.IsNullOrWhiteSpace(fallback))
+        {
+            return fallback!;
+        }
+
+        throw new InvalidOperationException("Unable to resolve icon editor vendor root. Update configs/icon-editor-vendor.json or vendor the LabVIEW icon editor repo.");
+    }
+
+    private static string ExpandWorkspacePlaceholder(string path, string repoRoot)
+    {
+        var expanded = path.Replace("${workspaceFolder}", repoRoot, StringComparison.OrdinalIgnoreCase);
+        return Path.GetFullPath(Path.IsPathRooted(expanded) ? expanded : Path.Combine(repoRoot, expanded));
+    }
+
+    private static string? FindVendorRootByScan(string repoRoot)
+    {
+        var vendorDir = Path.Combine(repoRoot, "vendor");
+        if (!Directory.Exists(vendorDir)) { return null; }
+        foreach (var dir in Directory.GetDirectories(vendorDir))
+        {
+            var vipbPath = Path.Combine(dir, "Tooling", "deployment", "NI_Icon_editor.vipb");
+            if (File.Exists(vipbPath))
+            {
+                return dir;
+            }
+        }
+        return null;
     }
 }

@@ -418,13 +418,17 @@ if (-not $finalPackagePath) {
     $finalPackagePath = Get-IconEditorPackagePath -VipbPath $vipbFullPath -Major $intMajor -Minor $intMinor -Patch $intPatch -Build $intBuild -WorkspaceRoot $workspaceRoot
 }
 
+$vipBuildRequested = -not $SkipBuild.IsPresent
+
 if ($finalPackagePath -and (Test-Path -LiteralPath $finalPackagePath)) {
     $pkgInfo = Get-Item -LiteralPath $finalPackagePath
     $sizeMB = [Math]::Round($pkgInfo.Length / 1MB, 2)
     Write-Host " Generated .vip located under $vipOutputDir ($sizeMB MB):"
     Write-Host "   $finalPackagePath"
+} elseif ($vipBuildRequested) {
+    throw "Expected VI package '$finalPackagePath' was not produced. Inspect build logs above."
 } else {
-    Write-Warning "Unable to locate the generated .vip. Inspect build logs above."
+    Write-Host "VIP build was skipped by request; no .vip artifact expected."
 }
 
 function Test-ValidLabel {

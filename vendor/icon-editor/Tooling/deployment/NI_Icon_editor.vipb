@@ -44,7 +44,7 @@
       
       
       
-    <Pre-Build_VI /><Post-Build_VI /><Pre-Install_VI>VIP_Pre-Install Custom Action 2021.vi</Pre-Install_VI><Post-Install_VI>VIP_Post-Install Custom Action 2021.vi</Post-Install_VI><Pre-Uninstall_VI>VIP_Pre-Uninstall Custom Action 2021.vi</Pre-Uninstall_VI><Post-Uninstall_VI>VIP_Post-Uninstall Custom Action 2021.vi</Post-Uninstall_VI></Custom_Action_VIs><VI_Package_Configuration_File>NI_Icon_editor.vipc</VI_Package_Configuration_File><Description>
+    <Pre-Build_VI /><Post-Build_VI /><Pre-Install_VI>VIP_Pre-Install Custom Action.vi</Pre-Install_VI><Post-Install_VI>VIP_Post-Install Custom Action.vi</Post-Install_VI><Pre-Uninstall_VI>VIP_Pre-Uninstall Custom Action.vi</Pre-Uninstall_VI><Post-Uninstall_VI>VIP_Post-Uninstall Custom Action.vi</Post-Uninstall_VI></Custom_Action_VIs><VI_Package_Configuration_File>NI_Icon_editor.vipc</VI_Package_Configuration_File><Description>
       
       
       

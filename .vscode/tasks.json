@@ -689,6 +689,78 @@
       "problemMatcher": []
     },
     {
+      "label": "Vendor: Snapshot labview-icon-editor",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/vendor/New-LabviewIconEditorInstance.ps1",
+        "-Workspace",
+        "${workspaceFolder}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Vendor: Ensure labview-icon-editor snapshot",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/tools/vendor/New-LabviewIconEditorInstance.ps1",
+        "-Workspace",
+        "${workspaceFolder}",
+        "-ReuseExisting"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Build VIP (real job)",
+      "type": "shell",
+      "command": "pwsh",
+      "args": [
+        "-NoLogo",
+        "-NoProfile",
+        "-File",
+        "${workspaceFolder}/src/tools/icon-editor/Invoke-VipmPackageBuildJob.ps1",
+        "-Workspace",
+        "${workspaceFolder}",
+        "-LogPath",
+        "${input:vipmBuildJobLogPath}",
+        "-BuildToolchain",
+        "g-cli"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Build PPL+VIP (real)",
+      "dependsOn": [
+        "Vendor: Ensure labview-icon-editor snapshot",
+        "Tools: PPL Build (x-cli)",
+        "Tools: Build VIP (real job)"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tools: Build & Publish VIP release",
+      "dependsOn": [
+        "Vendor: Ensure labview-icon-editor snapshot",
+        "Tools: PPL Build (x-cli)",
+        "Tools: Build VIP (real job)",
+        "Tools: Build x-cli",
+        "Tools: Package x-cli",
+        "Tools: Stage x-cli artifact",
+        "Tools: Validate x-cli release asset",
+        "Tools: Upload x-cli artifact"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
       "label": "Tools: vipmcli build (x-cli)",
       "type": "shell",
       "command": "pwsh",
@@ -1061,6 +1133,12 @@
       "default": "${workspaceFolder}/configs/vipm-build-request.json"
     },
     {
+      "id": "vipmBuildJobLogPath",
+      "type": "promptString",
+      "description": "Path to log file containing DisplayInformationJSON",
+      "default": "${workspaceFolder}/configs/logs/vipm-build-sample.log"
+    },
+    {
       "id": "vipmCliBuildRequestPath",
       "type": "promptString",
       "description": "Path to vipmcli build request JSON",
@@ -1234,7 +1312,7 @@
       "id": "pplSmokeMinLv",
       "type": "promptString",
       "description": "Minimum LV version for PPL smoke",
-      "default": "2025"
+      "default": "2021"
     },
     {
       "id": "pplSmokePackageMinLv",

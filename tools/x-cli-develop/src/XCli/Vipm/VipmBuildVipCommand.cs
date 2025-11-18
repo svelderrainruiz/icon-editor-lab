@@ -80,17 +80,58 @@ public static class VipmBuildVipCommand
             return new SimulationResult(false, 1);
         }
 
-        var scriptPath = Path.Combine(repoRoot, "src", "tools", "icon-editor", "Replay-BuildVipJob.ps1");
+        var scriptPath = Path.Combine(repoRoot, "src", "tools", "icon-editor", "Invoke-VipmPackageBuildJob.ps1");
         if (!File.Exists(scriptPath))
         {
-            Console.Error.WriteLine($"[x-cli] vipm-build-vip: replay script not found at '{scriptPath}'.");
+            Console.Error.WriteLine($"[x-cli] vipm-build-vip: build job script not found at '{scriptPath}'.");
             return new SimulationResult(false, 1);
         }
 
         var workspace = ResolvePathOrDefault(request.Workspace, repoRoot);
         var releaseNotes = resolveRelative(request.ReleaseNotesPath ?? "Tooling/deployment/release_notes.md", workspace);
 
+        var guardScript = Path.Combine(repoRoot, "src", "tools", "icon-editor", "Test-VipbCustomActions.ps1");
+        var vipbPath = Path.Combine(repoRoot, ".github", "actions", "build-vi-package", "NI_Icon_editor.vipb");
         var pwsh = Environment.GetEnvironmentVariable("XCLI_PWSH") ?? "pwsh";
+
+        if (File.Exists(guardScript))
+        {
+            if (!File.Exists(vipbPath))
+            {
+                Console.Error.WriteLine($"[x-cli] vipm-build-vip: VIPB not found at '{vipbPath}'.");
+                return new SimulationResult(false, 1);
+            }
+
+            var guardPsi = new ProcessStartInfo(pwsh)
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = workspace
+            };
+            guardPsi.ArgumentList.Add("-NoLogo");
+            guardPsi.ArgumentList.Add("-NoProfile");
+            guardPsi.ArgumentList.Add("-File");
+            guardPsi.ArgumentList.Add(guardScript);
+            guardPsi.ArgumentList.Add("-VipbPath");
+            guardPsi.ArgumentList.Add(vipbPath);
+            guardPsi.ArgumentList.Add("-Workspace");
+            guardPsi.ArgumentList.Add(workspace);
+
+            using var guardProcess = Process.Start(guardPsi);
+            var guardStdOut = guardProcess?.StandardOutput.ReadToEnd();
+            var guardStdErr = guardProcess?.StandardError.ReadToEnd();
+            guardProcess?.WaitForExit();
+            if (!string.IsNullOrEmpty(guardStdOut)) Console.Write(guardStdOut);
+            if (!string.IsNullOrEmpty(guardStdErr)) Console.Error.Write(guardStdErr);
+            if (guardProcess == null || guardProcess.ExitCode != 0)
+            {
+                Console.Error.WriteLine("[x-cli] vipm-build-vip: custom action guard failed.");
+                return new SimulationResult(false, guardProcess?.ExitCode ?? 1);
+            }
+        }
+
         var psi = new ProcessStartInfo(pwsh)
         {
             RedirectStandardOutput = true,
@@ -123,6 +164,11 @@ public static class VipmBuildVipCommand
         {
             psi.ArgumentList.Add("-LogPath");
             psi.ArgumentList.Add(resolveRelative(request.LogPath!, workspace));
+        }
+        if (!string.IsNullOrWhiteSpace(request.RunId))
+        {
+            psi.ArgumentList.Add("-RunId");
+            psi.ArgumentList.Add(request.RunId!);
         }
 
         if (request.SkipReleaseNotes) psi.ArgumentList.Add("-SkipReleaseNotes");

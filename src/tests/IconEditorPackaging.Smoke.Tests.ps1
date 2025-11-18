@@ -70,10 +70,10 @@ License="MIT"
 
             $deploymentRoot = Join-Path $systemRoot 'File Group 0\National Instruments\LabVIEW Icon Editor\Tooling\deployment'
             foreach ($name in @(
-                'VIP_Pre-Install Custom Action 2021.vi',
-                'VIP_Post-Install Custom Action 2021.vi',
-                'VIP_Pre-Uninstall Custom Action 2021.vi',
-                'VIP_Post-Uninstall Custom Action 2021.vi'
+                'VIP_Pre-Install Custom Action.vi',
+                'VIP_Post-Install Custom Action.vi',
+                'VIP_Pre-Uninstall Custom Action.vi',
+                'VIP_Post-Uninstall Custom Action.vi'
             )) {
                 Set-Content -LiteralPath (Join-Path $deploymentRoot $name) -Value ("stub {0}" -f $name) -Encoding utf8
             }
